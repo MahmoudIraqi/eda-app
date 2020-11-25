@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
+  socialMediaList = [
+    'fab fa-facebook-f',
+    'fab fa-twitter',
+    'fab fa-youtube',
+    'fab fa-instagram'
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
