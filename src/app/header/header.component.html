@@ -1,0 +1,95 @@
+<div class="headerContainer">
+  <div class="row">
+    <div class="col-3">
+      <div class="logo">
+        <img src="assets/img/logo.png">
+      </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-8">
+      <div class="row">
+        <div class="col-12 p-0 pt-3 pb-3 border-bottom">
+          <div class="text-right">
+            <div class="socialMediaList">
+              <ul>
+                <li *ngFor="let icon of socialMediaList">
+                  <a href="#" target="_blank">
+                    <span>
+                      <i class="{{icon}}"></i>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="phoneNumberContainer">
+              <span>
+                <i class="fas fa-phone-volume"></i>
+              </span>
+              <span> 19181</span>
+            </div>
+            <div class="changeLang">
+              <div class="form-group">
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>En</option>
+                  <option>Ar</option>
+                </select>
+              </div>
+            </div>
+            <div class="searchIcon">
+              <a href="#" target="_blank">
+                <span>
+                  <i class="fas fa-search"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 p-0 pt-3 pb-3">
+          <div class="d-flex align-items-center">
+            <div class="menu">
+              <ul>
+                <li *ngFor="let item of menuObject">
+                  <a href="{{item.link}}" target="_blank">
+                    {{item.name}}
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="profile d-inline-flex justify-content-center align-items-center ml-auto">
+              <div class="profileIcon">
+              <span>
+                <i class="fas fa-user"></i>
+              </span>
+              </div>
+              <div class="profileMenu">
+                <div class="btn-group text-right" dropdown>
+                  <button id="button-basic"
+                          dropdownToggle
+                          type="button"
+                          class="btn btn-primary dropdown-toggle"
+                          aria-controls="dropdown-basic">
+                    Specturm
+                    <span>
+                    <i class="fas fa-chevron-down"></i>
+                  </span>
+                  </button>
+                  <ul id="dropdown-basic"
+                      *dropdownMenu
+                      class="dropdown-menu dropdown-menu-right"
+                      role="menu" aria-labelledby="button-basic">
+                    <li role="menuitem">
+                      <a class="dropdown-item" href="#">My profile</a>
+                    </li>
+                    <li role="menuitem">
+                      <a class="dropdown-item" href="#">Logout</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

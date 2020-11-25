@@ -1,0 +1,77 @@
+.contentContainer {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4em;
+}
+
+.contentContainer h1 {
+  font-size: 45px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1em;
+  font-weight: bolder;
+}
+
+.contentContainer p {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 3em;
+  font-weight: 600;
+}
+
+.btnList {
+  list-style-type: none;
+  text-align: center;
+}
+
+.btnList li {
+  display: block;
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btnList li .ButtonContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  border: 3px solid #c28a30;
+  margin-bottom: 1.5em;
+  border-radius: 10px 0px 10px 10px;
+  -webkit-transition: ease-out 1s;
+  -moz-transition: ease-out 1s;
+  transition: ease-out 1s;
+}
+
+.btnList li .ButtonContainer:hover {
+  background: #c28a30;
+  border-color: #fff;
+  text-decoration: none;
+  box-shadow: inset 600px 0 0 0 #c28a30;
+}
+
+.btnList li .ButtonContainer:hover span.icon {
+  border-right:  1px solid #fff;
+}
+
+.btnList li .ButtonContainer span.icon {
+  text-align: left;
+  padding: 0.3em 0.7em;
+  background: #c28a30;
+  border-right:  1px solid transparent;
+}
+
+.btnList li .ButtonContainer span i:before {
+  font-size: 40px;
+  color: #fff;
+  margin-left: 0px;
+}
+
+.btnList li .ButtonContainer span.title {
+  text-align: left;
+  padding-left: 2em;
+  color: #fff;
+  font-weight: 500;
+}

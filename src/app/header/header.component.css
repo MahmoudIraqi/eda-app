@@ -1,0 +1,181 @@
+.headerContainer {
+  width: 100%;
+  padding: 0 3em;
+}
+
+/* ------------ Logo Style ----------- */
+
+.logo {
+  width: 100%;
+  padding: 15px 0px;
+}
+
+.logo img {
+  width: 100%;
+}
+
+
+/* --------------------- social media List ----------------------- */
+
+.socialMediaList {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.socialMediaList ul {
+  list-style-type: none;
+}
+
+.socialMediaList ul li {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 15px;
+}
+
+.socialMediaList ul li a {
+  color: #c28a30;
+}
+
+.socialMediaList ul li a:hover {
+  color: #fff;
+}
+
+.socialMediaList ul li span {
+  font-size: 22px;
+}
+
+.socialMediaList ul li:last-child {
+  margin-right: 0;
+}
+
+
+/* ----------------------------- phone container ------------ */
+.phoneNumberContainer {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 1.5em;
+  color: #c28a30;
+  font-weight: bolder;
+  font-size: 22px;
+}
+
+.phoneNumberContainer i {
+  transform: rotate(-45deg);
+}
+
+
+/* ----------------------------- change Lang ------------------- */
+.changeLang {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 1.5em;
+  color: #c28a30;
+  font-weight: bolder;
+  font-size: 22px;
+}
+
+.changeLang .form-group select {
+  border: none;
+  background: none;
+  color: #c28a30;
+  font-weight: bold;
+  border-radius: 0;
+  padding: 0px 4px;
+  width: 60px;
+  font-size: 18px;
+  height: calc(1.5em + 0.25rem + 2px);
+  cursor: pointer;
+}
+
+.changeLang .form-group select:active, .changeLang .form-group select:focus {
+  box-shadow: 0px 0px 0.2rem #c28a30;
+}
+
+
+/* ----------------- search Icon --------------------- */
+.searchIcon {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 1.5em;
+}
+
+.searchIcon a {
+  color: #c28a30;
+  font-weight: bolder;
+  font-size: 22px;
+}
+
+
+/* ---------------------------- menu ---------------------- */
+.menu {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+
+.menu ul {
+  list-style-type: none;
+}
+
+.menu ul li {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 2em;
+}
+
+.menu ul li:last-child {
+  margin-right: 0em;
+}
+
+.menu ul li a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.menu ul li a:hover {
+  color: #c28a30;
+  text-decoration: none;
+}
+
+
+/* ------------------------ my profile icon --------------------*/
+.profile {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.profileIcon {
+  display: inline-block;
+  vertical-align: top;
+  background: #c28a30;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 3em;
+  overflow: hidden;
+  margin-right: 1em;
+}
+
+.profileIcon span {
+  font-size: 2em;
+}
+
+.profileMenu button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 5px 0;
+}
+
+.profileMenu button span{
+  margin-left: 10px;
+  color: #c28a30;
+}
+
+.profileMenu button:after {
+  content: '';
+  display: none;
+}
