@@ -24,7 +24,7 @@ export const routerTransitionSlide = trigger('routerTransitionSlide', [
       query(':leave', [
         style({ transform: 'translateX(0)' }),
         animate(
-          '800ms ease-out',
+          '1000ms ease-out',
           style({
             transform: 'translateX(100%)'
           })
@@ -33,7 +33,7 @@ export const routerTransitionSlide = trigger('routerTransitionSlide', [
       query(':enter', [
         style({ transform: 'translateX(-100%)' }),
         animate(
-          '800ms ease-in',
+          '1000ms ease-in',
           style({
             transform: 'translateX(0)'
           })

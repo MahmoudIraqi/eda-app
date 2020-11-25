@@ -45,22 +45,12 @@
   transition: ease-out 1s;
 }
 
-.btnList li .ButtonContainer:hover {
-  background: #c28a30;
-  border-color: #fff;
-  text-decoration: none;
-  box-shadow: inset 600px 0 0 0 #c28a30;
-}
-
-.btnList li .ButtonContainer:hover span.icon {
-  border-right:  1px solid #fff;
-}
-
 .btnList li .ButtonContainer span.icon {
   text-align: left;
   padding: 0.3em 0.7em;
   background: #c28a30;
-  border-right:  1px solid transparent;
+  border-right: 1px solid transparent;
+  border-radius: 5px 0px 0px 5px;
 }
 
 .btnList li .ButtonContainer span i:before {
@@ -74,4 +64,19 @@
   padding-left: 2em;
   color: #fff;
   font-weight: 500;
+}
+
+.btnList li .ButtonContainer:hover {
+  background: #c28a30;
+  border-color: #fff;
+  text-decoration: none;
+  box-shadow: inset 600px 0 0 0 #c28a30;
+}
+
+.btnList li .ButtonContainer:hover span.icon {
+  background: #fff;
+}
+
+.btnList li .ButtonContainer:hover span i:before {
+  color: #c28a30;
 }
