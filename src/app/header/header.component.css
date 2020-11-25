@@ -137,6 +137,10 @@
   text-decoration: none;
 }
 
+.menu ul li a.active {
+  color: #c28a30;
+}
+
 
 /* ------------------------ my profile icon --------------------*/
 .profile {

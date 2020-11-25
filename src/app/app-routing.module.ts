@@ -7,12 +7,12 @@ import {DraftRequestComponent} from './draft-request/draft-request.component';
 import {ApprovedRequestComponent} from './approved-request/approved-request.component';
 
 const routes: Routes = [
-  {path: '', component: HomepageComponent},
-  {path: 'home', component: HomepageComponent},
-  {path: 'new-request', component: NewRequestComponent},
-  {path: 'track-request', component: TrackRequestComponent},
-  {path: 'draft-request', component: DraftRequestComponent},
-  {path: 'approved-request', component: ApprovedRequestComponent},
+  {path: '', pathMatch: 'full', redirectTo: '/home'},
+  {path: 'home', component: HomepageComponent, data: {animation: 'home'}},
+  {path: 'new-request', component: NewRequestComponent, data: {animation: 'new-request'}},
+  {path: 'track-request', component: TrackRequestComponent, data: {animation: 'track-request'}},
+  {path: 'draft-request', component: DraftRequestComponent, data: {animation: 'draft-request'}},
+  {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},
 ];
 
 @NgModule({

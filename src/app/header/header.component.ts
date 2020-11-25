@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -17,31 +18,23 @@ export class HeaderComponent implements OnInit {
   menuObject = [
     {
       name: 'Home',
-      link: '#'
+      link: '/home'
     },
     {
-      name: 'About',
-      link: '#'
+      name: 'Create requests',
+      link: '/new-request'
     },
     {
-      name: 'Health products',
-      link: '#'
+      name: 'Track requests',
+      link: '/track-request'
     },
     {
-      name: 'Services',
-      link: '#'
+      name: 'Draft requests',
+      link: '/draft-request'
     },
     {
-      name: 'FAQ',
-      link: '#'
-    },
-    {
-      name: 'Media Center',
-      link: '#'
-    },
-    {
-      name: 'Careers',
-      link: '#'
+      name: 'Approved requests',
+      link: '/approved-request'
     },
     {
       name: 'Contact us',

@@ -1,8 +1,8 @@
 <div class="appContainer">
   <app-header></app-header>
 
-  <div class="sectionContainer">
-    <router-outlet></router-outlet>
+  <div class="sectionContainer" [@routerTransitionSlide]="prepareRoute(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
   </div>
 
   <app-footer></app-footer>

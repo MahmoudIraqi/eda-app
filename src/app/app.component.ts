@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { routerTransitionFading, routerTransitionSlide, routerTransitionSlideUpDown, routerTransitionFadingStagger } from 'src/app/animation/routable.animations';
+import {ActivatedRoute, Router, OutletContext, RouterOutlet, RouterEvent} from '@angular/router';
+import { routerTransitionSlide } from 'src/app/animation/routable.animations';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,8 @@ import { routerTransitionFading, routerTransitionSlide, routerTransitionSlideUpD
 })
 export class AppComponent {
   title = 'eda-app';
+
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+  }
 }
