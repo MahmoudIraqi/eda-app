@@ -47,10 +47,11 @@
 
 .btnList li .ButtonContainer span.icon {
   text-align: left;
-  padding: 0.3em 0.7em;
+  padding: 1em 0.7em;
   background: #c28a30;
   border-right: 1px solid transparent;
   border-radius: 5px 0px 0px 5px;
+  line-height: 1;
 }
 
 .btnList li .ButtonContainer span i:before {
@@ -63,7 +64,7 @@
   text-align: left;
   padding-left: 2em;
   color: #fff;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .btnList li .ButtonContainer:hover {

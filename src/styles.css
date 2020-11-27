@@ -89,3 +89,38 @@ a,
 .border-bottom {
   border-bottom: 1px solid #d7d7d7 !important;
 }
+
+
+.whiteContainer {
+  min-height: calc(100vh - 180px);
+  background: #fff;
+  padding: 3em;
+}
+
+.tableContainer {
+  margin-left: 5.5%;
+  /*background: #c28a30;*/
+}
+
+.btn.btn-primary {
+  background: transparent !important;
+  border: 2px solid #c28a30;
+  border-radius: 10px 0px 10px 10px;
+  color: #c28a30;
+  font-weight: 500;
+}
+
+.btn.btn-primary:hover {
+  background: #c28a30 !important;
+  border: 2px solid #c28a30;
+  color: #fff;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

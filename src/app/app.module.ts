@@ -10,10 +10,14 @@ import { TrackRequestComponent } from './track-request/track-request.component';
 import { DraftRequestComponent } from './draft-request/draft-request.component';
 import { ApprovedRequestComponent } from './approved-request/approved-request.component';
 import { TableListComponent } from './shared-components/table-list/table-list.component';
+import { TitleComponent } from './shared-components/title/title.component';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 @NgModule({
   declarations: [
@@ -25,13 +29,16 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     TrackRequestComponent,
     DraftRequestComponent,
     ApprovedRequestComponent,
-    TableListComponent
+    TableListComponent,
+    TitleComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    AccordionModule.forRoot(),
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

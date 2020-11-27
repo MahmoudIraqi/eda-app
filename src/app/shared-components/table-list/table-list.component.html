@@ -1,1 +1,74 @@
-<p>table-list works!</p>
+<div class="table-responsive">
+  <table class="table table-sm table-ordered">
+    <tr class="headerRow">
+      <th>Request Number</th>
+      <th>Request Entity</th>
+      <th>Status</th>
+      <th>Details</th>
+      <th>Notification</th>
+    </tr>
+    <tr *ngFor="let request of data; let i = index">
+      <td colspan="5">
+        <mat-accordion>
+          <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <table class="table table-sm tableDetailsCont">
+                  <tr>
+                    <td>{{request.requestNumber}}</td>
+                    <td>{{request.requestEntity}}</td>
+                    <td>{{request.status}}</td>
+                    <td>{{request.details}}</td>
+                    <td>{{request.notificationNumber}}</td>
+                  </tr>
+                </table>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="detailsContainer pt-4">
+              <div class="row">
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Request number :</label>
+                  <span>{{request.requestNumber}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Request Entity :</label>
+                  <span>{{request.requestEntity}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Status :</label>
+                  <span>{{request.status}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-6">
+                  <label class="label">Details :</label>
+                  <span>{{request.details}}</span>
+                </div>
+                <div class="col-12" *ngIf="request.notificationStatus">
+                  <div class="notificationContainer">
+                    <app-title [title]="'Notification'" [smallTitle]="true"></app-title>
+                    <div class="notificationDetailsContainer">
+                      <div class="row mt-3">
+                        <div class="col-12 col-sm-6 col-md-3">
+                          <label class="label">Notification number :</label>
+                          <span>{{request.notificationNumber}}</span>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                          <label class="label">Notification comment :</label>
+                          <span>{{request.notificationComment}}</span>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 text-right">
+                          <button type="button" class="btn btn-primary btn-sm w-25">
+                            Edit
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'app-table-list',
@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TableListComponent implements OnInit {
 
-  constructor() { }
+  @Input() data;
+  step;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  setStep(index: number) {
+    this.step = index;
   }
 
 }
