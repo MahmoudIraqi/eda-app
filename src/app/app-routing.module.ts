@@ -7,7 +7,8 @@ import {DraftRequestComponent} from './draft-request/draft-request.component';
 import {ApprovedRequestComponent} from './approved-request/approved-request.component';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: '/home'},
+  {path: '', pathMatch: 'full', redirectTo: 'home'},
+  // {path: '', component: HomepageComponent, data: {animation: 'home'}},
   {path: 'home', component: HomepageComponent, data: {animation: 'home'}},
   {path: 'new-request', component: NewRequestComponent, data: {animation: 'new-request'}},
   {path: 'track-request', component: TrackRequestComponent, data: {animation: 'track-request'}},
@@ -16,7 +17,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

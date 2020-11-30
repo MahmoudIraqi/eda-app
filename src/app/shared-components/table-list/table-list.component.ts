@@ -8,6 +8,8 @@ import {Component, OnInit, Input} from '@angular/core';
 export class TableListComponent implements OnInit {
 
   @Input() data;
+  @Input() notificationStatus;
+  @Input() editActionsStatus;
   step;
 
   constructor() {

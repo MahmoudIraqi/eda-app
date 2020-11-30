@@ -12,7 +12,7 @@ export class HomepageComponent implements OnInit {
     paragraph: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
     btnList: [
       {
-        icon: 'flaticon-new-document',
+        icon: 'flaticon-new-page',
         title: 'Create Request',
         link: '/new-request'
       },

@@ -5,7 +5,8 @@
       <th>Request Entity</th>
       <th>Status</th>
       <th>Details</th>
-      <th>Notification</th>
+      <th *ngIf="notificationStatus">Notification</th>
+      <th *ngIf="editActionsStatus">Actions</th>
     </tr>
     <tr *ngFor="let request of data; let i = index">
       <td colspan="5">
@@ -19,7 +20,8 @@
                     <td>{{request.requestEntity}}</td>
                     <td>{{request.status}}</td>
                     <td>{{request.details}}</td>
-                    <td>{{request.notificationNumber}}</td>
+                    <td *ngIf="notificationStatus">{{request.notificationNumber}}</td>
+                    <td *ngIf="editActionsStatus"><i class="fa fa-edit"></i></td>
                   </tr>
                 </table>
               </mat-panel-title>

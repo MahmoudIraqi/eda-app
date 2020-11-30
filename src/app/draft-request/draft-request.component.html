@@ -1,1 +1,12 @@
-<p>draft-request works!</p>
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'Track request'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="tableContainer">
+        <app-table-list [data]="draftListRequests" [editActionsStatus]="true"></app-table-list>
+      </div>
+    </div>
+  </div>
+</div>

@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
       link: '/draft-request'
     },
     {
-      name: 'Approved requests',
+      name: 'Approved products',
       link: '/approved-request'
     },
     {
