@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "eda-app"
+  "defaultProject": "eda-app",
+  "cli": {
+    "analytics": false
+  }
 }
