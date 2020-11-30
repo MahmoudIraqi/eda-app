@@ -15,6 +15,20 @@
 }
 
 
+/* -------------------------- title Styling ------------------- */
+.TitleContainer {
+  text-align: center;
+}
+
+.TitleContainer h2 {
+  background: -webkit-linear-gradient(90deg, #a66c15, #d6b679);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 42px;
+  height: 50px;
+  margin-bottom: 0;
+}
+
 /* --------------------- social media List ----------------------- */
 
 .socialMediaList {
@@ -174,7 +188,7 @@
   padding: 5px 0;
 }
 
-.profileMenu button span{
+.profileMenu button span {
   margin-left: 10px;
   color: #c28a30;
 }
