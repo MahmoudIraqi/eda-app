@@ -81,3 +81,49 @@
 .btnList li .ButtonContainer:hover span i:before {
   color: #c28a30;
 }
+/*--------------------------------responsive--------------------------*/
+@media only screen and (max-width:1440px){
+  /* .contentContainer{
+    width: 100%;
+  } */
+  .contentContainer h1{
+    font-size: 35px;
+  }
+  .homepageContainer{
+    height: 100%;
+    background-size: cover;
+  }
+  .btnList .ng-star-inserted{
+    width: 50%;
+  }
+}
+@media only screen and (max-width:769px){
+  .contentContainer h1{
+    font-size: 20px;
+  }
+  .contentContainer p {
+    font-size: 13px;
+    margin-bottom: 2em;
+  }
+  .homepageContainer{
+    height: 80%;
+  }
+  .btnList .ng-star-inserted{
+    width: 100%;
+  } 
+} 
+@media only screen and (max-width:480px){
+  .btnList .ng-star-inserted{
+    width: 100%;
+  }
+
+  .contentContainer h1{
+    font-size: 25px;
+  }
+  .contentContainer p {
+    font-size: 13px;
+  }
+  .contentContainer{
+    width: 100%;
+  }
+}

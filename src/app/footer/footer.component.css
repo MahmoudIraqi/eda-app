@@ -6,7 +6,7 @@
 /* ------------ Logo Style ----------- */
 
 .logo {
-  width: 100%;
+  width: 70px;
   padding: 15px 0px;
 }
 
@@ -201,3 +201,30 @@
   color: #fff;
   text-decoration: none;
 }
+
+/*--------------------------------responsive--------------------------*/
+@media only screen and (max-width:480px){
+
+  .footerContainer div{
+    text-align: center;
+    display: block !important;
+  }
+  .logo {
+    align-content: center !important;
+    
+  }
+  .logo-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .social{
+    max-width: 100%;
+  }
+  .phoneNumberContainer{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-left: 0;
+  }
+}
+

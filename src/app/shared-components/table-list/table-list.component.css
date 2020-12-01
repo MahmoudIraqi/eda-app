@@ -90,6 +90,7 @@
 .detailsContainer span {
   color: #c28a30;
   font-size: 16px;
+  padding: 3px;
 }
 
 .detailsContainer .notificationContainer {
@@ -100,4 +101,22 @@
 
 .detailsContainer .notificationContainer .notificationDetailsContainer {
   padding-left: 5.2%;
+}
+
+/* --------- responsive ---------- */
+
+@media only screen and (max-width: 768px){
+  .hide{
+    display: none !important;
+  }
+  .table tr td{
+    padding: 3px;
+  }
+}
+@media only screen and (max-width: 375px){
+
+  .table tr td{
+    font-size: 13px;
+    padding: 3px;
+  }
 }

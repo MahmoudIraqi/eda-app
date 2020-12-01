@@ -78,9 +78,9 @@ a,
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1c2741", endColorstr="#201f2e", GradientType=1);
 }
 
-.sectionContainer {
+/* .sectionContainer {
   min-height: calc(100vh - 180px);
-}
+} */
 
 .sectionContainer .homepageContainer {
   width: 100%;
