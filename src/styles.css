@@ -119,6 +119,10 @@ a,
   color: #fff;
 }
 
+.w-85 {
+  width: 85% !important;
+}
+
 html, body {
   height: 100%;
 }
@@ -130,16 +134,23 @@ body {
 
 
 /* ----------------------- responsive -------------------------- */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 1025px) {
+  .paddingLeftRight {
+    padding-left: 5em;
+    padding-right: 0em;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
   .paddingLeftRight {
     padding-left: 1em;
     padding-right: 0em;
   }
 }
 
-@media only screen and (min-width: 1024px) {
-  .paddingLeftRight {
-    padding-left: 1em;
-    padding-right: 0em;
+
+@media only screen and (max-width: 960px) {
+  .border-bottom {
+    border: none !important;
   }
 }

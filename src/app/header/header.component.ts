@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 
 @Component({
@@ -7,6 +7,9 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+
+  screenWidth;
+
 
   menuObject = [
     {
@@ -36,9 +39,15 @@ export class HeaderComponent implements OnInit {
   ];
 
   constructor() {
+    this.onResize();
   }
 
   ngOnInit(): void {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.screenWidth = window.innerWidth;
   }
 
 }
