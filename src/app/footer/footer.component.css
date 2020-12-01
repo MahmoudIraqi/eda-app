@@ -104,86 +104,6 @@
   font-size: 22px;
 }
 
-
-/* ---------------------------- menu ---------------------- */
-.menu {
-  display: inline-block;
-  margin-right: 1.5em;
-}
-
-.menu ul {
-  list-style-type: none;
-}
-
-.menu ul li {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 2em;
-}
-
-.menu ul li:last-child {
-  margin-right: 0em;
-}
-
-.menu ul li a {
-  color: #fff;
-  font-weight: 500;
-  font-size: 22px;
-}
-
-.menu ul li a:hover {
-  color: #c28a30;
-  text-decoration: none;
-}
-
-.menu ul li a.active {
-  color: #c28a30;
-}
-
-
-/* ------------------------ my profile icon --------------------*/
-.profile {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.profileIcon {
-  display: inline-block;
-  vertical-align: top;
-  background: #c28a30;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  line-height: 3em;
-  overflow: hidden;
-  margin-right: 1em;
-}
-
-.profileIcon span {
-  font-size: 2em;
-}
-
-.profileMenu button {
-  background: none;
-  border: none;
-  color: #fff;
-  font-weight: light;
-  font-size: 18px;
-  padding: 5px 0;
-}
-
-.profileMenu button span {
-  margin-left: 10px;
-  color: #c28a30;
-}
-
-.profileMenu button:after {
-  content: '';
-  display: none;
-}
-
-
 /* ---------------------- email Container --------------------------- */
 .emailIcon {
   display: inline-block;
@@ -203,28 +123,23 @@
 }
 
 /*--------------------------------responsive--------------------------*/
-@media only screen and (max-width:480px){
+@media only screen and (max-width: 640px) {
+  .phoneNumberContainer, .emailIcon {
+    margin-left: 1em;
+  }
+}
 
-  .footerContainer div{
-    text-align: center;
-    display: block !important;
-  }
+@media only screen and (max-width: 480px) {
   .logo {
-    align-content: center !important;
-    
-  }
-  .logo-img {
-    display: block;
+    width: 90px;
     margin-left: auto;
     margin-right: auto;
   }
-  .social{
-    max-width: 100%;
-  }
-  .phoneNumberContainer{
-    padding-top: 15px;
-    padding-bottom: 15px;
-    margin-left: 0;
+}
+
+@media only screen and (max-width: 425px) {
+  .socialMediaList, .phoneNumberContainer, .emailIcon {
+    /*display: block !important;*/
   }
 }
 
