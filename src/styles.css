@@ -84,7 +84,7 @@ a,
 
 .sectionContainer .homepageContainer {
   width: 100%;
-  height: calc(100vh - 180px);
+  height: 760px;
   background: url("./assets/img/homepage-background.jpg") no-repeat left top;
   background-size: 100% 100%;
 }
@@ -95,7 +95,7 @@ a,
 }
 
 .whiteContainer {
-  min-height: calc(100vh - 180px);
+  height: 760px;
   background: #fff;
   padding: 3em;
 }
@@ -152,5 +152,11 @@ body {
 @media only screen and (max-width: 960px) {
   .border-bottom {
     border: none !important;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .whiteContainer{
+    padding: 1.5em;
   }
 }

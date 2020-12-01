@@ -24,3 +24,35 @@ h2 {
 h4 {
   font-size: 18px;
 }
+
+/* ------------------------- responsive ---------------------- */
+@media only screen and (max-width: 1440px) {
+  .titleLabel {
+    margin-left: 7%;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .titleLabel {
+    margin-left: 10.2%;
+  }
+}
+@media only screen and (max-width: 960px) {
+  .titleLabel {
+    margin-left: 11%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .titleLabel {
+    margin-left: 14.5%;
+  }
+}
+@media only screen and (max-width: 640px) {
+  .titleLabel {
+    margin-left: 17.5%;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .titleLabel {
+    margin-left: 22%;
+  }
+}

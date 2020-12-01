@@ -265,6 +265,26 @@
 }
 
 /* ---------------- responsive --------------- */
+@media only screen and (max-width: 1440px) {
+  .menu ul li {
+    margin-right: 1.1em;
+  }
+
+  .menu ul li a {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .profileIcon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .profileMenu button {
+    font-size: 15px;
+  }
+}
+
 @media only screen and (max-width: 1024px) {
   .menu ul li {
     margin-right: 0.9em;
