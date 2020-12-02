@@ -56,3 +56,18 @@ h4 {
     margin-left: 22%;
   }
 }
+@media only screen and (max-width: 425px) {
+  .titleLabel {
+    margin-left: 25%;
+  }
+}
+@media only screen and (max-width: 375px) {
+  .titleLabel {
+    margin-left: 29%;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .titleLabel {
+    margin-left: 35%;
+  }
+}

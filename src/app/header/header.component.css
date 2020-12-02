@@ -285,7 +285,7 @@
   }
 }
 
-@media only screen and (max-width: 1360px) {
+@media only screen and (max-width: 1366px) {
   .menu ul li {
     margin-right: 1em;
   }
@@ -299,6 +299,10 @@
 @media only screen and (max-width: 1280px) {
   .menu ul li {
     margin-right: 0.7em;
+  }
+
+  .menu ul li a {
+    font-size: 16px;
   }
 }
 

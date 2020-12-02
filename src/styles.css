@@ -84,7 +84,7 @@ a,
 
 .sectionContainer .homepageContainer {
   width: 100%;
-  height: 760px;
+  min-height: 760px;
   background: url("./assets/img/homepage-background.jpg") no-repeat left top;
   background-size: 100% 100%;
 }
@@ -95,7 +95,7 @@ a,
 }
 
 .whiteContainer {
-  height: 760px;
+  min-height: 760px;
   background: #fff;
   padding: 3em;
 }
