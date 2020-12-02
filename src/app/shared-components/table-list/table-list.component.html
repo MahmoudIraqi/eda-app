@@ -3,9 +3,9 @@
     <tr class="headerRow">
       <th>Request Number</th>
       <th>Request Entity</th>
-      <th>Status</th>
-      <th>Details</th>
-      <th *ngIf="notificationStatus">Notification</th>
+      <th class="hide">Status</th>
+      <th class="hide">Details</th>
+      <th *ngIf="notificationStatus" class="hide">Notification</th>
       <th *ngIf="editActionsStatus">Actions</th>
     </tr>
     <tr *ngFor="let request of data; let i = index">
@@ -18,9 +18,9 @@
                   <tr>
                     <td>{{request.requestNumber}}</td>
                     <td>{{request.requestEntity}}</td>
-                    <td>{{request.status}}</td>
-                    <td>{{request.details}}</td>
-                    <td *ngIf="notificationStatus">{{request.notificationNumber}}</td>
+                    <td class="hide">{{request.status}}</td>
+                    <td class="hide">{{request.details}}</td>
+                    <td *ngIf="notificationStatus" class="hide">{{request.notificationNumber}}</td>
                     <td *ngIf="editActionsStatus"><i class="fa fa-edit"></i></td>
                   </tr>
                 </table>
@@ -37,10 +37,10 @@
                   <span>{{request.requestEntity}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Status :</label>
+                  <label class="label ">Status :</label>
                   <span>{{request.status}}</span>
                 </div>
-                <div class="col-12 col-sm-6 col-md-6">
+                <div class="col-12 col-sm-6 col-md-6 ">
                   <label class="label">Details :</label>
                   <span>{{request.details}}</span>
                 </div>

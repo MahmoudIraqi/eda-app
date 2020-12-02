@@ -78,13 +78,13 @@ a,
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1c2741", endColorstr="#201f2e", GradientType=1);
 }
 
-.sectionContainer {
+/* .sectionContainer {
   min-height: calc(100vh - 180px);
-}
+} */
 
 .sectionContainer .homepageContainer {
   width: 100%;
-  height: calc(100vh - 180px);
+  height: 760px;
   background: url("./assets/img/homepage-background.jpg") no-repeat left top;
   background-size: 100% 100%;
 }
@@ -94,9 +94,8 @@ a,
   border-bottom: 1px solid #d7d7d7 !important;
 }
 
-
 .whiteContainer {
-  min-height: calc(100vh - 180px);
+  height: 760px;
   background: #fff;
   padding: 3em;
 }
@@ -120,6 +119,10 @@ a,
   color: #fff;
 }
 
+.w-85 {
+  width: 85% !important;
+}
+
 html, body {
   height: 100%;
 }
@@ -127,4 +130,33 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+/* ----------------------- responsive -------------------------- */
+@media only screen and (min-width: 1025px) {
+  .paddingLeftRight {
+    padding-left: 5em;
+    padding-right: 0em;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .paddingLeftRight {
+    padding-left: 1em;
+    padding-right: 0em;
+  }
+}
+
+
+@media only screen and (max-width: 960px) {
+  .border-bottom {
+    border: none !important;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .whiteContainer{
+    padding: 1.5em;
+  }
 }

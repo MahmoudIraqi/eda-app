@@ -198,5 +198,153 @@
   display: none;
 }
 
+/*---------------------Drop Down Navbar ----------------*/
+.dropbtn {
+  background-color: transparent;
+  color: #c28a30;
+  cursor: pointer;
+}
+
+.menu-title {
+  color: #000000 !important;
+}
+
+.menu-title:hover {
+  color: #ffffff !important;
+}
+
+.dropdown {
+  position: relative;
+  display: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  min-width: 200px;
+  right: 0;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.profile-menu {
+  margin-top: 5px;
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
+.dropdown-content ul li {
+  list-style-type: none;
+
+}
+
+.dropdown-content ul li a {
+  color: #000000;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content ul li a:hover {
+  color: #fff;
+
+}
+
+.dropdown-content a:hover {
+  background-color: #a06731
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+
+  background-color: #92918e;
+}
 
 /* ---------------- responsive --------------- */
+@media only screen and (max-width: 1440px) {
+  .menu ul li {
+    margin-right: 1.1em;
+  }
+
+  .menu ul li a {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .profileIcon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .profileMenu button {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 1360px) {
+  .menu ul li {
+    margin-right: 1em;
+  }
+
+  .menu ul li a {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .menu ul li {
+    margin-right: 0.7em;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .menu ul li {
+    margin-right: 0.9em;
+  }
+
+  .menu ul li a {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .profileIcon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .profileMenu button {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .menu ul li a {
+    font-weight: 500;
+    font-size: 19px;
+  }
+
+  .dropdown {
+    display: inline-block;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .none {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .menu ul li a {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+}

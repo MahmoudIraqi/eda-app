@@ -81,3 +81,56 @@
 .btnList li .ButtonContainer:hover span i:before {
   color: #c28a30;
 }
+
+/*--------------------------------responsive--------------------------*/
+@media only screen and (max-width: 1024px) {
+  .contentContainer {
+    width: 95%;
+  }
+}
+
+@media only screen and (max-width: 812px) {
+  .contentContainer {
+    width: 100%;
+  }
+
+  .contentContainer h1{
+    font-size: 35px;
+  }
+
+  .contentContainer p{
+    font-size: 16px;
+  }
+
+  .btnList li {
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .contentContainer h1{
+    font-size: 30px;
+  }
+
+  .contentContainer p{
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .contentContainer{
+    padding: 2em;
+  }
+
+  .contentContainer h1{
+    font-size: 24px;
+  }
+
+  .contentContainer p{
+    font-size: 14px;
+  }
+
+  .btnList li {
+    width: 100%;
+  }
+}

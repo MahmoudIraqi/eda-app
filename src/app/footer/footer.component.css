@@ -6,7 +6,7 @@
 /* ------------ Logo Style ----------- */
 
 .logo {
-  width: 100%;
+  width: 70px;
   padding: 15px 0px;
 }
 
@@ -104,86 +104,6 @@
   font-size: 22px;
 }
 
-
-/* ---------------------------- menu ---------------------- */
-.menu {
-  display: inline-block;
-  margin-right: 1.5em;
-}
-
-.menu ul {
-  list-style-type: none;
-}
-
-.menu ul li {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 2em;
-}
-
-.menu ul li:last-child {
-  margin-right: 0em;
-}
-
-.menu ul li a {
-  color: #fff;
-  font-weight: 500;
-  font-size: 22px;
-}
-
-.menu ul li a:hover {
-  color: #c28a30;
-  text-decoration: none;
-}
-
-.menu ul li a.active {
-  color: #c28a30;
-}
-
-
-/* ------------------------ my profile icon --------------------*/
-.profile {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.profileIcon {
-  display: inline-block;
-  vertical-align: top;
-  background: #c28a30;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  line-height: 3em;
-  overflow: hidden;
-  margin-right: 1em;
-}
-
-.profileIcon span {
-  font-size: 2em;
-}
-
-.profileMenu button {
-  background: none;
-  border: none;
-  color: #fff;
-  font-weight: light;
-  font-size: 18px;
-  padding: 5px 0;
-}
-
-.profileMenu button span {
-  margin-left: 10px;
-  color: #c28a30;
-}
-
-.profileMenu button:after {
-  content: '';
-  display: none;
-}
-
-
 /* ---------------------- email Container --------------------------- */
 .emailIcon {
   display: inline-block;
@@ -201,3 +121,25 @@
   color: #fff;
   text-decoration: none;
 }
+
+/*--------------------------------responsive--------------------------*/
+@media only screen and (max-width: 640px) {
+  .phoneNumberContainer, .emailIcon {
+    margin-left: 1em;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .logo {
+    width: 90px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .socialMediaList, .phoneNumberContainer, .emailIcon {
+    /*display: block !important;*/
+  }
+}
+

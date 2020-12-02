@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-footer',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-
+  screenWidth;
   socialMediaList = [
     'fab fa-facebook-f',
     'fab fa-twitter',
@@ -14,9 +14,16 @@ export class FooterComponent implements OnInit {
     'fab fa-instagram'
   ];
 
-  constructor() { }
+  constructor() {
+    this.onResize();
+  }
 
   ngOnInit(): void {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.screenWidth = window.innerWidth;
   }
 
 }
