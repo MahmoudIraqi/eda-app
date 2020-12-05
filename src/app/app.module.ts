@@ -1,22 +1,25 @@
-import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
-import { RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { HomepageComponent } from './homepage/homepage.component';
-import { NewRequestComponent } from './new-request/new-request.component';
-import { TrackRequestComponent } from './track-request/track-request.component';
-import { DraftRequestComponent } from './draft-request/draft-request.component';
-import { ApprovedRequestComponent } from './approved-request/approved-request.component';
-import { TableListComponent } from './shared-components/table-list/table-list.component';
-import { TitleComponent } from './shared-components/title/title.component';
+import {NgModule} from '@angular/core';
+import {AppRoutingModule} from './app-routing.module';
+import {RouterModule} from '@angular/router';
+import {AppComponent} from './app.component';
+import {HeaderComponent} from './header/header.component';
+import {FooterComponent} from './footer/footer.component';
+import {HomepageComponent} from './homepage/homepage.component';
+import {NewRequestComponent} from './new-request/new-request.component';
+import {TrackRequestComponent} from './track-request/track-request.component';
+import {DraftRequestComponent} from './draft-request/draft-request.component';
+import {ApprovedRequestComponent} from './approved-request/approved-request.component';
+import {TableListComponent} from './shared-components/table-list/table-list.component';
+import {TitleComponent} from './shared-components/title/title.component';
 
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {AccordionModule} from 'ngx-bootstrap/accordion';
+import {TabsModule} from 'ngx-bootstrap/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -30,7 +33,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     DraftRequestComponent,
     ApprovedRequestComponent,
     TableListComponent,
-    TitleComponent
+    TitleComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,9 +41,14 @@ import {MatExpansionModule} from '@angular/material/expansion';
     AppRoutingModule,
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
-    MatExpansionModule
+    TabsModule.forRoot(),
+    MatExpansionModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

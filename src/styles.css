@@ -82,6 +82,10 @@ a,
   min-height: calc(100vh - 180px);
 } */
 
+.sectionContainer {
+  min-height: 750px;
+}
+
 .sectionContainer .homepageContainer {
   width: 100%;
   min-height: 760px;
@@ -133,6 +137,31 @@ body {
 }
 
 
+/* ------------------------------------ Tabs ----------------------------------- */
+.nav-pills .nav-item {
+  width: 30%;
+  margin-right: 2%;
+  text-align: center;
+}
+
+.nav-pills .nav-item:last-child {
+  margin-right: 0%;
+
+}
+
+.nav-pills .nav-link {
+  color: #161c30;
+  font-weight: 600;
+  border: 1px solid #161c30;
+  border-radius: 10px 0px 10px 10px !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  background-color: #c28a30 !important;
+  border: none;
+}
+
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {
@@ -156,7 +185,7 @@ body {
 }
 
 @media only screen and (max-width: 480px) {
-  .whiteContainer{
+  .whiteContainer {
     padding: 1.5em;
   }
 }

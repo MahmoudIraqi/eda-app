@@ -1,1 +1,356 @@
-<p>new-request works!</p>
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'New request'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="formTable">
+        <div class="row">
+          <div class="col-sm-6 col-12">
+            <select class="form-control" (change)="getFormType($event)">
+              <option class="hiddenTitle" value="">Type Of marketing</option>
+              <option *ngFor="let option of formData.formType" [value]="option.id">
+                {{option.value}}
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-6 col-12">
+            <select class="form-control" (change)="getRequestType($event)">
+              <option class="hiddenTitle" value="">Type Of registration</option>
+              <option *ngFor="let option of formData.requestType" [value]="option.id">
+                {{option.value}}
+              </option>
+            </select>
+          </div>
+          <div class="col-12 mt-5">
+            <!-- *ngIf="selectedFormType === 'regProduct' && selectedRequestedType === 'referencedCountry'" -->
+            <form class="mt-2" name="form" method="post" [formGroup]="regProductFormForImportedFromRefCountry"
+                  (ngSubmit)="onSubmit()" novalidate>
+              <tabset type="pills" #formTabs>
+                <tab heading="Products fields">
+                  <div class="mt-5">
+                    <app-title [smallTitle]="true" [title]="'Request Form'"></app-title>
+                    <div class="row mt-3">
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Product Name(Arabic)"
+                                 type="text"
+                                 name="productArabicName"
+                                 formControlName="productArabicName"> <!-- required -->
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Product Name(English)"
+                                 type="text"
+                                 name="productEnglishName"
+                                 formControlName="productEnglishName"> <!-- required -->
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Short Name"
+                                 type="text"
+                                 name="shortName"
+                                 formControlName="shortName"> <!-- required -->
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <select class="form-control" formControlName="manufacturingCompany">
+                            <option class="hiddenTitle" value="">Manufacturing Company</option>
+                            <option *ngFor='let company of formData.manufacturingCompanyList' [value]="company">
+                              {{company}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <select class="form-control" formControlName="manufacturingCountry">
+                            <option class="hiddenTitle" value="">Manufacturing Country</option>
+                            <option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
+                              {{country}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <select class="form-control" formControlName="applicant">
+                            <option class="hiddenTitle" value="">Applicant</option>
+                            <option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
+                              {{applicant}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <select class="form-control" formControlName="licenseHolder">
+                            <option class="hiddenTitle" value="">License Holder</option>
+                            <option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
+                              {{licHolder}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4"
+                           *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').value === 'other'">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Other License Holder"
+                                 type="text"
+                                 name="licenseHolderTxt"
+                                 formControlName="licenseHolderTxt">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <select class="form-control" formControlName="countryOfLicenseHolder">
+                            <option class="hiddenTitle" value="">Country of License Holder</option>
+                            <option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
+                              {{country}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Trade Mark"
+                                 type="text"
+                                 name="tradeMark"
+                                 formControlName="tradeMark">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <select class="form-control" formControlName="physicalState">
+                            <option class="hiddenTitle" value="">Physical State</option>
+                            <option *ngFor='let state of formData.physicalStateList' [value]="state">
+                              {{state}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4"
+                           *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').value === 'other'">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Other Physical State"
+                                 type="text"
+                                 name="physicalStateTxt"
+                                 formControlName="physicalStateTxt">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <select class="form-control" formControlName="purposeOfUse">
+                            <option class="hiddenTitle" value="">Purpose of use</option>
+                            <option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose">
+                              {{purpose}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4"
+                           *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').value === 'other'">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Other Purpose of use"
+                                 type="text"
+                                 name="purposeOfUseTxt"
+                                 formControlName="purposeOfUseTxt">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label>Shelf Life</label>
+                          <input class="form-control" type="range" min="0" max="10" formControlName="shelfLife">
+                          <span class="labelForRange">{{regProductFormForImportedFromRefCountry.get('shelfLife').value}}
+                            years</span>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Packaging Description"
+                                 type="text"
+                                 name="packagingDescription"
+                                 formControlName="packagingDescription">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Receipt Number"
+                                 type="text"
+                                 name="receiptNumber"
+                                 formControlName="receiptNumber">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <input class="form-control"
+                                 placeholder="Receipt Value"
+                                 type="text"
+                                 name="receiptValue"
+                                 formControlName="receiptValue">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Details fields">
+                  <div class="mt-5">
+                    <div formGroupName="detailsTable">
+                      <app-title [smallTitle]="true" [title]="'Details table'"></app-title>
+                      <div class="row mt-3">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <input class="form-control"
+                                   placeholder="Colour"
+                                   type="text"
+                                   name="colour"
+                                   formControlName="colour">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <input class="form-control"
+                                   placeholder="Fragrance"
+                                   type="text"
+                                   name="fragrance"
+                                   formControlName="fragrance">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <input class="form-control"
+                                   placeholder="Flavor"
+                                   type="text"
+                                   name="flavor"
+                                   formControlName="flavor">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <input class="form-control"
+                                   placeholder="BarCode"
+                                   type="text"
+                                   name="barCode"
+                                   formControlName="barCode">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <input class="form-control"
+                                   placeholder="Volumes"
+                                   type="text"
+                                   name="volumes"
+                                   formControlName="volumes">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <select class="form-control" formControlName="unitOfMeasure">
+                              <option class="hiddenTitle" value="">Unit of measure</option>
+                              <option *ngFor='let unit of formData.unitOfMeasureList' [value]="unit">
+                                {{unit}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <select class="form-control" formControlName="ingrediant">
+                              <option class="hiddenTitle" value="">Ingrediant</option>
+                              <option *ngFor='let ingrediantItem of formData.ingrediantList' [value]="ingrediantItem">
+                                {{ingrediantItem}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <input class="form-control"
+                                   placeholder="Concentrations"
+                                   type="text"
+                                   name="concentrations"
+                                   formControlName="concentrations">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <select class="form-control" formControlName="function">
+                              <option class="hiddenTitle" value="">Function</option>
+                              <option *ngFor='let functiontItem of formData.functionList' [value]="functiontItem">
+                                {{functiontItem}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Attachments">
+                  <div class="mt-5">
+                    <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
+                    <div class="row mt-3">
+                      <div class="col-sm-4" *ngFor="let field of attachmentFields">
+                        <div class="form-group">
+                          <label>{{field.name}}</label>
+                          <div class="custom-file fileUpload mr-3" id="customFile">
+                            <input #fileUploader type="file" class="custom-file-input" id="dataUpload_upload_file"
+                                   aria-describedby="fileHelp" (change)="onFileSelect($event, field.id)">
+                            <label class="custom-file-label" for="dataUpload_upload_file">
+                              {{field.fileName ? field.fileName : 'Choose file'}}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+              </tabset>
+              <div class="row buttonContainer">
+                <div class="col-12 d-flex mt-3">
+                  <button *ngIf="!formTabs.tabs[0].active"
+                          type="button"
+                          class="btn btn-primary btn-sm mr-3"
+                          (click)="backToNextTab()">
+                    back
+                  </button>
+                  <div class="ml-auto">
+                    <button *ngIf="!formTabs.tabs[2].active"
+                            type="button"
+                            class="btn btn-primary btn-sm mr-3"
+                            (click)="nextToNextTab()">
+                      next
+                    </button>
+                    <button type="button"
+                            class="btn btn-primary btn-sm mr-3"
+                            (click)="saveData()">
+                      Save
+                    </button>
+                    <button *ngIf="formTabs.tabs[2].active"
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                            [disabled]="!regProductFormForImportedFromRefCountry.valid">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
