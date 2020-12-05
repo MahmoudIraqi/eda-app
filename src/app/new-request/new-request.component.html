@@ -24,7 +24,8 @@
           </div>
           <div class="col-12 mt-5">
             <!-- *ngIf="selectedFormType === 'regProduct' && selectedRequestedType === 'referencedCountry'" -->
-            <form class="mt-2" name="form" method="post" [formGroup]="regProductFormForImportedFromRefCountry"
+            <form class="mt-2" name="form" class="example-form" method="post"
+                  [formGroup]="regProductFormForImportedFromRefCountry"
                   (ngSubmit)="onSubmit()" novalidate>
               <tabset type="pills" #formTabs>
                 <tab heading="Products fields">
@@ -32,22 +33,22 @@
                     <app-title [smallTitle]="true" [title]="'Request Form'"></app-title>
                     <div class="row mt-3">
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Product Name(Arabic)"
-                                 type="text"
-                                 name="productArabicName"
-                                 formControlName="productArabicName"> <!-- required -->
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Product Name (Arabic)</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="productArabicName"
+                                 placeholder="Product Name">
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Product Name(English)"
-                                 type="text"
-                                 name="productEnglishName"
-                                 formControlName="productEnglishName"> <!-- required -->
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Product Name (English)</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="productEnglishName"
+                                 placeholder="Product Name">
+                          <mat-error
+                            *ngIf="regProductFormForImportedFromRefCountry.get('productEnglishName').invalid && (regProductFormForImportedFromRefCountry.get('productEnglishName').dirty || regProductFormForImportedFromRefCountry.get('productEnglishName').touched)">
+                            <strong>this Field is required</strong>
+                          </mat-error>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
@@ -55,47 +56,79 @@
                                  placeholder="Short Name"
                                  type="text"
                                  name="shortName"
-                                 formControlName="shortName"> <!-- required -->
+                                 formControlName="shortName">
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <select class="form-control" formControlName="manufacturingCompany">
+                          <select class="form-control" formControlName="manufacturingCompany" required>
                             <option class="hiddenTitle" value="">Manufacturing Company</option>
                             <option *ngFor='let company of formData.manufacturingCompanyList' [value]="company">
                               {{company}}
                             </option>
                           </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCompany').invalid && (regProductFormForImportedFromRefCountry.get('manufacturingCompany').dirty || regProductFormForImportedFromRefCountry.get('manufacturingCompany').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCompany').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <select class="form-control" formControlName="manufacturingCountry">
+                          <select class="form-control" formControlName="manufacturingCountry" required>
                             <option class="hiddenTitle" value="">Manufacturing Country</option>
                             <option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
                               {{country}}
                             </option>
                           </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCountry').invalid && (regProductFormForImportedFromRefCountry.get('manufacturingCountry').dirty || regProductFormForImportedFromRefCountry.get('manufacturingCountry').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCountry').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <select class="form-control" formControlName="applicant">
+                          <select class="form-control" formControlName="applicant" required>
                             <option class="hiddenTitle" value="">Applicant</option>
                             <option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
                               {{applicant}}
                             </option>
                           </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('applicant').invalid && (regProductFormForImportedFromRefCountry.get('applicant').dirty || regProductFormForImportedFromRefCountry.get('applicant').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('applicant').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <select class="form-control" formControlName="licenseHolder">
+                          <select class="form-control" formControlName="licenseHolder" required>
                             <option class="hiddenTitle" value="">License Holder</option>
                             <option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
                               {{licHolder}}
                             </option>
                           </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').invalid && (regProductFormForImportedFromRefCountry.get('licenseHolder').dirty || regProductFormForImportedFromRefCountry.get('licenseHolder').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4"
@@ -105,17 +138,33 @@
                                  placeholder="Other License Holder"
                                  type="text"
                                  name="licenseHolderTxt"
-                                 formControlName="licenseHolderTxt">
+                                 formControlName="licenseHolderTxt" required>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolderTxt').invalid && (regProductFormForImportedFromRefCountry.get('licenseHolderTxt').dirty || regProductFormForImportedFromRefCountry.get('licenseHolderTxt').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolderTxt').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <select class="form-control" formControlName="countryOfLicenseHolder">
+                          <select class="form-control" formControlName="countryOfLicenseHolder" required>
                             <option class="hiddenTitle" value="">Country of License Holder</option>
                             <option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
                               {{country}}
                             </option>
                           </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').invalid && (regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').dirty || regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
@@ -129,12 +178,20 @@
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <select class="form-control" formControlName="physicalState">
+                          <select class="form-control" formControlName="physicalState" required>
                             <option class="hiddenTitle" value="">Physical State</option>
                             <option *ngFor='let state of formData.physicalStateList' [value]="state">
                               {{state}}
                             </option>
                           </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').invalid && (regProductFormForImportedFromRefCountry.get('physicalState').dirty || regProductFormForImportedFromRefCountry.get('physicalState').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4"
@@ -144,17 +201,33 @@
                                  placeholder="Other Physical State"
                                  type="text"
                                  name="physicalStateTxt"
-                                 formControlName="physicalStateTxt">
+                                 formControlName="physicalStateTxt" required>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('physicalStateTxt').invalid && (regProductFormForImportedFromRefCountry.get('physicalStateTxt').dirty || regProductFormForImportedFromRefCountry.get('physicalStateTxt').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('physicalStateTxt').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <select class="form-control" formControlName="purposeOfUse">
+                          <select class="form-control" formControlName="purposeOfUse" required>
                             <option class="hiddenTitle" value="">Purpose of use</option>
                             <option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose">
                               {{purpose}}
                             </option>
                           </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').invalid && (regProductFormForImportedFromRefCountry.get('purposeOfUse').dirty || regProductFormForImportedFromRefCountry.get('purposeOfUse').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4"
@@ -164,7 +237,15 @@
                                  placeholder="Other Purpose of use"
                                  type="text"
                                  name="purposeOfUseTxt"
-                                 formControlName="purposeOfUseTxt">
+                                 formControlName="purposeOfUseTxt" required>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').invalid && (regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').dirty || regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
@@ -177,11 +258,20 @@
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Packaging Description"
-                                 type="text"
-                                 name="packagingDescription"
-                                 formControlName="packagingDescription">
+                          <select class="form-control" formControlName="typeOfPackaging" required>
+                            <option class="hiddenTitle" value="">Type of Packaging</option>
+                            <option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
+                              {{type}}
+                            </option>
+                          </select>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('typeOfPackaging').invalid && (regProductFormForImportedFromRefCountry.get('typeOfPackaging').dirty || regProductFormForImportedFromRefCountry.get('typeOfPackaging').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('typeOfPackaging').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
@@ -190,7 +280,15 @@
                                  placeholder="Receipt Number"
                                  type="text"
                                  name="receiptNumber"
-                                 formControlName="receiptNumber">
+                                 formControlName="receiptNumber" required>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('receiptNumber').invalid && (regProductFormForImportedFromRefCountry.get('receiptNumber').dirty || regProductFormForImportedFromRefCountry.get('receiptNumber').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('receiptNumber').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
@@ -199,7 +297,24 @@
                                  placeholder="Receipt Value"
                                  type="text"
                                  name="receiptValue"
-                                 formControlName="receiptValue">
+                                 formControlName="receiptValue" required>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('receiptValue').invalid && (regProductFormForImportedFromRefCountry.get('receiptValue').dirty || regProductFormForImportedFromRefCountry.get('receiptValue').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('receiptValue').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <textarea class="form-control"
+                                    placeholder="Packaging Description"
+                                    type="text"
+                                    name="packagingDescription"
+                                    formControlName="packagingDescription"></textarea>
                         </div>
                       </div>
                     </div>
@@ -252,27 +367,51 @@
                                    placeholder="Volumes"
                                    type="text"
                                    name="volumes"
-                                   formControlName="volumes">
+                                   formControlName="volumes" required>
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.volumes').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.volumes').touched)"
+                              class="alert alert-danger">
+                              <div
+                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').errors.required">
+                                this field is required
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="form-group">
-                            <select class="form-control" formControlName="unitOfMeasure">
+                            <select class="form-control" formControlName="unitOfMeasure" required>
                               <option class="hiddenTitle" value="">Unit of measure</option>
                               <option *ngFor='let unit of formData.unitOfMeasureList' [value]="unit">
                                 {{unit}}
                               </option>
                             </select>
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').touched)"
+                              class="alert alert-danger">
+                              <div
+                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').errors.required">
+                                this field is required
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="form-group">
-                            <select class="form-control" formControlName="ingrediant">
+                            <select class="form-control" formControlName="ingrediant" required>
                               <option class="hiddenTitle" value="">Ingrediant</option>
                               <option *ngFor='let ingrediantItem of formData.ingrediantList' [value]="ingrediantItem">
                                 {{ingrediantItem}}
                               </option>
                             </select>
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').touched)"
+                              class="alert alert-danger">
+                              <div
+                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').errors.required">
+                                this field is required
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="col-sm-4">
@@ -281,17 +420,33 @@
                                    placeholder="Concentrations"
                                    type="text"
                                    name="concentrations"
-                                   formControlName="concentrations">
+                                   formControlName="concentrations" required>
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').touched)"
+                              class="alert alert-danger">
+                              <div
+                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').errors.required">
+                                this field is required
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="form-group">
-                            <select class="form-control" formControlName="function">
+                            <select class="form-control" formControlName="function" required>
                               <option class="hiddenTitle" value="">Function</option>
                               <option *ngFor='let functiontItem of formData.functionList' [value]="functiontItem">
                                 {{functiontItem}}
                               </option>
                             </select>
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.function').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.function').touched)"
+                              class="alert alert-danger">
+                              <div
+                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').errors.required">
+                                this field is required
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -307,7 +462,16 @@
                           <label>{{field.name}}</label>
                           <div class="custom-file fileUpload mr-3" id="customFile">
                             <input #fileUploader type="file" class="custom-file-input" id="dataUpload_upload_file"
-                                   aria-describedby="fileHelp" (change)="onFileSelect($event, field.id)">
+                                   aria-describedby="fileHelp" (change)="onFileSelect($event, field.id)"
+                                   [required]="field.required">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get(field.id).invalid && (regProductFormForImportedFromRefCountry.get(field.id).dirty || regProductFormForImportedFromRefCountry.get(field.id).touched)"
+                              class="alert alert-danger">
+                              <div
+                                *ngIf="regProductFormForImportedFromRefCountry.get(field.id).errors.required">
+                                this field is required
+                              </div>
+                            </div>
                             <label class="custom-file-label" for="dataUpload_upload_file">
                               {{field.fileName ? field.fileName : 'Choose file'}}
                             </label>
@@ -338,10 +502,11 @@
                             (click)="saveData()">
                       Save
                     </button>
-                    <button *ngIf="formTabs.tabs[2].active"
-                            type="submit"
-                            class="btn btn-primary btn-sm"
-                            [disabled]="!regProductFormForImportedFromRefCountry.valid">
+                    <!-- *ngIf="formTabs.tabs[2].active" -->
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-sm"
+                      [disabled]="!regProductFormForImportedFromRefCountry.valid">
                       Submit
                     </button>
                   </div>

@@ -20,6 +20,8 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -45,6 +47,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatExpansionModule,
     MatSelectModule,
     FormsModule,
+    MatInputModule,
     ReactiveFormsModule
   ],
   providers: [],

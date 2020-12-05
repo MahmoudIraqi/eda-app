@@ -4,7 +4,7 @@
 
 select, input, textarea {
   border: none;
-  border-bottom: 1px solid #161c30 !important;
+  /*border-bottom: 1px solid #161c30 !important;*/
   border-radius: 0px;
   background: none;
 }
@@ -31,6 +31,9 @@ form .row div:nth-child(n + 4) {
   color: #161c30;
 }
 
+.mat-form-field {
+  width: 100% !important;
+}
 /* --------------------------- range input styling ------------------------------- */
 input[type=range] {
   -webkit-appearance: none;

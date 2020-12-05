@@ -136,6 +136,24 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #161c30;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline:active, .mat-form-field-appearance-legacy .mat-form-field-underline:focus {
+  background-color: #c28a30;
+  border: none !important;
+  outline: none !important;
+  height: 2px;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #c28a30;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #c28a30;
+}
 
 /* ------------------------------------ Tabs ----------------------------------- */
 .nav-pills .nav-item {

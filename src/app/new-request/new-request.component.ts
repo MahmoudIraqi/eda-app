@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormGroupDirective, FormsModule, Validators} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 
 @Component({
@@ -75,9 +76,10 @@ export class NewRequestComponent implements OnInit {
     licenseHolderCountryList: ['Egypt', 'Brazil', 'Spain', 'Germany'],
     physicalStateList: ['physicalState1', 'physicalState2', 'physicalState3', 'other'],
     purposeOfUseList: ['purposeOfUse1', 'purposeOfUse2', 'purposeOfUse3', 'other'],
-    unitOfMeasureList: ['unitOfMeasure1', 'unitOfMeasure2', 'unitOfMeasure3', 'other'],
-    ingrediantList: ['ingrediant1', 'ingrediant2', 'ingrediant3', 'other'],
-    functionList: ['function1', 'function2', 'function3', 'other'],
+    typeOfPackagingList: ['typeOfPackaging1', 'typeOfPackaging2', 'typeOfPackaging3'],
+    unitOfMeasureList: ['unitOfMeasure1', 'unitOfMeasure2', 'unitOfMeasure3'],
+    ingrediantList: ['ingrediant1', 'ingrediant2', 'ingrediant3'],
+    functionList: ['function1', 'function2', 'function3'],
   };
   selectedFormType;
   selectedRequestedType;
@@ -87,77 +89,92 @@ export class NewRequestComponent implements OnInit {
     {
       id: 'freeSale',
       name: 'Free Sale',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'GMP',
       name: 'GMP',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'CoA',
       name: 'CoA',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'shelfLifeStatement',
       name: 'Shelf Life Statement',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'artWork',
       name: 'Art Work',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'leaflet',
       name: 'leaflet',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'reference',
       name: 'reference',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'methodOfAnalysis',
       name: 'Method of Analysis',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'receipt',
       name: 'receipt',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'manufacturingContract',
       name: 'Manufacturing Contract',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'storageContract',
       name: 'Storage Contract',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'others',
       name: 'others',
-      fileName: ''
+      fileName: '',
+      required: false
     },
     {
       id: 'otherFees',
       name: 'otherFees',
-      fileName: ''
+      fileName: '',
+      required: false
     }
   ];
   activeTabIndexStatus = true;
@@ -166,55 +183,55 @@ export class NewRequestComponent implements OnInit {
   constructor(private fb: FormBuilder) {
     this.regProductFormForImportedFromRefCountry = fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control(''),
+      productEnglishName: this.fb.control('', Validators.required),
       shortName: this.fb.control(''),
-      manufacturingCompany: this.fb.control(''),
-      manufacturingCountry: this.fb.control(''),
-      applicant: this.fb.control(''),
-      licenseHolder: this.fb.control(''),
+      manufacturingCompany: this.fb.control('', Validators.required),
+      manufacturingCountry: this.fb.control('', Validators.required),
+      applicant: this.fb.control('', Validators.required),
+      licenseHolder: this.fb.control('', Validators.required),
       licenseHolderTxt: this.fb.control(''),
-      countryOfLicenseHolder: this.fb.control(''),
+      countryOfLicenseHolder: this.fb.control('', Validators.required),
       tradeMark: this.fb.control(''),
-      physicalState: this.fb.control(''),
+      physicalState: this.fb.control('', Validators.required),
       physicalStateTxt: this.fb.control(''),
-      purposeOfUse: this.fb.control(''),
+      purposeOfUse: this.fb.control('', Validators.required),
       purposeOfUseTxt: this.fb.control(''),
       shelfLife: this.fb.control(0),
+      typeOfPackaging: this.fb.control('', Validators.required),
       packagingDescription: this.fb.control(''),
-      receiptNumber: this.fb.control(''),
-      receiptValue: this.fb.control(''),
+      receiptNumber: this.fb.control('', Validators.required),
+      receiptValue: this.fb.control('', Validators.required),
       detailsTable: this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
         flavor: this.fb.control(''),
         barCode: this.fb.control(''),
-        volumes: this.fb.control(''),
-        unitOfMeasure: this.fb.control(''),
-        ingrediant: this.fb.control(''),
-        concentrations: this.fb.control(''),
-        function: this.fb.control(''),
+        volumes: this.fb.control('', Validators.required),
+        unitOfMeasure: this.fb.control('', Validators.required),
+        ingrediant: this.fb.control('', Validators.required),
+        concentrations: this.fb.control('', Validators.required),
+        function: this.fb.control('', Validators.required),
       }),
-      freeSale: this.fb.control(''),
+      freeSale: this.fb.control('', Validators.required),
       GMP: this.fb.control(''),
-      CoA: this.fb.control(''),
-      shelfLifeStatement: this.fb.control(''),
-      artWork: this.fb.control(''),
+      CoA: this.fb.control('', Validators.required),
+      shelfLifeStatement: this.fb.control('', Validators.required),
+      artWork: this.fb.control('', Validators.required),
       leaflet: this.fb.control(''),
       reference: this.fb.control(''),
       methodOfAnalysis: this.fb.control(''),
       specificationsOfFinishedProduct: this.fb.control(''),
       receipt: this.fb.control(''),
-      authorizationLetter: this.fb.control(''),
+      authorizationLetter: this.fb.control('', Validators.required),
       manufacturingContract: this.fb.control(''),
       storageContract: this.fb.control(''),
       others: this.fb.control(''),
-      otherFees: this.fb.control(''),
+      otherFees: this.fb.control('', Validators.required),
     });
   }
 
   ngOnInit(): void {
   }
-
 
   getFormType(event) {
     this.selectedFormType = event.target.value;
@@ -228,7 +245,7 @@ export class NewRequestComponent implements OnInit {
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.regProductFormForImportedFromRefCountry.get('freeSale').setValue(file);
+      this.regProductFormForImportedFromRefCountry.get(fileControlName).setValue(file);
     }
     console.log('1234', this.regProductFormForImportedFromRefCountry.value);
   }
