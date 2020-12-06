@@ -43,30 +43,32 @@
                         <mat-form-field class="example-full-width">
                           <mat-label>Product Name (English)</mat-label>
                           <input type="text" class="form-control" matInput formControlName="productEnglishName"
-                                 placeholder="Product Name">
-                          <mat-error
-                            *ngIf="regProductFormForImportedFromRefCountry.get('productEnglishName').invalid && (regProductFormForImportedFromRefCountry.get('productEnglishName').dirty || regProductFormForImportedFromRefCountry.get('productEnglishName').touched)">
-                            <strong>this Field is required</strong>
-                          </mat-error>
+                                 placeholder="Product Name" required>
+                          <div
+                            *ngIf="regProductFormForImportedFromRefCountry.get('productEnglishName').invalid && (regProductFormForImportedFromRefCountry.get('productEnglishName').dirty || regProductFormForImportedFromRefCountry.get('productEnglishName').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regProductFormForImportedFromRefCountry.get('productEnglishName').errors.required">
+                              this field is required
+                            </div>
+                          </div>
                         </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Short Name"
-                                 type="text"
-                                 name="shortName"
-                                 formControlName="shortName">
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Short Name</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="shortName"
+                                 placeholder="Short Name">
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="manufacturingCompany" required>
-                            <option class="hiddenTitle" value="">Manufacturing Company</option>
-                            <option *ngFor='let company of formData.manufacturingCompanyList' [value]="company">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Manufacturing Company</mat-label>
+                          <mat-select formControlName="manufacturingCompany" required>
+                            <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company">
                               {{company}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCompany').invalid && (regProductFormForImportedFromRefCountry.get('manufacturingCompany').dirty || regProductFormForImportedFromRefCountry.get('manufacturingCompany').touched)"
                             class="alert alert-danger">
@@ -75,16 +77,16 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="manufacturingCountry" required>
-                            <option class="hiddenTitle" value="">Manufacturing Country</option>
-                            <option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Manufacturing Country</mat-label>
+                          <mat-select formControlName="manufacturingCountry" required>
+                            <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
                               {{country}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCountry').invalid && (regProductFormForImportedFromRefCountry.get('manufacturingCountry').dirty || regProductFormForImportedFromRefCountry.get('manufacturingCountry').touched)"
                             class="alert alert-danger">
@@ -93,16 +95,16 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="applicant" required>
-                            <option class="hiddenTitle" value="">Applicant</option>
-                            <option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Applicant</mat-label>
+                          <mat-select formControlName="applicant" required>
+                            <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
                               {{applicant}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('applicant').invalid && (regProductFormForImportedFromRefCountry.get('applicant').dirty || regProductFormForImportedFromRefCountry.get('applicant').touched)"
                             class="alert alert-danger">
@@ -111,16 +113,16 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="licenseHolder" required>
-                            <option class="hiddenTitle" value="">License Holder</option>
-                            <option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
+                        <mat-form-field appearance="fill">
+                          <mat-label>License Holder</mat-label>
+                          <mat-select formControlName="licenseHolder" required>
+                            <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
                               {{licHolder}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').invalid && (regProductFormForImportedFromRefCountry.get('licenseHolder').dirty || regProductFormForImportedFromRefCountry.get('licenseHolder').touched)"
                             class="alert alert-danger">
@@ -129,16 +131,14 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4"
                            *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').value === 'other'">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Other License Holder"
-                                 type="text"
-                                 name="licenseHolderTxt"
-                                 formControlName="licenseHolderTxt" required>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Other License Holder</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
+                                 placeholder="Other License Holder" required>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolderTxt').invalid && (regProductFormForImportedFromRefCountry.get('licenseHolderTxt').dirty || regProductFormForImportedFromRefCountry.get('licenseHolderTxt').touched)"
                             class="alert alert-danger">
@@ -147,16 +147,16 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="countryOfLicenseHolder" required>
-                            <option class="hiddenTitle" value="">Country of License Holder</option>
-                            <option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Country of License Holder</mat-label>
+                          <mat-select formControlName="countryOfLicenseHolder" required>
+                            <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
                               {{country}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').invalid && (regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').dirty || regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').touched)"
                             class="alert alert-danger">
@@ -165,25 +165,23 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Trade Mark"
-                                 type="text"
-                                 name="tradeMark"
-                                 formControlName="tradeMark">
-                        </div>
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Trade Mark</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="tradeMark"
+                                 placeholder="Trade Mark">
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="physicalState" required>
-                            <option class="hiddenTitle" value="">Physical State</option>
-                            <option *ngFor='let state of formData.physicalStateList' [value]="state">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Physical State</mat-label>
+                          <mat-select formControlName="physicalState" required>
+                            <mat-option *ngFor='let state of formData.physicalStateList' [value]="state">
                               {{state}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').invalid && (regProductFormForImportedFromRefCountry.get('physicalState').dirty || regProductFormForImportedFromRefCountry.get('physicalState').touched)"
                             class="alert alert-danger">
@@ -192,16 +190,14 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4"
                            *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').value === 'other'">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Other Physical State"
-                                 type="text"
-                                 name="physicalStateTxt"
-                                 formControlName="physicalStateTxt" required>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Other Physical State</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
+                                 placeholder="Other Physical State" required>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('physicalStateTxt').invalid && (regProductFormForImportedFromRefCountry.get('physicalStateTxt').dirty || regProductFormForImportedFromRefCountry.get('physicalStateTxt').touched)"
                             class="alert alert-danger">
@@ -210,16 +206,16 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="purposeOfUse" required>
-                            <option class="hiddenTitle" value="">Purpose of use</option>
-                            <option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Purpose of use</mat-label>
+                          <mat-select formControlName="purposeOfUse" required>
+                            <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose">
                               {{purpose}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').invalid && (regProductFormForImportedFromRefCountry.get('purposeOfUse').dirty || regProductFormForImportedFromRefCountry.get('purposeOfUse').touched)"
                             class="alert alert-danger">
@@ -228,16 +224,14 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4"
                            *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').value === 'other'">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Other Purpose of use"
-                                 type="text"
-                                 name="purposeOfUseTxt"
-                                 formControlName="purposeOfUseTxt" required>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Other Purpose of use</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
+                                 placeholder="Other Purpose of use" required>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').invalid && (regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').dirty || regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').touched)"
                             class="alert alert-danger">
@@ -246,7 +240,7 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
@@ -257,13 +251,13 @@
                         </div>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <select class="form-control" formControlName="typeOfPackaging" required>
-                            <option class="hiddenTitle" value="">Type of Packaging</option>
-                            <option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Type of Packaging</mat-label>
+                          <mat-select formControlName="typeOfPackaging" required>
+                            <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
                               {{type}}
-                            </option>
-                          </select>
+                            </mat-option>
+                          </mat-select>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('typeOfPackaging').invalid && (regProductFormForImportedFromRefCountry.get('typeOfPackaging').dirty || regProductFormForImportedFromRefCountry.get('typeOfPackaging').touched)"
                             class="alert alert-danger">
@@ -272,15 +266,13 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Receipt Number"
-                                 type="text"
-                                 name="receiptNumber"
-                                 formControlName="receiptNumber" required>
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Receipt Number</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="receiptNumber"
+                                 placeholder="Receipt Number" required>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('receiptNumber').invalid && (regProductFormForImportedFromRefCountry.get('receiptNumber').dirty || regProductFormForImportedFromRefCountry.get('receiptNumber').touched)"
                             class="alert alert-danger">
@@ -289,15 +281,13 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <input class="form-control"
-                                 placeholder="Receipt Value"
-                                 type="text"
-                                 name="receiptValue"
-                                 formControlName="receiptValue" required>
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Receipt Value</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="receiptValue"
+                                 placeholder="Receipt Value" required>
                           <div
                             *ngIf="regProductFormForImportedFromRefCountry.get('receiptValue').invalid && (regProductFormForImportedFromRefCountry.get('receiptValue').dirty || regProductFormForImportedFromRefCountry.get('receiptValue').touched)"
                             class="alert alert-danger">
@@ -306,16 +296,14 @@
                               this field is required
                             </div>
                           </div>
-                        </div>
+                        </mat-form-field>
                       </div>
                       <div class="col-sm-4">
-                        <div class="form-group">
-                          <textarea class="form-control"
-                                    placeholder="Packaging Description"
-                                    type="text"
-                                    name="packagingDescription"
-                                    formControlName="packagingDescription"></textarea>
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Packaging Description</mat-label>
+                          <textarea matInput formControlName="packagingDescription"
+                                    placeholder="Ex. It makes me feel..."></textarea>
+                        </mat-form-field>
                       </div>
                     </div>
                   </div>

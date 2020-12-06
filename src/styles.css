@@ -155,6 +155,21 @@ body {
   color: #c28a30;
 }
 
+.mat-form-field-flex {
+  background-color: rgba(0, 0, 0, 0) !important;
+  border-bottom: 1px solid #161c30;
+  padding: .75em 0 0 0 !important;
+}
+
+.inputBesideSelect .mat-form-field-infix {
+  padding: .65em 0 0 0 !important;
+  border: 0px;
+}
+
+.mat-slider {
+  width: 100%;
+}
+
 /* ------------------------------------ Tabs ----------------------------------- */
 .nav-pills .nav-item {
   width: 30%;
