@@ -214,7 +214,6 @@ body {
   }
 }
 
-
 @media only screen and (max-width: 960px) {
   .border-bottom {
     border: none !important;
@@ -224,5 +223,13 @@ body {
 @media only screen and (max-width: 480px) {
   .whiteContainer {
     padding: 1.5em;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .nav-pills .nav-item {
+    width: 100%;
+    margin-top: 1em;
+    margin-right: 0%;
   }
 }
