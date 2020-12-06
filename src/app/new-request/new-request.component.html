@@ -26,8 +26,8 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-12 mt-5">
-            <!-- *ngIf="selectedFormType === 'regProduct' && selectedRequestedType === 'referencedCountry'" -->
+          <div class="col-12 mt-5"
+               *ngIf="selectedFormType === 'regProduct' && selectedRequestedType === 'referencedCountry'">
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="regProductFormForImportedFromRefCountry"
                   (ngSubmit)="onSubmit()" novalidate>
