@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, FormGroupDirective, FormsModule, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, FormGroupDirective, FormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 
@@ -178,13 +178,14 @@ export class NewRequestComponent implements OnInit {
     }
   ];
   activeTabIndexStatus = true;
+  removeShortNameFieldStatus = false;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
 
   constructor(private fb: FormBuilder) {
     this.regProductFormForImportedFromRefCountry = fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', Validators.required),
-      shortName: this.fb.control(''),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
+      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
       applicant: this.fb.control('', Validators.required),
@@ -200,7 +201,7 @@ export class NewRequestComponent implements OnInit {
       typeOfPackaging: this.fb.control('', Validators.required),
       packagingDescription: this.fb.control(''),
       receiptNumber: this.fb.control('', Validators.required),
-      receiptValue: this.fb.control('', Validators.required),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
       detailsTable: this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
@@ -234,11 +235,11 @@ export class NewRequestComponent implements OnInit {
   }
 
   getFormType(event) {
-    this.selectedFormType = event.target.value;
+    this.selectedFormType = event.value;
   }
 
   getRequestType(event) {
-    this.selectedRequestedType = event.target.value;
+    this.selectedRequestedType = event.value;
   }
 
   onFileSelect(event, fileControlName) {
@@ -269,5 +270,25 @@ export class NewRequestComponent implements OnInit {
 
   onSubmit() {
     console.log('regProductFormForImportedFromRefCountry', this.regProductFormForImportedFromRefCountry.value);
+  }
+
+  get ShortName(): FormArray {
+    return this.regProductFormForImportedFromRefCountry.get('shortName') as FormArray;
+  }
+
+  addShortName() {
+    this.removeShortNameFieldStatus = false;
+    if (this.ShortName.length < 10) {
+      this.ShortName.push(this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+')));
+    }
+  }
+
+  removeShortName(i: number) {
+    if (i > 0) {
+      this.removeShortNameFieldStatus = false;
+      this.ShortName.removeAt(i);
+    } else {
+      this.removeShortNameFieldStatus = true;
+    }
   }
 }

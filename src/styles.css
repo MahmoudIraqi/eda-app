@@ -161,6 +161,10 @@ body {
   padding: .75em 0 0 0 !important;
 }
 
+.mat-input-element:active, .mat-input-element:focus {
+  background: none !important;
+}
+
 .inputBesideSelect .mat-form-field-infix {
   padding: .65em 0 0 0 !important;
   border: 0px;
@@ -172,7 +176,7 @@ body {
 
 /* ------------------------------------ Tabs ----------------------------------- */
 .nav-pills .nav-item {
-  width: 30%;
+  width: 32%;
   margin-right: 2%;
   text-align: center;
 }
