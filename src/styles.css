@@ -32,7 +32,6 @@
   content: "\f104";
 }
 
-
 .flaticon-new-page:before {
   content: "\f106";
 }
@@ -172,6 +171,40 @@ body {
 
 .mat-slider {
   width: 100%;
+}
+
+.detailsTable .mat-form-field-wrapper {
+  padding-bottom: 0em !important;
+}
+
+.detailsTable .mat-form-field-flex {
+  padding: 0em !important;
+  border: none;
+}
+
+.detailsTable .mat-form-field-appearance-fill .mat-form-field-infix {
+  padding: 0em !important;
+}
+
+.detailsTable .mat-form-field-appearance-legacy .detailsTable .mat-form-field-underline {
+  background-color: rgba(22, 28, 48, 0);
+}
+
+.detailsTable .mat-form-field, .detailsTable .mat-select, .detailsTable .mat-select-trigger, .detailsTable .mat-form-field-flex, .detailsTable .mat-form-field-infix, .detailsTable .mat-form-field-wrapper {
+  height: 100%;
+}
+
+.detailsTable .mat-form-field-underline {
+  bottom: 0.2em;
+}
+
+.detailsTable .mat-select .mat-form-field-label {
+  margin-top: -7px;
+}
+
+.detailsTable .mat-select-value {
+  margin-bottom: 0px;
+  padding-top: 0.8em;
 }
 
 /* ------------------------------------ Tabs ----------------------------------- */

@@ -208,3 +208,21 @@ input[type=file] {
   margin-top: 3em;
   border-top: 1px solid #eee;
 }
+
+/* --------------- accordion Rows in Details Table ------------------- */
+.detailsTable .mat-expansion-panel-header {
+  padding: 0 !important;
+  height: auto !important;
+  pointer-events: none !important;
+}
+
+.detailsTable .table {
+  border: none !important;
+  margin-bottom: 0px;
+  border-collapse: inherit;
+  pointer-events: fill !important;
+}
+
+.detailsTable .table td {
+  border: none !important;
+}

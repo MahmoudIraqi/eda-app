@@ -180,6 +180,7 @@ export class NewRequestComponent implements OnInit {
   activeTabIndexStatus = true;
   removeShortNameFieldStatus = false;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
+  status;
 
   constructor(private fb: FormBuilder) {
     this.regProductFormForImportedFromRefCountry = fb.group({
@@ -202,7 +203,7 @@ export class NewRequestComponent implements OnInit {
       packagingDescription: this.fb.control(''),
       receiptNumber: this.fb.control('', Validators.required),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
-      detailsTable: this.fb.group({
+      detailsTable: this.fb.array([ this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
         flavor: this.fb.control(''),
@@ -212,7 +213,7 @@ export class NewRequestComponent implements OnInit {
         ingrediant: this.fb.control('', Validators.required),
         concentrations: this.fb.control('', Validators.required),
         function: this.fb.control('', Validators.required),
-      }),
+      })]),
       freeSale: this.fb.control('', Validators.required),
       GMP: this.fb.control(''),
       CoA: this.fb.control('', Validators.required),
@@ -232,6 +233,10 @@ export class NewRequestComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  setStep(status) {
+    this.status = !status;
   }
 
   getFormType(event) {
@@ -290,5 +295,27 @@ export class NewRequestComponent implements OnInit {
     } else {
       this.removeShortNameFieldStatus = true;
     }
+  }
+
+  get detailsRows(): FormArray {
+    return this.regProductFormForImportedFromRefCountry.get('detailsTable') as FormArray;
+  }
+
+  addDetailsRows() {
+    this.detailsRows.push(this.fb.group({
+      colour: this.fb.control(''),
+      fragrance: this.fb.control(''),
+      flavor: this.fb.control(''),
+      barCode: this.fb.control(''),
+      volumes: this.fb.control('', Validators.required),
+      unitOfMeasure: this.fb.control('', Validators.required),
+      ingrediant: this.fb.control('', Validators.required),
+      concentrations: this.fb.control('', Validators.required),
+      function: this.fb.control('', Validators.required),
+    }));
+  }
+
+  removeDetailsRows(i: number) {
+    this.detailsRows.removeAt(i);
   }
 }

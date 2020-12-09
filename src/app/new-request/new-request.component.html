@@ -26,8 +26,8 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-12 mt-5"
-               *ngIf="selectedFormType === 'regProduct' && selectedRequestedType === 'referencedCountry'">
+          <div class="col-12 mt-5">
+            <!-- *ngIf="selectedFormType === 'regProduct' && selectedRequestedType === 'referencedCountry'" -->
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="regProductFormForImportedFromRefCountry"
                   (ngSubmit)="onSubmit()" novalidate>
@@ -163,7 +163,7 @@
                       </div>
                       <div class="col-sm-4"
                            *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').value === 'other'">
-                        <mat-form-field class="example-full-width">
+                        <mat-form-field class="example-full-width inputBesideSelect">
                           <mat-label>Other License Holder</mat-label>
                           <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
                                  placeholder="Other License Holder" required>
@@ -222,7 +222,7 @@
                       </div>
                       <div class="col-sm-4"
                            *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').value === 'other'">
-                        <mat-form-field class="example-full-width">
+                        <mat-form-field class="example-full-width inputBesideSelect">
                           <mat-label>Other Physical State</mat-label>
                           <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
                                  placeholder="Other Physical State" required>
@@ -256,7 +256,7 @@
                       </div>
                       <div class="col-sm-4"
                            *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').value === 'other'">
-                        <mat-form-field class="example-full-width">
+                        <mat-form-field class="example-full-width inputBesideSelect">
                           <mat-label>Other Purpose of use</mat-label>
                           <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
                                  placeholder="Other Purpose of use" required>
@@ -342,124 +342,171 @@
                 </tab>
                 <tab heading="Details fields">
                   <div class="mt-5">
-                    <div formGroupName="detailsTable">
-                      <app-title [smallTitle]="true" [title]="'Details table'"></app-title>
-                      <div class="row mt-3">
-                        <div class="col-sm-4">
-                          <mat-form-field class="example-full-width">
-                            <mat-label>Colour</mat-label>
-                            <input type="text" class="form-control" matInput formControlName="colour"
-                                   placeholder="colour">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field class="example-full-width">
-                            <mat-label>Fragrance</mat-label>
-                            <input type="text" class="form-control" matInput formControlName="fragrance"
-                                   placeholder="fragrance">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field class="example-full-width">
-                            <mat-label>Flavor</mat-label>
-                            <input type="text" class="form-control" matInput formControlName="flavor"
-                                   placeholder="flavor">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field class="example-full-width inputBesideSelect">
-                            <mat-label>BarCode</mat-label>
-                            <input type="text" class="form-control" matInput formControlName="barCode"
-                                   placeholder="barCode">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field class="example-full-width inputBesideSelect">
-                            <mat-label>Volumes</mat-label>
-                            <input type="text" class="form-control" matInput formControlName="volumes"
-                                   placeholder="volumes" required>
+                    <div formArrayName="detailsTable" class="detailsTable">
+                      <div class="d-flex align-items-center">
+                        <app-title [smallTitle]="true" [title]="'Details table'"></app-title>
 
-                            <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.volumes').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.volumes').touched)"
-                              class="alert alert-danger">
-                              <div
-                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').errors.required">
-                                this field is required
-                              </div>
-                            </div>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field appearance="fill">
-                            <mat-label>Unit of measure</mat-label>
-                            <mat-select formControlName="unitOfMeasure" required>
-                              <mat-option *ngFor='let unit of formData.unitOfMeasureList' [value]="unit">
-                                {{unit}}
-                              </mat-option>
-                            </mat-select>
-                            <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').touched)"
-                              class="alert alert-danger">
-                              <div
-                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').errors.required">
-                                this field is required
-                              </div>
-                            </div>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field appearance="fill">
-                            <mat-label>Ingrediant</mat-label>
-                            <mat-select formControlName="ingrediant" required>
-                              <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
-                                          [value]="ingrediantItem">
-                                {{ingrediantItem}}
-                              </mat-option>
-                            </mat-select>
-                            <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').touched)"
-                              class="alert alert-danger">
-                              <div
-                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').errors.required">
-                                this field is required
-                              </div>
-                            </div>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field class="example-full-width inputBesideSelect">
-                            <mat-label>Concentrations</mat-label>
-                            <input type="text" class="form-control" matInput formControlName="concentrations"
-                                   placeholder="concentrations" required>
+                        <button type="button" class="btn btn-primary ml-auto" (click)="addDetailsRows()">
+                          add details row
+                        </button>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-sm table-ordered">
+                          <tr *ngFor="let row of detailsRows.controls; let i=index" [formGroupName]="i">
+                            <td colspan="5">
+                              <mat-accordion>
+                                <mat-expansion-panel class="areaContainer"
+                                                     [expanded]="status"
+                                                     hideToggle
+                                                     disabled="true">
+                                  <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                      <table class="table table-sm tableDetailsCont">
+                                        <tr>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Colour</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="colour"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Fragrance</mat-label>
+                                              <input type="text" class="form-control" matInput
+                                                     formControlName="fragrance"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Flavor</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="flavor"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>BarCode</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="barCode"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Volumes</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="volumes"
+                                                     placeholder="" required>
 
-                            <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').touched)"
-                              class="alert alert-danger">
-                              <div
-                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').errors.required">
-                                this field is required
-                              </div>
-                            </div>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-4">
-                          <mat-form-field appearance="fill">
-                            <mat-label>Function</mat-label>
-                            <mat-select formControlName="function" required>
-                              <mat-option *ngFor='let functiontItem of formData.functionList' [value]="functiontItem">
-                                {{functiontItem}}
-                              </mat-option>
-                            </mat-select>
-                            <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.function').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.function').touched)"
-                              class="alert alert-danger">
-                              <div
-                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').errors.required">
-                                this field is required
-                              </div>
-                            </div>
-                          </mat-form-field>
-                        </div>
+                                              <!--                                              <div-->
+                                              <!--                                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.volumes').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.volumes').touched)"-->
+                                              <!--                                                class="alert alert-danger">-->
+                                              <!--                                                <div-->
+                                              <!--                                                  *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').errors.required">-->
+                                              <!--                                                  this field is required-->
+                                              <!--                                                </div>-->
+                                              <!--                                              </div>-->
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field appearance="fill">
+                                              <mat-label>Unit of measure</mat-label>
+                                              <mat-select formControlName="unitOfMeasure" required>
+                                                <mat-option *ngFor='let unit of formData.unitOfMeasureList'
+                                                            [value]="unit">
+                                                  {{unit}}
+                                                </mat-option>
+                                              </mat-select>
+                                              <!--                                              <div-->
+                                              <!--                                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').touched)"-->
+                                              <!--                                                class="alert alert-danger">-->
+                                              <!--                                                <div-->
+                                              <!--                                                  *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').errors.required">-->
+                                              <!--                                                  this field is required-->
+                                              <!--                                                </div>-->
+                                              <!--                                              </div>-->
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                             <span (click)="removeDetailsRows(i)">
+                                              <i class="fa fa-trash"></i>
+                                            </span>
+
+                                          </td>
+                                          <td>
+                                            <span (click)="setStep(status)">
+                                              <i *ngIf="!status" class="fa fa-chevron-down"></i>
+                                              <i *ngIf="status" class="fa fa-chevron-up"></i>
+                                            </span>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </mat-panel-title>
+                                  </mat-expansion-panel-header>
+                                  <div class="detailsContainer pt-4">
+                                    <div class="row mt-3">
+                                      <div class="col-sm-4">
+                                        <mat-form-field appearance="fill">
+                                          <mat-label>Ingrediant</mat-label>
+                                          <mat-select formControlName="ingrediant" required>
+                                            <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
+                                                        [value]="ingrediantItem">
+                                              {{ingrediantItem}}
+                                            </mat-option>
+                                          </mat-select>
+                                          <!--                                          <div-->
+                                          <!--                                            *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').touched)"-->
+                                          <!--                                            class="alert alert-danger">-->
+                                          <!--                                            <div-->
+                                          <!--                                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').errors.required">-->
+                                          <!--                                              this field is required-->
+                                          <!--                                            </div>-->
+                                          <!--                                          </div>-->
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <mat-form-field class="example-full-width inputBesideSelect">
+                                          <mat-label>Concentrations</mat-label>
+                                          <input type="text" class="form-control" matInput
+                                                 formControlName="concentrations"
+                                                 placeholder="concentrations" required>
+
+                                          <!--                                          <div-->
+                                          <!--                                            *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').touched)"-->
+                                          <!--                                            class="alert alert-danger">-->
+                                          <!--                                            <div-->
+                                          <!--                                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').errors.required">-->
+                                          <!--                                              this field is required-->
+                                          <!--                                            </div>-->
+                                          <!--                                          </div>-->
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <mat-form-field appearance="fill">
+                                          <mat-label>Function</mat-label>
+                                          <mat-select formControlName="function" required>
+                                            <mat-option *ngFor='let functiontItem of formData.functionList'
+                                                        [value]="functiontItem">
+                                              {{functiontItem}}
+                                            </mat-option>
+                                          </mat-select>
+                                          <!--                                          <div-->
+                                          <!--                                            *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.function').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.function').touched)"-->
+                                          <!--                                            class="alert alert-danger">-->
+                                          <!--                                            <div-->
+                                          <!--                                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').errors.required">-->
+                                          <!--                                              this field is required-->
+                                          <!--                                            </div>-->
+                                          <!--                                          </div>-->
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </mat-expansion-panel>
+                              </mat-accordion>
+                            </td>
+                          </tr>
+                        </table>
                       </div>
                     </div>
                   </div>
