@@ -26,8 +26,8 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-12 mt-5">
-            <!-- *ngIf="selectedFormType === 'regProduct' && selectedRequestedType === 'referencedCountry'" -->
+          <div class="col-12 mt-5"
+               *ngIf="selectedFormType === 'regProduct' && (selectedRequestedType === 'referencedCountry' || selectedRequestedType === 'nonReferencedCountry' || selectedRequestedType === 'underLicenseReferenced')">
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="regProductFormForImportedFromRefCountry"
                   (ngSubmit)="onSubmit()" novalidate>
@@ -350,9 +350,9 @@
                           add details row
                         </button>
                       </div>
-                      <div class="table-responsive">
+                      <div class="table-responsive mt-5">
                         <table class="table table-sm table-ordered">
-                          <tr *ngFor="let row of detailsRows.controls; let i=index" [formGroupName]="i">
+                          <tr *ngFor="let row of DetailsRows.controls; let i=index" [formGroupName]="i">
                             <td colspan="5">
                               <mat-accordion>
                                 <mat-expansion-panel class="areaContainer"
@@ -397,15 +397,14 @@
                                               <mat-label>Volumes</mat-label>
                                               <input type="text" class="form-control" matInput formControlName="volumes"
                                                      placeholder="" required>
-
-                                              <!--                                              <div-->
-                                              <!--                                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.volumes').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.volumes').touched)"-->
-                                              <!--                                                class="alert alert-danger">-->
-                                              <!--                                                <div-->
-                                              <!--                                                  *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.volumes').errors.required">-->
-                                              <!--                                                  this field is required-->
-                                              <!--                                                </div>-->
-                                              <!--                                              </div>-->
+                                              <div
+                                                *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
+                                                class="alert alert-danger">
+                                                <div
+                                                  *ngIf="row.get('volumes').errors.required">
+                                                  this field is required
+                                                </div>
+                                              </div>
                                             </mat-form-field>
                                           </td>
                                           <td>
@@ -417,24 +416,24 @@
                                                   {{unit}}
                                                 </mat-option>
                                               </mat-select>
-                                              <!--                                              <div-->
-                                              <!--                                                *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').touched)"-->
-                                              <!--                                                class="alert alert-danger">-->
-                                              <!--                                                <div-->
-                                              <!--                                                  *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.unitOfMeasure').errors.required">-->
-                                              <!--                                                  this field is required-->
-                                              <!--                                                </div>-->
-                                              <!--                                              </div>-->
+                                              <div
+                                                *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
+                                                class="alert alert-danger">
+                                                <div
+                                                  *ngIf="row.get('unitOfMeasure').errors.required">
+                                                  this field is required
+                                                </div>
+                                              </div>
                                             </mat-form-field>
                                           </td>
                                           <td>
-                                             <span (click)="removeDetailsRows(i)">
+                                             <span class="remove" (click)="removeDetailsRows(i)">
                                               <i class="fa fa-trash"></i>
                                             </span>
 
                                           </td>
                                           <td>
-                                            <span (click)="setStep(status)">
+                                            <span class="expandIcon" (click)="setStep(status)">
                                               <i *ngIf="!status" class="fa fa-chevron-down"></i>
                                               <i *ngIf="status" class="fa fa-chevron-up"></i>
                                             </span>
@@ -454,14 +453,14 @@
                                               {{ingrediantItem}}
                                             </mat-option>
                                           </mat-select>
-                                          <!--                                          <div-->
-                                          <!--                                            *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').touched)"-->
-                                          <!--                                            class="alert alert-danger">-->
-                                          <!--                                            <div-->
-                                          <!--                                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.ingrediant').errors.required">-->
-                                          <!--                                              this field is required-->
-                                          <!--                                            </div>-->
-                                          <!--                                          </div>-->
+                                          <div
+                                            *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
+                                            class="alert alert-danger">
+                                            <div
+                                              *ngIf="row.get('ingrediant').errors.required">
+                                              this field is required
+                                            </div>
+                                          </div>
                                         </mat-form-field>
                                       </div>
                                       <div class="col-sm-4">
@@ -471,14 +470,14 @@
                                                  formControlName="concentrations"
                                                  placeholder="concentrations" required>
 
-                                          <!--                                          <div-->
-                                          <!--                                            *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').touched)"-->
-                                          <!--                                            class="alert alert-danger">-->
-                                          <!--                                            <div-->
-                                          <!--                                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.concentrations').errors.required">-->
-                                          <!--                                              this field is required-->
-                                          <!--                                            </div>-->
-                                          <!--                                          </div>-->
+                                          <div
+                                            *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
+                                            class="alert alert-danger">
+                                            <div
+                                              *ngIf="row.get('concentrations').errors.required">
+                                              this field is required
+                                            </div>
+                                          </div>
                                         </mat-form-field>
                                       </div>
                                       <div class="col-sm-4">
@@ -490,14 +489,14 @@
                                               {{functiontItem}}
                                             </mat-option>
                                           </mat-select>
-                                          <!--                                          <div-->
-                                          <!--                                            *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').invalid && (regProductFormForImportedFromRefCountry.get('detailsTable.function').dirty || regProductFormForImportedFromRefCountry.get('detailsTable.function').touched)"-->
-                                          <!--                                            class="alert alert-danger">-->
-                                          <!--                                            <div-->
-                                          <!--                                              *ngIf="regProductFormForImportedFromRefCountry.get('detailsTable.function').errors.required">-->
-                                          <!--                                              this field is required-->
-                                          <!--                                            </div>-->
-                                          <!--                                          </div>-->
+                                          <div
+                                            *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
+                                            class="alert alert-danger">
+                                            <div
+                                              *ngIf="row.get('function').errors.required">
+                                              this field is required
+                                            </div>
+                                          </div>
                                         </mat-form-field>
                                       </div>
                                     </div>
@@ -519,8 +518,10 @@
                         <div class="form-group">
                           <label>{{field.name}}</label>
                           <div class="custom-file fileUpload mr-3" id="customFile">
-                            <input #fileUploader type="file" class="custom-file-input" id="dataUpload_upload_file"
-                                   aria-describedby="fileHelp" (change)="onFileSelect($event, field.id)"
+                            <input type="file" class="custom-file-input" id="dataUpload_upload_file"
+                                   aria-describedby="fileHelp"
+                                   [innerText]="regProductFormForImportedFromRefCountry.get(field.id).value"
+                                   (change)="onFileSelect($event, field.id)"
                                    [required]="field.required">
                             <div
                               *ngIf="regProductFormForImportedFromRefCountry.get(field.id).invalid && (regProductFormForImportedFromRefCountry.get(field.id).dirty || regProductFormForImportedFromRefCountry.get(field.id).touched)"
@@ -531,7 +532,7 @@
                               </div>
                             </div>
                             <label class="custom-file-label" for="dataUpload_upload_file">
-                              {{field.fileName ? field.fileName : 'Choose file'}}
+                              {{regProductFormForImportedFromRefCountry.get(field.id).value ? regProductFormForImportedFromRefCountry.get(field.id).value.name : 'Choose file'}}
                             </label>
                           </div>
                         </div>

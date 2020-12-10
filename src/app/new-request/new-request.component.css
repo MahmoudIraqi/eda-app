@@ -210,6 +210,23 @@ input[type=file] {
 }
 
 /* --------------- accordion Rows in Details Table ------------------- */
+.detailsTable .mat-expansion-panel {
+  background: none !important;
+  box-shadow: none !important;
+  border: 1px solid #c28a30;
+  border-radius: 10px 0px 10px 10px;
+  padding: 0;
+}
+
+.detailsTable .mat-expansion-panel.mat-expanded {
+  border: 1px solid #161c30;
+}
+
+.detailsTable .mat-expansion-panel.mat-expanded .mat-expansion-panel-header {
+  border-bottom: 1px solid #161c30;
+  border-radius: 0px;
+}
+
 .detailsTable .mat-expansion-panel-header {
   padding: 0 !important;
   height: auto !important;
@@ -225,4 +242,19 @@ input[type=file] {
 
 .detailsTable .table td {
   border: none !important;
+}
+
+.detailsTable .table .mat-expansion-panel td {
+  border: none !important;
+  vertical-align: middle;
+  text-align: center;
+  padding: 1em;
+}
+
+.detailsTable .table td span.remove {
+  color: #f00 !important;
+}
+
+.detailsTable .table td span.expandIcon {
+  color: #c28a30 !important;
 }

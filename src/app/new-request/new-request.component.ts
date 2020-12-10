@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, FormGroupDirective, FormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
@@ -84,6 +84,7 @@ export class NewRequestComponent implements OnInit {
   selectedFormType;
   selectedRequestedType;
   regProductFormForImportedFromRefCountry: FormGroup;
+  regProductFormForImportedFromUnderLicenseRef: FormGroup;
   fileName;
   attachmentFields = [
     {
@@ -180,56 +181,11 @@ export class NewRequestComponent implements OnInit {
   activeTabIndexStatus = true;
   removeShortNameFieldStatus = false;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
+  @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   status;
 
   constructor(private fb: FormBuilder) {
-    this.regProductFormForImportedFromRefCountry = fb.group({
-      productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
-      manufacturingCompany: this.fb.control('', Validators.required),
-      manufacturingCountry: this.fb.control('', Validators.required),
-      applicant: this.fb.control('', Validators.required),
-      licenseHolder: this.fb.control('', Validators.required),
-      licenseHolderTxt: this.fb.control(''),
-      countryOfLicenseHolder: this.fb.control('', Validators.required),
-      tradeMark: this.fb.control(''),
-      physicalState: this.fb.control('', Validators.required),
-      physicalStateTxt: this.fb.control(''),
-      purposeOfUse: this.fb.control('', Validators.required),
-      purposeOfUseTxt: this.fb.control(''),
-      shelfLife: this.fb.control(0),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
-      receiptNumber: this.fb.control('', Validators.required),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
-      detailsTable: this.fb.array([ this.fb.group({
-        colour: this.fb.control(''),
-        fragrance: this.fb.control(''),
-        flavor: this.fb.control(''),
-        barCode: this.fb.control(''),
-        volumes: this.fb.control('', Validators.required),
-        unitOfMeasure: this.fb.control('', Validators.required),
-        ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', Validators.required),
-        function: this.fb.control('', Validators.required),
-      })]),
-      freeSale: this.fb.control('', Validators.required),
-      GMP: this.fb.control(''),
-      CoA: this.fb.control('', Validators.required),
-      shelfLifeStatement: this.fb.control('', Validators.required),
-      artWork: this.fb.control('', Validators.required),
-      leaflet: this.fb.control(''),
-      reference: this.fb.control(''),
-      methodOfAnalysis: this.fb.control(''),
-      specificationsOfFinishedProduct: this.fb.control(''),
-      receipt: this.fb.control(''),
-      authorizationLetter: this.fb.control('', Validators.required),
-      manufacturingContract: this.fb.control(''),
-      storageContract: this.fb.control(''),
-      others: this.fb.control(''),
-      otherFees: this.fb.control('', Validators.required),
-    });
+    this.getFormAsStarting();
   }
 
   ngOnInit(): void {
@@ -240,10 +196,12 @@ export class NewRequestComponent implements OnInit {
   }
 
   getFormType(event) {
+    this.resetForms();
     this.selectedFormType = event.value;
   }
 
   getRequestType(event) {
+    this.resetForms();
     this.selectedRequestedType = event.value;
   }
 
@@ -253,7 +211,6 @@ export class NewRequestComponent implements OnInit {
       const file = event.target.files[0];
       this.regProductFormForImportedFromRefCountry.get(fileControlName).setValue(file);
     }
-    console.log('1234', this.regProductFormForImportedFromRefCountry.value);
   }
 
   nextToNextTab() {
@@ -297,12 +254,12 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
-  get detailsRows(): FormArray {
+  get DetailsRows(): FormArray {
     return this.regProductFormForImportedFromRefCountry.get('detailsTable') as FormArray;
   }
 
   addDetailsRows() {
-    this.detailsRows.push(this.fb.group({
+    this.DetailsRows.push(this.fb.group({
       colour: this.fb.control(''),
       fragrance: this.fb.control(''),
       flavor: this.fb.control(''),
@@ -316,6 +273,63 @@ export class NewRequestComponent implements OnInit {
   }
 
   removeDetailsRows(i: number) {
-    this.detailsRows.removeAt(i);
+    this.DetailsRows.removeAt(i);
+  }
+
+  resetForms() {
+    // this.fileTextUploader ? this.fileTextUploader.nativeElement.value = '' : null;
+    // this.fileTextUploader ? this.fileTextUploader.nativeElement.offsetParent.children[1].innerHTML = 'Choose file' : null;
+    this.getFormAsStarting();
+    console.log('this.regProductFormForImportedFromRefCountry', this.regProductFormForImportedFromRefCountry);
+  }
+
+  getFormAsStarting() {
+    this.regProductFormForImportedFromRefCountry = this.fb.group({
+      productArabicName: this.fb.control(''),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
+      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
+      manufacturingCompany: this.fb.control('', Validators.required),
+      manufacturingCountry: this.fb.control('', Validators.required),
+      applicant: this.fb.control('', Validators.required),
+      licenseHolder: this.fb.control('', Validators.required),
+      licenseHolderTxt: this.fb.control(''),
+      countryOfLicenseHolder: this.fb.control('', Validators.required),
+      tradeMark: this.fb.control(''),
+      physicalState: this.fb.control('', Validators.required),
+      physicalStateTxt: this.fb.control(''),
+      purposeOfUse: this.fb.control('', Validators.required),
+      purposeOfUseTxt: this.fb.control(''),
+      shelfLife: this.fb.control(0),
+      typeOfPackaging: this.fb.control('', Validators.required),
+      packagingDescription: this.fb.control(''),
+      receiptNumber: this.fb.control('', Validators.required),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
+      detailsTable: this.fb.array([this.fb.group({
+        colour: this.fb.control(''),
+        fragrance: this.fb.control(''),
+        flavor: this.fb.control(''),
+        barCode: this.fb.control(''),
+        volumes: this.fb.control('', Validators.required),
+        unitOfMeasure: this.fb.control('', Validators.required),
+        ingrediant: this.fb.control('', Validators.required),
+        concentrations: this.fb.control('', Validators.required),
+        function: this.fb.control('', Validators.required),
+      })]),
+      freeSale: this.fb.control('', Validators.required),
+      GMP: this.fb.control(''),
+      CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
+      shelfLifeStatement: this.fb.control('', Validators.required),
+      artWork: this.fb.control('', Validators.required),
+      leaflet: this.fb.control(''),
+      reference: this.fb.control(''),
+      methodOfAnalysis: this.fb.control(''),
+      specificationsOfFinishedProduct: this.fb.control(''),
+      receipt: this.fb.control(''),
+      authorizationLetter: this.fb.control('', Validators.required),
+      manufacturingContract: this.fb.control(''),
+      storageContract: this.fb.control(''),
+      others: this.fb.control(''),
+      otherFees: this.fb.control('', Validators.required),
+    });
   }
 }
