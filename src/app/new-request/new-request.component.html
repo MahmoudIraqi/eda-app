@@ -26,10 +26,10 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-12 mt-5"
-               *ngIf="selectedFormType === 'regProduct' && (selectedRequestedType === 'referencedCountry' || selectedRequestedType === 'nonReferencedCountry' || selectedRequestedType === 'underLicenseReferenced')">
+          <div class="col-12 mt-5" *ngIf="selectedFormType === 'regProduct' && selectedRequestedType">
+            <h1>regProduct</h1>
             <form class="mt-2" name="form" class="example-form" method="post"
-                  [formGroup]="regProductFormForImportedFromRefCountry"
+                  [formGroup]="regProductForAllRequestedType"
                   (ngSubmit)="onSubmit()" novalidate>
               <tabset type="pills" #formTabs>
                 <tab heading="Products fields">
@@ -49,14 +49,14 @@
                           <input type="text" class="form-control" matInput formControlName="productEnglishName"
                                  placeholder="Product Name" required>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('productEnglishName').invalid && (regProductFormForImportedFromRefCountry.get('productEnglishName').dirty || regProductFormForImportedFromRefCountry.get('productEnglishName').touched)"
+                            *ngIf="regProductForAllRequestedType.get('productEnglishName').invalid && (regProductForAllRequestedType.get('productEnglishName').dirty || regProductForAllRequestedType.get('productEnglishName').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('productEnglishName').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('productEnglishName').errors.required">
                               this field is required
                             </div>
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('productEnglishName').errors.pattern">
+                              *ngIf="regProductForAllRequestedType.get('productEnglishName').errors.pattern">
                               this field must be in English
                             </div>
                           </div>
@@ -98,10 +98,10 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCompany').invalid && (regProductFormForImportedFromRefCountry.get('manufacturingCompany').dirty || regProductFormForImportedFromRefCountry.get('manufacturingCompany').touched)"
+                            *ngIf="regProductForAllRequestedType.get('manufacturingCompany').invalid && (regProductForAllRequestedType.get('manufacturingCompany').dirty || regProductForAllRequestedType.get('manufacturingCompany').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCompany').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('manufacturingCompany').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -116,10 +116,10 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCountry').invalid && (regProductFormForImportedFromRefCountry.get('manufacturingCountry').dirty || regProductFormForImportedFromRefCountry.get('manufacturingCountry').touched)"
+                            *ngIf="regProductForAllRequestedType.get('manufacturingCountry').invalid && (regProductForAllRequestedType.get('manufacturingCountry').dirty || regProductForAllRequestedType.get('manufacturingCountry').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('manufacturingCountry').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('manufacturingCountry').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -134,10 +134,10 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('applicant').invalid && (regProductFormForImportedFromRefCountry.get('applicant').dirty || regProductFormForImportedFromRefCountry.get('applicant').touched)"
+                            *ngIf="regProductForAllRequestedType.get('applicant').invalid && (regProductForAllRequestedType.get('applicant').dirty || regProductForAllRequestedType.get('applicant').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('applicant').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('applicant').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -152,26 +152,26 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').invalid && (regProductFormForImportedFromRefCountry.get('licenseHolder').dirty || regProductFormForImportedFromRefCountry.get('licenseHolder').touched)"
+                            *ngIf="regProductForAllRequestedType.get('licenseHolder').invalid && (regProductForAllRequestedType.get('licenseHolder').dirty || regProductForAllRequestedType.get('licenseHolder').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('licenseHolder').errors.required">
                               this field is required
                             </div>
                           </div>
                         </mat-form-field>
                       </div>
                       <div class="col-sm-4"
-                           *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolder').value === 'other'">
+                           *ngIf="regProductForAllRequestedType.get('licenseHolder').value === 'other'">
                         <mat-form-field class="example-full-width inputBesideSelect">
                           <mat-label>Other License Holder</mat-label>
                           <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
                                  placeholder="Other License Holder" required>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolderTxt').invalid && (regProductFormForImportedFromRefCountry.get('licenseHolderTxt').dirty || regProductFormForImportedFromRefCountry.get('licenseHolderTxt').touched)"
+                            *ngIf="regProductForAllRequestedType.get('licenseHolderTxt').invalid && (regProductForAllRequestedType.get('licenseHolderTxt').dirty || regProductForAllRequestedType.get('licenseHolderTxt').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('licenseHolderTxt').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('licenseHolderTxt').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -186,10 +186,10 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').invalid && (regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').dirty || regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').touched)"
+                            *ngIf="regProductForAllRequestedType.get('countryOfLicenseHolder').invalid && (regProductForAllRequestedType.get('countryOfLicenseHolder').dirty || regProductForAllRequestedType.get('countryOfLicenseHolder').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('countryOfLicenseHolder').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('countryOfLicenseHolder').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -211,26 +211,26 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').invalid && (regProductFormForImportedFromRefCountry.get('physicalState').dirty || regProductFormForImportedFromRefCountry.get('physicalState').touched)"
+                            *ngIf="regProductForAllRequestedType.get('physicalState').invalid && (regProductForAllRequestedType.get('physicalState').dirty || regProductForAllRequestedType.get('physicalState').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('physicalState').errors.required">
                               this field is required
                             </div>
                           </div>
                         </mat-form-field>
                       </div>
                       <div class="col-sm-4"
-                           *ngIf="regProductFormForImportedFromRefCountry.get('physicalState').value === 'other'">
+                           *ngIf="regProductForAllRequestedType.get('physicalState').value === 'other'">
                         <mat-form-field class="example-full-width inputBesideSelect">
                           <mat-label>Other Physical State</mat-label>
                           <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
                                  placeholder="Other Physical State" required>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('physicalStateTxt').invalid && (regProductFormForImportedFromRefCountry.get('physicalStateTxt').dirty || regProductFormForImportedFromRefCountry.get('physicalStateTxt').touched)"
+                            *ngIf="regProductForAllRequestedType.get('physicalStateTxt').invalid && (regProductForAllRequestedType.get('physicalStateTxt').dirty || regProductForAllRequestedType.get('physicalStateTxt').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('physicalStateTxt').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('physicalStateTxt').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -245,26 +245,26 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').invalid && (regProductFormForImportedFromRefCountry.get('purposeOfUse').dirty || regProductFormForImportedFromRefCountry.get('purposeOfUse').touched)"
+                            *ngIf="regProductForAllRequestedType.get('purposeOfUse').invalid && (regProductForAllRequestedType.get('purposeOfUse').dirty || regProductForAllRequestedType.get('purposeOfUse').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('purposeOfUse').errors.required">
                               this field is required
                             </div>
                           </div>
                         </mat-form-field>
                       </div>
                       <div class="col-sm-4"
-                           *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUse').value === 'other'">
+                           *ngIf="regProductForAllRequestedType.get('purposeOfUse').value === 'other'">
                         <mat-form-field class="example-full-width inputBesideSelect">
                           <mat-label>Other Purpose of use</mat-label>
                           <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
                                  placeholder="Other Purpose of use" required>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').invalid && (regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').dirty || regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').touched)"
+                            *ngIf="regProductForAllRequestedType.get('purposeOfUseTxt').invalid && (regProductForAllRequestedType.get('purposeOfUseTxt').dirty || regProductForAllRequestedType.get('purposeOfUseTxt').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('purposeOfUseTxt').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('purposeOfUseTxt').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -274,7 +274,7 @@
                         <div class="form-group">
                           <label>Shelf Life</label>
                           <input class="form-control" type="range" min="0" max="10" formControlName="shelfLife">
-                          <span class="labelForRange">{{regProductFormForImportedFromRefCountry.get('shelfLife').value}}
+                          <span class="labelForRange">{{regProductForAllRequestedType.get('shelfLife').value}}
                             years</span>
                         </div>
                       </div>
@@ -287,10 +287,10 @@
                             </mat-option>
                           </mat-select>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('typeOfPackaging').invalid && (regProductFormForImportedFromRefCountry.get('typeOfPackaging').dirty || regProductFormForImportedFromRefCountry.get('typeOfPackaging').touched)"
+                            *ngIf="regProductForAllRequestedType.get('typeOfPackaging').invalid && (regProductForAllRequestedType.get('typeOfPackaging').dirty || regProductForAllRequestedType.get('typeOfPackaging').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('typeOfPackaging').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('typeOfPackaging').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -302,10 +302,10 @@
                           <input type="text" class="form-control" matInput formControlName="receiptNumber"
                                  placeholder="Receipt Number" required>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('receiptNumber').invalid && (regProductFormForImportedFromRefCountry.get('receiptNumber').dirty || regProductFormForImportedFromRefCountry.get('receiptNumber').touched)"
+                            *ngIf="regProductForAllRequestedType.get('receiptNumber').invalid && (regProductForAllRequestedType.get('receiptNumber').dirty || regProductForAllRequestedType.get('receiptNumber').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('receiptNumber').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('receiptNumber').errors.required">
                               this field is required
                             </div>
                           </div>
@@ -317,14 +317,14 @@
                           <input type="text" class="form-control" matInput formControlName="receiptValue"
                                  placeholder="Receipt Value" required>
                           <div
-                            *ngIf="regProductFormForImportedFromRefCountry.get('receiptValue').invalid && (regProductFormForImportedFromRefCountry.get('receiptValue').dirty || regProductFormForImportedFromRefCountry.get('receiptValue').touched)"
+                            *ngIf="regProductForAllRequestedType.get('receiptValue').invalid && (regProductForAllRequestedType.get('receiptValue').dirty || regProductForAllRequestedType.get('receiptValue').touched)"
                             class="alert alert-danger">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('receiptValue').errors.required">
+                              *ngIf="regProductForAllRequestedType.get('receiptValue').errors.required">
                               this field is required
                             </div>
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get('receiptValue').errors.pattern">
+                              *ngIf="regProductForAllRequestedType.get('receiptValue').errors.pattern">
                               this field must be <strong>Decimal number</strong> as 00.0
                             </div>
                           </div>
@@ -510,7 +510,7 @@
                     </div>
                   </div>
                 </tab>
-                <tab heading="Attachments">
+                <tab heading="Attachments" class="Attachments">
                   <div class="mt-5">
                     <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
                     <div class="row mt-3">
@@ -520,19 +520,20 @@
                           <div class="custom-file fileUpload mr-3" id="customFile">
                             <input type="file" class="custom-file-input" id="dataUpload_upload_file"
                                    aria-describedby="fileHelp"
-                                   [innerText]="regProductFormForImportedFromRefCountry.get(field.id).value"
+                                   [innerText]="regProductForAllRequestedType.get(field.id).value"
                                    (change)="onFileSelect($event, field.id)"
+                                   (blur)="onFileSelect($event, field.id)"
                                    [required]="field.required">
                             <div
-                              *ngIf="regProductFormForImportedFromRefCountry.get(field.id).invalid && (regProductFormForImportedFromRefCountry.get(field.id).dirty || regProductFormForImportedFromRefCountry.get(field.id).touched)"
+                              *ngIf="regProductForAllRequestedType.get(field.id).invalid && (regProductForAllRequestedType.get(field.id).dirty || regProductForAllRequestedType.get(field.id).touched)"
                               class="alert alert-danger">
                               <div
-                                *ngIf="regProductFormForImportedFromRefCountry.get(field.id).errors.required">
+                                *ngIf="regProductForAllRequestedType.get(field.id).errors.required">
                                 this field is required
                               </div>
                             </div>
                             <label class="custom-file-label" for="dataUpload_upload_file">
-                              {{regProductFormForImportedFromRefCountry.get(field.id).value ? regProductFormForImportedFromRefCountry.get(field.id).value.name : 'Choose file'}}
+                              {{regProductForAllRequestedType.get(field.id).value ? regProductForAllRequestedType.get(field.id).value.name : 'Choose file'}}
                             </label>
                           </div>
                         </div>
@@ -565,7 +566,566 @@
                       *ngIf="formTabs.tabs[2].active"
                       type="submit"
                       class="btn btn-primary btn-sm"
-                      [disabled]="!regProductFormForImportedFromRefCountry.valid">
+                      [disabled]="!regProductForAllRequestedType.valid">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-12 mt-5"
+               *ngIf="selectedFormType === 'regHairColorantProduct' && selectedRequestedType">
+            <h1>regHairColorantProduct</h1>
+            <form class="mt-2" name="form" class="example-form" method="post"
+                  [formGroup]="regHairColorantProductForAllRequestedType"
+                  (ngSubmit)="onSubmit()" novalidate>
+              <tabset type="pills" #formTabs>
+                <tab heading="Products fields">
+                  <div class="mt-5">
+                    <app-title [smallTitle]="true" [title]="'Request Form'"></app-title>
+                    <div class="row mt-3">
+                      <div class="col-sm-6">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Product Name (Arabic)</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="productArabicName"
+                                 placeholder="Product Name">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Product Name (English)</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="productEnglishName"
+                                 placeholder="Product Name" required>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('productEnglishName').invalid && (regHairColorantProductForAllRequestedType.get('productEnglishName').dirty || regHairColorantProductForAllRequestedType.get('productEnglishName').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('productEnglishName').errors.required">
+                              this field is required
+                            </div>
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('productEnglishName').errors.pattern">
+                              this field must be in English
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-12 mt-3 mb-3">
+                        <div class="ShortNameFieldContainer" formArrayName="shortName">
+                          <div class="row">
+                            <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
+                              <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
+                              <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
+                                      (click)="addShortName()">
+                                Add Short Name
+                              </button>
+                            </div>
+                            <div *ngIf="removeShortNameFieldStatus" class="alert alert-danger RelativeAlert">
+                              you must have at least one field
+                            </div>
+                            <div class="col-sm-3" *ngFor="let shortNameList of ShortName.controls; let i=index">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Short Name</mat-label>
+                                <input type="text" class="form-control" matInput [formControlName]="i"
+                                       placeholder="Short Name">
+                                <button type="button" (click)="removeShortName(i)" class="close">Remove</button>
+                                <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
+                                  this field must be in English
+                                </div>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Product Color</mat-label>
+                          <mat-select formControlName="productColor">
+                            <mat-option *ngFor="let color of formData.productColorList" [value]="color">
+                              {{color}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Manufacturing Company</mat-label>
+                          <mat-select formControlName="manufacturingCompany" required>
+                            <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company">
+                              {{company}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('manufacturingCompany').invalid && (regHairColorantProductForAllRequestedType.get('manufacturingCompany').dirty || regHairColorantProductForAllRequestedType.get('manufacturingCompany').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('manufacturingCompany').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Manufacturing Country</mat-label>
+                          <mat-select formControlName="manufacturingCountry" required>
+                            <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
+                              {{country}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('manufacturingCountry').invalid && (regHairColorantProductForAllRequestedType.get('manufacturingCountry').dirty || regHairColorantProductForAllRequestedType.get('manufacturingCountry').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('manufacturingCountry').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Applicant</mat-label>
+                          <mat-select formControlName="applicant" required>
+                            <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
+                              {{applicant}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('applicant').invalid && (regHairColorantProductForAllRequestedType.get('applicant').dirty || regHairColorantProductForAllRequestedType.get('applicant').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('applicant').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>License Holder</mat-label>
+                          <mat-select formControlName="licenseHolder" required>
+                            <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
+                              {{licHolder}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolder').invalid && (regHairColorantProductForAllRequestedType.get('licenseHolder').dirty || regHairColorantProductForAllRequestedType.get('licenseHolder').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolder').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4"
+                           *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolder').value === 'other'">
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Other License Holder</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
+                                 placeholder="Other License Holder" required>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolderTxt').invalid && (regHairColorantProductForAllRequestedType.get('licenseHolderTxt').dirty || regHairColorantProductForAllRequestedType.get('licenseHolderTxt').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolderTxt').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Country of License Holder</mat-label>
+                          <mat-select formControlName="countryOfLicenseHolder" required>
+                            <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
+                              {{country}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('countryOfLicenseHolder').invalid && (regHairColorantProductForAllRequestedType.get('countryOfLicenseHolder').dirty || regHairColorantProductForAllRequestedType.get('countryOfLicenseHolder').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('countryOfLicenseHolder').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Trade Mark</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="tradeMark"
+                                 placeholder="Trade Mark">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Physical State</mat-label>
+                          <mat-select formControlName="physicalState" required>
+                            <mat-option *ngFor='let state of formData.physicalStateList' [value]="state">
+                              {{state}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('physicalState').invalid && (regHairColorantProductForAllRequestedType.get('physicalState').dirty || regHairColorantProductForAllRequestedType.get('physicalState').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('physicalState').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4"
+                           *ngIf="regHairColorantProductForAllRequestedType.get('physicalState').value === 'other'">
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Other Physical State</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
+                                 placeholder="Other Physical State" required>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('physicalStateTxt').invalid && (regHairColorantProductForAllRequestedType.get('physicalStateTxt').dirty || regHairColorantProductForAllRequestedType.get('physicalStateTxt').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('physicalStateTxt').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Purpose of use</mat-label>
+                          <mat-select formControlName="purposeOfUse" required>
+                            <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose">
+                              {{purpose}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUse').invalid && (regHairColorantProductForAllRequestedType.get('purposeOfUse').dirty || regHairColorantProductForAllRequestedType.get('purposeOfUse').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUse').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4"
+                           *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUse').value === 'other'">
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Other Purpose of use</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
+                                 placeholder="Other Purpose of use" required>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').invalid && (regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').dirty || regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label>Shelf Life</label>
+                          <input class="form-control" type="range" min="0" max="10" formControlName="shelfLife">
+                          <span class="labelForRange">{{regHairColorantProductForAllRequestedType.get('shelfLife').value}}
+                            years</span>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Receipt Number</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="receiptNumber"
+                                 placeholder="Receipt Number" required>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('receiptNumber').invalid && (regHairColorantProductForAllRequestedType.get('receiptNumber').dirty || regHairColorantProductForAllRequestedType.get('receiptNumber').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('receiptNumber').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field class="example-full-width inputBesideSelect">
+                          <mat-label>Receipt Value</mat-label>
+                          <input type="text" class="form-control" matInput formControlName="receiptValue"
+                                 placeholder="Receipt Value" required>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('receiptValue').invalid && (regHairColorantProductForAllRequestedType.get('receiptValue').dirty || regHairColorantProductForAllRequestedType.get('receiptValue').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('receiptValue').errors.required">
+                              this field is required
+                            </div>
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('receiptValue').errors.pattern">
+                              this field must be <strong>Decimal number</strong> as 00.0
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4 mt-2">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Type of Packaging</mat-label>
+                          <mat-select formControlName="typeOfPackaging" required>
+                            <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
+                              {{type}}
+                            </mat-option>
+                          </mat-select>
+                          <div
+                            *ngIf="regHairColorantProductForAllRequestedType.get('typeOfPackaging').invalid && (regHairColorantProductForAllRequestedType.get('typeOfPackaging').dirty || regHairColorantProductForAllRequestedType.get('typeOfPackaging').touched)"
+                            class="alert alert-danger">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get('typeOfPackaging').errors.required">
+                              this field is required
+                            </div>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Packaging Description</mat-label>
+                          <textarea matInput formControlName="packagingDescription"
+                                    placeholder="Ex. It makes me feel..."></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Details fields">
+                  <div class="mt-5">
+                    <div formArrayName="detailsTable" class="detailsTable">
+                      <div class="d-flex align-items-center">
+                        <app-title [smallTitle]="true" [title]="'Details table'"></app-title>
+
+                        <button type="button" class="btn btn-primary ml-auto" (click)="addDetailsRows()">
+                          add details row
+                        </button>
+                      </div>
+                      <div class="table-responsive mt-5">
+                        <table class="table table-sm table-ordered">
+                          <tr *ngFor="let row of DetailsRows.controls; let i=index" [formGroupName]="i">
+                            <td colspan="5">
+                              <mat-accordion>
+                                <mat-expansion-panel class="areaContainer"
+                                                     [expanded]="status"
+                                                     hideToggle
+                                                     disabled="true">
+                                  <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                      <table class="table table-sm tableDetailsCont">
+                                        <tr>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Colour</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="colour"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Fragrance</mat-label>
+                                              <input type="text" class="form-control" matInput
+                                                     formControlName="fragrance"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Flavor</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="flavor"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>BarCode</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="barCode"
+                                                     placeholder="">
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field class="example-full-width">
+                                              <mat-label>Volumes</mat-label>
+                                              <input type="text" class="form-control" matInput formControlName="volumes"
+                                                     placeholder="" required>
+                                              <div
+                                                *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
+                                                class="alert alert-danger">
+                                                <div
+                                                  *ngIf="row.get('volumes').errors.required">
+                                                  this field is required
+                                                </div>
+                                              </div>
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                            <mat-form-field appearance="fill">
+                                              <mat-label>Unit of measure</mat-label>
+                                              <mat-select formControlName="unitOfMeasure" required>
+                                                <mat-option *ngFor='let unit of formData.unitOfMeasureList'
+                                                            [value]="unit">
+                                                  {{unit}}
+                                                </mat-option>
+                                              </mat-select>
+                                              <div
+                                                *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
+                                                class="alert alert-danger">
+                                                <div
+                                                  *ngIf="row.get('unitOfMeasure').errors.required">
+                                                  this field is required
+                                                </div>
+                                              </div>
+                                            </mat-form-field>
+                                          </td>
+                                          <td>
+                                             <span class="remove" (click)="removeDetailsRows(i)">
+                                              <i class="fa fa-trash"></i>
+                                            </span>
+
+                                          </td>
+                                          <td>
+                                            <span class="expandIcon" (click)="setStep(status)">
+                                              <i *ngIf="!status" class="fa fa-chevron-down"></i>
+                                              <i *ngIf="status" class="fa fa-chevron-up"></i>
+                                            </span>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </mat-panel-title>
+                                  </mat-expansion-panel-header>
+                                  <div class="detailsContainer pt-4">
+                                    <div class="row mt-3">
+                                      <div class="col-sm-4">
+                                        <mat-form-field appearance="fill">
+                                          <mat-label>Ingrediant</mat-label>
+                                          <mat-select formControlName="ingrediant" required>
+                                            <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
+                                                        [value]="ingrediantItem">
+                                              {{ingrediantItem}}
+                                            </mat-option>
+                                          </mat-select>
+                                          <div
+                                            *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
+                                            class="alert alert-danger">
+                                            <div
+                                              *ngIf="row.get('ingrediant').errors.required">
+                                              this field is required
+                                            </div>
+                                          </div>
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <mat-form-field class="example-full-width inputBesideSelect">
+                                          <mat-label>Concentrations</mat-label>
+                                          <input type="text" class="form-control" matInput
+                                                 formControlName="concentrations"
+                                                 placeholder="concentrations" required>
+
+                                          <div
+                                            *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
+                                            class="alert alert-danger">
+                                            <div
+                                              *ngIf="row.get('concentrations').errors.required">
+                                              this field is required
+                                            </div>
+                                          </div>
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <mat-form-field appearance="fill">
+                                          <mat-label>Function</mat-label>
+                                          <mat-select formControlName="function" required>
+                                            <mat-option *ngFor='let functiontItem of formData.functionList'
+                                                        [value]="functiontItem">
+                                              {{functiontItem}}
+                                            </mat-option>
+                                          </mat-select>
+                                          <div
+                                            *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
+                                            class="alert alert-danger">
+                                            <div
+                                              *ngIf="row.get('function').errors.required">
+                                              this field is required
+                                            </div>
+                                          </div>
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </mat-expansion-panel>
+                              </mat-accordion>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Attachments" class="Attachments">
+                  <div class="mt-5">
+                    <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
+                    <div class="row mt-3">
+                      <div class="col-sm-4" *ngFor="let field of attachmentFields">
+                        <div class="form-group">
+                          <label>{{field.name}}</label>
+                          <div class="custom-file fileUpload mr-3">
+                            <input type="file" class="custom-file-input"
+                                   aria-describedby="fileHelp"
+                                   [innerText]="regHairColorantProductForAllRequestedType.get(field.id).value"
+                                   (change)="onFileSelect($event, field.id)"
+                                   (blur)="onFileSelect($event, field.id)"
+                                   [required]="field.required">
+                            <div
+                              *ngIf="regHairColorantProductForAllRequestedType.get(field.id).invalid && (regHairColorantProductForAllRequestedType.get(field.id).dirty || regHairColorantProductForAllRequestedType.get(field.id).touched)"
+                              class="alert alert-danger">
+                              <div
+                                *ngIf="regHairColorantProductForAllRequestedType.get(field.id).errors.required">
+                                this field is required
+                              </div>
+                            </div>
+                            <label class="custom-file-label" for="dataUpload_upload_file">
+                              {{regHairColorantProductForAllRequestedType.get(field.id).value ? regHairColorantProductForAllRequestedType.get(field.id).value.name : 'Choose file'}}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+              </tabset>
+              <div class="row buttonContainer">
+                <div class="col-12 d-flex mt-3">
+                  <button *ngIf="!formTabs.tabs[0].active"
+                          type="button"
+                          class="btn btn-primary btn-sm mr-3"
+                          (click)="backToNextTab()">
+                    Back Forward
+                  </button>
+                  <div class="ml-auto">
+                    <button *ngIf="!formTabs.tabs[2].active"
+                            type="button"
+                            class="btn btn-primary btn-sm mr-3"
+                            (click)="nextToNextTab()">
+                      Next Forward
+                    </button>
+                    <button type="button"
+                            class="btn btn-primary btn-sm mr-3"
+                            (click)="saveData()">
+                      Save
+                    </button>
+                    <button
+                      *ngIf="formTabs.tabs[2].active"
+                      type="submit"
+                      class="btn btn-primary btn-sm"
+                      [disabled]="!regHairColorantProductForAllRequestedType.valid">
                       Submit
                     </button>
                   </div>

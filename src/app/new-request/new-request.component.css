@@ -258,3 +258,9 @@ input[type=file] {
 .detailsTable .table td span.expandIcon {
   color: #c28a30 !important;
 }
+
+
+/* ------------------------ Attachments ---------------------- */
+.Attachments .row > div:nth-child(n+4) {
+  margin-top: 1.5em !important;
+}

@@ -83,8 +83,8 @@ export class NewRequestComponent implements OnInit {
   };
   selectedFormType;
   selectedRequestedType;
-  regProductFormForImportedFromRefCountry: FormGroup;
-  regProductFormForImportedFromUnderLicenseRef: FormGroup;
+  regProductForAllRequestedType: FormGroup;
+  regHairColorantProductForAllRequestedType: FormGroup;
   fileName;
   attachmentFields = [
     {
@@ -196,21 +196,26 @@ export class NewRequestComponent implements OnInit {
   }
 
   getFormType(event) {
-    this.resetForms();
     this.selectedFormType = event.value;
+    this.resetForms();
   }
 
   getRequestType(event) {
-    this.resetForms();
     this.selectedRequestedType = event.value;
+    this.resetForms();
   }
 
   onFileSelect(event, fileControlName) {
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.regProductFormForImportedFromRefCountry.get(fileControlName).setValue(file);
+      if (this.selectedFormType === 'regProduct') {
+        this.regProductForAllRequestedType.get(fileControlName).setValue(file);
+      } else if (this.selectedFormType === 'regHairColorantProduct') {
+        this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
+      }
     }
+    event.target.files = [];
   }
 
   nextToNextTab() {
@@ -220,22 +225,33 @@ export class NewRequestComponent implements OnInit {
   }
 
   backToNextTab() {
-    debugger
     let activeTabIndex;
     this.formTabs.tabs.filter(x => x.active).map(y => activeTabIndex = this.formTabs.tabs.indexOf(y));
     activeTabIndex >= 0 ? this.formTabs.tabs[activeTabIndex - 1].active = true : null;
   }
 
   saveData() {
-    console.log('regProductFormForImportedFromRefCountry', this.regProductFormForImportedFromRefCountry.value);
+    if (this.selectedFormType === 'regProduct') {
+      console.log('regProductForAllRequestedType', this.regProductForAllRequestedType.value);
+    } else if (this.selectedFormType === 'regHairColorantProduct') {
+      console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType.value);
+    }
   }
 
   onSubmit() {
-    console.log('regProductFormForImportedFromRefCountry', this.regProductFormForImportedFromRefCountry.value);
+    if (this.selectedFormType === 'regProduct') {
+      console.log('regProductForAllRequestedType', this.regProductForAllRequestedType.value);
+    } else if (this.selectedFormType === 'regHairColorantProduct') {
+      console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType.value);
+    }
   }
 
   get ShortName(): FormArray {
-    return this.regProductFormForImportedFromRefCountry.get('shortName') as FormArray;
+    if (this.selectedFormType === 'regProduct') {
+      return this.regProductForAllRequestedType.get('shortName') as FormArray;
+    } else if (this.selectedFormType === 'regHairColorantProduct') {
+      return this.regHairColorantProductForAllRequestedType.get('shortName') as FormArray;
+    }
   }
 
   addShortName() {
@@ -255,7 +271,11 @@ export class NewRequestComponent implements OnInit {
   }
 
   get DetailsRows(): FormArray {
-    return this.regProductFormForImportedFromRefCountry.get('detailsTable') as FormArray;
+    if (this.selectedFormType === 'regProduct') {
+      return this.regProductForAllRequestedType.get('detailsTable') as FormArray;
+    } else if (this.selectedFormType === 'regHairColorantProduct') {
+      return this.regHairColorantProductForAllRequestedType.get('detailsTable') as FormArray;
+    }
   }
 
   addDetailsRows() {
@@ -277,59 +297,109 @@ export class NewRequestComponent implements OnInit {
   }
 
   resetForms() {
-    // this.fileTextUploader ? this.fileTextUploader.nativeElement.value = '' : null;
-    // this.fileTextUploader ? this.fileTextUploader.nativeElement.offsetParent.children[1].innerHTML = 'Choose file' : null;
     this.getFormAsStarting();
-    console.log('this.regProductFormForImportedFromRefCountry', this.regProductFormForImportedFromRefCountry);
   }
 
   getFormAsStarting() {
-    this.regProductFormForImportedFromRefCountry = this.fb.group({
-      productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
-      manufacturingCompany: this.fb.control('', Validators.required),
-      manufacturingCountry: this.fb.control('', Validators.required),
-      applicant: this.fb.control('', Validators.required),
-      licenseHolder: this.fb.control('', Validators.required),
-      licenseHolderTxt: this.fb.control(''),
-      countryOfLicenseHolder: this.fb.control('', Validators.required),
-      tradeMark: this.fb.control(''),
-      physicalState: this.fb.control('', Validators.required),
-      physicalStateTxt: this.fb.control(''),
-      purposeOfUse: this.fb.control('', Validators.required),
-      purposeOfUseTxt: this.fb.control(''),
-      shelfLife: this.fb.control(0),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
-      receiptNumber: this.fb.control('', Validators.required),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
-      detailsTable: this.fb.array([this.fb.group({
-        colour: this.fb.control(''),
-        fragrance: this.fb.control(''),
-        flavor: this.fb.control(''),
-        barCode: this.fb.control(''),
-        volumes: this.fb.control('', Validators.required),
-        unitOfMeasure: this.fb.control('', Validators.required),
-        ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', Validators.required),
-        function: this.fb.control('', Validators.required),
-      })]),
-      freeSale: this.fb.control('', Validators.required),
-      GMP: this.fb.control(''),
-      CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
-      shelfLifeStatement: this.fb.control('', Validators.required),
-      artWork: this.fb.control('', Validators.required),
-      leaflet: this.fb.control(''),
-      reference: this.fb.control(''),
-      methodOfAnalysis: this.fb.control(''),
-      specificationsOfFinishedProduct: this.fb.control(''),
-      receipt: this.fb.control(''),
-      authorizationLetter: this.fb.control('', Validators.required),
-      manufacturingContract: this.fb.control(''),
-      storageContract: this.fb.control(''),
-      others: this.fb.control(''),
-      otherFees: this.fb.control('', Validators.required),
-    });
+    debugger;
+    console.log('selectedFormType', this.selectedFormType);
+    if (this.selectedFormType === 'regProduct') {
+      this.regProductForAllRequestedType = this.fb.group({
+        productArabicName: this.fb.control(''),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
+        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCountry: this.fb.control('', Validators.required),
+        applicant: this.fb.control('', Validators.required),
+        licenseHolder: this.fb.control('', Validators.required),
+        licenseHolderTxt: this.fb.control(''),
+        countryOfLicenseHolder: this.fb.control('', Validators.required),
+        tradeMark: this.fb.control(''),
+        physicalState: this.fb.control('', Validators.required),
+        physicalStateTxt: this.fb.control(''),
+        purposeOfUse: this.fb.control('', Validators.required),
+        purposeOfUseTxt: this.fb.control(''),
+        shelfLife: this.fb.control(0),
+        typeOfPackaging: this.fb.control('', Validators.required),
+        packagingDescription: this.fb.control(''),
+        receiptNumber: this.fb.control('', Validators.required),
+        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
+        detailsTable: this.fb.array([this.fb.group({
+          colour: this.fb.control(''),
+          fragrance: this.fb.control(''),
+          flavor: this.fb.control(''),
+          barCode: this.fb.control(''),
+          volumes: this.fb.control('', Validators.required),
+          unitOfMeasure: this.fb.control('', Validators.required),
+          ingrediant: this.fb.control('', Validators.required),
+          concentrations: this.fb.control('', Validators.required),
+          function: this.fb.control('', Validators.required),
+        })]),
+        freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+        GMP: this.fb.control(''),
+        CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
+        shelfLifeStatement: this.fb.control('', Validators.required),
+        artWork: this.fb.control('', Validators.required),
+        leaflet: this.fb.control(''),
+        reference: this.fb.control(''),
+        methodOfAnalysis: this.fb.control(''),
+        specificationsOfFinishedProduct: this.fb.control('', Validators.required),
+        receipt: this.fb.control('', Validators.required),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+        manufacturingContract: this.fb.control(''),
+        storageContract: this.fb.control(''),
+        others: this.fb.control(''),
+        otherFees: this.fb.control('', Validators.required),
+      });
+    } else if (this.selectedFormType === 'regHairColorantProduct') {
+      this.regHairColorantProductForAllRequestedType = this.fb.group({
+        productArabicName: this.fb.control(''),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
+        productColor: this.fb.control(''),
+        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCountry: this.fb.control('', Validators.required),
+        applicant: this.fb.control('', Validators.required),
+        licenseHolder: this.fb.control('', Validators.required),
+        licenseHolderTxt: this.fb.control(''),
+        countryOfLicenseHolder: this.fb.control('', Validators.required),
+        tradeMark: this.fb.control(''),
+        physicalState: this.fb.control('', Validators.required),
+        physicalStateTxt: this.fb.control(''),
+        purposeOfUse: this.fb.control('', Validators.required),
+        purposeOfUseTxt: this.fb.control(''),
+        shelfLife: this.fb.control(0),
+        typeOfPackaging: this.fb.control('', Validators.required),
+        packagingDescription: this.fb.control(''),
+        receiptNumber: this.fb.control('', Validators.required),
+        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
+        detailsTable: this.fb.array([this.fb.group({
+          colour: this.fb.control(''),
+          fragrance: this.fb.control(''),
+          flavor: this.fb.control(''),
+          barCode: this.fb.control(''),
+          volumes: this.fb.control('', Validators.required),
+          unitOfMeasure: this.fb.control('', Validators.required),
+          ingrediant: this.fb.control('', Validators.required),
+          concentrations: this.fb.control('', Validators.required),
+          function: this.fb.control('', Validators.required),
+        })]),
+        freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+        GMP: this.fb.control(''),
+        CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
+        shelfLifeStatement: this.fb.control('', Validators.required),
+        artWork: this.fb.control('', Validators.required),
+        leaflet: this.fb.control(''),
+        reference: this.fb.control(''),
+        methodOfAnalysis: this.fb.control(''),
+        specificationsOfFinishedProduct: this.fb.control('', Validators.required),
+        receipt: this.fb.control('', Validators.required),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+        manufacturingContract: this.fb.control(''),
+        storageContract: this.fb.control(''),
+        others: this.fb.control(''),
+        otherFees: this.fb.control('', Validators.required),
+      });
+    }
   }
 }
