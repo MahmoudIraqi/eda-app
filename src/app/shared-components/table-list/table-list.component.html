@@ -1,14 +1,28 @@
+<!--<div class="filtersContainer">-->
+<!--  <div class="row">-->
+<!--    <div class="col-3">-->
+<!--      <mat-form-field appearance="fill">-->
+<!--        <mat-label>filter for Status</mat-label>-->
+<!--        <mat-select (selectionChange)="filterForStatus($event)">-->
+<!--          <mat-option *ngFor="let option of filterByStatus" [value]="option">-->
+<!--            {{option}}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 <div class="table-responsive">
   <table class="table table-sm table-ordered">
     <tr class="headerRow">
-      <th>Request Number</th>
-      <th>Request Entity</th>
-      <th class="hide">Status</th>
-      <th class="hide">Details</th>
-      <th *ngIf="notificationStatus" class="hide">Notification</th>
+      <th>Request Number <span (click)="sortBy(sortStatus, 'requestNumber')"><i class="fa fa-sort"></i></span></th>
+      <th>Request Entity <span (click)="sortBy(sortStatus, 'requestEntity')"><i class="fa fa-sort"></i></span></th>
+      <th class="hide">Status <span (click)="sortBy(sortStatus, 'status')"><i class="fa fa-sort"></i></span></th>
+      <th class="hide">Details <span (click)="sortBy(sortStatus, 'details')"><i class="fa fa-sort"></i></span></th>
+      <th *ngIf="notificationStatus" class="hide">Notification <span (click)="sortBy(sortStatus, 'notificationNumber')"><i class="fa fa-sort"></i></span></th>
       <th *ngIf="editActionsStatus">Actions</th>
     </tr>
-    <tr *ngFor="let request of data; let i = index">
+    <tr *ngFor="let request of dataAfterFilters.length > 0 ? dataAfterFilters : data; let i = index">
       <td colspan="5">
         <mat-accordion>
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
