@@ -27,7 +27,6 @@
             </mat-form-field>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 'regProduct' && selectedRequestedType">
-            <h1>regProduct</h1>
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="regProductForAllRequestedType"
                   (ngSubmit)="onSubmit()" novalidate>
@@ -576,7 +575,6 @@
           </div>
           <div class="col-12 mt-5"
                *ngIf="selectedFormType === 'regHairColorantProduct' && selectedRequestedType">
-            <h1>regHairColorantProduct</h1>
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="regHairColorantProductForAllRequestedType"
                   (ngSubmit)="onSubmit()" novalidate>

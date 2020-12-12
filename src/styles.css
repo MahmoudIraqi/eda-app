@@ -111,15 +111,20 @@ a,
 .btn.btn-primary {
   background: transparent !important;
   border: 2px solid #c28a30;
+  min-width: 150px;
   border-radius: 10px 0px 10px 10px;
   color: #c28a30;
   font-weight: 500;
+  -webkit-transition: ease-out 2s;
+  -moz-transition: ease-out 2s;
+  transition: ease-out 2s;
 }
 
 .btn.btn-primary:hover {
   background: #c28a30 !important;
   border: 2px solid #c28a30;
   color: #fff;
+  box-shadow: inset 600px 0 0 0 #c28a30;
 }
 
 .w-85 {
@@ -224,9 +229,18 @@ body {
   font-weight: 600;
   border: 1px solid #161c30;
   border-radius: 10px 0px 10px 10px !important;
+  -webkit-transition: ease-out 1s;
+  -moz-transition: ease-out 1s;
+  transition: ease-out 1s;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+.nav-pills .nav-link:hover {
+  color: #fff;
+  box-shadow: inset 600px 0 0 0 #161c30;
+}
+
+.nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .show > .nav-link {
+  color: #fff;
   background-color: #c28a30 !important;
   border: none;
 }
