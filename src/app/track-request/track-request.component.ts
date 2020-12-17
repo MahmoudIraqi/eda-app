@@ -8,62 +8,65 @@ import {Component, OnInit} from '@angular/core';
 export class TrackRequestComponent implements OnInit {
 
 
-  trackListRequests = [
-    {
-      requestNumber: '12341234',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'In Progress',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-      notificationStatus: true,
-      notificationNumber: '13245786',
-      notificationComment: 'we need some file'
-    },
-    {
-      requestNumber: '56785678',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-      notificationStatus: true,
-      notificationNumber: '98712654',
-      notificationComment: 'we need some files'
-    },
-    {
-      requestNumber: '192837465',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-      notificationStatus: false,
-      notificationNumber: '',
-      notificationComment: ''
-    },
-    {
-      requestNumber: '12341234',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'In Progress',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-      notificationStatus: true,
-      notificationNumber: '13245786',
-      notificationComment: 'we need some file'
-    },
-    {
-      requestNumber: '56785678',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-      notificationStatus: true,
-      notificationNumber: '98712654',
-      notificationComment: 'we need some files'
-    },
-    {
-      requestNumber: '192837465',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-      notificationStatus: false,
-      notificationNumber: '',
-      notificationComment: ''
-    }
-  ];
+  trackListRequests = {
+    tableHeader: ['Id', 'Request Entity', 'Status', 'Details', 'Notification'],
+    tableBody: [
+      {
+        id: '1',
+        requestEntity: 'Egyptian Drug Authority',
+        status: 'In Progress',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        notification: '13245786',
+        notificationStatus: true,
+        notificationComment: 'we need some file'
+      },
+      {
+        id: '2',
+        requestEntity: 'Egyptian Drug Authority',
+        status: 'starting',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        notification: '98712654',
+        notificationStatus: true,
+        notificationComment: 'we need some files'
+      },
+      {
+        id: '3',
+        requestEntity: 'Egyptian Drug Authority',
+        status: 'starting',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        notification: '',
+        notificationStatus: false,
+        notificationComment: ''
+      },
+      {
+        id: '4',
+        requestEntity: 'Egyptian Drug Authority',
+        status: 'In Progress',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        notification: '13245786',
+        notificationStatus: true,
+        notificationComment: 'we need some file'
+      },
+      {
+        id: '5',
+        requestEntity: 'Egyptian Drug Authority',
+        status: 'starting',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        notification: '98712654',
+        notificationStatus: true,
+        notificationComment: 'we need some files'
+      },
+      {
+        id: '6',
+        requestEntity: 'Egyptian Drug Authority',
+        status: 'starting',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        notification: '',
+        notificationStatus: false,
+        notificationComment: ''
+      }
+    ]
+  };
 
   constructor() {
   }

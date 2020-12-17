@@ -33,7 +33,9 @@
               <tabset type="pills" #formTabs>
                 <tab heading="Products fields">
                   <div class="mt-5">
-                    <app-title [smallTitle]="true" [title]="'Request Form'"></app-title>
+                    <div class="col-12">
+                      <app-title [smallTitle]="true" [title]="'Request Form'"></app-title>
+                    </div>
                     <div class="row mt-3">
                       <div class="col-sm-6">
                         <mat-form-field class="example-full-width">
@@ -278,24 +280,6 @@
                         </div>
                       </div>
                       <div class="col-sm-4">
-                        <mat-form-field appearance="fill">
-                          <mat-label>Type of Packaging</mat-label>
-                          <mat-select formControlName="typeOfPackaging" required>
-                            <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
-                              {{type}}
-                            </mat-option>
-                          </mat-select>
-                          <div
-                            *ngIf="regProductForAllRequestedType.get('typeOfPackaging').invalid && (regProductForAllRequestedType.get('typeOfPackaging').dirty || regProductForAllRequestedType.get('typeOfPackaging').touched)"
-                            class="alert alert-danger">
-                            <div
-                              *ngIf="regProductForAllRequestedType.get('typeOfPackaging').errors.required">
-                              this field is required
-                            </div>
-                          </div>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-4">
                         <mat-form-field class="example-full-width inputBesideSelect">
                           <mat-label>Receipt Number</mat-label>
                           <input type="text" class="form-control" matInput formControlName="receiptNumber"
@@ -329,121 +313,121 @@
                           </div>
                         </mat-form-field>
                       </div>
-                      <div class="col-sm-4">
-                        <mat-form-field class="example-full-width">
-                          <mat-label>Packaging Description</mat-label>
-                          <textarea matInput formControlName="packagingDescription"
-                                    placeholder="Ex. It makes me feel..."></textarea>
-                        </mat-form-field>
-                      </div>
                     </div>
                   </div>
                 </tab>
                 <tab heading="Details fields">
                   <div class="mt-5">
                     <div formArrayName="detailsTable" class="detailsTable">
-                      <div class="d-flex align-items-center">
-                        <app-title [smallTitle]="true" [title]="'Details table'"></app-title>
-
-                        <button type="button" class="btn btn-primary ml-auto" (click)="addDetailsRows()">
-                          add details row
-                        </button>
+                      <div class="col-12">
+                        <app-title [smallTitle]="true" [title]="'Details Form'"></app-title>
                       </div>
-                      <div class="table-responsive mt-5">
-                        <table class="table table-sm table-ordered">
-                          <tr *ngFor="let row of DetailsRows.controls; let i=index" [formGroupName]="i">
-                            <td colspan="5">
-                              <mat-accordion>
-                                <mat-expansion-panel class="areaContainer"
-                                                     [expanded]="status"
-                                                     hideToggle
-                                                     disabled="true">
-                                  <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                      <table class="table table-sm tableDetailsCont">
-                                        <tr>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Colour</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="colour"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Fragrance</mat-label>
-                                              <input type="text" class="form-control" matInput
-                                                     formControlName="fragrance"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Flavor</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="flavor"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>BarCode</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="barCode"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Volumes</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="volumes"
-                                                     placeholder="" required>
-                                              <div
-                                                *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
-                                                class="alert alert-danger">
-                                                <div
-                                                  *ngIf="row.get('volumes').errors.required">
-                                                  this field is required
-                                                </div>
-                                              </div>
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field appearance="fill">
-                                              <mat-label>Unit of measure</mat-label>
-                                              <mat-select formControlName="unitOfMeasure" required>
-                                                <mat-option *ngFor='let unit of formData.unitOfMeasureList'
-                                                            [value]="unit">
-                                                  {{unit}}
-                                                </mat-option>
-                                              </mat-select>
-                                              <div
-                                                *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
-                                                class="alert alert-danger">
-                                                <div
-                                                  *ngIf="row.get('unitOfMeasure').errors.required">
-                                                  this field is required
-                                                </div>
-                                              </div>
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                             <span class="remove" (click)="removeDetailsRows(i)">
-                                              <i class="fa fa-trash"></i>
-                                            </span>
-
-                                          </td>
-                                          <td>
-                                            <span class="expandIcon" (click)="setStep(status)">
-                                              <i *ngIf="!status" class="fa fa-chevron-down"></i>
-                                              <i *ngIf="status" class="fa fa-chevron-up"></i>
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      </table>
-                                    </mat-panel-title>
-                                  </mat-expansion-panel-header>
-                                  <div class="detailsContainer pt-4">
-                                    <div class="row mt-3">
-                                      <div class="col-sm-4">
+                      <div class="addDetailsRequestContainer">
+                        <div *ngFor="let row of DetailsRows().controls; let i=index" [formGroupName]="i">
+                          <div class="row"
+                               *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Colour</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="colour"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Fragrance</mat-label>
+                                <input type="text" class="form-control" matInput
+                                       formControlName="fragrance"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Flavor</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="flavor"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>BarCode</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="barCode"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Volumes</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="volumes"
+                                       placeholder="" required>
+                                <div
+                                  *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
+                                  class="alert alert-danger">
+                                  <div
+                                    *ngIf="row.get('volumes').errors.required">
+                                    this field is required
+                                  </div>
+                                </div>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field appearance="fill">
+                                <mat-label>Unit of measure</mat-label>
+                                <mat-select formControlName="unitOfMeasure" required>
+                                  <mat-option *ngFor='let unit of formData.unitOfMeasureList'
+                                              [value]="unit">
+                                    {{unit}}
+                                  </mat-option>
+                                </mat-select>
+                                <div
+                                  *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
+                                  class="alert alert-danger">
+                                  <div
+                                    *ngIf="row.get('unitOfMeasure').errors.required">
+                                    this field is required
+                                  </div>
+                                </div>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field appearance="fill">
+                                <mat-label>Type of Packaging</mat-label>
+                                <mat-select formControlName="typeOfPackaging" required>
+                                  <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
+                                    {{type}}
+                                  </mat-option>
+                                </mat-select>
+                                <div
+                                  *ngIf="row.get('typeOfPackaging').invalid && (row.get('typeOfPackaging').dirty || row.get('typeOfPackaging').touched)"
+                                  class="alert alert-danger">
+                                  <div
+                                    *ngIf="row.get('typeOfPackaging').errors.required">
+                                    this field is required
+                                  </div>
+                                </div>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Packaging Description</mat-label>
+                                <textarea matInput formControlName="packagingDescription"
+                                          placeholder="Ex. It makes me feel..."></textarea>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 d-flex">
+                              <button type="button" class="btn btn-primary ml-auto"
+                                      (click)="addIngrediantDetailsRows(i)">
+                                Add Ingrediant Details Row
+                              </button>
+                            </div>
+                            <div class="col-12 mt-2">
+                              <div class="row" formArrayName="ingrediantDetails">
+                                <div class="col-12"
+                                     *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
+                                     [formGroupName]="index">
+                                  <div class="ingrediantDetailsContainer">
+                                    <div class="row">
+                                      <div class="col-sm-3">
                                         <mat-form-field appearance="fill">
                                           <mat-label>Ingrediant</mat-label>
                                           <mat-select formControlName="ingrediant" required>
@@ -462,7 +446,7 @@
                                           </div>
                                         </mat-form-field>
                                       </div>
-                                      <div class="col-sm-4">
+                                      <div class="col-sm-3">
                                         <mat-form-field class="example-full-width inputBesideSelect">
                                           <mat-label>Concentrations</mat-label>
                                           <input type="text" class="form-control" matInput
@@ -479,7 +463,7 @@
                                           </div>
                                         </mat-form-field>
                                       </div>
-                                      <div class="col-sm-4">
+                                      <div class="col-sm-3">
                                         <mat-form-field appearance="fill">
                                           <mat-label>Function</mat-label>
                                           <mat-select formControlName="function" required>
@@ -498,13 +482,42 @@
                                           </div>
                                         </mat-form-field>
                                       </div>
+                                      <div class="col-sm-3 d-flex">
+                                        <button type="button" class="btn btn-primary ml-auto"
+                                                (click)="removeIngrediantDetailsRows('form',index, i)">
+                                          Remove Ingrediant Details Row
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
-                                </mat-expansion-panel>
-                              </mat-accordion>
-                            </td>
-                          </tr>
-                        </table>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-12 mt-3 d-flex">
+                              <button type="button"
+                                      class="btn btn-primary ml-auto"
+                                      (click)="addDetailsRows()"
+                                      [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
+                                Add Details Row
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-4" *ngIf="detailsListTable.tableBody.length > 0">
+                        <div class="col-12">
+                          <app-title [title]="'Details Table'" [smallTitle]="true"></app-title>
+                        </div>
+                        <div class="col-12 mt-5">
+                          <div class="RequestingTable">
+                            <app-table-list [data]="detailsListTable"
+                                            [whichTable]="'newRequest'"
+                                            (removeDetailsRowOutput)="removeDetailsRows($event)"
+                                            (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('table',$event, '')"
+                                            (editDetailedRowOutput)="editTheDetailsRow($event)"
+                            ></app-table-list>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -831,7 +844,8 @@
                         <div class="form-group">
                           <label>Shelf Life</label>
                           <input class="form-control" type="range" min="0" max="10" formControlName="shelfLife">
-                          <span class="labelForRange">{{regHairColorantProductForAllRequestedType.get('shelfLife').value}}
+                          <span
+                            class="labelForRange">{{regHairColorantProductForAllRequestedType.get('shelfLife').value}}
                             years</span>
                         </div>
                       </div>
@@ -869,139 +883,121 @@
                           </div>
                         </mat-form-field>
                       </div>
-                      <div class="col-sm-4 mt-2">
-                        <mat-form-field appearance="fill">
-                          <mat-label>Type of Packaging</mat-label>
-                          <mat-select formControlName="typeOfPackaging" required>
-                            <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
-                              {{type}}
-                            </mat-option>
-                          </mat-select>
-                          <div
-                            *ngIf="regHairColorantProductForAllRequestedType.get('typeOfPackaging').invalid && (regHairColorantProductForAllRequestedType.get('typeOfPackaging').dirty || regHairColorantProductForAllRequestedType.get('typeOfPackaging').touched)"
-                            class="alert alert-danger">
-                            <div
-                              *ngIf="regHairColorantProductForAllRequestedType.get('typeOfPackaging').errors.required">
-                              this field is required
-                            </div>
-                          </div>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-4">
-                        <mat-form-field class="example-full-width">
-                          <mat-label>Packaging Description</mat-label>
-                          <textarea matInput formControlName="packagingDescription"
-                                    placeholder="Ex. It makes me feel..."></textarea>
-                        </mat-form-field>
-                      </div>
                     </div>
                   </div>
                 </tab>
                 <tab heading="Details fields">
                   <div class="mt-5">
                     <div formArrayName="detailsTable" class="detailsTable">
-                      <div class="d-flex align-items-center">
-                        <app-title [smallTitle]="true" [title]="'Details table'"></app-title>
-
-                        <button type="button" class="btn btn-primary ml-auto" (click)="addDetailsRows()">
-                          add details row
-                        </button>
+                      <div class="col-12">
+                        <app-title [smallTitle]="true" [title]="'Shade Details Form'"></app-title>
                       </div>
-                      <div class="table-responsive mt-5">
-                        <table class="table table-sm table-ordered">
-                          <tr *ngFor="let row of DetailsRows.controls; let i=index" [formGroupName]="i">
-                            <td colspan="5">
-                              <mat-accordion>
-                                <mat-expansion-panel class="areaContainer"
-                                                     [expanded]="status"
-                                                     hideToggle
-                                                     disabled="true">
-                                  <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                      <table class="table table-sm tableDetailsCont">
-                                        <tr>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Colour</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="colour"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Fragrance</mat-label>
-                                              <input type="text" class="form-control" matInput
-                                                     formControlName="fragrance"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Flavor</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="flavor"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>BarCode</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="barCode"
-                                                     placeholder="">
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field class="example-full-width">
-                                              <mat-label>Volumes</mat-label>
-                                              <input type="text" class="form-control" matInput formControlName="volumes"
-                                                     placeholder="" required>
-                                              <div
-                                                *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
-                                                class="alert alert-danger">
-                                                <div
-                                                  *ngIf="row.get('volumes').errors.required">
-                                                  this field is required
-                                                </div>
-                                              </div>
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                            <mat-form-field appearance="fill">
-                                              <mat-label>Unit of measure</mat-label>
-                                              <mat-select formControlName="unitOfMeasure" required>
-                                                <mat-option *ngFor='let unit of formData.unitOfMeasureList'
-                                                            [value]="unit">
-                                                  {{unit}}
-                                                </mat-option>
-                                              </mat-select>
-                                              <div
-                                                *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
-                                                class="alert alert-danger">
-                                                <div
-                                                  *ngIf="row.get('unitOfMeasure').errors.required">
-                                                  this field is required
-                                                </div>
-                                              </div>
-                                            </mat-form-field>
-                                          </td>
-                                          <td>
-                                             <span class="remove" (click)="removeDetailsRows(i)">
-                                              <i class="fa fa-trash"></i>
-                                            </span>
-
-                                          </td>
-                                          <td>
-                                            <span class="expandIcon" (click)="setStep(status)">
-                                              <i *ngIf="!status" class="fa fa-chevron-down"></i>
-                                              <i *ngIf="status" class="fa fa-chevron-up"></i>
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      </table>
-                                    </mat-panel-title>
-                                  </mat-expansion-panel-header>
-                                  <div class="detailsContainer pt-4">
-                                    <div class="row mt-3">
-                                      <div class="col-sm-4">
+                      <div class="addDetailsRequestContainer">
+                        <div *ngFor="let row of DetailsRows().controls; let i=index" [formGroupName]="i">
+                          <div class="row"
+                               *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Colour</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="colour"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Fragrance</mat-label>
+                                <input type="text" class="form-control" matInput
+                                       formControlName="fragrance"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Flavor</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="flavor"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>BarCode</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="barCode"
+                                       placeholder="">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Volumes</mat-label>
+                                <input type="text" class="form-control" matInput formControlName="volumes"
+                                       placeholder="" required>
+                                <div
+                                  *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
+                                  class="alert alert-danger">
+                                  <div
+                                    *ngIf="row.get('volumes').errors.required">
+                                    this field is required
+                                  </div>
+                                </div>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field appearance="fill">
+                                <mat-label>Unit of measure</mat-label>
+                                <mat-select formControlName="unitOfMeasure" required>
+                                  <mat-option *ngFor='let unit of formData.unitOfMeasureList'
+                                              [value]="unit">
+                                    {{unit}}
+                                  </mat-option>
+                                </mat-select>
+                                <div
+                                  *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
+                                  class="alert alert-danger">
+                                  <div
+                                    *ngIf="row.get('unitOfMeasure').errors.required">
+                                    this field is required
+                                  </div>
+                                </div>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field appearance="fill">
+                                <mat-label>Type of Packaging</mat-label>
+                                <mat-select formControlName="typeOfPackaging" required>
+                                  <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
+                                    {{type}}
+                                  </mat-option>
+                                </mat-select>
+                                <div
+                                  *ngIf="row.get('typeOfPackaging').invalid && (row.get('typeOfPackaging').dirty || row.get('typeOfPackaging').touched)"
+                                  class="alert alert-danger">
+                                  <div
+                                    *ngIf="row.get('typeOfPackaging').errors.required">
+                                    this field is required
+                                  </div>
+                                </div>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Packaging Description</mat-label>
+                                <textarea matInput formControlName="packagingDescription"
+                                          placeholder="Ex. It makes me feel..."></textarea>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 d-flex">
+                              <button type="button" class="btn btn-primary ml-auto"
+                                      (click)="addIngrediantDetailsRows(i)">
+                                Add Ingrediant Shade Details Row
+                              </button>
+                            </div>
+                            <div class="col-12 mt-2">
+                              <div class="row" formArrayName="ingrediantDetails">
+                                <div class="col-12"
+                                     *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
+                                     [formGroupName]="index">
+                                  <div class="ingrediantDetailsContainer">
+                                    <div class="row">
+                                      <div class="col-sm-3">
                                         <mat-form-field appearance="fill">
                                           <mat-label>Ingrediant</mat-label>
                                           <mat-select formControlName="ingrediant" required>
@@ -1020,7 +1016,7 @@
                                           </div>
                                         </mat-form-field>
                                       </div>
-                                      <div class="col-sm-4">
+                                      <div class="col-sm-3">
                                         <mat-form-field class="example-full-width inputBesideSelect">
                                           <mat-label>Concentrations</mat-label>
                                           <input type="text" class="form-control" matInput
@@ -1037,7 +1033,7 @@
                                           </div>
                                         </mat-form-field>
                                       </div>
-                                      <div class="col-sm-4">
+                                      <div class="col-sm-3">
                                         <mat-form-field appearance="fill">
                                           <mat-label>Function</mat-label>
                                           <mat-select formControlName="function" required>
@@ -1056,13 +1052,42 @@
                                           </div>
                                         </mat-form-field>
                                       </div>
+                                      <div class="col-sm-3 d-flex">
+                                        <button type="button" class="btn btn-primary ml-auto"
+                                                (click)="removeIngrediantDetailsRows('form',index, i)">
+                                          Remove Ingrediant Shade Details Row
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
-                                </mat-expansion-panel>
-                              </mat-accordion>
-                            </td>
-                          </tr>
-                        </table>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-12 mt-3 d-flex">
+                              <button type="button"
+                                      class="btn btn-primary ml-auto"
+                                      (click)="addDetailsRows()"
+                                      [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
+                                Add Shade Details Row
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-4" *ngIf="detailsListTable.tableBody.length > 0">
+                        <div class="col-12">
+                          <app-title [title]="'Shade Details Table'" [smallTitle]="true"></app-title>
+                        </div>
+                        <div class="col-12 mt-5">
+                          <div class="RequestingTable">
+                            <app-table-list [data]="detailsListTable"
+                                            [whichTable]="'newRequest'"
+                                            (removeDetailsRowOutput)="removeDetailsRows($event)"
+                                            (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('table',$event, '')"
+                                            (editDetailedRowOutput)="editTheDetailsRow($event)"
+                            ></app-table-list>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

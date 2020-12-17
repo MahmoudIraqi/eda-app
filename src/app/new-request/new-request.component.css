@@ -259,6 +259,26 @@ input[type=file] {
   color: #c28a30 !important;
 }
 
+/* ---------------------------------- addDetailsRequestContainer ----------------------------- */
+
+.addDetailsRequestContainer {
+  background: #f3f3f3;
+  border-radius: 10px 0 10px 10px;
+  padding: 2em;
+  margin-top: 2em;
+}
+
+.ingrediantDetailsContainer {
+  background: #fff;
+  border-radius: 10px 0 10px 10px;
+  border: 0.5px solid #c28a30;
+  padding: 1em;
+  margin-top: 2em;
+}
+
+.addDetailsRequestContainer .col-3:nth-child(n+4) {
+  margin-top: 1em;
+}
 
 /* ------------------------ Attachments ---------------------- */
 .Attachments .row > div:nth-child(n+4) {

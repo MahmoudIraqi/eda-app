@@ -7,50 +7,47 @@ import {Component, OnInit} from '@angular/core';
 })
 export class DraftRequestComponent implements OnInit {
 
-  draftListRequests = [
-    {
-      id: 0,
-      requestNumber: '12341234',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'In Progress',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-    },
-    {
-      id: 1,
-      requestNumber: '56785678',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-    },
-    {
-      id: 2,
-      requestNumber: '192837465',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-    },
-    {
-      id: 3,
-      requestNumber: '12341234',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'In Progress',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-    },
-    {
-      id: 4,
-      requestNumber: '56785678',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-    },
-    {
-      id: 5,
-      requestNumber: '192837465',
-      requestEntity: 'Egyptian Drug Authority',
-      status: 'starting',
-      details: 'Brief about authority connects medical pros around the world during COVID-19',
-    }
-  ];
+  draftListRequests = {
+    tableHeader: ['Id', 'Request Entity', 'Details', 'Date', 'Action'],
+    tableBody: [
+      {
+        id: '1',
+        requestEntity: 'Egyptian Drug Authority',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        date: '01.01.2021'
+      },
+      {
+        id: '2',
+        requestEntity: 'Egyptian Drug Authority',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        date: '01.01.2021'
+      },
+      {
+        id: '3',
+        requestEntity: 'Egyptian Drug Authority',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        date: '01.01.2021'
+      },
+      {
+        id: '4',
+        requestEntity: 'Egyptian Drug Authority',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        date: '01.01.2021'
+      },
+      {
+        id: '5',
+        requestEntity: 'Egyptian Drug Authority',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        date: '01.01.2021'
+      },
+      {
+        id: '6',
+        requestEntity: 'Egyptian Drug Authority',
+        details: 'Brief about authority connects medical pros around the world during COVID-19',
+        date: '01.01.2021'
+      }
+    ]
+  };
 
   constructor() {
   }

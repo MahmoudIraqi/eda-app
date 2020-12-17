@@ -212,6 +212,10 @@ body {
   padding-top: 0.8em;
 }
 
+.mat-form-field-label {
+  height: 33px;
+}
+
 /* ------------------------------------ Tabs ----------------------------------- */
 .nav-pills .nav-item {
   width: 32%;
@@ -245,7 +249,93 @@ body {
   border: none;
 }
 
+/* -------------------- Table ---------------------- */
+.TrackTable .table th:first-child, .TrackTable .table td:first-child {
+  width: 15%;
+}
 
+.TrackTable .table th:nth-child(2), .TrackTable .table td:nth-child(2) {
+  width: 15%;
+}
+
+.TrackTable .table th:nth-child(3), .TrackTable .table td:nth-child(3) {
+  width: 15%;
+}
+
+.TrackTable .table th:nth-child(4), .TrackTable .table td:nth-child(4) {
+  width: 45%;
+}
+
+.TrackTable .table th:nth-child(5), .TrackTable .table td:nth-child(5) {
+  width: 10%;
+}
+
+
+.DraftTable .table th:first-child, .DraftTable .table td:first-child {
+  width: 15%;
+}
+
+.DraftTable .table th:nth-child(2), .DraftTable .table td:nth-child(2) {
+  width: 15%;
+}
+
+.DraftTable .table th:nth-child(4), .DraftTable .table td:nth-child(3) {
+  width: 45%;
+}
+
+.DraftTable .table th:nth-child(4), .DraftTable .table td:nth-child(4) {
+  width: 15%;
+}
+
+.DraftTable .table th:nth-child(5), .DraftTable .table td:nth-child(5) {
+  width: 10%;
+}
+
+
+.ApprovedTable .table th:first-child, .ApprovedTable .table td:first-child {
+  width: 15%;
+}
+
+.ApprovedTable .table th:nth-child(2), .ApprovedTable .table td:nth-child(2) {
+  width: 15%;
+}
+
+.ApprovedTable .table th:nth-child(4), .ApprovedTable .table td:nth-child(3) {
+  width: 60%;
+}
+
+.ApprovedTable .table th:nth-child(4), .ApprovedTable .table td:nth-child(4) {
+  width: 10%;
+}
+
+
+.RequestingTable .table > th:first-child, .RequestingTable .table > td:first-child {
+  width: 20%;
+}
+
+.RequestingTable .table > th:nth-child(2), .RequestingTable .table > td:nth-child(2) {
+  width: 20%;
+}
+
+.RequestingTable .table > th:nth-child(4), .RequestingTable .table > td:nth-child(3) {
+  width: 15%;
+}
+
+.RequestingTable .table > th:nth-child(4), .RequestingTable .table > td:nth-child(4) {
+  width: 15%;
+}
+
+.RequestingTable .table > th:nth-child(5), .RequestingTable .table > td:nth-child(5) {
+  width: 15%;
+}
+
+.RequestingTable .table > th:nth-child(6), .RequestingTable .table > td:nth-child(6) {
+  width: 15%;
+}
+
+.insidePanelHeader{
+  border-bottom: 0px !important;
+}
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {

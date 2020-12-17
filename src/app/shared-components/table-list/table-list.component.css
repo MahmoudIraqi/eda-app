@@ -57,26 +57,6 @@
   padding: 0px 0.3rem;
 }
 
-.table th:first-child, .table td:first-child {
-  width: 15%;
-}
-
-.table th:nth-child(2), .table td:nth-child(2) {
-  width: 15%;
-}
-
-.table th:nth-child(3), .table td:nth-child(3) {
-  width: 15%;
-}
-
-.table th:nth-child(4), .table td:nth-child(4) {
-  width: 45%;
-}
-
-.table th:nth-child(5), .table td:nth-child(5) {
-  width: 10%;
-}
-
 .mat-expansion-panel-body {
   padding: 1em !important;
 }

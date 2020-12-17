@@ -183,6 +183,12 @@ export class NewRequestComponent implements OnInit {
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   status;
+  detailsListTable = {
+    tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Volumes', 'Actions'],
+    tableBody: []
+  };
+  editDetailedRowStatus = false;
+  editIndex;
 
   constructor(private fb: FormBuilder) {
     this.getFormAsStarting();
@@ -270,7 +276,7 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
-  get DetailsRows(): FormArray {
+  DetailsRows(): FormArray {
     if (this.selectedFormType === 'regProduct') {
       return this.regProductForAllRequestedType.get('detailsTable') as FormArray;
     } else if (this.selectedFormType === 'regHairColorantProduct') {
@@ -279,21 +285,57 @@ export class NewRequestComponent implements OnInit {
   }
 
   addDetailsRows() {
-    this.DetailsRows.push(this.fb.group({
+    this.editDetailedRowStatus = false;
+    this.equalTheNewDetailsTable();
+    this.DetailsRows().push(this.fb.group({
       colour: this.fb.control(''),
       fragrance: this.fb.control(''),
       flavor: this.fb.control(''),
       barCode: this.fb.control(''),
       volumes: this.fb.control('', Validators.required),
       unitOfMeasure: this.fb.control('', Validators.required),
-      ingrediant: this.fb.control('', Validators.required),
-      concentrations: this.fb.control('', Validators.required),
-      function: this.fb.control('', Validators.required),
+      typeOfPackaging: this.fb.control('', Validators.required),
+      packagingDescription: this.fb.control(''),
+      ingrediantDetails: this.fb.array([this.fb.group({
+        ingrediant: this.fb.control('', Validators.required),
+        concentrations: this.fb.control('', Validators.required),
+        function: this.fb.control('', Validators.required),
+      })])
     }));
   }
 
-  removeDetailsRows(i: number) {
-    this.DetailsRows.removeAt(i);
+  removeDetailsRows(i) {
+    console.log('i', i);
+    this.DetailsRows().removeAt(i);
+
+    this.equalTheNewDetailsTable();
+  }
+
+  IngrediantDetailsRows(i): FormArray {
+    return this.DetailsRows().at(i).get('ingrediantDetails') as FormArray;
+  }
+
+  addIngrediantDetailsRows(index) {
+    this.IngrediantDetailsRows(index).push(this.fb.group({
+      ingrediant: this.fb.control('', Validators.required),
+      concentrations: this.fb.control('', Validators.required),
+      function: this.fb.control('', Validators.required)
+    }));
+  }
+
+  removeIngrediantDetailsRows(fromWhere, event, index) {
+    console.log('IngrediantDetailsRows', this.IngrediantDetailsRows(index));
+    if (this.IngrediantDetailsRows(index).length > 1) {
+      if (typeof event !== 'number') {
+        this.IngrediantDetailsRows(event.indexRow).removeAt(event.i);
+      } else {
+        this.IngrediantDetailsRows(event).removeAt(index);
+      }
+    }
+
+    if (fromWhere !== 'form') {
+      this.equalTheNewDetailsTable();
+    }
   }
 
   resetForms() {
@@ -301,7 +343,6 @@ export class NewRequestComponent implements OnInit {
   }
 
   getFormAsStarting() {
-    debugger;
     console.log('selectedFormType', this.selectedFormType);
     if (this.selectedFormType === 'regProduct') {
       this.regProductForAllRequestedType = this.fb.group({
@@ -320,8 +361,6 @@ export class NewRequestComponent implements OnInit {
         purposeOfUse: this.fb.control('', Validators.required),
         purposeOfUseTxt: this.fb.control(''),
         shelfLife: this.fb.control(0),
-        typeOfPackaging: this.fb.control('', Validators.required),
-        packagingDescription: this.fb.control(''),
         receiptNumber: this.fb.control('', Validators.required),
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
         detailsTable: this.fb.array([this.fb.group({
@@ -331,9 +370,13 @@ export class NewRequestComponent implements OnInit {
           barCode: this.fb.control(''),
           volumes: this.fb.control('', Validators.required),
           unitOfMeasure: this.fb.control('', Validators.required),
-          ingrediant: this.fb.control('', Validators.required),
-          concentrations: this.fb.control('', Validators.required),
-          function: this.fb.control('', Validators.required),
+          typeOfPackaging: this.fb.control('', Validators.required),
+          packagingDescription: this.fb.control(''),
+          ingrediantDetails: this.fb.array([this.fb.group({
+            ingrediant: this.fb.control('', Validators.required),
+            concentrations: this.fb.control('', Validators.required),
+            function: this.fb.control('', Validators.required),
+          })])
         })]),
         freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
         GMP: this.fb.control(''),
@@ -369,8 +412,6 @@ export class NewRequestComponent implements OnInit {
         purposeOfUse: this.fb.control('', Validators.required),
         purposeOfUseTxt: this.fb.control(''),
         shelfLife: this.fb.control(0),
-        typeOfPackaging: this.fb.control('', Validators.required),
-        packagingDescription: this.fb.control(''),
         receiptNumber: this.fb.control('', Validators.required),
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
         detailsTable: this.fb.array([this.fb.group({
@@ -380,9 +421,13 @@ export class NewRequestComponent implements OnInit {
           barCode: this.fb.control(''),
           volumes: this.fb.control('', Validators.required),
           unitOfMeasure: this.fb.control('', Validators.required),
-          ingrediant: this.fb.control('', Validators.required),
-          concentrations: this.fb.control('', Validators.required),
-          function: this.fb.control('', Validators.required),
+          typeOfPackaging: this.fb.control('', Validators.required),
+          packagingDescription: this.fb.control(''),
+          ingrediantDetails: this.fb.array([this.fb.group({
+            ingrediant: this.fb.control('', Validators.required),
+            concentrations: this.fb.control('', Validators.required),
+            function: this.fb.control('', Validators.required),
+          })])
         })]),
         freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
         GMP: this.fb.control(''),
@@ -401,5 +446,14 @@ export class NewRequestComponent implements OnInit {
         otherFees: this.fb.control('', Validators.required),
       });
     }
+  }
+
+  equalTheNewDetailsTable() {
+    this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+  }
+
+  editTheDetailsRow(event) {
+    this.editDetailedRowStatus = true;
+    this.editIndex = event;
   }
 }

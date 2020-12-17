@@ -4,8 +4,8 @@
       <app-title [title]="'Approved products'" [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
-      <div class="tableContainer">
-        <app-table-list [data]="approvedListRequests" [editActionsStatus]="true"></app-table-list>
+      <div class="tableContainer ApprovedTable">
+        <app-table-list [data]="approvedListRequests" [whichTable]="'approved'"></app-table-list>
       </div>
     </div>
   </div>

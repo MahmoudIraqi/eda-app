@@ -21,12 +21,12 @@ export class HeaderComponent implements OnInit {
       link: '/new-request'
     },
     {
-      name: 'Track requests',
-      link: '/track-request'
-    },
-    {
       name: 'Draft requests',
       link: '/draft-request'
+    },
+    {
+      name: 'Track requests',
+      link: '/track-request'
     },
     {
       name: 'Approved products',
