@@ -279,7 +279,7 @@ body {
   width: 15%;
 }
 
-.DraftTable .table th:nth-child(4), .DraftTable .table td:nth-child(3) {
+.DraftTable .table th:nth-child(3), .DraftTable .table td:nth-child(3) {
   width: 45%;
 }
 
@@ -300,7 +300,7 @@ body {
   width: 15%;
 }
 
-.ApprovedTable .table th:nth-child(4), .ApprovedTable .table td:nth-child(3) {
+.ApprovedTable .table th:nth-child(3), .ApprovedTable .table td:nth-child(3) {
   width: 60%;
 }
 
@@ -309,33 +309,34 @@ body {
 }
 
 
-.RequestingTable .table > th:first-child, .RequestingTable .table > td:first-child {
-  width: 20%;
-}
-
-.RequestingTable .table > th:nth-child(2), .RequestingTable .table > td:nth-child(2) {
-  width: 20%;
-}
-
-.RequestingTable .table > th:nth-child(4), .RequestingTable .table > td:nth-child(3) {
+.RequestingTable .table .headerRow th:first-child, .RequestingTable .table td:first-child {
   width: 15%;
 }
 
-.RequestingTable .table > th:nth-child(4), .RequestingTable .table > td:nth-child(4) {
+.RequestingTable .table .headerRow th:nth-child(2), .RequestingTable .table td:nth-child(2) {
   width: 15%;
 }
 
-.RequestingTable .table > th:nth-child(5), .RequestingTable .table > td:nth-child(5) {
+.RequestingTable .table .headerRow th:nth-child(3), .RequestingTable .table td:nth-child(3) {
   width: 15%;
 }
 
-.RequestingTable .table > th:nth-child(6), .RequestingTable .table > td:nth-child(6) {
+.RequestingTable .table .headerRow th:nth-child(4), .RequestingTable .table td:nth-child(4) {
   width: 15%;
 }
 
-.insidePanelHeader{
+.RequestingTable .table .headerRow th:nth-child(5), .RequestingTable .table td:nth-child(5) {
+  width: 15%;
+}
+
+.RequestingTable .table .headerRow th:nth-child(6), .RequestingTable .table td:nth-child(6) {
+  width: 15%;
+}
+
+.insidePanelHeader {
   border-bottom: 0px !important;
 }
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {

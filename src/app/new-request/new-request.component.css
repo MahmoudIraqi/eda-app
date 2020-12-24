@@ -271,9 +271,14 @@ input[type=file] {
 .ingrediantDetailsContainer {
   background: #fff;
   border-radius: 10px 0 10px 10px;
-  border: 0.5px solid #c28a30;
   padding: 1em;
   margin-top: 2em;
+}
+
+.ingrediantDetailsContainer .rowContainer {
+  border-radius: 10px 0 10px 10px;
+  border: 0.5px solid #c28a30;
+  padding: 1em;
 }
 
 .addDetailsRequestContainer .col-3:nth-child(n+4) {

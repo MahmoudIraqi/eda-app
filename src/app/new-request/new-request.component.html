@@ -414,79 +414,81 @@
                                           placeholder="Ex. It makes me feel..."></textarea>
                               </mat-form-field>
                             </div>
-                            <div class="col-12 d-flex">
-                              <button type="button" class="btn btn-primary ml-auto"
-                                      (click)="addIngrediantDetailsRows(i)">
-                                Add Ingrediant Details Row
-                              </button>
-                            </div>
                             <div class="col-12 mt-2">
-                              <div class="row" formArrayName="ingrediantDetails">
-                                <div class="col-12"
-                                     *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
-                                     [formGroupName]="index">
-                                  <div class="ingrediantDetailsContainer">
-                                    <div class="row">
-                                      <div class="col-sm-3">
-                                        <mat-form-field appearance="fill">
-                                          <mat-label>Ingrediant</mat-label>
-                                          <mat-select formControlName="ingrediant" required>
-                                            <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
-                                                        [value]="ingrediantItem">
-                                              {{ingrediantItem}}
-                                            </mat-option>
-                                          </mat-select>
-                                          <div
-                                            *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
-                                            class="alert alert-danger">
+                              <div class="ingrediantDetailsContainer">
+                                <div class="row" formArrayName="ingrediantDetails">
+                                  <div class="col-12 d-flex">
+                                    <button type="button" class="btn btn-primary ml-auto"
+                                            (click)="addIngrediantDetailsRows(i)">
+                                      Add Ingrediant Details Row
+                                    </button>
+                                  </div>
+                                  <div class="col-12 mt-5"
+                                       *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
+                                       [formGroupName]="index">
+                                    <div class="rowContainer">
+                                      <div class="row">
+                                        <div class="col-sm-3">
+                                          <mat-form-field appearance="fill">
+                                            <mat-label>Ingrediant</mat-label>
+                                            <mat-select formControlName="ingrediant" required>
+                                              <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
+                                                          [value]="ingrediantItem">
+                                                {{ingrediantItem}}
+                                              </mat-option>
+                                            </mat-select>
                                             <div
-                                              *ngIf="row.get('ingrediant').errors.required">
-                                              this field is required
+                                              *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
+                                              class="alert alert-danger">
+                                              <div
+                                                *ngIf="row.get('ingrediant').errors.required">
+                                                this field is required
+                                              </div>
                                             </div>
-                                          </div>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-sm-3">
-                                        <mat-form-field class="example-full-width inputBesideSelect">
-                                          <mat-label>Concentrations</mat-label>
-                                          <input type="text" class="form-control" matInput
-                                                 formControlName="concentrations"
-                                                 placeholder="concentrations" required>
+                                          </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-3">
+                                          <mat-form-field class="example-full-width inputBesideSelect">
+                                            <mat-label>Concentrations</mat-label>
+                                            <input type="text" class="form-control" matInput
+                                                   formControlName="concentrations"
+                                                   placeholder="concentrations" required>
 
-                                          <div
-                                            *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
-                                            class="alert alert-danger">
                                             <div
-                                              *ngIf="row.get('concentrations').errors.required">
-                                              this field is required
+                                              *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
+                                              class="alert alert-danger">
+                                              <div
+                                                *ngIf="row.get('concentrations').errors.required">
+                                                this field is required
+                                              </div>
                                             </div>
-                                          </div>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-sm-3">
-                                        <mat-form-field appearance="fill">
-                                          <mat-label>Function</mat-label>
-                                          <mat-select formControlName="function" required>
-                                            <mat-option *ngFor='let functiontItem of formData.functionList'
-                                                        [value]="functiontItem">
-                                              {{functiontItem}}
-                                            </mat-option>
-                                          </mat-select>
-                                          <div
-                                            *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
-                                            class="alert alert-danger">
+                                          </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-3">
+                                          <mat-form-field appearance="fill">
+                                            <mat-label>Function</mat-label>
+                                            <mat-select formControlName="function" required>
+                                              <mat-option *ngFor='let functiontItem of formData.functionList'
+                                                          [value]="functiontItem">
+                                                {{functiontItem}}
+                                              </mat-option>
+                                            </mat-select>
                                             <div
-                                              *ngIf="row.get('function').errors.required">
-                                              this field is required
+                                              *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
+                                              class="alert alert-danger">
+                                              <div
+                                                *ngIf="row.get('function').errors.required">
+                                                this field is required
+                                              </div>
                                             </div>
-                                          </div>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-sm-3 d-flex">
-                                        <button type="button" class="btn btn-primary ml-auto"
-                                                (click)="removeIngrediantDetailsRows('form',index, i)">
-                                          Remove Ingrediant Details Row
-                                        </button>
+                                          </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-3 d-flex">
+                                          <button type="button" class="btn btn-primary ml-auto"
+                                                  (click)="removeIngrediantDetailsRows('form',index, i)">
+                                            Delete Row
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -495,10 +497,18 @@
                             </div>
                             <div class="col-12 mt-3 d-flex">
                               <button type="button"
+                                      *ngIf="!editDetailedRowStatus"
                                       class="btn btn-primary ml-auto"
                                       (click)="addDetailsRows()"
                                       [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
                                 Add Details Row
+                              </button>
+                              <button type="button"
+                                      *ngIf="editDetailedRowStatus"
+                                      class="btn btn-primary ml-auto"
+                                      (click)="editDataDetailsRows()"
+                                      [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
+                                Edit Details Row
                               </button>
                             </div>
                           </div>
@@ -890,7 +900,7 @@
                   <div class="mt-5">
                     <div formArrayName="detailsTable" class="detailsTable">
                       <div class="col-12">
-                        <app-title [smallTitle]="true" [title]="'Shade Details Form'"></app-title>
+                        <app-title [smallTitle]="true" [title]="'Details Form'"></app-title>
                       </div>
                       <div class="addDetailsRequestContainer">
                         <div *ngFor="let row of DetailsRows().controls; let i=index" [formGroupName]="i">
@@ -984,79 +994,81 @@
                                           placeholder="Ex. It makes me feel..."></textarea>
                               </mat-form-field>
                             </div>
-                            <div class="col-12 d-flex">
-                              <button type="button" class="btn btn-primary ml-auto"
-                                      (click)="addIngrediantDetailsRows(i)">
-                                Add Ingrediant Shade Details Row
-                              </button>
-                            </div>
                             <div class="col-12 mt-2">
-                              <div class="row" formArrayName="ingrediantDetails">
-                                <div class="col-12"
-                                     *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
-                                     [formGroupName]="index">
-                                  <div class="ingrediantDetailsContainer">
-                                    <div class="row">
-                                      <div class="col-sm-3">
-                                        <mat-form-field appearance="fill">
-                                          <mat-label>Ingrediant</mat-label>
-                                          <mat-select formControlName="ingrediant" required>
-                                            <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
-                                                        [value]="ingrediantItem">
-                                              {{ingrediantItem}}
-                                            </mat-option>
-                                          </mat-select>
-                                          <div
-                                            *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
-                                            class="alert alert-danger">
+                              <div class="ingrediantDetailsContainer">
+                                <div class="row" formArrayName="ingrediantDetails">
+                                  <div class="col-12 d-flex">
+                                    <button type="button" class="btn btn-primary ml-auto"
+                                            (click)="addIngrediantDetailsRows(i)">
+                                      Add Ingrediant Details Row
+                                    </button>
+                                  </div>
+                                  <div class="col-12 mt-5"
+                                       *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
+                                       [formGroupName]="index">
+                                    <div class="rowContainer">
+                                      <div class="row">
+                                        <div class="col-sm-3">
+                                          <mat-form-field appearance="fill">
+                                            <mat-label>Ingrediant</mat-label>
+                                            <mat-select formControlName="ingrediant" required>
+                                              <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
+                                                          [value]="ingrediantItem">
+                                                {{ingrediantItem}}
+                                              </mat-option>
+                                            </mat-select>
                                             <div
-                                              *ngIf="row.get('ingrediant').errors.required">
-                                              this field is required
+                                              *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
+                                              class="alert alert-danger">
+                                              <div
+                                                *ngIf="row.get('ingrediant').errors.required">
+                                                this field is required
+                                              </div>
                                             </div>
-                                          </div>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-sm-3">
-                                        <mat-form-field class="example-full-width inputBesideSelect">
-                                          <mat-label>Concentrations</mat-label>
-                                          <input type="text" class="form-control" matInput
-                                                 formControlName="concentrations"
-                                                 placeholder="concentrations" required>
+                                          </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-3">
+                                          <mat-form-field class="example-full-width inputBesideSelect">
+                                            <mat-label>Concentrations</mat-label>
+                                            <input type="text" class="form-control" matInput
+                                                   formControlName="concentrations"
+                                                   placeholder="concentrations" required>
 
-                                          <div
-                                            *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
-                                            class="alert alert-danger">
                                             <div
-                                              *ngIf="row.get('concentrations').errors.required">
-                                              this field is required
+                                              *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
+                                              class="alert alert-danger">
+                                              <div
+                                                *ngIf="row.get('concentrations').errors.required">
+                                                this field is required
+                                              </div>
                                             </div>
-                                          </div>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-sm-3">
-                                        <mat-form-field appearance="fill">
-                                          <mat-label>Function</mat-label>
-                                          <mat-select formControlName="function" required>
-                                            <mat-option *ngFor='let functiontItem of formData.functionList'
-                                                        [value]="functiontItem">
-                                              {{functiontItem}}
-                                            </mat-option>
-                                          </mat-select>
-                                          <div
-                                            *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
-                                            class="alert alert-danger">
+                                          </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-3">
+                                          <mat-form-field appearance="fill">
+                                            <mat-label>Function</mat-label>
+                                            <mat-select formControlName="function" required>
+                                              <mat-option *ngFor='let functiontItem of formData.functionList'
+                                                          [value]="functiontItem">
+                                                {{functiontItem}}
+                                              </mat-option>
+                                            </mat-select>
                                             <div
-                                              *ngIf="row.get('function').errors.required">
-                                              this field is required
+                                              *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
+                                              class="alert alert-danger">
+                                              <div
+                                                *ngIf="row.get('function').errors.required">
+                                                this field is required
+                                              </div>
                                             </div>
-                                          </div>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-sm-3 d-flex">
-                                        <button type="button" class="btn btn-primary ml-auto"
-                                                (click)="removeIngrediantDetailsRows('form',index, i)">
-                                          Remove Ingrediant Shade Details Row
-                                        </button>
+                                          </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-3 d-flex">
+                                          <button type="button" class="btn btn-primary ml-auto"
+                                                  (click)="removeIngrediantDetailsRows('form',index, i)">
+                                            Delete Row
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -1065,10 +1077,18 @@
                             </div>
                             <div class="col-12 mt-3 d-flex">
                               <button type="button"
+                                      *ngIf="!editDetailedRowStatus"
                                       class="btn btn-primary ml-auto"
                                       (click)="addDetailsRows()"
                                       [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
-                                Add Shade Details Row
+                                Add Details Row
+                              </button>
+                              <button type="button"
+                                      *ngIf="editDetailedRowStatus"
+                                      class="btn btn-primary ml-auto"
+                                      (click)="editDataDetailsRows()"
+                                      [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
+                                Edit Details Row
                               </button>
                             </div>
                           </div>
@@ -1076,7 +1096,7 @@
                       </div>
                       <div class="row mt-4" *ngIf="detailsListTable.tableBody.length > 0">
                         <div class="col-12">
-                          <app-title [title]="'Shade Details Table'" [smallTitle]="true"></app-title>
+                          <app-title [title]="'Details Table'" [smallTitle]="true"></app-title>
                         </div>
                         <div class="col-12 mt-5">
                           <div class="RequestingTable">

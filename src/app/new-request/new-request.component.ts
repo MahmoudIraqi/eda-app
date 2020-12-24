@@ -304,6 +304,11 @@ export class NewRequestComponent implements OnInit {
     }));
   }
 
+  editDataDetailsRows() {
+    this.editDetailedRowStatus = false;
+    this.equalTheNewDetailsTable();
+  }
+
   removeDetailsRows(i) {
     console.log('i', i);
     this.DetailsRows().removeAt(i);
@@ -343,7 +348,6 @@ export class NewRequestComponent implements OnInit {
   }
 
   getFormAsStarting() {
-    console.log('selectedFormType', this.selectedFormType);
     if (this.selectedFormType === 'regProduct') {
       this.regProductForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
@@ -449,7 +453,8 @@ export class NewRequestComponent implements OnInit {
   }
 
   equalTheNewDetailsTable() {
-    this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+    this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value; //.length > 1 ? this.regProductForAllRequestedType.get('detailsTable').value.pop() : this.regProductForAllRequestedType.get('detailsTable').value;
+    console.log('1111', this.detailsListTable.tableBody);
   }
 
   editTheDetailsRow(event) {
