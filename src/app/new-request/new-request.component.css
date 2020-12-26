@@ -15,7 +15,7 @@ input:active, input:focus {
   box-shadow: none;
 }
 
-form > .row > div:nth-child(n + 4) {
+form > .row > div:nth-child(n + 4), form > tabset .row > div:nth-child(n + 4) {
   margin-top: 2em;
 }
 
@@ -283,6 +283,21 @@ input[type=file] {
 
 .addDetailsRequestContainer .col-3:nth-child(n+4) {
   margin-top: 1em;
+}
+
+
+.getProductArea {
+  background: #f9f9f9;
+  border-radius: 10px 0 10px 10px;
+  padding: 0.5em 1em;
+  width: 100%;
+}
+
+.getNewProductArea {
+  background: #f9f9f9;
+  border-radius: 10px 0 10px 10px;
+  padding: 3em;
+  width: 100%;
 }
 
 /* ------------------------ Attachments ---------------------- */

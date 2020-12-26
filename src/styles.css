@@ -109,7 +109,7 @@ a,
 }
 
 .btn.btn-primary {
-  background: transparent !important;
+  background: #fff;
   border: 2px solid #c28a30;
   min-width: 150px;
   border-radius: 10px 0px 10px 10px;

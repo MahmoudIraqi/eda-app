@@ -34,6 +34,7 @@ export class TableListComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log('data', this.data);
+    console.log('whichTable', this.whichTable);
   }
 
   ngOnInit(): void {
@@ -62,12 +63,12 @@ export class TableListComponent implements OnInit, OnChanges {
     }
   }
 
-  removeDetailsRowFunction(i) {
-    this.removeDetailsRowOutput.emit(i);
+  removeDetailsRowFunction(i, rowIndex) {
+    this.removeDetailsRowOutput.emit({rowIndex, i});
   }
 
-  removeIngrediantDetailsRowFunction(indexRow, i) {
-    this.removeIngrediantDetailsRowOutput.emit({indexRow, i});
+  removeIngrediantDetailsRowFunction(childIndex, i, indexRow) {
+    this.removeIngrediantDetailsRowOutput.emit({childIndex, indexRow, i});
   }
 
   editDetailedRowFunction(i) {
