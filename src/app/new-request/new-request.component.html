@@ -419,12 +419,12 @@
                                 <div class="row" formArrayName="ingrediantDetails">
                                   <div class="col-12 d-flex">
                                     <button type="button" class="btn btn-primary ml-auto"
-                                            (click)="addIngrediantDetailsRows('',i)">
+                                            (click)="addIngrediantDetailsRows(i, '')">
                                       Add Ingrediant Details Row
                                     </button>
                                   </div>
                                   <div class="col-12 mt-5"
-                                       *ngFor="let row of IngrediantDetailsRows('',i).controls; let index=index"
+                                       *ngFor="let row of IngrediantDetailsRows(i,'').controls; let index=index"
                                        [formGroupName]="index">
                                     <div class="rowContainer">
                                       <div class="row">
@@ -569,14 +569,14 @@
                   <button *ngIf="!formTabs.tabs[0].active"
                           type="button"
                           class="btn btn-primary btn-sm mr-3"
-                          (click)="backToNextTab()">
+                          (click)="backToNextTab('FormTabs')">
                     Back Forward
                   </button>
                   <div class="ml-auto">
                     <button *ngIf="!formTabs.tabs[2].active"
                             type="button"
                             class="btn btn-primary btn-sm mr-3"
-                            (click)="nextToNextTab()">
+                            (click)="nextToNextTab('FormTabs')">
                       Next Forward
                     </button>
                     <button type="button"
@@ -1178,11 +1178,10 @@
                                             <div class="col-12">
                                               <app-title [smallTitle]="true" [title]="'Details Form'"></app-title>
                                             </div>
-                                            <div class="addDetailsRequestContainer"
-                                                 *ngIf="DetailsRows(i).controls.length > 0">
+                                            <div class="addDetailsRequestContainer" *ngIf="DetailsRows(i).controls.length">
                                               <div
                                                 *ngFor="let rowForDetails of DetailsRows(i).controls; let indexNumber=index"
-                                                [formGroupName]="i">
+                                                [formGroupName]="indexNumber">
                                                 <div class="row">
                                                   <!-- *ngIf="(editTheKitProductDetailedRowStatus && editTheKitProductsIndex === indexNumber ) || (!editTheKitProductDetailedRowStatus && (DetailsRows(i).controls.length === 0 || DetailsRows(i).controls.length -1 === i))" -->
                                                   <div class="col-3">
@@ -1279,9 +1278,8 @@
                                                     </mat-form-field>
                                                   </div>
                                                   <div class="col-12 mt-2">
-                                                    <div class="ingrediantDetailsContainer">
-                                                      <div class="row" formArrayName="ingrediantDetails"
-                                                           *ngIf="IngrediantDetailsRows(indexNumber, i).controls.length">
+                                                    <div class="ingrediantDetailsContainer" *ngIf="IngrediantDetailsRows(indexNumber, i).controls.length">
+                                                      <div class="row" formArrayName="ingrediantDetails">
                                                         <div class="col-12 d-flex">
                                                           <button type="button" class="btn btn-primary ml-auto"
                                                                   (click)="addIngrediantDetailsRows(indexNumber, i)">
@@ -1949,12 +1947,12 @@
                                 <div class="row" formArrayName="ingrediantDetails">
                                   <div class="col-12 d-flex">
                                     <button type="button" class="btn btn-primary ml-auto"
-                                            (click)="addIngrediantDetailsRows('', i)">
+                                            (click)="addIngrediantDetailsRows(i,'')">
                                       Add Ingrediant Details Row
                                     </button>
                                   </div>
                                   <div class="col-12 mt-5"
-                                       *ngFor="let row of IngrediantDetailsRows('', i).controls; let index=index"
+                                       *ngFor="let row of IngrediantDetailsRows( i, '').controls; let index=index"
                                        [formGroupName]="index">
                                     <div class="rowContainer">
                                       <div class="row">
@@ -2099,14 +2097,14 @@
                   <button *ngIf="!formTabs.tabs[0].active"
                           type="button"
                           class="btn btn-primary btn-sm mr-3"
-                          (click)="backToNextTab()">
+                          (click)="backToNextTab('FormTabs')">
                     Back Forward
                   </button>
                   <div class="ml-auto">
                     <button *ngIf="!formTabs.tabs[2].active"
                             type="button"
                             class="btn btn-primary btn-sm mr-3"
-                            (click)="nextToNextTab()">
+                            (click)="nextToNextTab('FormTabs')">
                       Next Forward
                     </button>
                     <button type="button"
