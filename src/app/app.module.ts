@@ -23,6 +23,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSliderModule} from '@angular/material/slider';
+import { ProductRequestFormComponent } from './product-request-form/product-request-form.component';
+import { ProductsKitRequestFormComponent } from './products-kit-request-form/products-kit-request-form.component';
+import { ProductsHairColourRequestFormComponent } from './products-hair-colour-request-form/products-hair-colour-request-form.component';
+import { ProductsKitHairColourRequestFormComponent } from './products-kit-hair-colour-request-form/products-kit-hair-colour-request-form.component';
 
 
 @NgModule({
@@ -37,6 +41,10 @@ import {MatSliderModule} from '@angular/material/slider';
     ApprovedRequestComponent,
     TableListComponent,
     TitleComponent,
+    ProductRequestFormComponent,
+    ProductsKitRequestFormComponent,
+    ProductsHairColourRequestFormComponent,
+    ProductsKitHairColourRequestFormComponent,
   ],
   imports: [
     BrowserModule,

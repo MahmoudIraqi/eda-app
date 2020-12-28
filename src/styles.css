@@ -195,9 +195,9 @@ body {
   background-color: rgba(22, 28, 48, 0);
 }
 
-/*.detailsTable .mat-form-field, .detailsTable .mat-select, .detailsTable .mat-select-trigger, .detailsTable .mat-form-field-flex, .detailsTable .mat-form-field-infix, .detailsTable .mat-form-field-wrapper {*/
-/*  height: 100%;*/
-/*}*/
+.detailsTable .mat-form-field, .detailsTable .mat-select, .detailsTable .mat-select-trigger, .detailsTable .mat-form-field-flex, .detailsTable .mat-form-field-infix, .detailsTable .mat-form-field-wrapper {
+  height: 100%;
+}
 
 .detailsTable .mat-form-field-underline {
   bottom: 0.2em;
