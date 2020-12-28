@@ -551,6 +551,7 @@
           Next Forward
         </button>
         <button type="button"
+                *ngIf="!kitProductStatus"
                 class="btn btn-primary btn-sm mr-3"
                 (click)="saveData()">
           Save
@@ -560,7 +561,8 @@
           type="submit"
           class="btn btn-primary btn-sm"
           [disabled]="!regProductForAllRequestedType.valid">
-          Submit
+          <span *ngIf="!kitProductStatus">Submit</span>
+          <span *ngIf="kitProductStatus">Apply Product</span>
         </button>
       </div>
     </div>

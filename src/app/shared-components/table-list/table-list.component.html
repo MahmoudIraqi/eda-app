@@ -268,18 +268,19 @@
           </mat-expansion-panel>
         </mat-accordion>
       </td>
-      <td colspan="6" *ngIf="whichTable === 'productsKitList'">
+      <td colspan="7" *ngIf="whichTable === 'productsKitList'">
         <mat-accordion>
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <table class="table table-sm tableDetailsCont">
                   <tr>
+                    <td>{{request.groupName}}</td>
                     <td>{{request.productNotificationNumber}}</td>
-                    <td>{{request.productEnglishName}}</td>
-                    <td>{{request.manufacturingCompany}}</td>
-                    <td>{{request.manufacturingCountry}}</td>
-                    <td>{{request.applicant}}</td>
+                    <td>{{request.newProduct.productEnglishName}}</td>
+                    <td>{{request.newProduct.manufacturingCompany}}</td>
+                    <td>{{request.newProduct.manufacturingCountry}}</td>
+                    <td>{{request.newProduct.applicant}}</td>
                     <td>
                       <span (click)="removeDetailsRowFunction(i, '')">
                         <i class="fa fa-trash"></i>
@@ -292,38 +293,42 @@
             <div class="detailsContainer pt-4">
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Group Name :</label>
+                  <span>{{request.groupName}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Product Notification Number :</label>
                   <span>{{request.productNotificationNumber}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Product English Name :</label>
-                  <span>{{request.productEnglishName}}</span>
+                  <span>{{request.newProduct.productEnglishName}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label ">Manufacturing Company :</label>
-                  <span>{{request.manufacturingCompany}}</span>
+                  <span>{{request.newProduct.manufacturingCompany}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Manufacturing Country :</label>
-                  <span>{{request.manufacturingCountry}}</span>
+                  <span>{{request.newProduct.manufacturingCountry}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Applicant :</label>
-                  <span>{{request.applicant}}</span>
+                  <span>{{request.newProduct.applicant}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">license Holder :</label>
-                  <span>{{request.licenseHolder}}</span>
+                  <span>{{request.newProduct.licenseHolder}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Physical State :</label>
-                  <span>{{request.physicalState}}</span>
+                  <span>{{request.newProduct.physicalState}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">shelfLife :</label>
-                  <span>{{request.shelfLife}}</span>
+                  <span>{{request.newProduct.shelfLife}}</span>
                 </div>
-                <div class="col-12 mt-4" *ngIf="request.detailsTable.length > 0">
+                <div class="col-12 mt-4" *ngIf="request.newProduct.detailsTable.length > 0">
                   <div class="row">
                     <div class="col-12">
                       <app-title [title]="'Product Details Table'" [smallTitle]="true"></app-title>
@@ -366,7 +371,7 @@
                               Actions
                             </th>
                           </tr>
-                          <tr *ngFor="let requestDetails of request.detailsTable; let index = index">
+                          <tr *ngFor="let requestDetails of request.newProduct.detailsTable; let index = index">
                             <td colspan="6">
                               <mat-accordion>
                                 <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>

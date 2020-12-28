@@ -227,7 +227,7 @@ export class ProductsKitRequestFormComponent implements OnInit {
     tableBody: []
   };
   allProductsInKit = {
-    tableHeader: ['Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
+    tableHeader: ['Group Name', 'Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
     tableBody: []
   };
   editDetailedRowStatus = false;
@@ -236,634 +236,980 @@ export class ProductsKitRequestFormComponent implements OnInit {
   editTheKitProductsIndex;
   dummyDataForRegisteredProductForKits = [
     {
+      newProduct: {
+        productArabicName: '',
+        productEnglishName: 'Mahmoud',
+        shortName: ['Iraqy', 'Osary'],
+        manufacturingCompany: 'Comp2',
+        manufacturingCountry: 'Egypt',
+        applicant: 'Applicant1',
+        licenseHolder: 'licenseHolder1',
+        licenseHolderTxt: '',
+        countryOfLicenseHolder: 'Egypt',
+        tradeMark: 'Prod1',
+        physicalState: 'physicalState1',
+        physicalStateTxt: '',
+        purposeOfUse: 'purposeOfUse2',
+        purposeOfUseTxt: '',
+        shelfLife: 6,
+        receiptNumber: '219',
+        receiptValue: '12.4',
+        detailsTable: [
+          {
+            colour: 'Red',
+            fragrance: 'Red',
+            flavor: 'Red',
+            barCode: 'Red',
+            volumes: 'Red',
+            unitOfMeasure: 'unitOfMeasure1',
+            typeOfPackaging: 'typeOfPackaging1',
+            packagingDescription: '',
+            ingrediantDetails: [
+              {
+                ingrediant: 'ingrediant1',
+                concentrations: 'Test1',
+                function: 'function1',
+              }
+            ]
+          }
+        ],
+        freeSale: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        GMP: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        CoA: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        shelfLifeStatement: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        artWork: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        leaflet: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        reference: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        methodOfAnalysis: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        specificationsOfFinishedProduct: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        receipt: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        authorizationLetter: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        manufacturingContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        storageContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        others: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        otherFees: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+      },
       productStatus: '',
       productNotificationNumber: '12345',
-      productArabicName: '',
-      productEnglishName: 'Mahmoud',
-      shortName: ['Iraqy', 'Osary'],
-      manufacturingCompany: 'Comp2',
-      manufacturingCountry: 'Egypt',
-      applicant: 'Applicant1',
-      licenseHolder: 'licenseHolder1',
-      licenseHolderTxt: '',
-      countryOfLicenseHolder: 'Egypt',
-      tradeMark: 'Prod1',
-      physicalState: 'physicalState1',
-      physicalStateTxt: '',
-      purposeOfUse: 'purposeOfUse2',
-      purposeOfUseTxt: '',
-      shelfLife: 6,
-      receiptNumber: '219',
-      receiptValue: '12.4',
-      detailsTable: [
-        {
-          colour: 'Red',
-          fragrance: 'Red',
-          flavor: 'Red',
-          barCode: 'Red',
-          volumes: 'Red',
-          unitOfMeasure: 'unitOfMeasure1',
-          typeOfPackaging: 'typeOfPackaging1',
-          packagingDescription: '',
-          ingrediantDetails: [
-            {
-              ingrediant: 'ingrediant1',
-              concentrations: 'Test1',
-              function: 'function1',
-            }
-          ]
-        }
-      ],
-      freeSale: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      GMP: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      CoA: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      shelfLifeStatement: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      artWork: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      leaflet: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      reference: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      methodOfAnalysis: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      specificationsOfFinishedProduct: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      receipt: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      authorizationLetter: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      manufacturingContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      storageContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      others: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      otherFees: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
     },
     {
+      newProduct: {
+        productArabicName: '',
+        productEnglishName: 'Osary',
+        shortName: ['Abdel Fattah', 'Elsayed'],
+        manufacturingCompany: 'Comp3',
+        manufacturingCountry: 'Brazil',
+        applicant: 'Applicant3',
+        licenseHolder: 'licenseHolder2',
+        licenseHolderTxt: '',
+        countryOfLicenseHolder: 'Brazil',
+        tradeMark: 'Prod3',
+        physicalState: 'physicalState2',
+        physicalStateTxt: '',
+        purposeOfUse: 'purposeOfUse3',
+        purposeOfUseTxt: '',
+        shelfLife: 3,
+        receiptNumber: '219',
+        receiptValue: '12.4',
+        detailsTable: [
+          {
+            colour: 'Red',
+            fragrance: 'Red',
+            flavor: 'Red',
+            barCode: 'Red',
+            volumes: 'Red',
+            unitOfMeasure: 'unitOfMeasure1',
+            typeOfPackaging: 'typeOfPackaging1',
+            packagingDescription: '',
+            ingrediantDetails: [
+              {
+                ingrediant: 'ingrediant1',
+                concentrations: 'Test1',
+                function: 'function1',
+              }
+            ]
+          }
+        ],
+        freeSale: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        GMP: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        CoA: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        shelfLifeStatement: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        artWork: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        leaflet: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        reference: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        methodOfAnalysis: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        specificationsOfFinishedProduct: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        receipt: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        authorizationLetter: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        manufacturingContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        storageContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        others: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        otherFees: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+      },
       productStatus: '',
       productNotificationNumber: '67890',
-      productArabicName: '',
-      productEnglishName: 'Mahmoud',
-      shortName: ['Iraqy', 'Osary'],
-      manufacturingCompany: 'Comp2',
-      manufacturingCountry: 'Egypt',
-      applicant: 'Applicant1',
-      licenseHolder: 'licenseHolder1',
-      licenseHolderTxt: '',
-      countryOfLicenseHolder: 'Egypt',
-      tradeMark: 'Prod1',
-      physicalState: 'physicalState1',
-      physicalStateTxt: '',
-      purposeOfUse: 'purposeOfUse2',
-      purposeOfUseTxt: '',
-      shelfLife: 6,
-      receiptNumber: '219',
-      receiptValue: '12.4',
-      detailsTable: this.fb.array([this.fb.group({
-        colour: 'Red',
-        fragrance: 'Red',
-        flavor: 'Red',
-        barCode: 'Red',
-        volumes: 'Red',
-        unitOfMeasure: 'unitOfMeasure1',
-        typeOfPackaging: 'typeOfPackaging1',
-        packagingDescription: '',
-        ingrediantDetails: this.fb.array([this.fb.group({
-          ingrediant: 'ingrediant1',
-          concentrations: 'Test1',
-          function: 'function1',
-        })])
-      })]),
-      freeSale: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      GMP: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      CoA: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      shelfLifeStatement: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      artWork: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      leaflet: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      reference: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      methodOfAnalysis: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      specificationsOfFinishedProduct: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      receipt: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      authorizationLetter: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      manufacturingContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      storageContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      others: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      otherFees: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
     },
     {
+      newProduct: {
+        productArabicName: '',
+        productEnglishName: 'Mahmoud',
+        shortName: ['Iraqy', 'Osary'],
+        manufacturingCompany: 'Comp2',
+        manufacturingCountry: 'Egypt',
+        applicant: 'Applicant1',
+        licenseHolder: 'licenseHolder1',
+        licenseHolderTxt: '',
+        countryOfLicenseHolder: 'Egypt',
+        tradeMark: 'Prod1',
+        physicalState: 'physicalState1',
+        physicalStateTxt: '',
+        purposeOfUse: 'purposeOfUse2',
+        purposeOfUseTxt: '',
+        shelfLife: 6,
+        receiptNumber: '219',
+        receiptValue: '12.4',
+        detailsTable: [
+          {
+            colour: 'Red',
+            fragrance: 'Red',
+            flavor: 'Red',
+            barCode: 'Red',
+            volumes: 'Red',
+            unitOfMeasure: 'unitOfMeasure1',
+            typeOfPackaging: 'typeOfPackaging1',
+            packagingDescription: '',
+            ingrediantDetails: [
+              {
+                ingrediant: 'ingrediant1',
+                concentrations: 'Test1',
+                function: 'function1',
+              }
+            ]
+          }
+        ],
+        freeSale: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        GMP: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        CoA: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        shelfLifeStatement: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        artWork: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        leaflet: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        reference: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        methodOfAnalysis: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        specificationsOfFinishedProduct: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        receipt: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        authorizationLetter: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        manufacturingContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        storageContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        others: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        otherFees: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+      },
       productStatus: '',
       productNotificationNumber: '13579',
-      productArabicName: '',
-      productEnglishName: 'Mahmoud',
-      shortName: ['Iraqy', 'Osary'],
-      manufacturingCompany: 'Comp2',
-      manufacturingCountry: 'Egypt',
-      applicant: 'Applicant1',
-      licenseHolder: 'licenseHolder1',
-      licenseHolderTxt: '',
-      countryOfLicenseHolder: 'Egypt',
-      tradeMark: 'Prod1',
-      physicalState: 'physicalState1',
-      physicalStateTxt: '',
-      purposeOfUse: 'purposeOfUse2',
-      purposeOfUseTxt: '',
-      shelfLife: 6,
-      receiptNumber: '219',
-      receiptValue: '12.4',
-      detailsTable: this.fb.array([this.fb.group({
-        colour: 'Red',
-        fragrance: 'Red',
-        flavor: 'Red',
-        barCode: 'Red',
-        volumes: 'Red',
-        unitOfMeasure: 'unitOfMeasure1',
-        typeOfPackaging: 'typeOfPackaging1',
-        packagingDescription: '',
-        ingrediantDetails: this.fb.array([this.fb.group({
-          ingrediant: 'ingrediant1',
-          concentrations: 'Test1',
-          function: 'function1',
-        })])
-      })]),
-      freeSale: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      GMP: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      CoA: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      shelfLifeStatement: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      artWork: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      leaflet: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      reference: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      methodOfAnalysis: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      specificationsOfFinishedProduct: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      receipt: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      authorizationLetter: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      manufacturingContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      storageContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      others: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      otherFees: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
     },
     {
+      newProduct: {
+        productArabicName: '',
+        productEnglishName: 'Osary',
+        shortName: ['Abdel Fattah', 'Elsayed'],
+        manufacturingCompany: 'Comp3',
+        manufacturingCountry: 'Brazil',
+        applicant: 'Applicant3',
+        licenseHolder: 'licenseHolder2',
+        licenseHolderTxt: '',
+        countryOfLicenseHolder: 'Brazil',
+        tradeMark: 'Prod3',
+        physicalState: 'physicalState2',
+        physicalStateTxt: '',
+        purposeOfUse: 'purposeOfUse3',
+        purposeOfUseTxt: '',
+        shelfLife: 3,
+        receiptNumber: '219',
+        receiptValue: '12.4',
+        detailsTable: [
+          {
+            colour: 'Red',
+            fragrance: 'Red',
+            flavor: 'Red',
+            barCode: 'Red',
+            volumes: 'Red',
+            unitOfMeasure: 'unitOfMeasure1',
+            typeOfPackaging: 'typeOfPackaging1',
+            packagingDescription: '',
+            ingrediantDetails: [
+              {
+                ingrediant: 'ingrediant1',
+                concentrations: 'Test1',
+                function: 'function1',
+              }
+            ]
+          }
+        ],
+        freeSale: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        GMP: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        CoA: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        shelfLifeStatement: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        artWork: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        leaflet: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        reference: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        methodOfAnalysis: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        specificationsOfFinishedProduct: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        receipt: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        authorizationLetter: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        manufacturingContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        storageContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        others: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        otherFees: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+      },
       productStatus: '',
       productNotificationNumber: '24680',
-      productArabicName: '',
-      productEnglishName: 'Mahmoud',
-      shortName: ['Iraqy', 'Osary'],
-      manufacturingCompany: 'Comp2',
-      manufacturingCountry: 'Egypt',
-      applicant: 'Applicant1',
-      licenseHolder: 'licenseHolder1',
-      licenseHolderTxt: '',
-      countryOfLicenseHolder: 'Egypt',
-      tradeMark: 'Prod1',
-      physicalState: 'physicalState1',
-      physicalStateTxt: '',
-      purposeOfUse: 'purposeOfUse2',
-      purposeOfUseTxt: '',
-      shelfLife: 6,
-      receiptNumber: '219',
-      receiptValue: '12.4',
-      detailsTable: this.fb.array([this.fb.group({
-        colour: 'Red',
-        fragrance: 'Red',
-        flavor: 'Red',
-        barCode: 'Red',
-        volumes: 'Red',
-        unitOfMeasure: 'unitOfMeasure1',
-        typeOfPackaging: 'typeOfPackaging1',
-        packagingDescription: '',
-        ingrediantDetails: this.fb.array([this.fb.group({
-          ingrediant: 'ingrediant1',
-          concentrations: 'Test1',
-          function: 'function1',
-        })])
-      })]),
-      freeSale: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
+    },
+    {
+      newProduct: {
+        productArabicName: '',
+        productEnglishName: 'Mahmoud',
+        shortName: ['Iraqy', 'Osary'],
+        manufacturingCompany: 'Comp2',
+        manufacturingCountry: 'Egypt',
+        applicant: 'Applicant1',
+        licenseHolder: 'licenseHolder1',
+        licenseHolderTxt: '',
+        countryOfLicenseHolder: 'Egypt',
+        tradeMark: 'Prod1',
+        physicalState: 'physicalState1',
+        physicalStateTxt: '',
+        purposeOfUse: 'purposeOfUse2',
+        purposeOfUseTxt: '',
+        shelfLife: 6,
+        receiptNumber: '219',
+        receiptValue: '12.4',
+        detailsTable: [
+          {
+            colour: 'Red',
+            fragrance: 'Red',
+            flavor: 'Red',
+            barCode: 'Red',
+            volumes: 'Red',
+            unitOfMeasure: 'unitOfMeasure1',
+            typeOfPackaging: 'typeOfPackaging1',
+            packagingDescription: '',
+            ingrediantDetails: [
+              {
+                ingrediant: 'ingrediant1',
+                concentrations: 'Test1',
+                function: 'function1',
+              }
+            ]
+          }
+        ],
+        freeSale: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        GMP: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        CoA: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        shelfLifeStatement: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        artWork: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        leaflet: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        reference: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        methodOfAnalysis: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        specificationsOfFinishedProduct: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        receipt: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        authorizationLetter: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        manufacturingContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        storageContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        others: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        otherFees: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
       },
-      GMP: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
+      productStatus: '',
+      productNotificationNumber: '09876',
+    },
+    {
+      groupName: 'Group1',
+      newProduct: {
+        productArabicName: '',
+        productEnglishName: 'Osary',
+        shortName: ['Abdel Fattah', 'Elsayed'],
+        manufacturingCompany: 'Comp3',
+        manufacturingCountry: 'Brazil',
+        applicant: 'Applicant3',
+        licenseHolder: 'licenseHolder2',
+        licenseHolderTxt: '',
+        countryOfLicenseHolder: 'Brazil',
+        tradeMark: 'Prod3',
+        physicalState: 'physicalState2',
+        physicalStateTxt: '',
+        purposeOfUse: 'purposeOfUse3',
+        purposeOfUseTxt: '',
+        shelfLife: 3,
+        receiptNumber: '219',
+        receiptValue: '12.4',
+        detailsTable: [
+          {
+            colour: 'Red',
+            fragrance: 'Red',
+            flavor: 'Red',
+            barCode: 'Red',
+            volumes: 'Red',
+            unitOfMeasure: 'unitOfMeasure1',
+            typeOfPackaging: 'typeOfPackaging1',
+            packagingDescription: '',
+            ingrediantDetails: [
+              {
+                ingrediant: 'ingrediant1',
+                concentrations: 'Test1',
+                function: 'function1',
+              }
+            ]
+          }
+        ],
+        freeSale: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        GMP: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        CoA: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        shelfLifeStatement: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        artWork: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        leaflet: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        reference: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        methodOfAnalysis: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        specificationsOfFinishedProduct: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        receipt: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        authorizationLetter: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        manufacturingContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        storageContract: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        others: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
+        otherFees: {
+          lastModified: '1608642169292',
+          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
+          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
+          size: '374554',
+          type: 'application/vnd.ms-excel',
+          webkitRelativePath: ''
+        },
       },
-      CoA: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      shelfLifeStatement: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      artWork: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      leaflet: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      reference: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      methodOfAnalysis: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      specificationsOfFinishedProduct: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      receipt: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      authorizationLetter: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      manufacturingContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      storageContract: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      others: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
-      otherFees: {
-        lastModified: '1608642169292',
-        lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-        name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-        size: '374554',
-        type: 'application/vnd.ms-excel',
-        webkitRelativePath: ''
-      },
+      productStatus: '',
+      productNotificationNumber: '54321',
     },
   ];
+  newProductObject: any;
 
   constructor(private fb: FormBuilder) {
     this.getFormAsStarting();
@@ -915,7 +1261,6 @@ export class ProductsKitRequestFormComponent implements OnInit {
     this.saveDataOutput.emit(this.regKitForAllRequestedType.value);
   }
 
-  // tslint:disable-next-line:typedef
   onSubmit() {
     this.submitDataOutput.emit(this.regKitForAllRequestedType.value);
   }
@@ -1008,53 +1353,7 @@ export class ProductsKitRequestFormComponent implements OnInit {
     this.ProductGroupsRows().push(this.fb.group({
       productStatus: this.fb.control(''),
       productNotificationNumber: this.fb.control(''),
-      productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
-      manufacturingCompany: this.fb.control('', Validators.required),
-      manufacturingCountry: this.fb.control('', Validators.required),
-      applicant: this.fb.control('', Validators.required),
-      licenseHolder: this.fb.control('', Validators.required),
-      licenseHolderTxt: this.fb.control(''),
-      countryOfLicenseHolder: this.fb.control('', Validators.required),
-      tradeMark: this.fb.control(''),
-      physicalState: this.fb.control('', Validators.required),
-      physicalStateTxt: this.fb.control(''),
-      purposeOfUse: this.fb.control('', Validators.required),
-      purposeOfUseTxt: this.fb.control(''),
-      shelfLife: this.fb.control(0),
-      receiptNumber: this.fb.control('', Validators.required),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
-      detailsTable: this.fb.array([this.fb.group({
-        colour: this.fb.control(''),
-        fragrance: this.fb.control(''),
-        flavor: this.fb.control(''),
-        barCode: this.fb.control(''),
-        volumes: this.fb.control('', Validators.required),
-        unitOfMeasure: this.fb.control('', Validators.required),
-        typeOfPackaging: this.fb.control('', Validators.required),
-        packagingDescription: this.fb.control(''),
-        ingrediantDetails: this.fb.array([this.fb.group({
-          ingrediant: this.fb.control('', Validators.required),
-          concentrations: this.fb.control('', Validators.required),
-          function: this.fb.control('', Validators.required),
-        })])
-      })]),
-      freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
-      GMP: this.fb.control(''),
-      CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
-      shelfLifeStatement: this.fb.control('', Validators.required),
-      artWork: this.fb.control('', Validators.required),
-      leaflet: this.fb.control(''),
-      reference: this.fb.control(''),
-      methodOfAnalysis: this.fb.control(''),
-      specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-      receipt: this.fb.control('', Validators.required),
-      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
-      manufacturingContract: this.fb.control(''),
-      storageContract: this.fb.control(''),
-      others: this.fb.control(''),
-      otherFees: this.fb.control('', Validators.required),
+      newProduct: this.fb.group({...this.newProductObject})
     }));
   }
 
@@ -1077,56 +1376,11 @@ export class ProductsKitRequestFormComponent implements OnInit {
       shelfLife: this.fb.control(0),
       receiptNumber: this.fb.control('', Validators.required),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
+      groupName: this.fb.control(''),
       ProductsForKit: this.fb.array([this.fb.group({
         productStatus: this.fb.control(''),
         productNotificationNumber: this.fb.control(''),
-        productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
-        manufacturingCompany: this.fb.control('', Validators.required),
-        manufacturingCountry: this.fb.control('', Validators.required),
-        applicant: this.fb.control('', Validators.required),
-        licenseHolder: this.fb.control('', Validators.required),
-        licenseHolderTxt: this.fb.control(''),
-        countryOfLicenseHolder: this.fb.control('', Validators.required),
-        tradeMark: this.fb.control(''),
-        physicalState: this.fb.control('', Validators.required),
-        physicalStateTxt: this.fb.control(''),
-        purposeOfUse: this.fb.control('', Validators.required),
-        purposeOfUseTxt: this.fb.control(''),
-        shelfLife: this.fb.control(0),
-        receiptNumber: this.fb.control('', Validators.required),
-        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
-        detailsTable: this.fb.array([this.fb.group({
-          colour: this.fb.control(''),
-          fragrance: this.fb.control(''),
-          flavor: this.fb.control(''),
-          barCode: this.fb.control(''),
-          volumes: this.fb.control('', Validators.required),
-          unitOfMeasure: this.fb.control('', Validators.required),
-          typeOfPackaging: this.fb.control('', Validators.required),
-          packagingDescription: this.fb.control(''),
-          ingrediantDetails: this.fb.array([this.fb.group({
-            ingrediant: this.fb.control('', Validators.required),
-            concentrations: this.fb.control('', Validators.required),
-            function: this.fb.control('', Validators.required),
-          })])
-        })]),
-        freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
-        GMP: this.fb.control(''),
-        CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
-        shelfLifeStatement: this.fb.control('', Validators.required),
-        artWork: this.fb.control('', Validators.required),
-        leaflet: this.fb.control(''),
-        reference: this.fb.control(''),
-        methodOfAnalysis: this.fb.control(''),
-        specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-        receipt: this.fb.control('', Validators.required),
-        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
-        manufacturingContract: this.fb.control(''),
-        storageContract: this.fb.control(''),
-        others: this.fb.control(''),
-        otherFees: this.fb.control('', Validators.required),
+        newProduct: this.fb.group({...this.newProductObject})
       })]),
       freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
       GMP: this.fb.control(''),
@@ -1156,15 +1410,38 @@ export class ProductsKitRequestFormComponent implements OnInit {
     this.editIndex = event;
   }
 
-  applyProduct(data, status) {
+  applyProduct(data, status, index) {
     if (status === 'registered') {
       this.dummyDataForRegisteredProductForKits.filter(x => x.productNotificationNumber === data.value.productNotificationNumber).map(y => {
-        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, y];
+        const objectData = {
+          groupName: this.regKitForAllRequestedType.get('groupName').value,
+          ...y
+        };
+
+        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
         this.addProductsGroupRows();
       });
     } else if (status === 'new') {
-      this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, ...this.ProductGroupsRows().value];
+      this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
+      console.log('this.allProductsInKit.tableBody ', this.allProductsInKit.tableBody);
+
       this.addProductsGroupRows();
     }
+  }
+
+  getDataForNewProduct(event) {
+    console.log('event', event);
+    this.ProductGroupsRows().value.filter(x => x.productStatus === 'New').map(y => {
+      y.newProduct = event;
+    });
+    console.log('this.ProductGroupsRows().value', this.ProductGroupsRows().value);
+    const data = {
+      groupName: this.regKitForAllRequestedType.get('groupName').value,
+      ...this.ProductGroupsRows().value[this.ProductGroupsRows().value.length - 1]
+    };
+
+    console.log('data', data);
+
+    this.applyProduct(data, 'new', '');
   }
 }

@@ -34,11 +34,11 @@
             ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 'regKit' && selectedRequestedType">
-            <app-product-request-form
+            <app-products-kit-request-form
               [selectedRequestedType]="selectedRequestedType"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
-            ></app-product-request-form>
+            ></app-products-kit-request-form>
           </div>
           <div class="col-12 mt-5"
                *ngIf="selectedFormType === 'regHairColorantProduct' && selectedRequestedType">

@@ -10,6 +10,7 @@ import {TabsetComponent} from 'ngx-bootstrap/tabs';
 export class ProductRequestFormComponent implements OnInit {
 
   @Input() selectedRequestedType;
+  @Input() kitProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   formData = {
