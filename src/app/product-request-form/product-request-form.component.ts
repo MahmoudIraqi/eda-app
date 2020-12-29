@@ -151,7 +151,7 @@ export class ProductRequestFormComponent implements OnInit {
   }
 
   removeShortName(i: number) {
-    if (i > 0) {
+    if (this.ShortName.value.length > 1) {
       this.removeShortNameFieldStatus = false;
       this.ShortName.removeAt(i);
     } else {
@@ -259,8 +259,8 @@ export class ProductRequestFormComponent implements OnInit {
   getFormAsStarting() {
     this.regProductForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9]*$')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9]*$'))]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
       applicant: this.fb.control('', Validators.required),
@@ -274,7 +274,7 @@ export class ProductRequestFormComponent implements OnInit {
       purposeOfUseTxt: this.fb.control(''),
       shelfLife: this.fb.control(0),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-      receiptValue: this.fb.control('', [Validators.required,  Validators.pattern(/^\d+\.\d*$/)]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
@@ -310,7 +310,7 @@ export class ProductRequestFormComponent implements OnInit {
     this.regProductForAllRequestedType.valueChanges.subscribe(form => {
       if (form.receiptValue) {
         this.regProductForAllRequestedType.patchValue({
-          receiptValue: this.number.transform(form.receiptValue, '1.1-4')
+          receiptValue: this.number.transform(form.receiptValue, '1.2-2')
         }, {emitEvent: false});
       }
     });

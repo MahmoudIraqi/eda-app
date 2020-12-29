@@ -150,7 +150,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit {
   }
 
   removeShortName(i: number) {
-    if (i > 0) {
+    if (this.ShortName.value.length > 1) {
       this.removeShortNameFieldStatus = false;
       this.ShortName.removeAt(i);
     } else {
@@ -259,8 +259,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit {
   getFormAsStarting() {
     this.regHairColorantProductForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9]*$')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9]*$'))]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
       productColor: this.fb.control(''),
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
