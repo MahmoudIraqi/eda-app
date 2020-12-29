@@ -27,6 +27,7 @@ import { ProductRequestFormComponent } from './product-request-form/product-requ
 import { ProductsKitRequestFormComponent } from './products-kit-request-form/products-kit-request-form.component';
 import { ProductsHairColourRequestFormComponent } from './products-hair-colour-request-form/products-hair-colour-request-form.component';
 import { ProductsKitHairColourRequestFormComponent } from './products-kit-hair-colour-request-form/products-kit-hair-colour-request-form.component';
+import {DecimalPipe} from '@angular/common';
 
 
 @NgModule({
@@ -60,7 +61,7 @@ import { ProductsKitHairColourRequestFormComponent } from './products-kit-hair-c
     MatSliderModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -194,13 +194,18 @@
                   *ngIf="regKitForAllRequestedType.get('receiptNumber').errors.required">
                   this field is required
                 </div>
+                <div
+                  *ngIf="regKitForAllRequestedType.get('receiptNumber').errors.pattern">
+                  this field must be a number
+                </div>
               </div>
             </mat-form-field>
           </div>
           <div class="col-sm-4">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Value</mat-label>
-              <input type="text" class="form-control" matInput formControlName="receiptValue"
+              <input type="text" class="form-control" matInput
+                     formControlName="receiptValue"
                      placeholder="Receipt Value" required>
               <div
                 *ngIf="regKitForAllRequestedType.get('receiptValue').invalid && (regKitForAllRequestedType.get('receiptValue').dirty || regKitForAllRequestedType.get('receiptValue').touched)"
@@ -225,6 +230,7 @@
           <div class="col-12">
             <app-title [smallTitle]="true" [title]="'Product Group Form'"></app-title>
           </div>
+          g
           <div class="col-12">
             <div class="row">
               <div class="col-6">
@@ -243,7 +249,8 @@
                         <div class="row">
                           <div class="col-12">
                             <div class="col-12">
-                              <app-title [title]="'Add Product For ' + regKitForAllRequestedType.get('groupName').value" [smallTitle]="true"></app-title>
+                              <app-title [title]="'Add Product For ' + regKitForAllRequestedType.get('groupName').value"
+                                         [smallTitle]="true"></app-title>
                             </div>
                           </div>
                         </div>

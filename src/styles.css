@@ -127,6 +127,12 @@ a,
   box-shadow: inset 600px 0 0 0 #c28a30;
 }
 
+.btn.btn-primary:disabled {
+  cursor: not-allowed;
+}
+
+
+
 .w-85 {
   width: 85% !important;
 }

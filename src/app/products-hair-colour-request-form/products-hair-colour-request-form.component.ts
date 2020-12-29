@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-products-hair-colour-request-form',
@@ -128,7 +129,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit {
   regHairColorantProductForAllRequestedType: FormGroup;
   removeShortNameFieldStatus = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private number: DecimalPipe) {
     this.getFormAsStarting();
   }
 
@@ -257,8 +259,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit {
   getFormAsStarting() {
     this.regHairColorantProductForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9]*$')]),
+      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9]*$'))]),
       productColor: this.fb.control(''),
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
@@ -272,8 +274,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit {
       purposeOfUse: this.fb.control('', Validators.required),
       purposeOfUseTxt: this.fb.control(''),
       shelfLife: this.fb.control(0),
-      receiptNumber: this.fb.control('', Validators.required),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
+      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
@@ -304,6 +306,14 @@ export class ProductsHairColourRequestFormComponent implements OnInit {
       storageContract: this.fb.control(''),
       others: this.fb.control(''),
       otherFees: this.fb.control('', Validators.required),
+    });
+
+    this.regHairColorantProductForAllRequestedType.valueChanges.subscribe(form => {
+      if (form.receiptValue) {
+        this.regHairColorantProductForAllRequestedType.patchValue({
+          receiptValue: this.number.transform(form.receiptValue, '1.2-2')
+        }, {emitEvent: false});
+      }
     });
   }
 }

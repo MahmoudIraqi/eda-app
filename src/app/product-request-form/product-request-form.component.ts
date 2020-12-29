@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-product-request-form',
@@ -129,7 +130,8 @@ export class ProductRequestFormComponent implements OnInit {
   regProductForAllRequestedType: FormGroup;
   removeShortNameFieldStatus = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private number: DecimalPipe) {
     this.getFormAsStarting();
   }
 
@@ -257,8 +259,8 @@ export class ProductRequestFormComponent implements OnInit {
   getFormAsStarting() {
     this.regProductForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9]*$')]),
+      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9]*$'))]),
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
       applicant: this.fb.control('', Validators.required),
@@ -271,8 +273,8 @@ export class ProductRequestFormComponent implements OnInit {
       purposeOfUse: this.fb.control('', Validators.required),
       purposeOfUseTxt: this.fb.control(''),
       shelfLife: this.fb.control(0),
-      receiptNumber: this.fb.control('', Validators.required),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d{1}$/)]),
+      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+      receiptValue: this.fb.control('', [Validators.required,  Validators.pattern(/^\d+\.\d*$/)]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
@@ -303,6 +305,14 @@ export class ProductRequestFormComponent implements OnInit {
       storageContract: this.fb.control(''),
       others: this.fb.control(''),
       otherFees: this.fb.control('', Validators.required),
+    });
+
+    this.regProductForAllRequestedType.valueChanges.subscribe(form => {
+      if (form.receiptValue) {
+        this.regProductForAllRequestedType.patchValue({
+          receiptValue: this.number.transform(form.receiptValue, '1.1-4')
+        }, {emitEvent: false});
+      }
     });
   }
 }
