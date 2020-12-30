@@ -10,6 +10,7 @@ import {DecimalPipe} from '@angular/common';
 })
 export class ProductsHairColourRequestFormComponent implements OnInit {
   @Input() selectedRequestedType;
+  @Input() kitHairProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   formData = {

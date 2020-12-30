@@ -93,6 +93,8 @@ export class NewRequestComponent implements OnInit {
       console.log('regKitForAllRequestedType', event);
     } else if (this.selectedFormType === 'regHairColorantProduct') {
       console.log('regHairColorantProductForAllRequestedType', event);
+    } else if (this.selectedFormType === 'regHairColorantKit') {
+      console.log('regHairColorantProductKitForAllRequestedType', event);
     }
   }
 
@@ -103,6 +105,8 @@ export class NewRequestComponent implements OnInit {
       console.log('regKitForAllRequestedType', event);
     } else if (this.selectedFormType === 'regHairColorantProduct') {
       console.log('regHairColorantProductForAllRequestedType', event);
+    } else if (this.selectedFormType === 'regHairColorantKit') {
+      console.log('regHairColorantProductKitForAllRequestedType', event);
     }
   }
 }

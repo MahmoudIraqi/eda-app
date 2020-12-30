@@ -294,7 +294,7 @@ export class ProductRequestFormComponent implements OnInit {
       GMP: this.fb.control(''),
       CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
       shelfLifeStatement: this.fb.control('', Validators.required),
-      artWork: this.fb.control('', Validators.required),
+      artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
       leaflet: this.fb.control(''),
       reference: this.fb.control(''),
       methodOfAnalysis: this.fb.control(''),

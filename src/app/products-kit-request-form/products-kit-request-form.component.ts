@@ -1280,7 +1280,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   addShortName() {
     this.removeShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.fb.control('')); //, Validators.pattern('^[a-zA-Z \-\']+')
+      this.ShortName.push(this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))); //
     }
   }
 
@@ -1375,38 +1375,38 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     this.regKitForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
       productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),  //
-      manufacturingCompany: this.fb.control('', Validators.required), //
-      manufacturingCountry: this.fb.control('', Validators.required), //
-      applicant: this.fb.control('', Validators.required), //
-      licenseHolder: this.fb.control('', Validators.required), //
+      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
+      manufacturingCompany: this.fb.control('', Validators.required),
+      manufacturingCountry: this.fb.control('', Validators.required),
+      applicant: this.fb.control('', Validators.required),
+      licenseHolder: this.fb.control('', Validators.required),
       licenseHolderTxt: this.fb.control(''),
-      countryOfLicenseHolder: this.fb.control('', Validators.required), //
+      countryOfLicenseHolder: this.fb.control('', Validators.required),
       tradeMark: this.fb.control(''),
       shelfLife: this.fb.control(0),
-      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]), //
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]), //
+      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
       groupName: this.fb.control('', Validators.required),
       ProductsForKit: this.fb.array([this.fb.group({
         productStatus: this.fb.control(''),
         productNotificationNumber: this.fb.control(''),
         newProduct: this.fb.group({})
       })]),
-      freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null), //
+      freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
       GMP: this.fb.control(''),
-      CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null), //
-      shelfLifeStatement: this.fb.control('', Validators.required), //
-      artWorkForTheKit: this.fb.control('', Validators.required), //
+      CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
+      shelfLifeStatement: this.fb.control('', Validators.required),
+      artWorkForTheKit: this.fb.control('', Validators.required),
       leaflet: this.fb.control(''),
       reference: this.fb.control(''),
       methodOfAnalysis: this.fb.control(''),
-      specificationsOfFinishedProduct: this.fb.control('', Validators.required), //
-      receipt: this.fb.control('', Validators.required), //
-      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null), //
+      specificationsOfFinishedProduct: this.fb.control('', Validators.required),
+      receipt: this.fb.control('', Validators.required),
+      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
       manufacturingContract: this.fb.control(''),
       storageContract: this.fb.control(''),
       others: this.fb.control(''),
-      otherFees: this.fb.control('', Validators.required), //
+      otherFees: this.fb.control('', Validators.required)
     });
 
     this.regKitForAllRequestedType.valueChanges.subscribe(form => {

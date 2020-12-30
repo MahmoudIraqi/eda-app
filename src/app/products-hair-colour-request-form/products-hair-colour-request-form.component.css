@@ -15,7 +15,7 @@ input:active, input:focus {
   box-shadow: none;
 }
 
-form > .row > div:nth-child(n + 4), form > tabset .row > div:nth-child(n + 4) {
+form > .row > div:nth-child(n + 4) {
   margin-top: 2em;
 }
 

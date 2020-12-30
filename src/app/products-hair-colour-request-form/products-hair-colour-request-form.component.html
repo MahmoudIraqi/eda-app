@@ -568,6 +568,7 @@
           Next Forward
         </button>
         <button type="button"
+                *ngIf="!kitHairProductStatus"
                 class="btn btn-primary btn-sm mr-3"
                 (click)="saveData()">
           Save
@@ -577,7 +578,8 @@
           type="submit"
           class="btn btn-primary btn-sm"
           [disabled]="!regHairColorantProductForAllRequestedType.valid">
-          Submit
+          <span *ngIf="!kitHairProductStatus">Submit</span>
+          <span *ngIf="kitHairProductStatus">Apply Product</span>
         </button>
       </div>
     </div>

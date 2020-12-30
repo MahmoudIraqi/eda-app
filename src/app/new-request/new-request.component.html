@@ -48,6 +48,13 @@
               (submitDataOutput)="onSubmit($event)"
             ></app-products-hair-colour-request-form>
           </div>
+          <div class="col-12 mt-5" *ngIf="selectedFormType === 'regHairColorantKit' && selectedRequestedType">
+            <app-products-kit-hair-colour-request-form
+              [selectedRequestedType]="selectedRequestedType"
+              (saveDataOutput)="saveData($event)"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-kit-hair-colour-request-form>
+          </div>
         </div>
       </div>
     </div>
