@@ -132,7 +132,6 @@ a,
 }
 
 
-
 .w-85 {
   width: 85% !important;
 }
@@ -184,9 +183,9 @@ body {
   width: 100%;
 }
 
-.detailsTable .mat-form-field-wrapper {
-  padding-bottom: 0em !important;
-}
+/*.detailsTable .mat-form-field-wrapper {*/
+/*  padding-bottom: 0em !important;*/
+/*}*/
 
 .detailsTable .mat-form-field-flex {
   padding: 0em !important;
@@ -216,6 +215,10 @@ body {
 .detailsTable .mat-select-value {
   margin-bottom: 0px;
   padding-bottom: 0.8em;
+}
+
+.detailsTable .tab-pane .col-sm-4 {
+  margin-top: 1em;
 }
 
 .mat-form-field-label {
