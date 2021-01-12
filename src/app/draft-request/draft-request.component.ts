@@ -8,44 +8,72 @@ import {Component, OnInit} from '@angular/core';
 export class DraftRequestComponent implements OnInit {
 
   draftListRequests = {
-    tableHeader: ['Id', 'Request Entity', 'Details', 'Date', 'Action'],
+    tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
     tableBody: [
       {
-        id: '1',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        id: '13245786',
+        submissionDate: 'Jan 12 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'In Progress',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
       },
       {
-        id: '2',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        id: '98712654',
+        submissionDate: 'Jan 21 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'Starting',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
       },
       {
-        id: '3',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        id: '13245786',
+        submissionDate: 'Jan 12 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'In Progress',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
       },
       {
-        id: '4',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        id: '98712654',
+        submissionDate: 'Jan 21 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'Starting',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
       },
       {
-        id: '5',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        id: '13245786',
+        submissionDate: 'Jan 12 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'In Progress',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
       },
       {
-        id: '6',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
-      }
+        id: '98712654',
+        submissionDate: 'Jan 21 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'Starting',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
+      },
+      {
+        id: '13245786',
+        submissionDate: 'Jan 12 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'In Progress',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
+      },
+      {
+        id: '98712654',
+        submissionDate: 'Jan 21 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        status: 'Starting',
+        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
+      },
     ]
   };
 

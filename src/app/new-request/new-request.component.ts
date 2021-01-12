@@ -88,25 +88,65 @@ export class NewRequestComponent implements OnInit {
 
   saveData(event) {
     if (this.selectedFormType === 'regProduct') {
-      console.log('regProductForAllRequestedType', event);
+      const regProductData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regProductForAllRequestedType', regProductData);
     } else if (this.selectedFormType === 'regKit') {
-      console.log('regKitForAllRequestedType', event);
+      const regProductForAllRequestedTypeData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
     } else if (this.selectedFormType === 'regHairColorantProduct') {
-      console.log('regHairColorantProductForAllRequestedType', event);
+      const regKitForAllRequestedTypeData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regHairColorantProductForAllRequestedType', regKitForAllRequestedTypeData);
     } else if (this.selectedFormType === 'regHairColorantKit') {
-      console.log('regHairColorantProductKitForAllRequestedType', event);
+      const regHairColorantKitData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
     }
   }
 
   onSubmit(event) {
     if (this.selectedFormType === 'regProduct') {
-      console.log('regProductForAllRequestedType', event);
+      const regProductData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regProductForAllRequestedType', regProductData);
     } else if (this.selectedFormType === 'regKit') {
-      console.log('regKitForAllRequestedType', event);
+      const regProductForAllRequestedTypeData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
     } else if (this.selectedFormType === 'regHairColorantProduct') {
-      console.log('regHairColorantProductForAllRequestedType', event);
+      const regKitForAllRequestedTypeData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regHairColorantProductForAllRequestedType', regKitForAllRequestedTypeData);
     } else if (this.selectedFormType === 'regHairColorantKit') {
-      console.log('regHairColorantProductKitForAllRequestedType', event);
+      const regHairColorantKitData = {
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
+      console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
     }
   }
 }

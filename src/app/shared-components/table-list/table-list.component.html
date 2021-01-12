@@ -9,7 +9,7 @@
       </th>
     </tr>
     <tr *ngFor="let request of dataAfterFilters.length > 0 ? dataAfterFilters : data.tableBody; let i = index">
-      <td colspan="5" *ngIf="whichTable === 'track'">
+      <td colspan="6" *ngIf="whichTable === 'track'">
         <mat-accordion>
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
             <mat-expansion-panel-header>
@@ -17,10 +17,11 @@
                 <table class="table table-sm tableDetailsCont">
                   <tr>
                     <td>{{request.id}}</td>
-                    <td>{{request.requestEntity}}</td>
+                    <td>{{request.submissionDate}}</td>
+                    <td class="hide">{{request.productEnglishName}}</td>
+                    <td class="hide">{{request.productArabicName}}</td>
                     <td class="hide">{{request.status}}</td>
-                    <td class="hide">{{request.details}}</td>
-                    <td>{{request.notification}}</td>
+                    <td class="hide">{{request.trackType}}</td>
                   </tr>
                 </table>
               </mat-panel-title>
@@ -28,24 +29,28 @@
             <div class="detailsContainer pt-4">
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Id :</label>
+                  <label class="label">Request id :</label>
                   <span>{{request.id}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Request Entity :</label>
-                  <span>{{request.requestEntity}}</span>
+                  <label class="label">Submission date :</label>
+                  <span>{{request.submissionDate}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Product English name :</label>
+                  <span>{{request.productEnglishName}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Product Arabic name :</label>
+                  <span>{{request.productArabicName}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label ">Status :</label>
                   <span>{{request.status}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Notification number :</label>
-                  <span>{{request.notificationNumber}}</span>
-                </div>
-                <div class="col-12 col-sm-6 col-md-6">
-                  <label class="label">Details :</label>
-                  <span>{{request.details}}</span>
+                  <label class="label">Track Type :</label>
+                  <span>{{request.trackType}}</span>
                 </div>
                 <div class="col-12 mt-5" *ngIf="request.notificationStatus">
                   <div class="notificationContainer">
@@ -70,7 +75,7 @@
           </mat-expansion-panel>
         </mat-accordion>
       </td>
-      <td colspan="5" *ngIf="whichTable === 'draft'">
+      <td colspan="7" *ngIf="whichTable === 'draft'">
         <mat-accordion>
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
             <mat-expansion-panel-header>
@@ -78,9 +83,11 @@
                 <table class="table table-sm tableDetailsCont">
                   <tr>
                     <td>{{request.id}}</td>
-                    <td>{{request.requestEntity}}</td>
-                    <td class="hide">{{request.details}}</td>
-                    <td class="hide">{{request.date}}</td>
+                    <td>{{request.submissionDate}}</td>
+                    <td class="hide">{{request.productEnglishName}}</td>
+                    <td class="hide">{{request.productArabicName}}</td>
+                    <td class="hide">{{request.status}}</td>
+                    <td class="hide">{{request.trackType}}</td>
                     <td><i class="fa fa-edit"></i></td>
                   </tr>
                 </table>
@@ -89,20 +96,28 @@
             <div class="detailsContainer pt-4">
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Id :</label>
+                  <label class="label">Request id :</label>
                   <span>{{request.id}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Request Entity :</label>
-                  <span>{{request.requestEntity}}</span>
+                  <label class="label">Submission date :</label>
+                  <span>{{request.submissionDate}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Date :</label>
-                  <span>{{request.date}}</span>
+                  <label class="label">Product English name :</label>
+                  <span>{{request.productEnglishName}}</span>
                 </div>
-                <div class="col-12 col-sm-6 col-md-6">
-                  <label class="label">Details :</label>
-                  <span>{{request.details}}</span>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Product Arabic name :</label>
+                  <span>{{request.productArabicName}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label ">Status :</label>
+                  <span>{{request.status}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Track Type :</label>
+                  <span>{{request.trackType}}</span>
                 </div>
               </div>
             </div>

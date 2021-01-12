@@ -1361,7 +1361,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     this.ProductGroupsRows().push(this.fb.group({
       productStatus: this.fb.control(''),
       productNotificationNumber: this.fb.control(''),
-      newProduct: this.fb.group({})
+      productDetails: this.fb.group({})
     }));
   }
 
@@ -1390,7 +1390,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       ProductsForKit: this.fb.array([this.fb.group({
         productStatus: this.fb.control(''),
         productNotificationNumber: this.fb.control(''),
-        newProduct: this.fb.group({})
+        productDetails: this.fb.group({})
       })]),
       freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
       GMP: this.fb.control(''),
@@ -1436,7 +1436,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
             groupName: this.regKitForAllRequestedType.get('groupName').value,
             ...y
           };
-          this.ProductGroupsRows().value[index].newProduct = y;
+
+          this.ProductGroupsRows().value[index].productDetails = y.newProduct;
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
         });
@@ -1454,10 +1455,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   getDataForNewProduct(event) {
     console.log('event', event);
+    console.log('this.ProductGroupsRows().value', this.ProductGroupsRows().value);
+
     this.ProductGroupsRows().value.filter(x => x.productStatus === 'New').map(y => {
       y.newProduct = event;
     });
-    console.log('this.ProductGroupsRows().value', this.ProductGroupsRows().value);
     const data = {
       groupName: this.regKitForAllRequestedType.get('groupName').value,
       ...this.ProductGroupsRows().value[this.ProductGroupsRows().value.length - 1]
