@@ -122,7 +122,8 @@ a,
 
 .btn.btn-primary:hover {
   background: #c28a30 !important;
-  border: 2px solid #c28a30;
+  border: 2px solid;
+  border-color: #c28a30;
   color: #fff;
   box-shadow: inset 600px 0 0 0 #c28a30;
 }
@@ -322,11 +323,15 @@ body {
 }
 
 .ApprovedTable .table th:nth-child(3), .ApprovedTable .table td:nth-child(3) {
-  width: 60%;
+  width: 30%;
 }
 
 .ApprovedTable .table th:nth-child(4), .ApprovedTable .table td:nth-child(4) {
-  width: 10%;
+  width: 30%;
+}
+
+.ApprovedTable .table th:nth-child(5), .ApprovedTable .table td:nth-child(5) {
+  width: 20%;
 }
 
 

@@ -251,8 +251,9 @@
 
 }
 
-.dropdown-content a:hover {
-  background-color: #a06731
+.dropdown-content a:hover, .dropdown-item.active, .dropdown-item:active {
+  background-color: #a06731 !important;
+  color: #fff !important;
 }
 
 .dropdown:hover .dropdown-content {

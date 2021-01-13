@@ -8,44 +8,36 @@ import {Component, OnInit} from '@angular/core';
 export class ApprovedRequestComponent implements OnInit {
 
   approvedListRequests = {
-    tableHeader: ['Notification', 'Request Entity', 'Details', 'date'],
+    tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
     tableBody: [
       {
-        notification: '123456',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        notification: '13245786',
+        submissionDate: 'Jan 12 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        actionStatus: 'No',
       },
       {
-        notification: '234567',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        notification: '98712654',
+        submissionDate: 'Jan 21 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        actionStatus: 'No',
       },
       {
-        notification: '345678',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        notification: '13245786',
+        submissionDate: 'Jan 12 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        actionStatus: 'No',
       },
       {
-        notification: '4567890',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
+        notification: '98712654',
+        submissionDate: 'Jan 21 2021',
+        productEnglishName: 'Egyptian Drug Authority',
+        productArabicName: 'هيئة الدواء المصرية',
+        actionStatus: 'No',
       },
-      {
-        notification: '5678901',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
-      },
-      {
-        notification: '6789012',
-        requestEntity: 'Egyptian Drug Authority',
-        details: 'Brief about authority connects medical pros around the world during COVID-19',
-        date: '01.01.2021'
-      }
     ]
   };
 

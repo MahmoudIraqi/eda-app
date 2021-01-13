@@ -11,21 +11,22 @@
       <div class="row h-100">
         <div class="col-12 p-0 pt-3 pb-3 border-bottom h-100">
           <div
-              [ngClass]="{'text-right': screenWidth > 960, 'd-flex': screenWidth <= 960, 'mt-5': screenWidth <= 960 && screenWidth > 640}">
+            [ngClass]="{'text-right': screenWidth > 960, 'd-flex flex-column flex-sm-row': screenWidth <= 960, 'mt-5': screenWidth <= 960 && screenWidth > 640}">
             <div class="TitleContainer"
-                 [ngClass]="{'w-85': screenWidth <= 960, 'text-left': screenWidth <= 640 }">
+                 [ngClass]="{'w-100 w-sm-85': screenWidth <= 960 }">
               <h2>Egycosm</h2>
             </div>
-            <div class="dropdown ml-auto">
-              <button class="dropbtn btn btn-primary ">
+            <div class="btn-group mx-auto ml-sm-auto dropdown" dropdown>
+              <button class="dropbtn btn btn-primary" type="button" dropdownToggle aria-controls="dropdown-basic">
                 <span>
                 <i class="fas fa-bars"></i>
               </span>
               </button>
               <div class="dropdown-content">
-                <ul>
-                  <li *ngFor="let item of menuObject">
-                    <a routerLink="{{item.link}}" routerLinkActive="active">
+                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                    role="menu" aria-labelledby="button-basic">
+                  <li *ngFor="let item of menuObject" role="menuitem">
+                    <a class="dropdown-item" routerLink="{{item.link}}" routerLinkActive="active">
                       {{item.name}}
                     </a>
                   </li>

@@ -1,7 +1,34 @@
 <div class="table-responsive">
   <table class="table table-sm table-ordered">
-    <tr class="headerRow">
-      <th *ngFor="let request of data.tableHeader">
+    <tr class="headerRow" *ngIf="whichTable === 'draft'">
+      <th *ngFor="let request of data.tableHeader; let i = index"
+          [ngClass]="{'hide': (i>2 && i !== data.tableHeader.length-1 )|| i === 0}">
+        {{request}}
+        <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+      </th>
+    </tr>
+    <tr class="headerRow" *ngIf="whichTable === 'track'">
+      <th *ngFor="let request of data.tableHeader; let i = index"
+          [ngClass]="{'hide': i>2 || i === 0}">
+        {{request}}
+        <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+      </th>
+    </tr>
+    <tr class="headerRow" *ngIf="whichTable === 'approved'">
+      <th *ngFor="let request of data.tableHeader; let i = index"
+          [ngClass]="{'hide': i>2 || i === 0}">
+        {{request}}
+        <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+      </th>
+    </tr>
+    <tr class="headerRow" *ngIf="whichTable === 'newRequest' || whichTable === 'productsKitList'">
+      <th *ngFor="let request of data.tableHeader; let i = index">
         {{request}}
         <span (click)="sortBy(sortStatus, request)">
           <i class="fa fa-sort"></i>
@@ -80,17 +107,19 @@
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <table class="table table-sm tableDetailsCont">
-                  <tr>
-                    <td>{{request.id}}</td>
-                    <td>{{request.submissionDate}}</td>
-                    <td class="hide">{{request.productEnglishName}}</td>
-                    <td class="hide">{{request.productArabicName}}</td>
-                    <td class="hide">{{request.status}}</td>
-                    <td class="hide">{{request.trackType}}</td>
-                    <td><i class="fa fa-edit"></i></td>
-                  </tr>
-                </table>
+                <div class="table-responsive">
+                  <table class="table table-sm tableDetailsCont">
+                    <tr>
+                      <td class="hide">{{request.id}}</td>
+                      <td>{{request.submissionDate}}</td>
+                      <td>{{request.productEnglishName}}</td>
+                      <td class="hide">{{request.productArabicName}}</td>
+                      <td class="hide">{{request.status}}</td>
+                      <td class="hide">{{request.trackType}}</td>
+                      <td><i class="fa fa-edit"></i></td>
+                    </tr>
+                  </table>
+                </div>
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="detailsContainer pt-4">
@@ -124,38 +153,39 @@
           </mat-expansion-panel>
         </mat-accordion>
       </td>
-      <td colspan="4" *ngIf="whichTable === 'approved'">
+      <td colspan="5" *ngIf="whichTable === 'approved'">
         <mat-accordion>
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <table class="table table-sm tableDetailsCont">
                   <tr>
-                    <td>{{request.notification}}</td>
-                    <td>{{request.requestEntity}}</td>
-                    <td class="hide">{{request.details}}</td>
-                    <td class="hide">{{request.date}}</td>
+                    <td class="hide">{{request.notification}}</td>
+                    <td>{{request.submissionDate}}</td>
+                    <td>{{request.productEnglishName}}</td>
+                    <td class="hide">{{request.productArabicName}}</td>
+                    <td class="hide">{{request.actionStatus}}</td>
                   </tr>
                 </table>
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="detailsContainer pt-4">
               <div class="row">
-                <div class="col-12 col-sm-6 col-md-4">
+                <div class="col-12 col-sm-6 col-md-3">
                   <label class="label">Notification number :</label>
-                  <span>{{request.notificationNumber}}</span>
+                  <span>{{request.notification}}</span>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Request Entity :</label>
-                  <span>{{request.requestEntity}}</span>
+                <div class="col-12 col-sm-6 col-md-3">
+                  <label class="label">Submission date :</label>
+                  <span>{{request.submissionDate}}</span>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label ">Date :</label>
-                  <span>{{request.date}}</span>
+                <div class="col-12 col-sm-6 col-md-3">
+                  <label class="label ">Product English name :</label>
+                  <span>{{request.productEnglishName}}</span>
                 </div>
-                <div class="col-12 col-sm-6 col-md-6 ">
-                  <label class="label">Details :</label>
-                  <span>{{request.details}}</span>
+                <div class="col-12 col-sm-6 col-md-3">
+                  <label class="label">Product Arabic name :</label>
+                  <span>{{request.productArabicName}}</span>
                 </div>
               </div>
             </div>
@@ -470,10 +500,12 @@
                                                     Actions
                                                   </th>
                                                 </tr>
-                                                <tr *ngFor="let requestDetailsIngrediant of requestDetails.ingrediantDetails; let indexChild = index">
+                                                <tr
+                                                  *ngFor="let requestDetailsIngrediant of requestDetails.ingrediantDetails; let indexChild = index">
                                                   <td colspan="4">
                                                     <mat-accordion>
-                                                      <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle
+                                                      <mat-expansion-panel class="areaContainer" [expanded]="false"
+                                                                           hideToggle
                                                                            disabled="true">
                                                         <mat-expansion-panel-header class="insidePanelHeader">
                                                           <mat-panel-title>
@@ -482,7 +514,8 @@
                                                                 <td>{{requestDetailsIngrediant.ingrediant}}</td>
                                                                 <td>{{requestDetailsIngrediant.concentrations}}</td>
                                                                 <td>{{requestDetailsIngrediant.function}}</td>
-                                                                <td><span (click)="removeIngrediantDetailsRowFunction(indexChild, index, i)"><i
+                                                                <td><span
+                                                                  (click)="removeIngrediantDetailsRowFunction(indexChild, index, i)"><i
                                                                   class="fa fa-trash"></i></span></td>
                                                               </tr>
                                                             </table>
