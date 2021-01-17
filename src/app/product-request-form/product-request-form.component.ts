@@ -2,6 +2,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
+import {FormService} from '../services/form.service';
 
 @Component({
   selector: 'app-product-request-form',
@@ -15,17 +16,17 @@ export class ProductRequestFormComponent implements OnInit {
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   formData = {
-    manufacturingCompanyList: ['Comp1', 'Comp2', 'Comp3', 'Comp4'],
-    manufacturingCountryList: ['Egypt', 'Brazil', 'Spain', 'Germany'],
+    manufacturingCompanyList: [],
+    manufacturingCountryList: [],
     ApplicantList: ['Applicant1', 'Applicant2', 'Applicant3', 'Applicant4'],
     licenseHolderList: ['licenseHolder1', 'licenseHolder2', 'licenseHolder3', 'other'],
-    licenseHolderCountryList: ['Egypt', 'Brazil', 'Spain', 'Germany'],
-    physicalStateList: ['physicalState1', 'physicalState2', 'physicalState3', 'other'],
-    purposeOfUseList: ['purposeOfUse1', 'purposeOfUse2', 'purposeOfUse3', 'other'],
-    typeOfPackagingList: ['typeOfPackaging1', 'typeOfPackaging2', 'typeOfPackaging3'],
-    unitOfMeasureList: ['unitOfMeasure1', 'unitOfMeasure2', 'unitOfMeasure3'],
+    licenseHolderCountryList: [],
+    physicalStateList: [],
+    purposeOfUseList: [],
+    typeOfPackagingList: [],
+    unitOfMeasureList: [],
     ingrediantList: ['ingrediant1', 'ingrediant2', 'ingrediant3'],
-    functionList: ['function1', 'function2', 'function3']
+    functionList: []
   };
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -131,11 +132,34 @@ export class ProductRequestFormComponent implements OnInit {
   removeShortNameFieldStatus = false;
 
   constructor(private fb: FormBuilder,
+              private getService: FormService,
               private number: DecimalPipe) {
     this.getFormAsStarting();
   }
 
   ngOnInit(): void {
+    this.getService.getCountryLookUp().subscribe((res: any) => {
+      this.formData.manufacturingCountryList = res;
+      this.formData.licenseHolderCountryList = res;
+    });
+    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+      this.formData.manufacturingCompanyList = res;
+    });
+    this.getService.getFunctionLookUp().subscribe((res: any) => {
+      this.formData.functionList = res;
+    });
+    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+      this.formData.typeOfPackagingList = res;
+    });
+    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+      this.formData.physicalStateList = res;
+    });
+    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+      this.formData.unitOfMeasureList = res;
+    });
+    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+      this.formData.purposeOfUseList = res;
+    });
   }
 
   // Functions for Short name array
@@ -290,9 +314,9 @@ export class ProductRequestFormComponent implements OnInit {
           function: this.fb.control('', Validators.required),
         })])
       })]),
-      freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+      freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
       GMP: this.fb.control(''),
-      CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
+      CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
       shelfLifeStatement: this.fb.control('', Validators.required),
       artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
       leaflet: this.fb.control(''),
@@ -300,7 +324,7 @@ export class ProductRequestFormComponent implements OnInit {
       methodOfAnalysis: this.fb.control(''),
       specificationsOfFinishedProduct: this.fb.control('', Validators.required),
       receipt: this.fb.control('', Validators.required),
-      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
       manufacturingContract: this.fb.control(''),
       storageContract: this.fb.control(''),
       others: this.fb.control(''),

@@ -8,14 +8,14 @@
           <app-title [smallTitle]="true" [title]="'Request Form'"></app-title>
         </div>
         <div class="row mt-3">
-          <div class="col-sm-6">
+          <div class="col-12 col-sm-6">
             <mat-form-field class="example-full-width">
               <mat-label>Product Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
                      placeholder="Product Name">
             </mat-form-field>
           </div>
-          <div class="col-sm-6">
+          <div class="col-12 col-sm-6">
             <mat-form-field class="example-full-width">
               <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
@@ -61,12 +61,12 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Company</mat-label>
               <mat-select formControlName="manufacturingCompany" required>
-                <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company">
-                  {{company}}
+                <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company.ID">
+                  {{company.MANUFACTORY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -79,12 +79,12 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Country</mat-label>
               <mat-select formControlName="manufacturingCountry" required>
-                <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
-                  {{country}}
+                <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country.ID">
+                  {{country.COUNTRY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -97,7 +97,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
               <mat-select formControlName="applicant" required>
@@ -115,7 +115,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
               <mat-select formControlName="licenseHolder" required>
@@ -133,7 +133,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4"
+          <div class="col-lg-4 col-sm-6 col-12"
                *ngIf="regProductForAllRequestedType.get('licenseHolder').value === 'other'">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
@@ -149,12 +149,12 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Country of License Holder</mat-label>
               <mat-select formControlName="countryOfLicenseHolder" required>
-                <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
-                  {{country}}
+                <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country.ID">
+                  {{country.COUNTRY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -167,19 +167,19 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark">
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Physical State</mat-label>
               <mat-select formControlName="physicalState" required>
-                <mat-option *ngFor='let state of formData.physicalStateList' [value]="state">
-                  {{state}}
+                <mat-option *ngFor='let state of formData.physicalStateList' [value]="state.ID">
+                  {{state.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -192,8 +192,8 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4"
-               *ngIf="regProductForAllRequestedType.get('physicalState').value === 'other'">
+          <div class="col-lg-4 col-sm-6 col-12"
+               *ngIf="regProductForAllRequestedType.get('physicalState').value === 5">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other Physical State</mat-label>
               <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
@@ -208,12 +208,12 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Purpose of use</mat-label>
               <mat-select formControlName="purposeOfUse" required>
-                <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose">
-                  {{purpose}}
+                <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose.ID">
+                  {{purpose.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -226,8 +226,8 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4"
-               *ngIf="regProductForAllRequestedType.get('purposeOfUse').value === 'other'">
+          <div class="col-lg-4 col-sm-6 col-12"
+               *ngIf="regProductForAllRequestedType.get('purposeOfUse').value === 4">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other Purpose of use</mat-label>
               <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
@@ -242,7 +242,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <div class="form-group">
               <label>Shelf Life</label>
               <input class="form-control" type="range" min="0" max="10" formControlName="shelfLife">
@@ -250,7 +250,7 @@
                 years</span>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
@@ -265,7 +265,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptValue"
@@ -297,14 +297,14 @@
             <div *ngFor="let row of DetailsRows().controls; let i=index" [formGroupName]="i">
               <div class="row"
                    *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Colour</mat-label>
                     <input type="text" class="form-control" matInput formControlName="colour"
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Fragrance</mat-label>
                     <input type="text" class="form-control" matInput
@@ -312,21 +312,21 @@
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Flavor</mat-label>
                     <input type="text" class="form-control" matInput formControlName="flavor"
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>BarCode</mat-label>
                     <input type="text" class="form-control" matInput formControlName="barCode"
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Volumes</mat-label>
                     <input type="text" class="form-control" matInput formControlName="volumes"
@@ -341,13 +341,13 @@
                     </div>
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Unit of measure</mat-label>
                     <mat-select formControlName="unitOfMeasure" required>
                       <mat-option *ngFor='let unit of formData.unitOfMeasureList'
-                                  [value]="unit">
-                        {{unit}}
+                                  [value]="unit.ID">
+                        {{unit.UNIT_OF_MEASURE}}
                       </mat-option>
                     </mat-select>
                     <div
@@ -360,12 +360,12 @@
                     </div>
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Type of Packaging</mat-label>
                     <mat-select formControlName="typeOfPackaging" required>
-                      <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
-                        {{type}}
+                      <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type.ID">
+                        {{type.PACKAGING_TYPE}}
                       </mat-option>
                     </mat-select>
                     <div
@@ -378,7 +378,7 @@
                     </div>
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Packaging Description</mat-label>
                     <textarea matInput formControlName="packagingDescription"
@@ -440,8 +440,8 @@
                                 <mat-label>Function</mat-label>
                                 <mat-select formControlName="function" required>
                                   <mat-option *ngFor='let functiontItem of formData.functionList'
-                                              [value]="functiontItem">
-                                    {{functiontItem}}
+                                              [value]="functiontItem.ID">
+                                    {{functiontItem.FUNCTION_NAME}}
                                   </mat-option>
                                 </mat-select>
                                 <div
@@ -536,14 +536,14 @@
     </tab>
   </tabset>
   <div class="row buttonContainer">
-    <div class="col-12 d-flex mt-3">
+    <div class="col-12 d-flex flex-column flex-sm-row mt-3">
       <button *ngIf="!formTabs.tabs[0].active"
               type="button"
               class="btn btn-primary btn-sm mr-3"
               (click)="backToNextTab()">
         Back Forward
       </button>
-      <div class="ml-auto">
+      <div class="ml-sm-auto">
         <button *ngIf="!formTabs.tabs[2].active"
                 type="button"
                 class="btn btn-primary btn-sm mr-3"

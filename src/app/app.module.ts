@@ -28,6 +28,8 @@ import { ProductsKitRequestFormComponent } from './products-kit-request-form/pro
 import { ProductsHairColourRequestFormComponent } from './products-hair-colour-request-form/products-hair-colour-request-form.component';
 import { ProductsKitHairColourRequestFormComponent } from './products-kit-hair-colour-request-form/products-kit-hair-colour-request-form.component';
 import {DecimalPipe} from '@angular/common';
+import {FormService} from './services/form.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -59,9 +61,10 @@ import {DecimalPipe} from '@angular/common';
     FormsModule,
     MatInputModule,
     MatSliderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
-  providers: [DecimalPipe],
+  providers: [DecimalPipe, FormService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

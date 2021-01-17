@@ -388,6 +388,10 @@ body {
   .whiteContainer {
     padding: 1.5em;
   }
+
+  .btn.btn-primary {
+    width: 100%;
+  }
 }
 
 @media only screen and (max-width: 425px) {

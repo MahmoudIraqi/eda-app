@@ -1393,9 +1393,9 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         productNotificationNumber: this.fb.control(''),
         newProduct: this.fb.group({})
       })]),
-      freeSale: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+      freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
       GMP: this.fb.control(''),
-      CoA: this.fb.control('', this.selectedRequestedType === 'referencedCountry' && this.selectedRequestedType === 'nonReferencedCountry' ? Validators.required : null),
+      CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
       shelfLifeStatement: this.fb.control('', Validators.required),
       artWorkForTheKit: this.fb.control('', Validators.required),
       leaflet: this.fb.control(''),
@@ -1403,7 +1403,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       methodOfAnalysis: this.fb.control(''),
       specificationsOfFinishedProduct: this.fb.control('', Validators.required),
       receipt: this.fb.control('', Validators.required),
-      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 'local' && this.selectedRequestedType !== 'toll' && this.selectedRequestedType !== 'export' ? Validators.required : null),
+      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
       manufacturingContract: this.fb.control(''),
       storageContract: this.fb.control(''),
       others: this.fb.control(''),
@@ -1421,7 +1421,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   equalTheNewDetailsTable(index) {
     console.log('12345', this.regColourKitForAllRequestedType.get('ProductsForKit')[index].value);
-    this.detailsListTable.tableBody = this.regColourKitForAllRequestedType.get('ProductsForKit')[index]
+    this.detailsListTable.tableBody = this.regColourKitForAllRequestedType.get('ProductsForKit')[index];
   }
 
   editTheDetailsRow(event) {

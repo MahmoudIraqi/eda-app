@@ -10,8 +10,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Type Of marketing</mat-label>
               <mat-select (selectionChange)="getFormType($event)">
-                <mat-option *ngFor="let option of formData.formType" [value]="option.id">
-                  {{option.value}}
+                <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
+                  {{option.MARKETING_TYPE}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -20,20 +20,20 @@
             <mat-form-field appearance="fill">
               <mat-label>Type Of registration</mat-label>
               <mat-select (selectionChange)="getRequestType($event)">
-                <mat-option *ngFor="let option of formData.requestType" [value]="option.id">
-                  {{option.value}}
+                <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
+                  {{option.REGISTRATION_TYPE}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-12 mt-5" *ngIf="selectedFormType === 'regProduct' && selectedRequestedType">
+          <div class="col-12 mt-5" *ngIf="selectedFormType === 1 && selectedRequestedType">
             <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>
           </div>
-          <div class="col-12 mt-5" *ngIf="selectedFormType === 'regKit' && selectedRequestedType">
+          <div class="col-12 mt-5" *ngIf="selectedFormType === 2 && selectedRequestedType">
             <app-products-kit-request-form
               [selectedRequestedType]="selectedRequestedType"
               (saveDataOutput)="saveData($event)"
@@ -41,14 +41,14 @@
             ></app-products-kit-request-form>
           </div>
           <div class="col-12 mt-5"
-               *ngIf="selectedFormType === 'regHairColorantProduct' && selectedRequestedType">
+               *ngIf="selectedFormType === 3 && selectedRequestedType">
             <app-products-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-products-hair-colour-request-form>
           </div>
-          <div class="col-12 mt-5" *ngIf="selectedFormType === 'regHairColorantKit' && selectedRequestedType">
+          <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType">
             <app-products-kit-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
               (saveDataOutput)="saveData($event)"
