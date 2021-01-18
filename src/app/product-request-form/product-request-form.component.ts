@@ -132,7 +132,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-
   }
 
   // Functions for Short name array
