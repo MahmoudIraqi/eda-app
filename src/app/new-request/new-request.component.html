@@ -29,6 +29,7 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType === 1 && selectedRequestedType">
             <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>
@@ -36,6 +37,7 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType === 2 && selectedRequestedType">
             <app-products-kit-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-products-kit-request-form>
@@ -44,6 +46,7 @@
                *ngIf="selectedFormType === 3 && selectedRequestedType">
             <app-products-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-products-hair-colour-request-form>
@@ -51,6 +54,7 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType">
             <app-products-kit-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-products-kit-hair-colour-request-form>

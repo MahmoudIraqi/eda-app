@@ -11,23 +11,11 @@ import {DecimalPipe} from '@angular/common';
 export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
+  @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
 
-  formData = {
-    manufacturingCompanyList: ['Comp1', 'Comp2', 'Comp3', 'Comp4'],
-    manufacturingCountryList: ['Egypt', 'Brazil', 'Spain', 'Germany'],
-    ApplicantList: ['Applicant1', 'Applicant2', 'Applicant3', 'Applicant4'],
-    licenseHolderList: ['licenseHolder1', 'licenseHolder2', 'licenseHolder3', 'other'],
-    licenseHolderCountryList: ['Egypt', 'Brazil', 'Spain', 'Germany'],
-    physicalStateList: ['physicalState1', 'physicalState2', 'physicalState3', 'other'],
-    purposeOfUseList: ['purposeOfUse1', 'purposeOfUse2', 'purposeOfUse3', 'other'],
-    typeOfPackagingList: ['typeOfPackaging1', 'typeOfPackaging2', 'typeOfPackaging3'],
-    unitOfMeasureList: ['unitOfMeasure1', 'unitOfMeasure2', 'unitOfMeasure3'],
-    ingrediantList: ['ingrediant1', 'ingrediant2', 'ingrediant3'],
-    functionList: ['function1', 'function2', 'function3'],
-    productStatusList: ['Registered', 'New'],
-  };
+  formData;
   selectedKitProductsStatus;
   regColourKitForAllRequestedType: FormGroup;
   attachmentFields = [
@@ -1217,7 +1205,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   ngOnChanges() {
-    console.log('123', this.selectedRequestedType);
+    this.formData = {...this.lookupsData, productStatusList: ['Registered', 'New']};
     this.getFormAsStarting();
   }
 

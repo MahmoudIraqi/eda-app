@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
@@ -9,25 +9,14 @@ import {FormService} from '../services/form.service';
   templateUrl: './product-request-form.component.html',
   styleUrls: ['./product-request-form.component.css']
 })
-export class ProductRequestFormComponent implements OnInit {
+export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
+  @Input() lookupsData;
   @Input() kitProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
-  formData = {
-    manufacturingCompanyList: [],
-    manufacturingCountryList: [],
-    ApplicantList: ['Applicant1', 'Applicant2', 'Applicant3', 'Applicant4'],
-    licenseHolderList: ['licenseHolder1', 'licenseHolder2', 'licenseHolder3', 'other'],
-    licenseHolderCountryList: [],
-    physicalStateList: [],
-    purposeOfUseList: [],
-    typeOfPackagingList: [],
-    unitOfMeasureList: [],
-    ingrediantList: ['ingrediant1', 'ingrediant2', 'ingrediant3'],
-    functionList: []
-  };
+  formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   detailsListTable = {
@@ -137,29 +126,13 @@ export class ProductRequestFormComponent implements OnInit {
     this.getFormAsStarting();
   }
 
+  ngOnChanges() {
+    console.log('lookupsData', this.lookupsData);
+    this.formData = {...this.lookupsData};
+  }
+
   ngOnInit(): void {
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.formData.licenseHolderCountryList = res;
-    });
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-    });
-    this.getService.getFunctionLookUp().subscribe((res: any) => {
-      this.formData.functionList = res;
-    });
-    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-      this.formData.typeOfPackagingList = res;
-    });
-    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-      this.formData.physicalStateList = res;
-    });
-    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-      this.formData.unitOfMeasureList = res;
-    });
-    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-      this.formData.purposeOfUseList = res;
-    });
+
   }
 
   // Functions for Short name array

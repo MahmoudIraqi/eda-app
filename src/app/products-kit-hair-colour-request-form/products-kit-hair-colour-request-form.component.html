@@ -63,10 +63,20 @@
           </div>
           <div class="col-sm-4">
             <mat-form-field appearance="fill">
+              <mat-label>Product Color</mat-label>
+              <mat-select formControlName="productColor">
+                <mat-option *ngFor="let color of formData.productColorList" [value]="color">
+                  {{color}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field appearance="fill">
               <mat-label>Manufacturing Company</mat-label>
-              <mat-select formControlName="manufacturingCompany" required>
-                <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company">
-                  {{company}}
+              <mat-select formControlName="manufacturingCompany" required *ngIf="formData">
+                <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company.ID">
+                  {{company.MANUFACTORY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -82,9 +92,9 @@
           <div class="col-sm-4">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Country</mat-label>
-              <mat-select formControlName="manufacturingCountry" required>
-                <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
-                  {{country}}
+              <mat-select formControlName="manufacturingCountry" required *ngIf="formData">
+                <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country.ID">
+                  {{country.COUNTRY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -100,7 +110,7 @@
           <div class="col-sm-4">
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
-              <mat-select formControlName="applicant" required>
+              <mat-select formControlName="applicant" required *ngIf="formData">
                 <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
                   {{applicant}}
                 </mat-option>
@@ -118,7 +128,7 @@
           <div class="col-sm-4">
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
-              <mat-select formControlName="licenseHolder" required>
+              <mat-select formControlName="licenseHolder" required *ngIf="formData">
                 <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
                   {{licHolder}}
                 </mat-option>
@@ -152,9 +162,9 @@
           <div class="col-sm-4">
             <mat-form-field appearance="fill">
               <mat-label>Country of License Holder</mat-label>
-              <mat-select formControlName="countryOfLicenseHolder" required>
-                <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
-                  {{country}}
+              <mat-select formControlName="countryOfLicenseHolder" required *ngIf="formData">
+                <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country.ID">
+                  {{country.COUNTRY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -248,8 +258,9 @@
                         <div class="row">
                           <div class="col-12">
                             <div class="col-12">
-                              <app-title [title]="'Add Product For ' + regColourKitForAllRequestedType.get('groupName').value"
-                                         [smallTitle]="true"></app-title>
+                              <app-title
+                                [title]="'Add Product For ' + regColourKitForAllRequestedType.get('groupName').value"
+                                [smallTitle]="true"></app-title>
                             </div>
                           </div>
                         </div>
@@ -257,7 +268,7 @@
                           <div class="col-6 col-sm-6">
                             <mat-form-field appearance="fill">
                               <mat-label>Product Status</mat-label>
-                              <mat-select formControlName="productStatus">
+                              <mat-select formControlName="productStatus" *ngIf="formData">
                                 <mat-option *ngFor='let type of formData.productStatusList' [value]="type">
                                   {{type}}
                                 </mat-option>
@@ -290,6 +301,7 @@
                               <div class="col-12">
                                 <app-products-hair-colour-request-form
                                   [selectedRequestedType]="selectedRequestedType"
+                                  [lookupsData]="lookupsData"
                                   [kitHairProductStatus]="true"
                                   (submitDataOutput)="getDataForNewProduct($event)"
                                 ></app-products-hair-colour-request-form>
