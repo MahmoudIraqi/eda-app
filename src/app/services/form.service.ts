@@ -120,6 +120,18 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
+  getProductColorLookUp(){
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}product_colour`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
 
 
   private handleError(error: HttpErrorResponse) {

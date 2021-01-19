@@ -14,27 +14,11 @@ export class NewRequestComponent implements OnInit {
 
 
   formData = {
-    formType: [
-      {
-        id: 'regProduct',
-        value: 'Register Products'
-      },
-      {
-        id: 'regKit',
-        value: 'Register Kit'
-      },
-      {
-        id: 'regHairColorantProduct',
-        value: 'Register Hair Colorant Product'
-      },
-      {
-        id: 'regHairColorantKit',
-        value: 'Register Hair Colorant Kit'
-      },
-    ],
+    formType: [],
     requestType: [],
     manufacturingCompanyList: [],
     manufacturingCountryList: [],
+    productColorList:[],
     ApplicantList: ['Applicant1', 'Applicant2', 'Applicant3', 'Applicant4'],
     licenseHolderList: ['licenseHolder1', 'licenseHolder2', 'licenseHolder3', 'other'],
     licenseHolderCountryList: [],
@@ -81,6 +65,10 @@ export class NewRequestComponent implements OnInit {
     });
     this.getService.getUsePurposeLookUp().subscribe((res: any) => {
       this.formData.purposeOfUseList = res;
+    });
+    this.getService.getProductColorLookUp().subscribe((res: any) => {
+      console.log('res', res);
+      this.formData.productColorList = res;
     });
   }
 

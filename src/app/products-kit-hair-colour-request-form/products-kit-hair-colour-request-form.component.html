@@ -65,8 +65,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Product Color</mat-label>
               <mat-select formControlName="productColor">
-                <mat-option *ngFor="let color of formData.productColorList" [value]="color">
-                  {{color}}
+                <mat-option *ngFor="let color of formData.productColorList" [value]="color.ID">
+                  {{color.NAME}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
