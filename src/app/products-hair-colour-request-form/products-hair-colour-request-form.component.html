@@ -49,7 +49,7 @@
                 <div *ngIf="removeShortNameFieldStatus" class="alert alert-danger RelativeAlert">
                   you must have at least one field
                 </div>
-                <div class="col-sm-3" *ngFor="let shortNameList of ShortName.controls; let i=index">
+                <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
                   <mat-form-field class="example-full-width">
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
@@ -310,14 +310,14 @@
             <div *ngFor="let row of DetailsRows().controls; let i=index" [formGroupName]="i">
               <div class="row"
                    *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Colour</mat-label>
                     <input type="text" class="form-control" matInput formControlName="colour"
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3 ">
                   <mat-form-field class="example-full-width">
                     <mat-label>Fragrance</mat-label>
                     <input type="text" class="form-control" matInput
@@ -325,21 +325,24 @@
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Flavor</mat-label>
                     <input type="text" class="form-control" matInput formControlName="flavor"
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>BarCode</mat-label>
                     <input type="text" class="form-control" matInput formControlName="barCode"
                            placeholder="">
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+              </div>
+              <div class="row"
+              *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Volumes</mat-label>
                     <input type="text" class="form-control" matInput formControlName="volumes"
@@ -354,7 +357,7 @@
                     </div>
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Unit of measure</mat-label>
                     <mat-select formControlName="unitOfMeasure" required>
@@ -373,7 +376,7 @@
                     </div>
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Type of Packaging</mat-label>
                     <mat-select formControlName="typeOfPackaging" required>
@@ -391,7 +394,10 @@
                     </div>
                   </mat-form-field>
                 </div>
-                <div class="col-3">
+              </div>
+              <div class="row"
+              *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
+                <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Packaging Description</mat-label>
                     <textarea matInput formControlName="packagingDescription"
@@ -412,7 +418,7 @@
                            [formGroupName]="index">
                         <div class="rowContainer">
                           <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Ingrediant</mat-label>
                                 <mat-select formControlName="ingrediant" required>
@@ -431,7 +437,7 @@
                                 </div>
                               </mat-form-field>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-lg-3">
                               <mat-form-field class="example-full-width inputBesideSelect">
                                 <mat-label>Concentrations</mat-label>
                                 <input type="text" class="form-control" matInput
@@ -448,7 +454,7 @@
                                 </div>
                               </mat-form-field>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Function</mat-label>
                                 <mat-select formControlName="function" required>
@@ -467,7 +473,7 @@
                                 </div>
                               </mat-form-field>
                             </div>
-                            <div class="col-sm-3 d-flex">
+                            <div class="col-lg-3 d-flex">
                               <button type="button" class="btn btn-primary btn-sm ml-auto mt-3"
                                       (click)="removeIngrediantDetailsRows('form',{rowIndex: '', i: i,childIndex: index})">
                                 Delete Row
@@ -524,7 +530,7 @@
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-sm-4" *ngFor="let field of attachmentFields">
+          <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields">
             <div class="form-group">
               <label>{{field.name}}</label>
               <div class="custom-file fileUpload mr-3">
@@ -553,23 +559,23 @@
     </tab>
   </tabset>
   <div class="row buttonContainer">
-    <div class="col-12 d-flex mt-3">
+    <div class="col-12 d-flex flex-column flex-md-row mt-3">
       <button *ngIf="!formTabs.tabs[0].active"
               type="button"
-              class="btn btn-primary btn-sm mr-3"
+              class="btn btn-primary btn-sm mr-3 bottomButtons"
               (click)="backToNextTab()">
         Back Forward
       </button>
-      <div class="ml-auto">
+      <div class="ml-md-auto">
         <button *ngIf="!formTabs.tabs[2].active"
                 type="button"
-                class="btn btn-primary btn-sm mr-3"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
                 (click)="nextToNextTab()">
           Next Forward
         </button>
         <button type="button"
                 *ngIf="!kitHairProductStatus"
-                class="btn btn-primary btn-sm mr-3"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
                 (click)="saveData()">
           Save
         </button>

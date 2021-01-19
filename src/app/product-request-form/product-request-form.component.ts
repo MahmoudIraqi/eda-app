@@ -267,7 +267,6 @@ export class ProductRequestFormComponent implements OnInit {
       this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
     }
 
-    this.equalTheNewDetailsTable();
   }
 
   // Function For Forms

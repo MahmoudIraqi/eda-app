@@ -176,7 +176,7 @@ body {
 }
 
 .inputBesideSelect .mat-form-field-infix {
-  padding: .65em 0 0 0 !important;
+  padding: 1.2em 0 0 0 !important;
   border: 0px;
 }
 
@@ -202,7 +202,7 @@ body {
 }
 
 .detailsTable .mat-form-field, .detailsTable .mat-select, .detailsTable .mat-select-trigger, .detailsTable .mat-form-field-flex, .detailsTable .mat-form-field-infix, .detailsTable .mat-form-field-wrapper {
-  height: 100%;
+  padding-bottom: 0;
 }
 
 .detailsTable .mat-form-field-underline {
@@ -215,7 +215,8 @@ body {
 
 .detailsTable .mat-select-value {
   margin-bottom: 0px;
-  padding-bottom: 0.8em;
+  padding-bottom: 1em;
+  padding-top: 0.99em;
 }
 
 .detailsTable .tab-pane .col-sm-4 {
@@ -376,6 +377,9 @@ body {
     padding-left: 1em;
     padding-right: 0em;
   }
+  .sectionContainer .homepageContainer{
+    background-size: cover;
+  }
 }
 
 @media only screen and (max-width: 960px) {
@@ -399,5 +403,19 @@ body {
     width: 100%;
     margin-top: 1em;
     margin-right: 0%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .nav-pills .nav-item {
+    width: 100%;
+    margin-top: 1em;
+    margin-right: 0%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .bottomButtons {
+    margin-bottom: 1rem;
+    width: 100% !important;
   }
 }

@@ -47,7 +47,7 @@
                 <div *ngIf="removeShortNameFieldStatus" class="alert alert-danger RelativeAlert">
                   you must have at least one field
                 </div>
-                <div class="col-sm-3" *ngFor="let shortNameList of ShortName.controls; let i=index">
+                <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
                   <mat-form-field class="example-full-width">
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
@@ -330,7 +330,7 @@
         </div>
         <div class="col-12">
           <div class="row mt-3">
-            <div class="col-sm-4" *ngFor="let field of attachmentFieldsForKits">
+            <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFieldsForKits">
               <div class="form-group">
                 <label>{{field.name}}</label>
                 <div class="custom-file fileUpload mr-3">
@@ -359,22 +359,22 @@
     </tab>
   </tabset>
   <div class="row buttonContainer">
-    <div class="col-12 d-flex mt-3">
+    <div class="col-12 d-flex flex-column flex-md-row mt-3">
       <button *ngIf="!formTabs.tabs[0].active"
               type="button"
-              class="btn btn-primary btn-sm mr-3"
+              class="btn btn-primary btn-sm mr-3 bottomButtons"
               (click)="backToNextTab('FormTabs')">
         Back Forward
       </button>
-      <div class="ml-auto">
+      <div class="ml-md-auto">
         <button *ngIf="!formTabs.tabs[2].active"
                 type="button"
-                class="btn btn-primary btn-sm mr-3"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
                 (click)="nextToNextTab('FormTabs')">
           Next Forward
         </button>
         <button type="button"
-                class="btn btn-primary btn-sm mr-3"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
                 (click)="saveData()">
           Save
         </button>

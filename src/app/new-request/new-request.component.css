@@ -301,6 +301,6 @@ input[type=file] {
 }
 
 /* ------------------------ Attachments ---------------------- */
-/* .Attachments .row > div:nth-child(n+4) {
+.Attachments .row > div:nth-child(n+4) {
   margin-top: 1.5em !important;
-} */
+}

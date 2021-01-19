@@ -2,7 +2,7 @@
   <table class="table table-sm table-ordered">
     <tr class="headerRow" *ngIf="whichTable === 'draft'">
       <th *ngFor="let request of data.tableHeader; let i = index"
-          [ngClass]="{'hide': (i>2 && i !== data.tableHeader.length-1 )|| i === 0}">
+          [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
         {{request}}
         <span (click)="sortBy(sortStatus, request)">
           <i class="fa fa-sort"></i>
@@ -11,7 +11,7 @@
     </tr>
     <tr class="headerRow" *ngIf="whichTable === 'track'">
       <th *ngFor="let request of data.tableHeader; let i = index"
-          [ngClass]="{'hide': i>2 || i === 0}">
+          [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
         {{request}}
         <span (click)="sortBy(sortStatus, request)">
           <i class="fa fa-sort"></i>
@@ -20,7 +20,7 @@
     </tr>
     <tr class="headerRow" *ngIf="whichTable === 'approved'">
       <th *ngFor="let request of data.tableHeader; let i = index"
-          [ngClass]="{'hide': i>2 || i === 0}">
+          [ngClass]="{'hide': i === 1 || i === 3 }">
         {{request}}
         <span (click)="sortBy(sortStatus, request)">
           <i class="fa fa-sort"></i>
@@ -43,11 +43,11 @@
               <mat-panel-title>
                 <table class="table table-sm tableDetailsCont">
                   <tr>
-                    <td>{{request.id}}</td>
+                    <td class="hide">{{request.id}}</td>
                     <td>{{request.submissionDate}}</td>
                     <td class="hide">{{request.productEnglishName}}</td>
                     <td class="hide">{{request.productArabicName}}</td>
-                    <td class="hide">{{request.status}}</td>
+                    <td>{{request.status}}</td>
                     <td class="hide">{{request.trackType}}</td>
                   </tr>
                 </table>
@@ -112,9 +112,9 @@
                     <tr>
                       <td class="hide">{{request.id}}</td>
                       <td>{{request.submissionDate}}</td>
-                      <td>{{request.productEnglishName}}</td>
+                      <td class="hide">{{request.productEnglishName}}</td>
                       <td class="hide">{{request.productArabicName}}</td>
-                      <td class="hide">{{request.status}}</td>
+                      <td >{{request.status}}</td>
                       <td class="hide">{{request.trackType}}</td>
                       <td><i class="fa fa-edit"></i></td>
                     </tr>
@@ -160,11 +160,11 @@
               <mat-panel-title>
                 <table class="table table-sm tableDetailsCont">
                   <tr>
-                    <td class="hide">{{request.notification}}</td>
-                    <td>{{request.submissionDate}}</td>
-                    <td>{{request.productEnglishName}}</td>
+                    <td >{{request.notification}}</td>
+                    <td class="hide">{{request.submissionDate}}</td>
+                    <td >{{request.productEnglishName}}</td>
                     <td class="hide">{{request.productArabicName}}</td>
-                    <td class="hide">{{request.actionStatus}}</td>
+                    <td >{{request.actionStatus}}</td>
                   </tr>
                 </table>
               </mat-panel-title>

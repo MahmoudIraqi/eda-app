@@ -300,7 +300,4 @@ input[type=file] {
   width: 100%;
 }
 
-/* ------------------------ Attachments ---------------------- */
-.Attachments .row > div:nth-child(n+4) {
-  margin-top: 1.5em !important;
-}
+

@@ -203,6 +203,7 @@
   background-color: transparent;
   color: #c28a30;
   cursor: pointer;
+
 }
 
 .menu-title {
@@ -350,6 +351,12 @@
   .menu ul li a {
     font-weight: 500;
     font-size: 14px;
+  }
+
+}
+@media only screen and (max-width: 580px) {
+  .dropbtn {
+    margin-top: 2rem;
   }
 
 }

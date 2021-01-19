@@ -301,12 +301,18 @@ input[type=file] {
 }
 
 /* ------------------------ Attachments ---------------------- */
-.Attachments .row > div:nth-child(n+4) {
-  margin-top: 1.5em !important;
-}
 
 
 /* -------------------------- Responsive --------------------- */
+@media only screen and (max-width: 1000px){
+  .conSpace{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .inputBesideSelect .mat-form-field-infix{
+    padding: 0 !important;
+  }
+}
 @media only screen and (max-width: 640px) {
   .buttonContainer .btn-primary {
     width: 100%;
