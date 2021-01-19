@@ -14,25 +14,20 @@ export class NewRequestComponent implements OnInit {
 
 
   formData = {
-    formType: [
-      {
-        id: 'regProduct',
-        value: 'Register Products'
-      },
-      {
-        id: 'regKit',
-        value: 'Register Kit'
-      },
-      {
-        id: 'regHairColorantProduct',
-        value: 'Register Hair Colorant Product'
-      },
-      {
-        id: 'regHairColorantKit',
-        value: 'Register Hair Colorant Kit'
-      },
-    ],
+    formType: [],
     requestType: [],
+    manufacturingCompanyList: [],
+    manufacturingCountryList: [],
+    productColorList:[],
+    ApplicantList: ['Applicant1', 'Applicant2', 'Applicant3', 'Applicant4'],
+    licenseHolderList: ['licenseHolder1', 'licenseHolder2', 'licenseHolder3', 'other'],
+    licenseHolderCountryList: [],
+    physicalStateList: [],
+    purposeOfUseList: [],
+    typeOfPackagingList: [],
+    unitOfMeasureList: [],
+    ingrediantList: ['ingrediant1', 'ingrediant2', 'ingrediant3'],
+    functionList: []
   };
   selectedFormType;
   selectedRequestedType;
@@ -49,6 +44,32 @@ export class NewRequestComponent implements OnInit {
     this.getService.getRequestTypeLookUp().subscribe((res: any) => {
       this.formData.requestType = res;
     });
+    this.getService.getCountryLookUp().subscribe((res: any) => {
+      this.formData.manufacturingCountryList = res;
+      this.formData.licenseHolderCountryList = res;
+    });
+    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+      this.formData.manufacturingCompanyList = res;
+    });
+    this.getService.getFunctionLookUp().subscribe((res: any) => {
+      this.formData.functionList = res;
+    });
+    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+      this.formData.typeOfPackagingList = res;
+    });
+    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+      this.formData.physicalStateList = res;
+    });
+    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+      this.formData.unitOfMeasureList = res;
+    });
+    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+      this.formData.purposeOfUseList = res;
+    });
+    this.getService.getProductColorLookUp().subscribe((res: any) => {
+      console.log('res', res);
+      this.formData.productColorList = res;
+    });
   }
 
   getFormType(event) {
@@ -60,28 +81,28 @@ export class NewRequestComponent implements OnInit {
   }
 
   saveData(event) {
-    if (this.selectedFormType === 'regProduct') {
+    if (this.selectedFormType === 1) {
       const regProductData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regProductForAllRequestedType', regProductData);
-    } else if (this.selectedFormType === 'regKit') {
+    } else if (this.selectedFormType === 2) {
       const regProductForAllRequestedTypeData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
-    } else if (this.selectedFormType === 'regHairColorantProduct') {
+    } else if (this.selectedFormType === 3) {
       const regKitForAllRequestedTypeData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regHairColorantProductForAllRequestedType', regKitForAllRequestedTypeData);
-    } else if (this.selectedFormType === 'regHairColorantKit') {
+    } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
@@ -92,28 +113,29 @@ export class NewRequestComponent implements OnInit {
   }
 
   onSubmit(event) {
-    if (this.selectedFormType === 'regProduct') {
+    debugger;
+    if (this.selectedFormType === 1) {
       const regProductData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regProductForAllRequestedType', regProductData);
-    } else if (this.selectedFormType === 'regKit') {
+    } else if (this.selectedFormType === 2) {
       const regProductForAllRequestedTypeData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
-    } else if (this.selectedFormType === 'regHairColorantProduct') {
+    } else if (this.selectedFormType === 3) {
       const regKitForAllRequestedTypeData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regHairColorantProductForAllRequestedType', regKitForAllRequestedTypeData);
-    } else if (this.selectedFormType === 'regHairColorantKit') {
+    } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,

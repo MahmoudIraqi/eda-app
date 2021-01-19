@@ -67,8 +67,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Product Color</mat-label>
               <mat-select formControlName="productColor">
-                <mat-option *ngFor="let color of formData.productColorList" [value]="color">
-                  {{color}}
+                <mat-option *ngFor="let color of formData.productColorList" [value]="color.ID">
+                  {{color.NAME}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -77,8 +77,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Company</mat-label>
               <mat-select formControlName="manufacturingCompany" required>
-                <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company">
-                  {{company}}
+                <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company.ID">
+                  {{company.MANUFACTORY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -95,8 +95,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Country</mat-label>
               <mat-select formControlName="manufacturingCountry" required>
-                <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country">
-                  {{country}}
+                <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country.ID">
+                  {{country.COUNTRY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -165,8 +165,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Country of License Holder</mat-label>
               <mat-select formControlName="countryOfLicenseHolder" required>
-                <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country">
-                  {{country}}
+                <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country.ID">
+                  {{country.COUNTRY_NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -190,8 +190,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Physical State</mat-label>
               <mat-select formControlName="physicalState" required>
-                <mat-option *ngFor='let state of formData.physicalStateList' [value]="state">
-                  {{state}}
+                <mat-option *ngFor='let state of formData.physicalStateList' [value]="state.ID">
+                  {{state.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -224,8 +224,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Purpose of use</mat-label>
               <mat-select formControlName="purposeOfUse" required>
-                <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose">
-                  {{purpose}}
+                <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose.ID">
+                  {{purpose.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -362,8 +362,8 @@
                     <mat-label>Unit of measure</mat-label>
                     <mat-select formControlName="unitOfMeasure" required>
                       <mat-option *ngFor='let unit of formData.unitOfMeasureList'
-                                  [value]="unit">
-                        {{unit}}
+                                  [value]="unit.ID">
+                        {{unit.UNIT_OF_MEASURE}}
                       </mat-option>
                     </mat-select>
                     <div
@@ -380,8 +380,8 @@
                   <mat-form-field appearance="fill">
                     <mat-label>Type of Packaging</mat-label>
                     <mat-select formControlName="typeOfPackaging" required>
-                      <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type">
-                        {{type}}
+                      <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type.ID">
+                        {{type.PACKAGING_TYPE}}
                       </mat-option>
                     </mat-select>
                     <div
@@ -459,8 +459,8 @@
                                 <mat-label>Function</mat-label>
                                 <mat-select formControlName="function" required>
                                   <mat-option *ngFor='let functiontItem of formData.functionList'
-                                              [value]="functiontItem">
-                                    {{functiontItem}}
+                                              [value]="functiontItem.ID">
+                                    {{functiontItem.FUNCTION_NAME}}
                                   </mat-option>
                                 </mat-select>
                                 <div
