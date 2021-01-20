@@ -33,8 +33,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('data', this.data);
-    console.log('whichTable', this.whichTable);
   }
 
   ngOnInit(): void {

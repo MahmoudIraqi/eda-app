@@ -133,6 +133,21 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  createProductRequest(data){
+    const headers = new HttpHeaders({
+      'Content-type': 'multipart/form-data',
+    });
+    const options = {headers};
+
+    console.log('data', data);
+
+    return this.http.post(`${this.apiBaseUrl}requests`,data, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     return throwError(`Error! ${error.error}`);

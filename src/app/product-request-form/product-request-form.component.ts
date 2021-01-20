@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {FormService} from '../services/form.service';
+import {formDataClass} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-product-request-form',
@@ -248,7 +249,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-    this.submitDataOutput.emit(this.regProductForAllRequestedType.value);
+    const formData = formDataClass(this.regProductForAllRequestedType.value, this.regProductForAllRequestedType);
+
+    this.submitDataOutput.emit(formData);
   }
 
   getFormAsStarting() {

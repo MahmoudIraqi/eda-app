@@ -18,7 +18,7 @@ export class NewRequestComponent implements OnInit {
     requestType: [],
     manufacturingCompanyList: [],
     manufacturingCountryList: [],
-    productColorList:[],
+    productColorList: [],
     ApplicantList: ['Applicant1', 'Applicant2', 'Applicant3', 'Applicant4'],
     licenseHolderList: ['licenseHolder1', 'licenseHolder2', 'licenseHolder3', 'other'],
     licenseHolderCountryList: [],
@@ -67,7 +67,6 @@ export class NewRequestComponent implements OnInit {
       this.formData.purposeOfUseList = res;
     });
     this.getService.getProductColorLookUp().subscribe((res: any) => {
-      console.log('res', res);
       this.formData.productColorList = res;
     });
   }
@@ -113,14 +112,23 @@ export class NewRequestComponent implements OnInit {
   }
 
   onSubmit(event) {
-    debugger;
     if (this.selectedFormType === 1) {
-      const regProductData = {
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        ...event
-      };
-      console.log('regProductForAllRequestedType', regProductData);
+
+      event.append("typeOfMarketing", this.selectedFormType);
+      event.append("typeOfRegistration", this.selectedRequestedType);
+
+      // const regProductData = {
+      //   typeOfMarketing: this.selectedFormType,
+      //   typeOfRegistration: this.selectedRequestedType,
+      //   ...event
+      // };
+      console.log('event', event);
+
+      this.getService.createProductRequest(event).subscribe((res: any) => {
+        console.log('res', res);
+      });
+
+
     } else if (this.selectedFormType === 2) {
       const regProductForAllRequestedTypeData = {
         typeOfMarketing: this.selectedFormType,
