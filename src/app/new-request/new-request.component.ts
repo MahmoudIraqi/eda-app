@@ -19,14 +19,14 @@ export class NewRequestComponent implements OnInit {
     manufacturingCompanyList: [],
     manufacturingCountryList: [],
     productColorList: [],
-    ApplicantList: ['Applicant1', 'Applicant2', 'Applicant3', 'Applicant4'],
-    licenseHolderList: ['licenseHolder1', 'licenseHolder2', 'licenseHolder3', 'other'],
+    ApplicantList: [],
+    licenseHolderList: [],
     licenseHolderCountryList: [],
     physicalStateList: [],
     purposeOfUseList: [],
     typeOfPackagingList: [],
     unitOfMeasureList: [],
-    ingrediantList: ['ingrediant1', 'ingrediant2', 'ingrediant3'],
+    ingrediantList: [],
     functionList: []
   };
   selectedFormType;
@@ -49,6 +49,7 @@ export class NewRequestComponent implements OnInit {
       this.formData.licenseHolderCountryList = res;
     });
     this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+      console.log('res', res);
       this.formData.manufacturingCompanyList = res;
     });
     this.getService.getFunctionLookUp().subscribe((res: any) => {
@@ -69,6 +70,13 @@ export class NewRequestComponent implements OnInit {
     this.getService.getProductColorLookUp().subscribe((res: any) => {
       this.formData.productColorList = res;
     });
+    this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
+      this.formData.ingrediantList = res;
+    });
+    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
+      this.formData.ApplicantList = res;
+      this.formData.licenseHolderList = res;
+    });
   }
 
   getFormType(event) {
@@ -81,19 +89,44 @@ export class NewRequestComponent implements OnInit {
 
   saveData(event) {
     if (this.selectedFormType === 1) {
-      const regProductData = {
+      let regProductData;
+      Object.keys(event).map(x => {
+        let file;
+        if (event[x] instanceof File) {
+          const reader = new FileReader();
+          reader.readAsDataURL(event[x]);
+          reader.onload = (res: any) => {
+            event[x] = res.target.result;
+          };
+        }
+
+      });
+
+      event = {
+        isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
-      console.log('regProductForAllRequestedType', regProductData);
+
+      console.log('event', event);
+
+      this.getService.createProductRequest(event).subscribe((res: any) => {
+        console.log('res', res);
+      });
+
     } else if (this.selectedFormType === 2) {
       const regProductForAllRequestedTypeData = {
+        isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
+
+      // this.getService.createProductRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
+      //   console.log('res', res);
+      // });
     } else if (this.selectedFormType === 3) {
       const regKitForAllRequestedTypeData = {
         typeOfMarketing: this.selectedFormType,
@@ -113,29 +146,41 @@ export class NewRequestComponent implements OnInit {
 
   onSubmit(event) {
     if (this.selectedFormType === 1) {
+      Object.keys(event).map(x => {
+        let file;
+        if (event[x] instanceof File) {
+          const reader = new FileReader();
+          reader.readAsDataURL(event[x]);
+          reader.onload = (res: any) => {
+            event[x] = res.target.result;
+          };
+        }
 
-      event.append("typeOfMarketing", this.selectedFormType);
-      event.append("typeOfRegistration", this.selectedRequestedType);
+      });
 
-      // const regProductData = {
-      //   typeOfMarketing: this.selectedFormType,
-      //   typeOfRegistration: this.selectedRequestedType,
-      //   ...event
-      // };
-      console.log('event', event);
+      event = {
+        isDraft: 0,
+        typeOfMarketing: this.selectedFormType,
+        typeOfRegistration: this.selectedRequestedType,
+        ...event
+      };
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
       });
-
-
     } else if (this.selectedFormType === 2) {
       const regProductForAllRequestedTypeData = {
+        isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
+
+      // this.getService.createProductRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
+      //   console.log('res', res);
+      // });
+
     } else if (this.selectedFormType === 3) {
       const regKitForAllRequestedTypeData = {
         typeOfMarketing: this.selectedFormType,
@@ -151,5 +196,23 @@ export class NewRequestComponent implements OnInit {
       };
       console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
     }
+  }
+
+  changeFileObjectToBase64(objectData) {
+    Object.keys(objectData).map(x => {
+      let file;
+      if (objectData[x] instanceof File) {
+        const reader = new FileReader();
+        reader.readAsDataURL(objectData[x]);
+        reader.onload = (res: any) => {
+          objectData[x] = res.target.result;
+        };
+      }
+
+    });
+
+    console.log('objectData', objectData);
+
+    return objectData;
   }
 }

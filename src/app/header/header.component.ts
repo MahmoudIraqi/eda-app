@@ -14,27 +14,123 @@ export class HeaderComponent implements OnInit {
   menuObject = [
     {
       name: 'Home',
-      link: '/home'
+      link: '/home',
+      dropDownStatus: false
     },
     {
       name: 'Create requests',
-      link: '/new-request'
+      link: '#',
+      dropDownStatus: true,
+      dropdownLinks:[
+        {
+          name:'Registration',
+          link:'/new-request'
+        },
+        {
+          name:'Re-Registration',
+          link:'#'
+        },
+        {
+          name:'Tell & Do variation',
+          link:'#'
+        },
+        {
+          name:'Do & Tell Variation',
+          link:'#'
+        },
+        {
+          name:'Inspection',
+          link:'#'
+        },
+        {
+          name:'Custom Release',
+          link:'#'
+        },
+        {
+          name:'General Enquiries',
+          link:'#'
+        }
+      ]
     },
     {
       name: 'Draft requests',
-      link: '/draft-request'
+      link: '#',
+      dropDownStatus: true,
+      dropdownLinks:[
+        {
+          name:'Registration',
+          link:'/draft-request'
+        },
+        {
+          name:'Re-Registration',
+          link:'#'
+        },
+        {
+          name:'Tell & Do variation',
+          link:'#'
+        },
+        {
+          name:'Do & Tell Variation',
+          link:'#'
+        },
+        {
+          name:'Inspection',
+          link:'#'
+        },
+        {
+          name:'Custom Release',
+          link:'#'
+        },
+        {
+          name:'General Enquiries',
+          link:'#'
+        }
+      ]
     },
     {
       name: 'Track requests',
-      link: '/track-request'
+      link: '#',
+      dropDownStatus: true,
+      dropdownLinks:[
+        {
+          name:'Registration',
+          link:'/track-request'
+        },
+        {
+          name:'Re-Registration',
+          link:'#'
+        },
+        {
+          name:'Tell & Do variation',
+          link:'#'
+        },
+        {
+          name:'Do & Tell Variation',
+          link:'#'
+        },
+        {
+          name:'Inspection',
+          link:'#'
+        },
+        {
+          name:'Custom Release',
+          link:'#'
+        },
+        {
+          name:'General Enquiries',
+          link:'#'
+        }
+      ]
     },
     {
       name: 'Approved products',
-      link: '/approved-request'
+      link: '/approved-request',
+      dropDownStatus: false
     },
     {
       name: 'Contact us',
-      link: '#'
+      link: '#',
+      dropDownStatus: false
     }
   ];
 

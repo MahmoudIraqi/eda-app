@@ -32,6 +32,10 @@
   margin-right: auto;
 }
 
+.btnList li .btn-group {
+  width: 100%;
+}
+
 .btnList li .ButtonContainer {
   width: 100%;
   display: flex;
@@ -82,6 +86,74 @@
   color: #c28a30;
 }
 
+
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown a i {
+  font-size: 14px;
+  margin-left: 1em;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  min-width: 200px;
+  right: 0;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content ul {
+  transform: translate(201px, 0px) !important;
+  padding: 0.5em;
+  border-radius: 10px 0px 10px 10px !important;
+  border: 1px solid #fff;
+  background: #fff;
+}
+
+.dropdown-content ul li {
+  list-style-type: none;
+  width: 100%;
+  border-radius: 10px 0px 10px 10px;
+  border: 1px solid #c28a30;
+  margin-top: 0.2em;
+  background: #fff;
+}
+
+.dropdown-content ul li:first-child {
+  margin-top: 0em;
+}
+
+.dropdown-content ul li a {
+  color: #000000;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
+
+.dropdown-content ul li a:hover {
+  color: #fff;
+}
+
+.dropdown-content a:hover, .dropdown-item.active, .dropdown-item:active {
+  background-color: #a06731 !important;
+  color: #fff !important;
+  border-radius: 10px 0px 10px 10px !important;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #92918e;
+}
+
 /*--------------------------------responsive--------------------------*/
 @media only screen and (max-width: 1024px) {
   .contentContainer {
@@ -94,11 +166,11 @@
     width: 100%;
   }
 
-  .contentContainer h1{
+  .contentContainer h1 {
     font-size: 35px;
   }
 
-  .contentContainer p{
+  .contentContainer p {
     font-size: 16px;
   }
 
@@ -108,25 +180,25 @@
 }
 
 @media only screen and (max-width: 640px) {
-  .contentContainer h1{
+  .contentContainer h1 {
     font-size: 30px;
   }
 
-  .contentContainer p{
+  .contentContainer p {
     font-size: 15px;
   }
 }
 
 @media only screen and (max-width: 480px) {
-  .contentContainer{
+  .contentContainer {
     padding: 2em;
   }
 
-  .contentContainer h1{
+  .contentContainer h1 {
     font-size: 24px;
   }
 
-  .contentContainer p{
+  .contentContainer p {
     font-size: 14px;
   }
 

@@ -113,8 +113,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
               <mat-select formControlName="applicant" required>
-                <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
-                  {{applicant}}
+                <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant.ID">
+                  {{applicant.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -131,8 +131,8 @@
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
               <mat-select formControlName="licenseHolder" required>
-                <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
-                  {{licHolder}}
+                <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder.ID">
+                  {{licHolder.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -146,7 +146,7 @@
             </mat-form-field>
           </div>
           <div class="col-sm-4"
-               *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolder').value === 'other'">
+               *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolder').value === formData.licenseHolderList.length">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
@@ -341,7 +341,7 @@
                 </div>
               </div>
               <div class="row"
-              *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
+                   *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Volumes</mat-label>
@@ -396,7 +396,7 @@
                 </div>
               </div>
               <div class="row"
-              *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
+                   *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Packaging Description</mat-label>
@@ -423,8 +423,8 @@
                                 <mat-label>Ingrediant</mat-label>
                                 <mat-select formControlName="ingrediant" required>
                                   <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
-                                              [value]="ingrediantItem">
-                                    {{ingrediantItem}}
+                                              [value]="ingrediantItem.ID">
+                                    {{ingrediantItem.INCI_name}}
                                   </mat-option>
                                 </mat-select>
                                 <div

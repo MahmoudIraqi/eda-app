@@ -171,9 +171,18 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   // Function for File
   onFileSelect(event, fileControlName) {
+    let cardImageBase64;
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
+      console.log('file', file);
+      // const reader = new FileReader();
+      //
+      // reader.readAsDataURL(file);
+      // reader.onload = (res: any) => {
+      //   this.regProductForAllRequestedType.get(fileControlName).setValue(res.target.result);
+      // };
+
       this.regProductForAllRequestedType.get(fileControlName).setValue(file);
     }
   }
@@ -249,9 +258,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-    const formData = formDataClass(this.regProductForAllRequestedType.value, this.regProductForAllRequestedType);
-
-    this.submitDataOutput.emit(formData);
+    // const formData = formDataClass(this.regProductForAllRequestedType.value, this.regProductForAllRequestedType);
+    this.submitDataOutput.emit(this.regProductForAllRequestedType.value);
+    // this.submitDataOutput.emit(formData);
   }
 
   getFormAsStarting() {

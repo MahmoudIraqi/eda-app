@@ -16,7 +16,7 @@
                  [ngClass]="{'w-100 w-sm-85': screenWidth <= 960 }">
               <h2>Egycosm</h2>
             </div>
-            <div class="btn-group mx-auto ml-sm-auto dropdown" dropdown>
+            <div class="btn-group mx-auto ml-sm-auto dropdown forResponsiveMenu" dropdown>
               <button class="dropbtn btn btn-primary" type="button" dropdownToggle aria-controls="dropdown-basic">
                 <span>
                 <i class="fas fa-bars"></i>
@@ -74,9 +74,26 @@
             <div class="menu">
               <ul>
                 <li *ngFor="let item of menuObject">
-                  <a routerLink="{{item.link}}" routerLinkActive="active">
+                  <a *ngIf="!item.dropDownStatus" routerLink="{{item.link}}" routerLinkActive="active">
                     {{item.name}}
                   </a>
+                  <div *ngIf="item.dropDownStatus" class="btn-group dropdown" dropdown triggers="hover">
+                    <a routerLink="{{item.link}}" routerLinkActive="active" dropdownToggle
+                       aria-controls="dropdown-basic">
+                      {{item.name}}
+                      <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="button-basic">
+                        <li *ngFor="let element of item.dropdownLinks" role="menuitem">
+                          <a class="dropdown-item" routerLink="{{element.link}}" routerLinkActive="active">
+                            {{element.name}}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>

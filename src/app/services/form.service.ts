@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {environment} from '../../environments/environment'
+import {Injectable} from '@angular/core';
+import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {map, catchError} from 'rxjs/operators';
@@ -10,9 +10,11 @@ import {map, catchError} from 'rxjs/operators';
 export class FormService {
 
   apiBaseUrl = environment.apiURL;
-  constructor(private http: HttpClient) { }
 
-  getRequestTypeLookUp(){
+  constructor(private http: HttpClient) {
+  }
+
+  getRequestTypeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -24,7 +26,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getMarketingTypeLookUp(){
+
+  getMarketingTypeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -36,7 +39,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getCountryLookUp(){
+
+  getCountryLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -48,7 +52,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getFunctionLookUp(){
+
+  getFunctionLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -60,7 +65,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getManufacturingCompanyLookUp(){
+
+  getManufacturingCompanyLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -72,7 +78,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getPackagingTypeLookUp(){
+
+  getPackagingTypeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -84,7 +91,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getPhysicalStateLookUp(){
+
+  getPhysicalStateLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -96,7 +104,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getUnitOfMeasureLookUp(){
+
+  getUnitOfMeasureLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -108,7 +117,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getUsePurposeLookUp(){
+
+  getUsePurposeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -120,7 +130,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getProductColorLookUp(){
+
+  getProductColorLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -133,15 +144,44 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  createProductRequest(data){
+  getProductIngrediantsLookUp() {
     const headers = new HttpHeaders({
-      'Content-type': 'multipart/form-data',
+      'Content-type': 'application/json',
     });
     const options = {headers};
 
+    return this.http.get(`${this.apiBaseUrl}ingredients`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getCompanyProfileLookUp() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}company_profile`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  createProductRequest(data) {
+    console.log('eventInRequest', data);
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+
+    const options = {headers};
+
+    data = JSON.stringify(data);
     console.log('data', data);
 
-    return this.http.post(`${this.apiBaseUrl}requests`,data, options)
+    return this.http.post(`${this.apiBaseUrl}requests`, data, options)
       .pipe(map((res: any) => {
           return res;
         }),

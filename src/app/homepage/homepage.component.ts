@@ -14,22 +14,116 @@ export class HomepageComponent implements OnInit {
       {
         icon: 'flaticon-new-page',
         title: 'Create Request',
-        link: '/new-request'
+        link: '',
+        dropDownStatus: true,
+        dropdownLinks:[
+          {
+            name:'Registration',
+            link:'/new-request'
+          },
+          {
+            name:'Re-Registration',
+            link:'#'
+          },
+          {
+            name:'Tell & Do variation',
+            link:'#'
+          },
+          {
+            name:'Do & Tell Variation',
+            link:'#'
+          },
+          {
+            name:'Inspection',
+            link:'#'
+          },
+          {
+            name:'Custom Release',
+            link:'#'
+          },
+          {
+            name:'General Enquiries',
+            link:'#'
+          }
+        ]
       },
       {
         icon: 'flaticon-archive',
         title: 'Track Requests',
-        link: '/track-request'
+        link: '',
+        dropDownStatus: true,
+        dropdownLinks:[
+          {
+            name:'Registration',
+            link:'/new-request'
+          },
+          {
+            name:'Re-Registration',
+            link:'#'
+          },
+          {
+            name:'Tell & Do variation',
+            link:'#'
+          },
+          {
+            name:'Do & Tell Variation',
+            link:'#'
+          },
+          {
+            name:'Inspection',
+            link:'#'
+          },
+          {
+            name:'Custom Release',
+            link:'#'
+          },
+          {
+            name:'General Enquiries',
+            link:'#'
+          }
+        ]
       },
       {
         icon: 'flaticon-inbox',
         title: 'Draft Requests',
-        link: '/draft-request'
+        link: '',
+        dropDownStatus: true,
+        dropdownLinks:[
+          {
+            name:'Registration',
+            link:'/new-request'
+          },
+          {
+            name:'Re-Registration',
+            link:'#'
+          },
+          {
+            name:'Tell & Do variation',
+            link:'#'
+          },
+          {
+            name:'Do & Tell Variation',
+            link:'#'
+          },
+          {
+            name:'Inspection',
+            link:'#'
+          },
+          {
+            name:'Custom Release',
+            link:'#'
+          },
+          {
+            name:'General Enquiries',
+            link:'#'
+          }
+        ]
       },
       {
         icon: 'flaticon-approval',
         title: 'Approved Products',
-        link: '/approved-request'
+        link: '/approved-request',
+        dropDownStatus: false,
       }
     ]
   };

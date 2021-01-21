@@ -4,12 +4,31 @@
     <p>{{contentObject.paragraph}}</p>
     <ul class="btnList">
       <li *ngFor="let btn of contentObject.btnList">
-        <a class="ButtonContainer" [routerLink]="btn.link">
+        <a *ngIf="!btn.dropDownStatus" class="ButtonContainer" [routerLink]="btn.link">
           <span class="icon">
             <i class="{{btn.icon}}"></i>
           </span>
           <span class="title">{{btn.title}}</span>
         </a>
+        <div *ngIf="btn.dropDownStatus" class="btn-group dropdown" dropdown triggers="hover">
+          <a class="ButtonContainer" routerLink="{{btn.link}}" routerLinkActive="active" dropdownToggle
+             aria-controls="dropdown-basic">
+            <span class="icon">
+            <i class="{{btn.icon}}"></i>
+          </span>
+            <span class="title">{{btn.title}}</span>
+          </a>
+          <div class="dropdown-content">
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li *ngFor="let element of btn.dropdownLinks" role="menuitem">
+                <a class="dropdown-item" routerLink="{{element.link}}" routerLinkActive="active">
+                  {{element.name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </li>
     </ul>
   </div>

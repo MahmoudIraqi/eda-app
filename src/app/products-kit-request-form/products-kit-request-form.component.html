@@ -101,8 +101,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
               <mat-select formControlName="applicant" required *ngIf="formData">
-                <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
-                  {{applicant}}
+                <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant.ID">
+                  {{applicant.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -119,8 +119,8 @@
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
               <mat-select formControlName="licenseHolder" required *ngIf="formData">
-                <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
-                  {{licHolder}}
+                <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder.ID">
+                  {{licHolder.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -134,7 +134,7 @@
             </mat-form-field>
           </div>
           <div class="col-sm-4"
-               *ngIf="regKitForAllRequestedType.get('licenseHolder').value === 'other'">
+               *ngIf="regKitForAllRequestedType.get('licenseHolder').value === formData.licenseHolderList.length">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"

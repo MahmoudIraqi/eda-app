@@ -101,8 +101,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
               <mat-select formControlName="applicant" required *ngIf="formData">
-                <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant">
-                  {{applicant}}
+                <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant.ID">
+                  {{applicant.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -119,8 +119,8 @@
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
               <mat-select formControlName="licenseHolder" required *ngIf="formData">
-                <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder">
-                  {{licHolder}}
+                <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder.ID">
+                  {{licHolder.NAME}}
                 </mat-option>
               </mat-select>
               <div
@@ -134,7 +134,7 @@
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12"
-               *ngIf="regProductForAllRequestedType.get('licenseHolder').value === 'other'">
+               *ngIf="regProductForAllRequestedType.get('licenseHolder').value === formData.licenseHolderList.length">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
@@ -413,8 +413,8 @@
                                 <mat-label>Ingrediant</mat-label>
                                 <mat-select formControlName="ingrediant" required *ngIf="formData">
                                   <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
-                                              [value]="ingrediantItem">
-                                    {{ingrediantItem}}
+                                              [value]="ingrediantItem.ID">
+                                    {{ingrediantItem.INCI_name}}
                                   </mat-option>
                                 </mat-select>
                                 <div
@@ -521,9 +521,7 @@
               <div class="custom-file fileUpload mr-3" id="customFile">
                 <input type="file" class="custom-file-input" id="dataUpload_upload_file"
                        aria-describedby="fileHelp"
-                       [innerText]="regProductForAllRequestedType.get(field.id).value"
                        (change)="onFileSelect($event, field.id)"
-                       (blur)="onFileSelect($event, field.id)"
                        [required]="field.required">
                 <div
                   *ngIf="regProductForAllRequestedType.get(field.id).invalid && (regProductForAllRequestedType.get(field.id).dirty || regProductForAllRequestedType.get(field.id).touched)"
@@ -568,7 +566,7 @@
           *ngIf="formTabs.tabs[2].active"
           type="submit"
           class="btn btn-primary btn-sm"
-        > <!-- [disabled]="!regProductForAllRequestedType.valid" -->
+          [disabled]="!regProductForAllRequestedType.valid"> <!--  -->
           <span *ngIf="!kitProductStatus">Submit</span>
           <span *ngIf="kitProductStatus">Apply Product</span>
         </button>
