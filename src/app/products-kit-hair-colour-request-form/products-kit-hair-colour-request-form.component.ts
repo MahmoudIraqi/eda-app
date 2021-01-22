@@ -38,12 +38,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       required: false
     },
     {
-      id: 'shelfLifeStatement',
-      name: 'Shelf Life Statement',
-      fileName: '',
-      required: false
-    },
-    {
       id: 'artWork',
       name: 'Art Work',
       fileName: '',
@@ -126,12 +120,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     {
       id: 'CoA',
       name: 'CoA',
-      fileName: '',
-      required: false
-    },
-    {
-      id: 'shelfLifeStatement',
-      name: 'Shelf Life Statement',
       fileName: '',
       required: false
     },
@@ -279,14 +267,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           webkitRelativePath: ''
         },
         CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        shelfLifeStatement: {
           lastModified: '1608642169292',
           lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
           name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
@@ -448,14 +428,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           type: 'application/vnd.ms-excel',
           webkitRelativePath: ''
         },
-        shelfLifeStatement: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
         artWork: {
           lastModified: '1608642169292',
           lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
@@ -603,14 +575,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           webkitRelativePath: ''
         },
         CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        shelfLifeStatement: {
           lastModified: '1608642169292',
           lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
           name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
@@ -772,14 +736,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           type: 'application/vnd.ms-excel',
           webkitRelativePath: ''
         },
-        shelfLifeStatement: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
         artWork: {
           lastModified: '1608642169292',
           lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
@@ -934,14 +890,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           type: 'application/vnd.ms-excel',
           webkitRelativePath: ''
         },
-        shelfLifeStatement: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
         artWork: {
           lastModified: '1608642169292',
           lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
@@ -1089,14 +1037,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           webkitRelativePath: ''
         },
         CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        shelfLifeStatement: {
           lastModified: '1608642169292',
           lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
           name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
@@ -1373,6 +1313,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       countryOfLicenseHolder: this.fb.control('', Validators.required),
       tradeMark: this.fb.control(''),
       shelfLife: this.fb.control(0),
+      storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
       groupName: this.fb.control('', Validators.required),
@@ -1384,7 +1325,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
       GMP: this.fb.control(''),
       CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
-      shelfLifeStatement: this.fb.control('', Validators.required),
       artWorkForTheKit: this.fb.control('', Validators.required),
       leaflet: this.fb.control(''),
       reference: this.fb.control(''),

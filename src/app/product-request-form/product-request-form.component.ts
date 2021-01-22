@@ -44,12 +44,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       required: false
     },
     {
-      id: 'shelfLifeStatement',
-      name: 'Shelf Life Statement',
-      fileName: '',
-      required: false
-    },
-    {
       id: 'artWork',
       name: 'Art Work',
       fileName: '',
@@ -284,6 +278,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       physicalStateTxt: this.fb.control(''),
       purposeOfUse: this.fb.control('', Validators.required),
       purposeOfUseTxt: this.fb.control(''),
+      storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
       shelfLife: this.fb.control(0),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
@@ -305,7 +300,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
       GMP: this.fb.control(''),
       CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
-      shelfLifeStatement: this.fb.control('', Validators.required),
       artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
       leaflet: this.fb.control(''),
       reference: this.fb.control(''),
