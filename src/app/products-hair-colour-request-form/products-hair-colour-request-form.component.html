@@ -517,7 +517,7 @@
                 <app-table-list [data]="detailsListTable"
                                 [whichTable]="'newRequest'"
                                 (removeDetailsRowOutput)="removeDetailsRows($event)"
-                                (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('table',$event)"
+                                (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
                                 (editDetailedRowOutput)="editTheDetailsRow($event)"
                 ></app-table-list>
               </div>
@@ -540,9 +540,7 @@
               <div class="custom-file fileUpload mr-3">
                 <input type="file" class="custom-file-input"
                        aria-describedby="fileHelp"
-                       [innerText]="regHairColorantProductForAllRequestedType.get(field.id).value"
                        (change)="onFileSelect($event, field.id)"
-                       (blur)="onFileSelect($event, field.id)"
                        [required]="field.required">
                 <div
                   *ngIf="regHairColorantProductForAllRequestedType.get(field.id).invalid && (regHairColorantProductForAllRequestedType.get(field.id).dirty || regHairColorantProductForAllRequestedType.get(field.id).touched)"

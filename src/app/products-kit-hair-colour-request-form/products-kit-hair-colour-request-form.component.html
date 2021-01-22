@@ -350,9 +350,7 @@
                 <div class="custom-file fileUpload mr-3">
                   <input type="file" class="custom-file-input"
                          aria-describedby="fileHelp"
-                         [innerText]="regColourKitForAllRequestedType.get(field.id).value"
-                         (change)="onFileSelect($event, field.id)"
-                         (blur)="onFileSelect($event, field.id)">
+                         (change)="onFileSelect($event, field.id)">
                   <div
                     *ngIf="regColourKitForAllRequestedType.get(field.id).invalid && (regColourKitForAllRequestedType.get(field.id).dirty || regColourKitForAllRequestedType.get(field.id).touched)"
                     class="alert alert-danger">

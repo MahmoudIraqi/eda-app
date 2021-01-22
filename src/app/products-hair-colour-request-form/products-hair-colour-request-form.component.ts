@@ -187,7 +187,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   addDetailsRows() {
     this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable();
+    this.equalTheNewDetailsTable('add');
     this.DetailsRows().push(this.fb.group({
       colour: this.fb.control(''),
       fragrance: this.fb.control(''),
@@ -205,14 +205,14 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     }));
   }
 
-  editDataDetailsRows() {
+  editDataDetailsRows(fromWhere) {
     this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable();
+    this.equalTheNewDetailsTable(fromWhere);
   }
 
   removeDetailsRows(i) {
     this.DetailsRows().removeAt(i);
-    this.equalTheNewDetailsTable();
+    this.equalTheNewDetailsTable('remove');
   }
 
   editTheDetailsRow(event) {
@@ -220,8 +220,15 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.editIndex = event;
   }
 
-  equalTheNewDetailsTable() {
-    this.detailsListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('detailsTable').value;
+  equalTheNewDetailsTable(fromWhere) {
+    debugger;
+    if (fromWhere !== 'form') {
+      if (fromWhere === 'remove') {
+        this.regHairColorantProductForAllRequestedType.get('detailsTable').value.pop();
+      }
+      this.detailsListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('detailsTable').value;
+    }
+
   }
 
   //functions for IngrediantDetailsRows
@@ -242,7 +249,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
     }
 
-    this.equalTheNewDetailsTable();
+    this.equalTheNewDetailsTable(fromWhere);
   }
 
   // Function For Forms
