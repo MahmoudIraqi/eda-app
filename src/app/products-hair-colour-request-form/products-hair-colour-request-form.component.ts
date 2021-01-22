@@ -280,7 +280,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         fragrance: this.fb.control(''),
         flavor: this.fb.control(''),
         barCode: this.fb.control(''),
-        volumes: this.fb.control('', Validators.required),
+        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
         unitOfMeasure: this.fb.control('', Validators.required),
         typeOfPackaging: this.fb.control('', Validators.required),
         packagingDescription: this.fb.control(''),

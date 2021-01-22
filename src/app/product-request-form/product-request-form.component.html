@@ -343,6 +343,10 @@
                         *ngIf="row.get('volumes').errors.required">
                         this field is required
                       </div>
+                      <div
+                        *ngIf="row.get('volumes').errors.pattern">
+                        this field must be a number
+                      </div>
                     </div>
                   </mat-form-field>
                 </div>
@@ -504,7 +508,7 @@
                 <app-table-list [data]="detailsListTable"
                                 [whichTable]="'newRequest'"
                                 (removeDetailsRowOutput)="removeDetailsRows($event)"
-                                (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('table',$event)"
+                                (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
                                 (editDetailedRowOutput)="editTheDetailsRow($event)"
                 ></app-table-list>
               </div>

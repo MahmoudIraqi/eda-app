@@ -354,6 +354,10 @@
                         *ngIf="row.get('volumes').errors.required">
                         this field is required
                       </div>
+                      <div
+                        *ngIf="row.get('volumes').errors.pattern">
+                        this field must be a number
+                      </div>
                     </div>
                   </mat-form-field>
                 </div>

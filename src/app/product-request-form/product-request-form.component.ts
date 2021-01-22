@@ -194,7 +194,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   addDetailsRows() {
     this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable();
+    this.equalTheNewDetailsTable('add');
     this.DetailsRows().push(this.fb.group({
       colour: this.fb.control(''),
       fragrance: this.fb.control(''),
@@ -212,14 +212,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     }));
   }
 
-  editDataDetailsRows() {
+  editDataDetailsRows(fromWhere) {
     this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable();
+    this.equalTheNewDetailsTable(fromWhere);
   }
 
   removeDetailsRows(i) {
     this.DetailsRows().removeAt(i);
-    this.equalTheNewDetailsTable();
+    this.equalTheNewDetailsTable('remove');
   }
 
   editTheDetailsRow(event) {
@@ -227,8 +227,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.editIndex = event;
   }
 
-  equalTheNewDetailsTable() {
-    this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+  equalTheNewDetailsTable(fromWhere) {
+    debugger;
+    if (fromWhere !== 'form') {
+      if (fromWhere === 'remove') {
+        this.regProductForAllRequestedType.get('detailsTable').value.pop();
+      }
+      this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+    }
   }
 
   //functions for IngrediantDetailsRows
@@ -249,14 +255,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
     }
 
+    this.equalTheNewDetailsTable(fromWhere);
   }
 
-  // Function For Forms
   saveData() {
     this.saveDataOutput.emit(this.regProductForAllRequestedType.value);
   }
 
-  // tslint:disable-next-line:typedef
   onSubmit() {
     // const formData = formDataClass(this.regProductForAllRequestedType.value, this.regProductForAllRequestedType);
     this.submitDataOutput.emit(this.regProductForAllRequestedType.value);
@@ -287,7 +292,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         fragrance: this.fb.control(''),
         flavor: this.fb.control(''),
         barCode: this.fb.control(''),
-        volumes: this.fb.control('', Validators.required),
+        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
         unitOfMeasure: this.fb.control('', Validators.required),
         typeOfPackaging: this.fb.control('', Validators.required),
         packagingDescription: this.fb.control(''),

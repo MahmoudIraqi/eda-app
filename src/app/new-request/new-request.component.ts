@@ -49,7 +49,6 @@ export class NewRequestComponent implements OnInit {
       this.formData.licenseHolderCountryList = res;
     });
     this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
-      console.log('res', res);
       this.formData.manufacturingCompanyList = res;
     });
     this.getService.getFunctionLookUp().subscribe((res: any) => {
