@@ -170,7 +170,13 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = (res: any) => {
+        this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
+      };
+      // this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
     }
   }
 

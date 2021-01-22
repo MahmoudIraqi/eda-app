@@ -176,14 +176,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log('file', file);
-      // const reader = new FileReader();
-      //
-      // reader.readAsDataURL(file);
-      // reader.onload = (res: any) => {
-      //   this.regProductForAllRequestedType.get(fileControlName).setValue(res.target.result);
-      // };
+      const reader = new FileReader();
 
-      this.regProductForAllRequestedType.get(fileControlName).setValue(file);
+      reader.readAsDataURL(file);
+      reader.onload = (res: any) => {
+        this.regProductForAllRequestedType.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
+      };
+
+      // this.regProductForAllRequestedType.get(fileControlName).setValue(file);
     }
   }
 

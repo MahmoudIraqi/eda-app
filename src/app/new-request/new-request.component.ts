@@ -89,27 +89,12 @@ export class NewRequestComponent implements OnInit {
 
   saveData(event) {
     if (this.selectedFormType === 1) {
-      let regProductData;
-      Object.keys(event).map(x => {
-        let file;
-        if (event[x] instanceof File) {
-          const reader = new FileReader();
-          reader.readAsDataURL(event[x]);
-          reader.onload = (res: any) => {
-            event[x] = res.target.result;
-          };
-        }
-
-      });
-
       event = {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
-
-      console.log('event', event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
@@ -128,12 +113,16 @@ export class NewRequestComponent implements OnInit {
       //   console.log('res', res);
       // });
     } else if (this.selectedFormType === 3) {
-      const regKitForAllRequestedTypeData = {
+      event = {
+        isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
-      console.log('regHairColorantProductForAllRequestedType', regKitForAllRequestedTypeData);
+
+      this.getService.createProductRequest(event).subscribe((res: any) => {
+        console.log('res', res);
+      });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
         typeOfMarketing: this.selectedFormType,
@@ -146,18 +135,6 @@ export class NewRequestComponent implements OnInit {
 
   onSubmit(event) {
     if (this.selectedFormType === 1) {
-      Object.keys(event).map(x => {
-        let file;
-        if (event[x] instanceof File) {
-          const reader = new FileReader();
-          reader.readAsDataURL(event[x]);
-          reader.onload = (res: any) => {
-            event[x] = res.target.result;
-          };
-        }
-
-      });
-
       event = {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
@@ -182,12 +159,16 @@ export class NewRequestComponent implements OnInit {
       // });
 
     } else if (this.selectedFormType === 3) {
-      const regKitForAllRequestedTypeData = {
+      event = {
+        isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
         ...event
       };
-      console.log('regHairColorantProductForAllRequestedType', regKitForAllRequestedTypeData);
+
+      this.getService.createProductRequest(event).subscribe((res: any) => {
+        console.log('res', res);
+      });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
         typeOfMarketing: this.selectedFormType,
