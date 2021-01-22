@@ -238,7 +238,7 @@
   padding: 0.5em;
   border-radius: 10px 0px 10px 10px !important;
   border: 1px solid #161c30;
-  background: #161c30;
+  background: rgba(22, 28, 48,0.51);
 }
 
 .dropdown-content ul li {

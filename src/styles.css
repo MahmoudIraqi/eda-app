@@ -377,7 +377,8 @@ body {
     padding-left: 1em;
     padding-right: 0em;
   }
-  .sectionContainer .homepageContainer{
+
+  .sectionContainer .homepageContainer {
     background-size: cover;
   }
 }
@@ -385,6 +386,21 @@ body {
 @media only screen and (max-width: 960px) {
   .border-bottom {
     border: none !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .bottomButtons {
+    margin-bottom: 1rem;
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .nav-pills .nav-item {
+    width: 100%;
+    margin-top: 1em;
+    margin-right: 0%;
   }
 }
 
@@ -404,18 +420,9 @@ body {
     margin-top: 1em;
     margin-right: 0%;
   }
-}
 
-@media only screen and (max-width: 650px) {
-  .nav-pills .nav-item {
-    width: 100%;
-    margin-top: 1em;
-    margin-right: 0%;
-  }
-}
-@media only screen and (max-width: 768px) {
-  .bottomButtons {
-    margin-bottom: 1rem;
-    width: 100% !important;
+  .btnList .dropdown-menu {
+    min-width: 8rem;
+    width: 9rem;
   }
 }
