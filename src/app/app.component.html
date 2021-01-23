@@ -1,11 +1,1 @@
-<div class="appContainer">
-  <app-header></app-header>
-
-  <div class="sectionContainer">
-    <div [@routerTransitionSlide]="prepareRoute(outlet)">
-      <router-outlet #outlet="outlet"></router-outlet>
-    </div>
-  </div>
-
-  <app-footer></app-footer>
-</div>
+<router-outlet></router-outlet>

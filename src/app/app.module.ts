@@ -11,7 +11,6 @@ import {DraftRequestComponent} from './draft-request/draft-request.component';
 import {ApprovedRequestComponent} from './approved-request/approved-request.component';
 import {TableListComponent} from './shared-components/table-list/table-list.component';
 import {TitleComponent} from './shared-components/title/title.component';
-
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
@@ -32,6 +31,8 @@ import {ProductsKitHairColourRequestFormComponent} from './products-kit-hair-col
 import {DatePipe, DecimalPipe} from '@angular/common';
 import {FormService} from './services/form.service';
 import {HttpClientModule} from '@angular/common/http';
+import {LoginComponent} from './login/login.component';
+import { HomeContainerComponent } from './home-container/home-container.component';
 
 
 @NgModule({
@@ -50,6 +51,8 @@ import {HttpClientModule} from '@angular/common/http';
     ProductsKitRequestFormComponent,
     ProductsHairColourRequestFormComponent,
     ProductsKitHairColourRequestFormComponent,
+    LoginComponent,
+    HomeContainerComponent
   ],
   imports: [
     BrowserModule,
