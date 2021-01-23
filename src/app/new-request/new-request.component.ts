@@ -19,7 +19,7 @@ export class NewRequestComponent implements OnInit {
     manufacturingCompanyList: [],
     manufacturingCountryList: [],
     productColorList: [],
-    ApplicantList: [],
+    applicantList: [],
     licenseHolderList: [],
     licenseHolderCountryList: [],
     physicalStateList: [],
@@ -92,7 +92,7 @@ export class NewRequestComponent implements OnInit {
       this.isloading = false;
     });
     this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
-      this.formData.ApplicantList = res;
+      this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
       this.isloading = false;
     });
@@ -108,7 +108,6 @@ export class NewRequestComponent implements OnInit {
 
   getFormType(event) {
     this.selectedFormType = event.value;
-    console.log('event', this.selectedFormType);
   }
 
   getRequestType(event) {
@@ -131,7 +130,6 @@ export class NewRequestComponent implements OnInit {
       };
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
@@ -146,10 +144,8 @@ export class NewRequestComponent implements OnInit {
         trackType: this.selectedTrackType,
         ...event
       };
-      console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
 
       this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
@@ -165,7 +161,6 @@ export class NewRequestComponent implements OnInit {
       };
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
@@ -179,10 +174,8 @@ export class NewRequestComponent implements OnInit {
         trackType: this.selectedTrackType,
         ...event
       };
-      console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
 
       this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
@@ -204,7 +197,6 @@ export class NewRequestComponent implements OnInit {
       };
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
@@ -220,10 +212,8 @@ export class NewRequestComponent implements OnInit {
         trackType: this.selectedTrackType,
         ...event
       };
-      console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
 
       this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
@@ -242,7 +232,6 @@ export class NewRequestComponent implements OnInit {
       };
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
@@ -258,10 +247,8 @@ export class NewRequestComponent implements OnInit {
         trackType: this.selectedTrackType,
         ...event
       };
-      console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
 
       this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
-        console.log('res', res);
         this.isloading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
@@ -282,10 +269,7 @@ export class NewRequestComponent implements OnInit {
           objectData[x] = res.target.result;
         };
       }
-
     });
-
-    console.log('objectData', objectData);
 
     return objectData;
   }

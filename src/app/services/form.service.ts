@@ -197,7 +197,6 @@ export class FormService {
   }
 
   createProductRequest(data) {
-    console.log('eventInRequest', data);
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -205,7 +204,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}requests`, data, options)
       .pipe(map((res: any) => {
@@ -215,7 +213,6 @@ export class FormService {
   }
 
   createProductKitRequest(data) {
-    console.log('eventInRequest', data);
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -223,7 +220,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}requestsKit`, data, options)
       .pipe(map((res: any) => {

@@ -103,7 +103,7 @@
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
               <mat-select formControlName="applicant" required *ngIf="formData">
-                <mat-option *ngFor='let applicant of formData.ApplicantList' [value]="applicant.ID">
+                <mat-option *ngFor='let applicant of formData.applicantList' [value]="applicant.ID">
                   {{applicant.NAME}}
                 </mat-option>
               </mat-select>

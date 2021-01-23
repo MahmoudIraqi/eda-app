@@ -128,7 +128,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   ngOnChanges() {
     this.formData = this.lookupsData;
 
-    console.log('selectedFormType', this.successSubmission);
     if (this.successSubmission) {
       this.resetForms();
     }
@@ -183,7 +182,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   // Function for File
   onFileSelect(event, fileControlName) {
-    console.log('event.target.files', event.target.files);
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -238,7 +236,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   equalTheNewDetailsTable(fromWhere) {
-    debugger;
+
     if (fromWhere !== 'form') {
       if (fromWhere === 'remove') {
         this.regHairColorantProductForAllRequestedType.get('detailsTable').value.pop();
@@ -333,7 +331,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   getDecimalValue(value) {
-    debugger;
+
     this.regHairColorantProductForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regHairColorantProductForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});

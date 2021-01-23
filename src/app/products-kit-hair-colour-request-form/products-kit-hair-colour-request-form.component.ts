@@ -1154,7 +1154,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.formData = {...this.lookupsData, productStatusList: ['Registered', 'New']};
     this.getFormAsStarting();
 
-    console.log('selectedFormType', this.successSubmission);
     if (this.successSubmission) {
       this.resetForms();
     }
@@ -1204,7 +1203,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   saveData() {
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
-    console.log('this.regColourKitForAllRequestedType.value', this.regColourKitForAllRequestedType.value);
+
     this.saveDataOutput.emit(this.regColourKitForAllRequestedType.value);
   }
 
@@ -1262,7 +1261,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   removeDetailsRows(event) {
-    console.log('event', event);
     this.DetailsRows(event.rowIndex).removeAt(event.i);
 
     this.equalTheNewDetailsTable(event.rowIndex);
@@ -1309,7 +1307,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   getFormAsStarting() {
-    console.log('this.selectedRequestedType', this.selectedRequestedType);
 
     this.regColourKitForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
@@ -1351,7 +1348,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   equalTheNewDetailsTable(index) {
-    console.log('12345', this.regColourKitForAllRequestedType.get('ProductsForKit')[index].value);
     this.detailsListTable.tableBody = this.regColourKitForAllRequestedType.get('ProductsForKit')[index];
   }
 
@@ -1369,16 +1365,33 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
             ...res,
             groupName: this.regColourKitForAllRequestedType.get('groupName').value
           };
-          console.log('objectData', objectData);
+
           this.ProductGroupsRows().value[index].productDetails = res;
+          const keyOfLookup = Object.keys(this.lookupsData);
+          keyOfLookup.map(key => {
+            const keyLowerCase = key.replace('List', '');
+            const value = objectData[keyLowerCase];
+
+            this.lookupsData[key].filter(y => y.ID === value).map(x => {
+              objectData[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+            });
+          });
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
         }
       });
     } else if (status === 'new') {
       this.newProductObject = data;
+      const keyOfLookup = Object.keys(this.lookupsData);
+      keyOfLookup.map(key => {
+        const keyLowerCase = key.replace('List', '');
+        const value = data[keyLowerCase];
+
+        this.lookupsData[key].filter(y => y.ID === value).map(x => {
+          data[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+        });
+      });
       this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
-      console.log('this.allProductsInKit.tableBody ', this.allProductsInKit.tableBody);
 
       this.addProductsGroupRows();
     }
@@ -1407,13 +1420,11 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       ...this.ProductGroupsRows().value[lastRowInArray].productDetails
     };
 
-    console.log('data', data);
-
     this.applyProduct(data, 'new', '');
   }
 
   getDecimalValue(value) {
-    debugger;
+
     this.regColourKitForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regColourKitForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});

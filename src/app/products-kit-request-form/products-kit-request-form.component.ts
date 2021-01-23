@@ -1151,11 +1151,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('123', this.lookupsData);
     this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
     this.getFormAsStarting();
 
-    console.log('selectedFormType', this.successSubmission);
     if (this.successSubmission) {
       this.resetForms();
     }
@@ -1205,7 +1203,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   saveData() {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
-    console.log('this.regKitForAllRequestedType.value', this.regKitForAllRequestedType.value);
     this.saveDataOutput.emit(this.regKitForAllRequestedType.value);
   }
 
@@ -1263,7 +1260,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   removeDetailsRows(event) {
-    console.log('event', event);
     this.DetailsRows(event.rowIndex).removeAt(event.i);
 
     this.equalTheNewDetailsTable(event.rowIndex);
@@ -1310,8 +1306,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   getFormAsStarting() {
-    console.log('this.selectedRequestedType', this.selectedRequestedType);
-
     this.regKitForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
       productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
@@ -1351,7 +1345,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   equalTheNewDetailsTable(index) {
-    console.log('12345', this.regKitForAllRequestedType.get('ProductsForKit')[index].value);
     // this.detailsListTable.tableBody = this.regKitForAllRequestedType.get('ProductsForKit')[index]
   }
 
@@ -1369,17 +1362,34 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
             ...res,
             groupName: this.regKitForAllRequestedType.get('groupName').value
           };
-          console.log('objectData', objectData);
+
           this.ProductGroupsRows().value[index].productDetails = res;
+          const keyOfLookup = Object.keys(this.lookupsData);
+          keyOfLookup.map(key => {
+            const keyLowerCase = key.replace('List', '');
+            const value = objectData[keyLowerCase];
+
+            this.lookupsData[key].filter(y => y.ID === value).map(x => {
+              objectData[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+            });
+          });
+
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
         }
       });
     } else if (status === 'new') {
-      console.log('data', data);
       this.newProductObject = data;
+      const keyOfLookup = Object.keys(this.lookupsData);
+      keyOfLookup.map(key => {
+        const keyLowerCase = key.replace('List', '');
+        const value = data[keyLowerCase];
+
+        this.lookupsData[key].filter(y => y.ID === value).map(x => {
+          data[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+        });
+      });
       this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
-      console.log('this.allProductsInKit.tableBody ', this.allProductsInKit.tableBody);
 
       this.addProductsGroupRows();
     }
@@ -1408,13 +1418,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       ...this.ProductGroupsRows().value[lastRowInArray].productDetails
     };
 
-    console.log('data', data);
-
     this.applyProduct(data, 'new', '');
   }
 
   getDecimalValue(value) {
-    debugger;
+
     this.regKitForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regKitForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});

@@ -18,7 +18,6 @@ export class ApprovedRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.getService.getApprovedProductsList().subscribe((res: any) => {
-      console.log('res', res);
       this.approvedListRequests.tableBody = res;
     });
   }

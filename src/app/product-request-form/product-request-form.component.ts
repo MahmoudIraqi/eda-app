@@ -129,10 +129,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('lookupsData', this.lookupsData);
     this.formData = {...this.lookupsData};
 
-    console.log('selectedFormType', this.successSubmission);
     if (this.successSubmission) {
       this.resetForms();
     }
@@ -191,7 +189,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      console.log('file', file);
       const reader = new FileReader();
 
       reader.readAsDataURL(file);
@@ -244,7 +241,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   equalTheNewDetailsTable(fromWhere) {
-    debugger;
+
     if (fromWhere !== 'form') {
       if (fromWhere === 'remove') {
         this.regProductForAllRequestedType.get('detailsTable').value.pop();
@@ -335,7 +332,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   getDecimalValue(value) {
-    debugger;
+
     this.regProductForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});

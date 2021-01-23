@@ -19,7 +19,6 @@ export class TrackRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.getService.getTrackRequestsList().subscribe((res: any) => {
-      console.log('res', res);
       this.trackListRequests.tableBody = res;
     });
   }

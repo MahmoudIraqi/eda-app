@@ -18,7 +18,6 @@ export class DraftRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.getService.getDraftRequestsList().subscribe((res: any) => {
-      console.log('res', res);
       this.draftListRequests.tableBody = res;
     });
   }
