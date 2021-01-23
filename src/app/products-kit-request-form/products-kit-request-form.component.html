@@ -357,7 +357,10 @@
           <div class="row mt-3">
             <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFieldsForKits">
               <div class="form-group">
-                <label>{{field.name}}</label>
+                <label>
+                  {{field.name}}
+                  <span *ngIf="field.required">*</span>
+                </label>
                 <div class="custom-file fileUpload mr-3">
                   <input type="file" class="custom-file-input"
                          aria-describedby="fileHelp"

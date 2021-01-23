@@ -112,7 +112,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       id: 'freeSale',
       name: 'Free Sale',
       fileName: '',
-      required: false
+      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false
     },
     {
       id: 'GMP',
@@ -124,13 +124,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       id: 'CoA',
       name: 'CoA',
       fileName: '',
-      required: false
+      required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false
     },
     {
       id: 'artWorkForTheKit',
       name: 'Art Work For The Kit',
       fileName: '',
-      required: false
+      required: true
     },
     {
       id: 'leaflet',
@@ -154,19 +154,19 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
       fileName: '',
-      required: false
+      required: true
     },
     {
       id: 'receipt',
       name: 'receipt',
       fileName: '',
-      required: false
+      required: true
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
-      required: false
+      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false
     },
     {
       id: 'manufacturingContract',
@@ -190,7 +190,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
-      required: false
+      required: true
     }
   ];
   removeShortNameFieldStatus = false;
