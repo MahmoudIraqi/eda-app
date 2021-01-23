@@ -293,6 +293,10 @@
                   *ngIf="regHairColorantProductForAllRequestedType.get('receiptNumber').errors.required">
                   this field is required
                 </div>
+                <div
+                  *ngIf="regHairColorantProductForAllRequestedType.get('receiptNumber').errors.pattern">
+                  this field must not start with number
+                </div>
               </div>
             </mat-form-field>
           </div>

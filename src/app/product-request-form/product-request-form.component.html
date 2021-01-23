@@ -279,6 +279,10 @@
                   *ngIf="regProductForAllRequestedType.get('receiptNumber').errors.required">
                   this field is required
                 </div>
+                <div
+                  *ngIf="regProductForAllRequestedType.get('receiptNumber').errors.pattern">
+                  this field must not start with number
+                </div>
               </div>
             </mat-form-field>
           </div>
