@@ -17,12 +17,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AccordionModule} from 'ngx-bootstrap/accordion';
 import {TabsModule} from 'ngx-bootstrap/tabs';
+import {AlertModule} from 'ngx-bootstrap/alert';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ProductRequestFormComponent} from './product-request-form/product-request-form.component';
 import {ProductsKitRequestFormComponent} from './products-kit-request-form/products-kit-request-form.component';
 import {ProductsHairColourRequestFormComponent} from './products-hair-colour-request-form/products-hair-colour-request-form.component';
@@ -60,11 +62,13 @@ import { HomeContainerComponent } from './home-container/home-container.componen
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
+    AlertModule.forRoot(),
     MatExpansionModule,
     MatSelectModule,
     FormsModule,
     MatInputModule,
     MatSliderModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatCardModule

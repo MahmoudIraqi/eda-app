@@ -183,6 +183,19 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getTrackTypeLookUp() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}track_type`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   createProductRequest(data) {
     console.log('eventInRequest', data);
     const headers = new HttpHeaders({
@@ -201,7 +214,25 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getTrackRequestsList(){
+  createProductKitRequest(data) {
+    console.log('eventInRequest', data);
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+
+    const options = {headers};
+
+    data = JSON.stringify(data);
+    console.log('data', data);
+
+    return this.http.post(`${this.apiBaseUrl}requestsKit`, data, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getTrackRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -213,7 +244,8 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getDraftRequestsList(){
+
+  getDraftRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -225,13 +257,27 @@ export class FormService {
         }),
         catchError(this.handleError));
   }
-  getApprovedProductsList(){
+
+  getApprovedProductsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
     const options = {headers};
 
     return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=30`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getProductWithNotificationNumberList(notificationNumber) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}product?NotifictionNo=${notificationNumber}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

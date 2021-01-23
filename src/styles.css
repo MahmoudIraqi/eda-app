@@ -251,7 +251,7 @@ body {
 
 .nav-pills .nav-link:hover {
   color: #fff;
-  box-shadow: inset 600px 0 0 0 #161c30;
+  background: #161c30;
 }
 
 .nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .show > .nav-link {
@@ -362,6 +362,13 @@ body {
 
 .insidePanelHeader {
   border-bottom: 0px !important;
+}
+
+.alert-success {
+  width: 25%;
+  position: fixed;
+  top: 1em;
+  left: 1em;
 }
 
 /* ----------------------- responsive -------------------------- */

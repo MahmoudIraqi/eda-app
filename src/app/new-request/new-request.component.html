@@ -30,8 +30,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Track Type</mat-label>
               <mat-select (selectionChange)="getTrackType($event)">
-                <mat-option *ngFor="let option of formData.trackType" [value]="option.id">
-                  {{option.name}}
+                <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
+                  {{option.TRACK_TYPE_NAME}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -39,6 +39,8 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType === 1 && selectedRequestedType">
             <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -47,6 +49,8 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType === 2 && selectedRequestedType">
             <app-products-kit-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -56,6 +60,7 @@
                *ngIf="selectedFormType === 3 && selectedRequestedType">
             <app-products-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -64,6 +69,8 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType">
             <app-products-kit-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -73,4 +80,12 @@
       </div>
     </div>
   </div>
+</div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<div class="loadingContainer" *ngIf="isloading">
+  <mat-spinner mode="indeterminate"></mat-spinner>
 </div>

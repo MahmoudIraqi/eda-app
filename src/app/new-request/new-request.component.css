@@ -304,3 +304,24 @@ input[type=file] {
 .Attachments .row > div:nth-child(n+4) {
   margin-top: 1.5em !important;
 }
+
+.loadingContainer {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  background: rgba(255, 255, 255, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: fill !important;
+}
+
+.loadingContainer .mat-spinner {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 45vh;
+}
+
+:host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #c28a30;
+}

@@ -2,6 +2,7 @@ import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, V
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
+import {FormService} from '../services/form.service';
 
 @Component({
   selector: 'app-products-kit-hair-colour-request-form',
@@ -11,6 +12,8 @@ import {DecimalPipe} from '@angular/common';
 export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
+  @Input() selectedFormType;
+  @Input() successSubmission;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -364,7 +367,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '12345',
+      NotificationNo: '12345',
     },
     {
       newProduct: {
@@ -518,7 +521,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '67890',
+      NotificationNo: '67890',
     },
     {
       newProduct: {
@@ -672,7 +675,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '13579',
+      NotificationNo: '13579',
     },
     {
       newProduct: {
@@ -826,7 +829,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '24680',
+      NotificationNo: '24680',
     },
     {
       newProduct: {
@@ -980,7 +983,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '09876',
+      NotificationNo: '09876',
     },
     {
       newProduct: {
@@ -1134,12 +1137,15 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '54321',
+      NotificationNo: '54321',
     },
   ];
   newProductObject: any;
+  selectedTrackTypeForNewProduct;
+  selectedRegisteredTypeForProduct;
 
   constructor(private fb: FormBuilder,
+              private getServices: FormService,
               private number: DecimalPipe) {
     this.getFormAsStarting();
   }
@@ -1147,6 +1153,11 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   ngOnChanges() {
     this.formData = {...this.lookupsData, productStatusList: ['Registered', 'New']};
     this.getFormAsStarting();
+
+    console.log('selectedFormType', this.successSubmission);
+    if (this.successSubmission) {
+      this.resetForms();
+    }
   }
 
   ngOnInit(): void {
@@ -1288,8 +1299,8 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.selectedKitProductsStatus = '';
     this.ProductGroupsRows().push(this.fb.group({
       productStatus: this.fb.control(''),
-      productNotificationNumber: this.fb.control(''),
-      newProduct: this.fb.group({})
+      NotificationNo: this.fb.control(''),
+      productDetails: this.fb.group({})
     }));
   }
 
@@ -1302,7 +1313,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
     this.regColourKitForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
       shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
       productColor: this.fb.control(''),
       manufacturingCompany: this.fb.control('', Validators.required),
@@ -1314,13 +1325,13 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       tradeMark: this.fb.control(''),
       shelfLife: this.fb.control(0),
       storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
+      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
       groupName: this.fb.control('', Validators.required),
       ProductsForKit: this.fb.array([this.fb.group({
         productStatus: this.fb.control(''),
-        productNotificationNumber: this.fb.control(''),
-        newProduct: this.fb.group({})
+        NotificationNo: this.fb.control(''),
+        productDetails: this.fb.group({})
       })]),
       freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
       GMP: this.fb.control(''),
@@ -1337,14 +1348,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       others: this.fb.control(''),
       otherFees: this.fb.control('', Validators.required),
     });
-
-    this.regColourKitForAllRequestedType.valueChanges.subscribe(form => {
-      if (form.receiptValue) {
-        this.regColourKitForAllRequestedType.patchValue({
-          receiptValue: this.number.transform(form.receiptValue, '1.2-2')
-        }, {emitEvent: false});
-      }
-    });
   }
 
   equalTheNewDetailsTable(index) {
@@ -1359,19 +1362,19 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   applyProduct(data, status, index) {
     if (status === 'registered') {
-      if (this.dummyDataForRegisteredProductForKits.filter(x => x.productNotificationNumber === data.value.productNotificationNumber)) {
-        this.dummyDataForRegisteredProductForKits.filter(x => x.productNotificationNumber === data.value.productNotificationNumber).map(y => {
+      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo).subscribe((res: any) => {
+
+        if (res) {
           const objectData = {
-            groupName: this.regColourKitForAllRequestedType.get('groupName').value,
-            ...y
+            ...res,
+            groupName: this.regColourKitForAllRequestedType.get('groupName').value
           };
-          this.ProductGroupsRows().value[index].newProduct = y;
+          console.log('objectData', objectData);
+          this.ProductGroupsRows().value[index].productDetails = res;
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
-        });
-      } else {
-
-      }
+        }
+      });
     } else if (status === 'new') {
       this.newProductObject = data;
       this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
@@ -1381,20 +1384,43 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     }
   }
 
+  getTrackTypeForProduct(event) {
+    this.selectedTrackTypeForNewProduct = event.value;
+  }
+
+  getRegisteredTypeForProduct(event) {
+    this.selectedRegisteredTypeForProduct = event.value;
+  }
+
   getDataForNewProduct(event) {
-    console.log('event', event);
     this.ProductGroupsRows().value.filter(x => x.productStatus === 'New').map(y => {
-      y.newProduct = event;
+      y.productDetails = event;
     });
-    console.log('this.ProductGroupsRows().value', this.ProductGroupsRows().value);
+
+    const lastRowInArray = this.ProductGroupsRows().value.length - 1;
+
     const data = {
       groupName: this.regColourKitForAllRequestedType.get('groupName').value,
-      ...this.ProductGroupsRows().value[this.ProductGroupsRows().value.length - 1]
+      typeOfMarketing: 1,
+      typeOfRegistration: this.selectedRegisteredTypeForProduct,
+      trackType: this.selectedTrackTypeForNewProduct,
+      ...this.ProductGroupsRows().value[lastRowInArray].productDetails
     };
 
     console.log('data', data);
 
     this.applyProduct(data, 'new', '');
+  }
+
+  getDecimalValue(value) {
+    debugger;
+    this.regColourKitForAllRequestedType.patchValue({
+      receiptValue: this.number.transform(this.regColourKitForAllRequestedType.get('receiptValue').value, '1.2-2')
+    }, {emitEvent: false});
+  }
+
+  resetForms() {
+    this.getFormAsStarting();
   }
 }
 

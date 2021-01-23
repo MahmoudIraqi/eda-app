@@ -31,7 +31,7 @@
                 </div>
                 <div
                   *ngIf="regColourKitForAllRequestedType.get('productEnglishName').errors.pattern">
-                  this field must be in English
+                  this field must't start with Number and must be in English
                 </div>
               </div>
             </mat-form-field>
@@ -189,7 +189,7 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width">
               <mat-label>Storage Place</mat-label>
-              <mat-select formControlName="purposeOfUse" *ngIf="formData" [required]="this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6? true: false">
+              <mat-select formControlName="storagePlace" *ngIf="formData" [required]="this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6? true: false">
                 <mat-option *ngFor='let purpose of formData.storagePlaceList' [value]="purpose.ID">
                   {{purpose.STORAGE_PLACE_NAME}}
                 </mat-option>
@@ -218,7 +218,7 @@
                 </div>
                 <div
                   *ngIf="regColourKitForAllRequestedType.get('receiptNumber').errors.pattern">
-                  this field must be a number
+                  this field must not start with number
                 </div>
               </div>
             </mat-form-field>
@@ -227,6 +227,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
+                     (change)="getDecimalValue(regColourKitForAllRequestedType.get('receiptValue').value)"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required>
               <div
@@ -300,14 +301,14 @@
                                 <mat-form-field class="example-full-width">
                                   <mat-label>Product Notification Number</mat-label>
                                   <input type="text" class="form-control" matInput
-                                         formControlName="productNotificationNumber"
+                                         formControlName="NotificationNo"
                                          placeholder="">
                                 </mat-form-field>
                               </div>
                               <div class="col-6 d-flex">
                                 <button type="button"
                                         class="btn btn-primary ml-auto mt-sm-3"
-                                        [disabled]="!row.get('productNotificationNumber').value"
+                                        [disabled]="!row.get('NotificationNo').value"
                                         (click)="applyProduct(row, 'registered', i)">
                                   Apply Product
                                 </button>
@@ -319,8 +320,11 @@
                               <div class="col-12">
                                 <app-products-hair-colour-request-form
                                   [selectedRequestedType]="selectedRequestedType"
+                                  [selectedFormType]="selectedFormType"
                                   [lookupsData]="lookupsData"
                                   [kitHairProductStatus]="true"
+                                  (selectedTrackTypeForKit)="getTrackTypeForProduct($event)"
+                                  (selectedRegisteredTypeForKit)="getRegisteredTypeForProduct($event)"
                                   (submitDataOutput)="getDataForNewProduct($event)"
                                 ></app-products-hair-colour-request-form>
                               </div>
