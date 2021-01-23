@@ -188,6 +188,42 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getTrackRequestsList(){
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}requests?Type=track&pageNo=1&pageSize=30`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+  getDraftRequestsList(){
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests?Type=draft&pageNo=1&pageSize=30`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+  getApprovedProductsList(){
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=30`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
 
   private handleError(error: HttpErrorResponse) {
     return throwError(`Error! ${error.error}`);

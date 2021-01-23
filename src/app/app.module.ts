@@ -27,7 +27,7 @@ import {ProductRequestFormComponent} from './product-request-form/product-reques
 import {ProductsKitRequestFormComponent} from './products-kit-request-form/products-kit-request-form.component';
 import {ProductsHairColourRequestFormComponent} from './products-hair-colour-request-form/products-hair-colour-request-form.component';
 import {ProductsKitHairColourRequestFormComponent} from './products-kit-hair-colour-request-form/products-kit-hair-colour-request-form.component';
-import {DecimalPipe} from '@angular/common';
+import {DatePipe, DecimalPipe} from '@angular/common';
 import {FormService} from './services/form.service';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -64,7 +64,7 @@ import {HttpClientModule} from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [DecimalPipe, FormService],
+  providers: [DecimalPipe, DatePipe, FormService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

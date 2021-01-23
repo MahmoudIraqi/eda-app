@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormService} from '../services/form.service';
 
 @Component({
   selector: 'app-draft-request',
@@ -9,78 +10,17 @@ export class DraftRequestComponent implements OnInit {
 
   draftListRequests = {
     tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
-    tableBody: [
-      {
-        id: '13245786',
-        submissionDate: 'Jan 12 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'In Progress',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-      {
-        id: '98712654',
-        submissionDate: 'Jan 21 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'Starting',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-      {
-        id: '13245786',
-        submissionDate: 'Jan 12 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'In Progress',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-      {
-        id: '98712654',
-        submissionDate: 'Jan 21 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'Starting',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-      {
-        id: '13245786',
-        submissionDate: 'Jan 12 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'In Progress',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-      {
-        id: '98712654',
-        submissionDate: 'Jan 21 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'Starting',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-      {
-        id: '13245786',
-        submissionDate: 'Jan 12 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'In Progress',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-      {
-        id: '98712654',
-        submissionDate: 'Jan 21 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        status: 'Starting',
-        trackType: 'Brief about authority connects medical pros around the world during COVID-19',
-      },
-    ]
+    tableBody: []
   };
 
-  constructor() {
+  constructor(private getService: FormService) {
   }
 
   ngOnInit(): void {
+    this.getService.getDraftRequestsList().subscribe((res: any) => {
+      console.log('res', res);
+      this.draftListRequests.tableBody = res;
+    });
   }
 
 }

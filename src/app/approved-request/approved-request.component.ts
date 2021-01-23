@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormService} from '../services/form.service';
 
 @Component({
   selector: 'app-approved-request',
@@ -9,42 +10,17 @@ export class ApprovedRequestComponent implements OnInit {
 
   approvedListRequests = {
     tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
-    tableBody: [
-      {
-        notification: '13245786',
-        submissionDate: 'Jan 12 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        actionStatus: 'No',
-      },
-      {
-        notification: '98712654',
-        submissionDate: 'Jan 21 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        actionStatus: 'No',
-      },
-      {
-        notification: '13245786',
-        submissionDate: 'Jan 12 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        actionStatus: 'No',
-      },
-      {
-        notification: '98712654',
-        submissionDate: 'Jan 21 2021',
-        productEnglishName: 'Egyptian Drug Authority',
-        productArabicName: 'هيئة الدواء المصرية',
-        actionStatus: 'No',
-      },
-    ]
+    tableBody: []
   };
 
-  constructor() {
+  constructor(private getService: FormService) {
   }
 
   ngOnInit(): void {
+    this.getService.getApprovedProductsList().subscribe((res: any) => {
+      console.log('res', res);
+      this.approvedListRequests.tableBody = res;
+    });
   }
 
 }

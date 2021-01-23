@@ -43,11 +43,11 @@
               <mat-panel-title>
                 <table class="table table-sm tableDetailsCont">
                   <tr>
-                    <td class="hide">{{request.id}}</td>
-                    <td>{{request.submissionDate}}</td>
-                    <td class="hide">{{request.productEnglishName}}</td>
-                    <td class="hide">{{request.productArabicName}}</td>
-                    <td>{{request.status}}</td>
+                    <td class="hide">{{request.ID}}</td>
+                    <td>{{request.SubmmittionDate | date}}</td>
+                    <td class="hide">{{request.NameEN}}</td>
+                    <td class="hide">{{request.NameAR}}</td>
+                    <td>{{request.Status}}</td>
                     <td class="hide">{{request.trackType}}</td>
                   </tr>
                 </table>
@@ -57,45 +57,27 @@
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Request id :</label>
-                  <span>{{request.id}}</span>
+                  <span>{{request.ID}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Submission date :</label>
-                  <span>{{request.submissionDate}}</span>
+                  <span>{{request.SubmmittionDate | date}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Product English name :</label>
-                  <span>{{request.productEnglishName}}</span>
+                  <span>{{request.NameEN}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Product Arabic name :</label>
-                  <span>{{request.productArabicName}}</span>
+                  <span>{{request.NameAR}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label ">Status :</label>
-                  <span>{{request.status}}</span>
+                  <span>{{request.Status}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Track Type :</label>
                   <span>{{request.trackType}}</span>
-                </div>
-                <div class="col-12 mt-5" *ngIf="request.notificationStatus">
-                  <div class="notificationContainer">
-                    <app-title [title]="'Notification'" [smallTitle]="true"></app-title>
-                    <div class="notificationDetailsContainer">
-                      <div class="row mt-3">
-                        <div class="col-12 col-sm-6 col-md-3">
-                          <label class="label">Notification comment :</label>
-                          <span>{{request.notificationComment}}</span>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 text-right">
-                          <button type="button" class="btn btn-primary btn-sm w-25">
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -110,11 +92,11 @@
                 <div class="table-responsive">
                   <table class="table table-sm tableDetailsCont">
                     <tr>
-                      <td class="hide">{{request.id}}</td>
-                      <td>{{request.submissionDate}}</td>
-                      <td class="hide">{{request.productEnglishName}}</td>
-                      <td class="hide">{{request.productArabicName}}</td>
-                      <td >{{request.status}}</td>
+                      <td class="hide">{{request.ID}}</td>
+                      <td>{{request.SubmmittionDate | date}}</td>
+                      <td class="hide">{{request.NameEN}}</td>
+                      <td class="hide">{{request.NameAR}}</td>
+                      <td>{{request.Status}}</td>
                       <td class="hide">{{request.trackType}}</td>
                       <td><i class="fa fa-edit"></i></td>
                     </tr>
@@ -126,23 +108,23 @@
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Request id :</label>
-                  <span>{{request.id}}</span>
+                  <span>{{request.ID}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Submission date :</label>
-                  <span>{{request.submissionDate}}</span>
+                  <span>{{request.SubmmittionDate}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Product English name :</label>
-                  <span>{{request.productEnglishName}}</span>
+                  <span>{{request.NameEN}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Product Arabic name :</label>
-                  <span>{{request.productArabicName}}</span>
+                  <span>{{request.NameAR}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label ">Status :</label>
-                  <span>{{request.status}}</span>
+                  <span>{{request.Status}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">Track Type :</label>
@@ -160,11 +142,11 @@
               <mat-panel-title>
                 <table class="table table-sm tableDetailsCont">
                   <tr>
-                    <td >{{request.notification}}</td>
-                    <td class="hide">{{request.submissionDate}}</td>
-                    <td >{{request.productEnglishName}}</td>
-                    <td class="hide">{{request.productArabicName}}</td>
-                    <td >{{request.actionStatus}}</td>
+                    <td>{{request.NotificationNo}}</td>
+                    <td class="hide">{{request.SubmmittionDate | date}}</td>
+                    <td>{{request.NameEN}}</td>
+                    <td class="hide">{{request.NameAR}}</td>
+                    <td>{{request.actionStatus}}</td>
                   </tr>
                 </table>
               </mat-panel-title>
@@ -173,19 +155,19 @@
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
                   <label class="label">Notification number :</label>
-                  <span>{{request.notification}}</span>
+                  <span>{{request.NotificationNo}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-3">
                   <label class="label">Submission date :</label>
-                  <span>{{request.submissionDate}}</span>
+                  <span>{{request.SubmmittionDate}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-3">
                   <label class="label ">Product English name :</label>
-                  <span>{{request.productEnglishName}}</span>
+                  <span>{{request.NameEN}}</span>
                 </div>
                 <div class="col-12 col-sm-6 col-md-3">
                   <label class="label">Product Arabic name :</label>
-                  <span>{{request.productArabicName}}</span>
+                  <span>{{request.NameAR}}</span>
                 </div>
               </div>
             </div>
