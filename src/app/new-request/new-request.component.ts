@@ -209,6 +209,7 @@ export class NewRequestComponent implements OnInit {
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
         this.onClosed();
       });
     } else if (this.selectedFormType === 2) {
@@ -227,6 +228,7 @@ export class NewRequestComponent implements OnInit {
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
         this.onClosed();
       });
 
@@ -245,6 +247,7 @@ export class NewRequestComponent implements OnInit {
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
         this.onClosed();
       });
     } else if (this.selectedFormType === 4) {
@@ -263,6 +266,7 @@ export class NewRequestComponent implements OnInit {
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
         this.onClosed();
       });
     }
@@ -298,6 +302,11 @@ export class NewRequestComponent implements OnInit {
     setTimeout(() => {
       this.alertNotificationStatus = false;
     }, 2000);
+  }
 
+  emptyTheTopField() {
+    this.selectedTrackType = '';
+    this.selectedFormType = '';
+    this.selectedRequestedType = '';
   }
 }

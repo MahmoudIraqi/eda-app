@@ -4,7 +4,7 @@
     <div class="loginFormContainer">
       <form name="form" class="example-form" method="post"
             [formGroup]="form" (ngSubmit)="submit()">
-        <img src="../../assets/img/logo.png" class="image">
+        <img src="../../assets/img/logo.png" class="image">hea
         <img src="../../assets/img/favicon.png" class="image2">
         <div class="col-12">
           <mat-form-field class="example-full-width">
@@ -24,7 +24,7 @@
         <div class="col-12">
           <mat-form-field class="example-full-width">
             <mat-label>Password</mat-label>
-            <input type="text" class="form-control" matInput formControlName="password"
+            <input type="password" class="form-control" matInput formControlName="password"
                    placeholder="Password" required>
             <div
               *ngIf="form.get('password').invalid && (form.get('password').dirty || form.get('password').touched)"
