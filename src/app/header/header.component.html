@@ -22,13 +22,29 @@
                 <i class="fas fa-bars"></i>
               </span>
               </button>
-              <div class="dropdown-content">
-                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                    role="menu" aria-labelledby="button-basic">
-                  <li *ngFor="let item of menuObject" role="menuitem">
-                    <a class="dropdown-item" routerLink="{{item.link}}" routerLinkActive="active">
+              <div class="dropdown-content dropdown-content-ex">
+                <ul >
+                  <li *ngFor="let item of menuObject">
+                    <a *ngIf="!item.dropDownStatus" routerLink="{{item.link}}" routerLinkActive="active">
                       {{item.name}}
                     </a>
+                    <div *ngIf="item.dropDownStatus" class="btn-group dropdown" dropdown triggers="active">
+                      <a routerLink="{{item.link}}" routerLinkActive="active" dropdownToggle
+                         aria-controls="dropdown-basic">
+                        {{item.name}}
+                        <i class="fas fa-chevron-down"></i>
+                      </a>
+                      <div class="dropdown-content">
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic">
+                          <li *ngFor="let element of item.dropdownLinks" role="menuitem">
+                            <a class="dropdown-item" routerLink="{{element.link}}" routerLinkActive="active">
+                              {{element.name}}
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </li>
                   <li class="profile-menu">
                     <div class="profile d-inline-flex justify-content-center align-items-center ml-auto">
@@ -83,7 +99,7 @@
                       {{item.name}}
                       <i class="fas fa-chevron-down"></i>
                     </a>
-                    <div class="dropdown-content">
+                    <div class="dropdown-content dropdown-content-tra">
                       <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                           role="menu" aria-labelledby="button-basic">
                         <li *ngFor="let element of item.dropdownLinks" role="menuitem">

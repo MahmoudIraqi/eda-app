@@ -223,6 +223,10 @@
   margin-left: 1em;
 }
 
+.dropdown-content-tra{
+  transform: translateY(24px) !important;
+
+}
 .dropdown-content {
   display: none;
   position: absolute;
@@ -234,7 +238,6 @@
 }
 
 .dropdown-content ul {
-  transform: translateY(24px) !important;
   padding: 0.5em;
   border-radius: 10px 0px 10px 10px !important;
   border: 1px solid #161c30;
@@ -427,4 +430,9 @@
     margin-top: 2rem;
   }
 
+}
+.dropdown-content-ex{
+
+  background-color: rgb(0, 0, 0,0.2)!important;
+  border-color: none !important;
 }

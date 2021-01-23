@@ -30,7 +30,9 @@ import {ProductsKitHairColourRequestFormComponent} from './products-kit-hair-col
 import {DatePipe, DecimalPipe} from '@angular/common';
 import {FormService} from './services/form.service';
 import {HttpClientModule} from '@angular/common/http';
-
+import { LoginComponent } from './login/login.component';
+import {MatCardModule} from '@angular/material/card';
+import { HomeContainerComponent } from './home-container/home-container.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import {HttpClientModule} from '@angular/common/http';
     ProductsKitRequestFormComponent,
     ProductsHairColourRequestFormComponent,
     ProductsKitHairColourRequestFormComponent,
+    LoginComponent,
+    HomeContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +67,7 @@ import {HttpClientModule} from '@angular/common/http';
     MatSliderModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatCardModule
   ],
   providers: [DecimalPipe, DatePipe, FormService],
   bootstrap: [AppComponent]
