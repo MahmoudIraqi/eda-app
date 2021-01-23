@@ -280,7 +280,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   getFormAsStarting() {
     this.regProductForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
       shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
@@ -296,7 +296,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
       shelfLife: this.fb.control(0),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
@@ -329,11 +329,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     });
 
     this.regProductForAllRequestedType.valueChanges.subscribe(form => {
-      if (form.receiptValue) {
-        this.regProductForAllRequestedType.patchValue({
-          receiptValue: this.number.transform(form.receiptValue, '1.2-2')
-        }, {emitEvent: false});
-      }
+
     });
+    if (this.regProductForAllRequestedType.get('receiptValue').value) {
+      this.regProductForAllRequestedType.patchValue({
+        receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
+      }, {emitEvent: false});
+    }
+  }
+
+  getDecimalValue(value) {
+    debugger;
+    this.regProductForAllRequestedType.patchValue({
+      receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
+    }, {emitEvent: false});
   }
 }

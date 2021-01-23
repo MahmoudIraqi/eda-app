@@ -1309,7 +1309,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
     this.regKitForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
       shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
@@ -1321,7 +1321,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       shelfLife: this.fb.control(0),
       storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
       groupName: this.fb.control('', Validators.required),
       ProductsForKit: this.fb.array([this.fb.group({
         productStatus: this.fb.control(''),
@@ -1342,14 +1342,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       storageContract: this.fb.control(''),
       others: this.fb.control(''),
       otherFees: this.fb.control('', Validators.required)
-    });
-
-    this.regKitForAllRequestedType.valueChanges.subscribe(form => {
-      if (form.receiptValue) {
-        this.regKitForAllRequestedType.patchValue({
-          receiptValue: this.number.transform(form.receiptValue, '1.2-2')
-        }, {emitEvent: false});
-      }
     });
   }
 
@@ -1405,7 +1397,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
     const data = {
       groupName: this.regKitForAllRequestedType.get('groupName').value,
-      typeOfMarketing: 1,
+      typeOfMarketing: 3,
       typeOfRegistration: this.selectedRegisteredTypeForProduct,
       trackType: this.selectedTrackTypeForNewProduct,
       ...this.ProductGroupsRows().value[lastRowInArray].productDetails
@@ -1414,5 +1406,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     console.log('data', data);
 
     this.applyProduct(data, 'new', '');
+  }
+
+  getDecimalValue(value) {
+    debugger;
+    this.regKitForAllRequestedType.patchValue({
+      receiptValue: this.number.transform(this.regKitForAllRequestedType.get('receiptValue').value, '1.2-2')
+    }, {emitEvent: false});
   }
 }

@@ -31,7 +31,7 @@
                 </div>
                 <div
                   *ngIf="regColourKitForAllRequestedType.get('productEnglishName').errors.pattern">
-                  this field must be in English
+                  this field must't start with Number and must be in English
                 </div>
               </div>
             </mat-form-field>
@@ -227,6 +227,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
+                     (change)="getDecimalValue(regColourKitForAllRequestedType.get('receiptValue').value)"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required>
               <div
@@ -319,8 +320,11 @@
                               <div class="col-12">
                                 <app-products-hair-colour-request-form
                                   [selectedRequestedType]="selectedRequestedType"
+                                  [selectedFormType]="selectedFormType"
                                   [lookupsData]="lookupsData"
                                   [kitHairProductStatus]="true"
+                                  (selectedTrackTypeForKit)="getTrackTypeForProduct($event)"
+                                  (selectedRegisteredTypeForKit)="getRegisteredTypeForProduct($event)"
                                   (submitDataOutput)="getDataForNewProduct($event)"
                                 ></app-products-hair-colour-request-form>
                               </div>

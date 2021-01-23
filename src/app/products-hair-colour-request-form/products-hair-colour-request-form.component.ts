@@ -10,10 +10,14 @@ import {DecimalPipe} from '@angular/common';
 })
 export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges {
   @Input() selectedRequestedType;
+  @Input() selectedFormType;
   @Input() lookupsData;
   @Input() kitHairProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
+  @Output() selectedTrackTypeForKit = new EventEmitter();
+  @Output() selectedRegisteredTypeForKit = new EventEmitter();
+
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -111,6 +115,9 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   editDetailedRowStatus = false;
   regHairColorantProductForAllRequestedType: FormGroup;
   removeShortNameFieldStatus = false;
+  trackTypeForNewProductInKit;
+  requestedTypeForNewProductInKit;
+
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe) {
@@ -119,9 +126,21 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   ngOnChanges() {
     this.formData = this.lookupsData;
+
+    console.log('selectedFormType', this.selectedFormType);
   }
 
   ngOnInit(): void {
+  }
+
+  getRequestType(event) {
+    this.requestedTypeForNewProductInKit = event.value;
+    this.selectedRegisteredTypeForKit.emit(this.requestedTypeForNewProductInKit);
+  }
+
+  getTrackType(event) {
+    this.trackTypeForNewProductInKit = event.value;
+    this.selectedTrackTypeForKit.emit(this.trackTypeForNewProductInKit);
   }
 
   // Functions for Short name array
@@ -259,7 +278,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   getFormAsStarting() {
     this.regHairColorantProductForAllRequestedType = this.fb.group({
       productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
       shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
       productColor: this.fb.control(''),
       manufacturingCompany: this.fb.control('', Validators.required),
@@ -276,7 +295,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       shelfLife: this.fb.control(0),
       storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
@@ -307,13 +326,12 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       others: this.fb.control(''),
       otherFees: this.fb.control('', Validators.required),
     });
+  }
 
-    this.regHairColorantProductForAllRequestedType.valueChanges.subscribe(form => {
-      if (form.receiptValue) {
-        this.regHairColorantProductForAllRequestedType.patchValue({
-          receiptValue: this.number.transform(form.receiptValue, '1.2-2')
-        }, {emitEvent: false});
-      }
-    });
+  getDecimalValue(value) {
+    debugger;
+    this.regHairColorantProductForAllRequestedType.patchValue({
+      receiptValue: this.number.transform(this.regHairColorantProductForAllRequestedType.get('receiptValue').value, '1.2-2')
+    }, {emitEvent: false});
   }
 }

@@ -251,7 +251,7 @@ body {
 
 .nav-pills .nav-link:hover {
   color: #fff;
-  box-shadow: inset 600px 0 0 0 #161c30;
+  background: #161c30;
 }
 
 .nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .show > .nav-link {

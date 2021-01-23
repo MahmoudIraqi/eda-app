@@ -31,7 +31,7 @@
                 </div>
                 <div
                   *ngIf="regKitForAllRequestedType.get('productEnglishName').errors.pattern">
-                  this field must be in English
+                  this field must't start with Number and must be in English
                 </div>
               </div>
             </mat-form-field>
@@ -217,6 +217,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
+                     (change)="getDecimalValue(regKitForAllRequestedType.get('receiptValue').value)"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required>
               <div

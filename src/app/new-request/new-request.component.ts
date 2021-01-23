@@ -148,6 +148,10 @@ export class NewRequestComponent implements OnInit {
         ...event
       };
       console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
+
+      this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
+        console.log('res', res);
+      });
     }
   }
 
@@ -199,6 +203,10 @@ export class NewRequestComponent implements OnInit {
         ...event
       };
       console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
+
+      this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
+        console.log('res', res);
+      });
     }
   }
 

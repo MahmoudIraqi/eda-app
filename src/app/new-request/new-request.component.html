@@ -66,6 +66,7 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType">
             <app-products-kit-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
