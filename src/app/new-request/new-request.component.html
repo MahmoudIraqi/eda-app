@@ -40,6 +40,7 @@
             <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -49,6 +50,7 @@
             <app-products-kit-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -58,6 +60,7 @@
                *ngIf="selectedFormType === 3 && selectedRequestedType">
             <app-products-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -67,6 +70,7 @@
             <app-products-kit-hair-colour-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
+              [successSubmission]="successSubmission"
               [lookupsData]="formData"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -77,6 +81,10 @@
     </div>
   </div>
 </div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
 
 <div class="loadingContainer" *ngIf="isloading">
   <mat-spinner mode="indeterminate"></mat-spinner>

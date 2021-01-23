@@ -13,6 +13,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() successSubmission;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -1152,6 +1153,11 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   ngOnChanges() {
     this.formData = {...this.lookupsData, productStatusList: ['Registered', 'New']};
     this.getFormAsStarting();
+
+    console.log('selectedFormType', this.successSubmission);
+    if (this.successSubmission) {
+      this.resetForms();
+    }
   }
 
   ngOnInit(): void {
@@ -1411,6 +1417,10 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.regColourKitForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regColourKitForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
+  }
+
+  resetForms() {
+    this.getFormAsStarting();
   }
 }
 

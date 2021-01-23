@@ -13,6 +13,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() successSubmission;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -1151,9 +1152,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log('123', this.lookupsData);
+    this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
     this.getFormAsStarting();
 
-    this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
+    console.log('selectedFormType', this.successSubmission);
+    if (this.successSubmission) {
+      this.resetForms();
+    }
   }
 
   ngOnInit(): void {
@@ -1413,5 +1418,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     this.regKitForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regKitForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
+  }
+
+  resetForms() {
+    this.getFormAsStarting();
   }
 }

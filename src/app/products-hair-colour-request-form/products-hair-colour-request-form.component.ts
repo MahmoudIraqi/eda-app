@@ -11,6 +11,7 @@ import {DecimalPipe} from '@angular/common';
 export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges {
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() successSubmission;
   @Input() lookupsData;
   @Input() kitHairProductStatus;
   @Output() saveDataOutput = new EventEmitter();
@@ -127,7 +128,10 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   ngOnChanges() {
     this.formData = this.lookupsData;
 
-    console.log('selectedFormType', this.selectedFormType);
+    console.log('selectedFormType', this.successSubmission);
+    if (this.successSubmission) {
+      this.resetForms();
+    }
   }
 
   ngOnInit(): void {
@@ -333,5 +337,9 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.regHairColorantProductForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regHairColorantProductForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
+  }
+
+  resetForms() {
+    this.getFormAsStarting();
   }
 }

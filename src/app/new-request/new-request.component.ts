@@ -36,7 +36,9 @@ export class NewRequestComponent implements OnInit {
   selectedTrackType;
   error: boolean;
   errorMessage;
-
+  successSubmission: boolean = false;
+  alertNotificationStatus: boolean = false;
+  alertNotification: any;
   isloading: boolean = false;
 
   constructor(private getService: FormService) {
@@ -131,6 +133,9 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.onClosed();
       });
 
     } else if (this.selectedFormType === 2) {
@@ -146,6 +151,9 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.onClosed();
       });
     } else if (this.selectedFormType === 3) {
       event = {
@@ -159,6 +167,9 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.onClosed();
       });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
@@ -173,12 +184,16 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.onClosed();
       });
     }
   }
 
   onSubmit(event) {
     this.isloading = true;
+    this.successSubmission = false;
     if (this.selectedFormType === 1) {
       event = {
         isDraft: 0,
@@ -191,6 +206,10 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.successSubmission = true;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.onClosed();
       });
     } else if (this.selectedFormType === 2) {
       const regProductForAllRequestedTypeData = {
@@ -205,6 +224,10 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.successSubmission = true;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.onClosed();
       });
 
     } else if (this.selectedFormType === 3) {
@@ -219,6 +242,10 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.successSubmission = true;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.onClosed();
       });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
@@ -233,6 +260,10 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
         console.log('res', res);
         this.isloading = false;
+        this.successSubmission = true;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.onClosed();
       });
     }
   }
@@ -253,5 +284,20 @@ export class NewRequestComponent implements OnInit {
     console.log('objectData', objectData);
 
     return objectData;
+  }
+
+  alertForSaveRequest() {
+    return {msg: 'You had a successful saving'};
+  }
+
+  alertForSubmitRequest() {
+    return {msg: 'You had a successful Submission'};
+  }
+
+  onClosed() {
+    setTimeout(() => {
+      this.alertNotificationStatus = false;
+    }, 2000);
+
   }
 }

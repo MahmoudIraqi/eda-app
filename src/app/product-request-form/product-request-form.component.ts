@@ -14,6 +14,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() successSubmission;
   @Input() lookupsData;
   @Input() kitProductStatus;
   @Output() saveDataOutput = new EventEmitter();
@@ -119,7 +120,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
-  isloading:boolean = false;
+  isloading: boolean = false;
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
@@ -131,7 +132,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     console.log('lookupsData', this.lookupsData);
     this.formData = {...this.lookupsData};
 
-    console.log('selectedFormType', this.selectedFormType);
+    console.log('selectedFormType', this.successSubmission);
+    if (this.successSubmission) {
+      this.resetForms();
+    }
   }
 
   ngOnInit(): void {
@@ -328,15 +332,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       others: this.fb.control(''),
       otherFees: this.fb.control('', Validators.required),
     });
-
-    this.regProductForAllRequestedType.valueChanges.subscribe(form => {
-
-    });
-    if (this.regProductForAllRequestedType.get('receiptValue').value) {
-      this.regProductForAllRequestedType.patchValue({
-        receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
-      }, {emitEvent: false});
-    }
   }
 
   getDecimalValue(value) {
@@ -344,5 +339,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.regProductForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
+  }
+
+  resetForms() {
+    this.getFormAsStarting();
   }
 }

@@ -363,6 +363,14 @@ body {
 .insidePanelHeader {
   border-bottom: 0px !important;
 }
+
+.alert-success {
+  width: 25%;
+  position: fixed;
+  top: 1em;
+  left: 1em;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {
