@@ -37,53 +37,70 @@ export class NewRequestComponent implements OnInit {
   error: boolean;
   errorMessage;
 
+  isloading: boolean = false;
+
   constructor(private getService: FormService) {
   }
 
   ngOnInit(): void {
+    this.isloading = true;
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
+      this.isloading = false;
     });
     this.getService.getRequestTypeLookUp().subscribe((res: any) => {
       this.formData.requestType = res;
+      this.isloading = false;
     });
     this.getService.getCountryLookUp().subscribe((res: any) => {
       this.formData.manufacturingCountryList = res;
       this.formData.licenseHolderCountryList = res;
+      this.isloading = false;
     });
     this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
+      this.isloading = false;
     });
     this.getService.getFunctionLookUp().subscribe((res: any) => {
       this.formData.functionList = res;
+      this.isloading = false;
     });
     this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
       this.formData.typeOfPackagingList = res;
+      this.isloading = false;
     });
     this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
       this.formData.physicalStateList = res;
+      this.isloading = false;
     });
     this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
       this.formData.unitOfMeasureList = res;
+      this.isloading = false;
     });
     this.getService.getUsePurposeLookUp().subscribe((res: any) => {
       this.formData.purposeOfUseList = res;
+      this.isloading = false;
     });
     this.getService.getProductColorLookUp().subscribe((res: any) => {
       this.formData.productColorList = res;
+      this.isloading = false;
     });
     this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
       this.formData.ingrediantList = res;
+      this.isloading = false;
     });
     this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
       this.formData.ApplicantList = res;
       this.formData.licenseHolderList = res;
+      this.isloading = false;
     });
     this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
       this.formData.storagePlaceList = res;
+      this.isloading = false;
     });
     this.getService.getTrackTypeLookUp().subscribe((res: any) => {
       this.formData.trackType = res;
+      this.isloading = false;
     });
   }
 
@@ -101,6 +118,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   saveData(event) {
+    this.isloading = true;
     if (this.selectedFormType === 1) {
       event = {
         isDraft: 1,
@@ -112,6 +130,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
 
     } else if (this.selectedFormType === 2) {
@@ -126,6 +145,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
     } else if (this.selectedFormType === 3) {
       event = {
@@ -138,6 +158,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
@@ -151,11 +172,13 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
     }
   }
 
   onSubmit(event) {
+    this.isloading = true;
     if (this.selectedFormType === 1) {
       event = {
         isDraft: 0,
@@ -167,6 +190,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
     } else if (this.selectedFormType === 2) {
       const regProductForAllRequestedTypeData = {
@@ -180,6 +204,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
 
     } else if (this.selectedFormType === 3) {
@@ -193,6 +218,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
@@ -206,6 +232,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
         console.log('res', res);
+        this.isloading = false;
       });
     }
   }

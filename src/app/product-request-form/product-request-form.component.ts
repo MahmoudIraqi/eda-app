@@ -119,6 +119,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
+  isloading:boolean = false;
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
