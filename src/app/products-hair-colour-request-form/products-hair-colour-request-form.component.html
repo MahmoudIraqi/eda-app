@@ -63,7 +63,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Product Color</mat-label>
               <mat-select formControlName="productColor">
@@ -73,7 +73,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Company</mat-label>
               <mat-select formControlName="manufacturingCompany" required>
@@ -91,7 +91,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Country</mat-label>
               <mat-select formControlName="manufacturingCountry" required>
@@ -109,7 +109,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
               <mat-select formControlName="applicant" required>
@@ -127,7 +127,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
               <mat-select formControlName="licenseHolder" required>
@@ -145,7 +145,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4"
+          <div class="col-lg-4 col-sm-6 col-12"
                *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolder').value === formData.licenseHolderList.length">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
@@ -161,7 +161,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Country of License Holder</mat-label>
               <mat-select formControlName="countryOfLicenseHolder" required>
@@ -179,14 +179,14 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark">
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Physical State</mat-label>
               <mat-select formControlName="physicalState" required>
@@ -204,7 +204,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4"
+          <div class="col-lg-4 col-sm-6 col-12"
                *ngIf="regHairColorantProductForAllRequestedType.get('physicalState').value === 'other'">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other Physical State</mat-label>
@@ -220,7 +220,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Purpose of use</mat-label>
               <mat-select formControlName="purposeOfUse" required>
@@ -238,7 +238,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4"
+          <div class="col-lg-4 col-sm-6 col-12"
                *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUse').value === 'other'">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other Purpose of use</mat-label>
@@ -257,9 +257,11 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Storage Place</mat-label>
-              <input type="text" class="form-control" matInput formControlName="storagePlace"
-                     placeholder="Storage Place"
-                     [required]="this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6? true: false">
+              <mat-select formControlName="purposeOfUse" *ngIf="formData" [required]="this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6? true: false">
+                <mat-option *ngFor='let purpose of formData.storagePlaceList' [value]="purpose.ID">
+                  {{purpose.STORAGE_PLACE_NAME}}
+                </mat-option>
+              </mat-select>
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('storagePlace').invalid && (regHairColorantProductForAllRequestedType.get('storagePlace').dirty || regHairColorantProductForAllRequestedType.get('storagePlace').touched)"
                 class="alert alert-danger">
@@ -270,7 +272,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <div class="form-group">
               <label>Shelf Life</label>
               <input class="form-control" type="range" min="0" max="10" formControlName="shelfLife">
@@ -279,7 +281,7 @@
                 years</span>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
@@ -294,7 +296,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-sm-4">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptValue"
@@ -438,7 +440,7 @@
                            [formGroupName]="index">
                         <div class="rowContainer">
                           <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Ingrediant</mat-label>
                                 <mat-select formControlName="ingrediant" required>
@@ -457,7 +459,7 @@
                                 </div>
                               </mat-form-field>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field class="example-full-width inputBesideSelect">
                                 <mat-label>Concentrations</mat-label>
                                 <input type="text" class="form-control" matInput
@@ -474,7 +476,7 @@
                                 </div>
                               </mat-form-field>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Function</mat-label>
                                 <mat-select formControlName="function" required>
@@ -493,7 +495,7 @@
                                 </div>
                               </mat-form-field>
                             </div>
-                            <div class="col-lg-3 d-flex">
+                            <div class="col-12 col-sm-6 col-lg-3 d-flex">
                               <button type="button" class="btn btn-primary btn-sm ml-auto mt-3"
                                       (click)="removeIngrediantDetailsRows('form',{rowIndex: '', i: i,childIndex: index})">
                                 Delete Row

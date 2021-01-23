@@ -170,6 +170,19 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getStoragePlaceLookUp() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}storage_place`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   createProductRequest(data) {
     console.log('eventInRequest', data);
     const headers = new HttpHeaders({

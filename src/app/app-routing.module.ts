@@ -8,7 +8,6 @@ import {ApprovedRequestComponent} from './approved-request/approved-request.comp
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'home'},
-  // {path: '', component: HomepageComponent, data: {animation: 'home'}},
   {path: 'home', component: HomepageComponent, data: {animation: 'home'}},
   {path: 'new-request', component: NewRequestComponent, data: {animation: 'new-request'}},
   {path: 'track-request', component: TrackRequestComponent, data: {animation: 'track-request'}},

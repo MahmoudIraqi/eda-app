@@ -27,10 +27,22 @@ export class NewRequestComponent implements OnInit {
     typeOfPackagingList: [],
     unitOfMeasureList: [],
     ingrediantList: [],
-    functionList: []
+    functionList: [],
+    storagePlaceList: [],
+    trackType: [
+      {
+        id: 0,
+        name: 'Normal'
+      },
+      {
+        id: 1,
+        name: 'Fast'
+      }
+    ]
   };
   selectedFormType;
   selectedRequestedType;
+  selectedTrackType;
   error: boolean;
   errorMessage;
 
@@ -76,6 +88,9 @@ export class NewRequestComponent implements OnInit {
       this.formData.ApplicantList = res;
       this.formData.licenseHolderList = res;
     });
+    this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+      this.formData.storagePlaceList = res;
+    });
   }
 
   getFormType(event) {
@@ -86,12 +101,17 @@ export class NewRequestComponent implements OnInit {
     this.selectedRequestedType = event.value;
   }
 
+  getTrackType(event) {
+    this.selectedTrackType = event.value;
+  }
+
   saveData(event) {
     if (this.selectedFormType === 1) {
       event = {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
 
@@ -104,6 +124,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
@@ -116,6 +137,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
 
@@ -124,8 +146,10 @@ export class NewRequestComponent implements OnInit {
       });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
+        isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
       console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);
@@ -138,6 +162,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
 
@@ -149,6 +174,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
@@ -162,6 +188,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
 
@@ -170,8 +197,10 @@ export class NewRequestComponent implements OnInit {
       });
     } else if (this.selectedFormType === 4) {
       const regHairColorantKitData = {
+        isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        trackType: this.selectedTrackType,
         ...event
       };
       console.log('regHairColorantProductKitForAllRequestedType', regHairColorantKitData);

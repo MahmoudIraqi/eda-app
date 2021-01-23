@@ -257,9 +257,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    // const formData = formDataClass(this.regProductForAllRequestedType.value, this.regProductForAllRequestedType);
     this.submitDataOutput.emit(this.regProductForAllRequestedType.value);
-    // this.submitDataOutput.emit(formData);
   }
 
   getFormAsStarting() {
