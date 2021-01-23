@@ -19,6 +19,10 @@ form > .row > div:nth-child(n + 4) {
   margin-top: 2em;
 }
 
+tab-pane .row > div:nth-child(n + 4) {
+  margin-top: 2em;
+}
+
 .form-group {
   position: relative;
 }

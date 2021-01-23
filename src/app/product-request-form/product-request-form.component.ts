@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
@@ -13,10 +13,13 @@ import {formDataClass} from '../../utils/formDataFunction';
 export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
+  @Input() selectedFormType;
   @Input() lookupsData;
   @Input() kitProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
+  @Output() selectedTrackTypeForKit = new EventEmitter();
+  @Output() selectedRegisteredTypeForKit = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -114,6 +117,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   editDetailedRowStatus = false;
   regProductForAllRequestedType: FormGroup;
   removeShortNameFieldStatus = false;
+  trackTypeForNewProductInKit;
+  requestedTypeForNewProductInKit;
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
@@ -121,12 +126,24 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.getFormAsStarting();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     console.log('lookupsData', this.lookupsData);
     this.formData = {...this.lookupsData};
+
+    console.log('selectedFormType', this.selectedFormType);
   }
 
   ngOnInit(): void {
+  }
+
+  getRequestType(event) {
+    this.requestedTypeForNewProductInKit = event.value;
+    this.selectedRegisteredTypeForKit.emit(this.requestedTypeForNewProductInKit);
+  }
+
+  getTrackType(event) {
+    this.trackTypeForNewProductInKit = event.value;
+    this.selectedTrackTypeForKit.emit(this.trackTypeForNewProductInKit);
   }
 
   // Functions for Short name array
@@ -278,7 +295,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       purposeOfUseTxt: this.fb.control(''),
       storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
       shelfLife: this.fb.control(0),
-      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),

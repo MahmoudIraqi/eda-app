@@ -364,7 +364,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '12345',
+      NotificationNo: '12345',
     },
     {
       newProduct: {
@@ -518,7 +518,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '67890',
+      NotificationNo: '67890',
     },
     {
       newProduct: {
@@ -672,7 +672,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '13579',
+      NotificationNo: '13579',
     },
     {
       newProduct: {
@@ -826,7 +826,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '24680',
+      NotificationNo: '24680',
     },
     {
       newProduct: {
@@ -980,7 +980,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '09876',
+      NotificationNo: '09876',
     },
     {
       newProduct: {
@@ -1134,7 +1134,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         },
       },
       productStatus: '',
-      productNotificationNumber: '54321',
+      NotificationNo: '54321',
     },
   ];
   newProductObject: any;
@@ -1288,7 +1288,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.selectedKitProductsStatus = '';
     this.ProductGroupsRows().push(this.fb.group({
       productStatus: this.fb.control(''),
-      productNotificationNumber: this.fb.control(''),
+      NotificationNo: this.fb.control(''),
       newProduct: this.fb.group({})
     }));
   }
@@ -1314,12 +1314,12 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       tradeMark: this.fb.control(''),
       shelfLife: this.fb.control(0),
       storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/^\d+\.\d*$/)]),
       groupName: this.fb.control('', Validators.required),
       ProductsForKit: this.fb.array([this.fb.group({
         productStatus: this.fb.control(''),
-        productNotificationNumber: this.fb.control(''),
+        NotificationNo: this.fb.control(''),
         newProduct: this.fb.group({})
       })]),
       freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
@@ -1359,8 +1359,8 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   applyProduct(data, status, index) {
     if (status === 'registered') {
-      if (this.dummyDataForRegisteredProductForKits.filter(x => x.productNotificationNumber === data.value.productNotificationNumber)) {
-        this.dummyDataForRegisteredProductForKits.filter(x => x.productNotificationNumber === data.value.productNotificationNumber).map(y => {
+      if (this.dummyDataForRegisteredProductForKits.filter(x => x.NotificationNo === data.value.NotificationNo)) {
+        this.dummyDataForRegisteredProductForKits.filter(x => x.NotificationNo === data.value.NotificationNo).map(y => {
           const objectData = {
             groupName: this.regColourKitForAllRequestedType.get('groupName').value,
             ...y

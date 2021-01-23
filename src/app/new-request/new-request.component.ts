@@ -29,16 +29,7 @@ export class NewRequestComponent implements OnInit {
     ingrediantList: [],
     functionList: [],
     storagePlaceList: [],
-    trackType: [
-      {
-        id: 0,
-        name: 'Normal'
-      },
-      {
-        id: 1,
-        name: 'Fast'
-      }
-    ]
+    trackType: []
   };
   selectedFormType;
   selectedRequestedType;
@@ -91,10 +82,14 @@ export class NewRequestComponent implements OnInit {
     this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
       this.formData.storagePlaceList = res;
     });
+    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+      this.formData.trackType = res;
+    });
   }
 
   getFormType(event) {
     this.selectedFormType = event.value;
+    console.log('event', this.selectedFormType);
   }
 
   getRequestType(event) {
@@ -129,9 +124,9 @@ export class NewRequestComponent implements OnInit {
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
 
-      // this.getService.createProductRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
-      //   console.log('res', res);
-      // });
+      this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
+        console.log('res', res);
+      });
     } else if (this.selectedFormType === 3) {
       event = {
         isDraft: 1,
@@ -179,9 +174,9 @@ export class NewRequestComponent implements OnInit {
       };
       console.log('regKitForAllRequestedType', regProductForAllRequestedTypeData);
 
-      // this.getService.createProductRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
-      //   console.log('res', res);
-      // });
+      this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
+        console.log('res', res);
+      });
 
     } else if (this.selectedFormType === 3) {
       event = {
