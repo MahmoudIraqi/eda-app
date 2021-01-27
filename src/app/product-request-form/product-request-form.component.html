@@ -323,7 +323,116 @@
     </tab>
     <tab heading="Details fields">
       <div class="mt-5">
-        <div formArrayName="detailsTable" class="detailsTable">
+        <div formArrayName="packagingTable" class="detailsTable">
+          <div class="col-12">
+            <app-title [smallTitle]="true" [title]="'Packaging Form'"></app-title>
+          </div>
+          <div class="addDetailsRequestContainer">
+            <div *ngFor="let row of PackagingRows().controls; let i=index" [formGroupName]="i">
+              <div class="row"
+                   *ngIf="(editPackagingRowStatus && editPackagingIndex === i ) || (!editPackagingRowStatus && (PackagingRows().controls.length === 0 || PackagingRows().controls.length -1 === i))">
+                <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Volumes</mat-label>
+                    <input type="text" class="form-control" matInput formControlName="volumes"
+                           placeholder="" required>
+                    <div
+                      *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="row.get('volumes').errors.required">
+                        this field is required
+                      </div>
+                      <div
+                        *ngIf="row.get('volumes').errors.pattern">
+                        this field must be a number
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Unit of measure</mat-label>
+                    <mat-select formControlName="unitOfMeasure" required *ngIf="formData">
+                      <mat-option *ngFor='let unit of formData.unitOfMeasureList'
+                                  [value]="unit.ID">
+                        {{unit.UNIT_OF_MEASURE}}
+                      </mat-option>
+                    </mat-select>
+                    <div
+                      *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="row.get('unitOfMeasure').errors.required">
+                        this field is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Type of Packaging</mat-label>
+                    <mat-select formControlName="typeOfPackaging" required *ngIf="formData">
+                      <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type.ID">
+                        {{type.PACKAGING_TYPE}}
+                      </mat-option>
+                    </mat-select>
+                    <div
+                      *ngIf="row.get('typeOfPackaging').invalid && (row.get('typeOfPackaging').dirty || row.get('typeOfPackaging').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="row.get('typeOfPackaging').errors.required">
+                        this field is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Packaging Description</mat-label>
+                        <textarea matInput formControlName="packagingDescription"
+                                  placeholder="Ex. It makes me feel..."></textarea>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 ml-auto">
+                      <button type="button"
+                              *ngIf="!editPackagingRowStatus"
+                              class="btn btn-primary ml-auto"
+                              (click)="addPackagingRows()"
+                              [disabled]="!(row.get('volumes').value || row.get('unitOfMeasure').value || row.get('typeOfPackaging').value)">
+                        Add Details Row
+                      </button>
+                      <button type="button"
+                              *ngIf="editPackagingRowStatus"
+                              class="btn btn-primary ml-auto"
+                              (click)="editThePackagingRows($event)"
+                              [disabled]="!(row.get('volumes').value || row.get('unitOfMeasure').value || row.get('typeOfPackaging').value)">
+                        Edit Details Row
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="packagingListTable.tableBody.length > 0">
+            <div class="col-12">
+              <app-title [title]="'Packaging Table'" [smallTitle]="true"></app-title>
+            </div>
+            <div class="col-12 mt-5">
+              <div class="RequestingTable">
+                <app-table-list [data]="packagingListTable"
+                                [whichTable]="'newRequestForPackaging'"
+                                (removeDetailsRowOutput)="removePackagingRows($event)"
+                                (editDetailedRowOutput)="editThePackagingRows($event)"
+                ></app-table-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div formArrayName="detailsTable" class="detailsTable mt-4">
           <div class="col-12">
             <app-title [smallTitle]="true" [title]="'Details Form'"></app-title>
           </div>
@@ -360,78 +469,6 @@
                            placeholder="">
                   </mat-form-field>
                 </div>
-              </div>
-              <div class="row"
-                   *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
-                <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Volumes</mat-label>
-                    <input type="text" class="form-control" matInput formControlName="volumes"
-                           placeholder="" required>
-                    <div
-                      *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
-                      class="alert alert-danger">
-                      <div
-                        *ngIf="row.get('volumes').errors.required">
-                        this field is required
-                      </div>
-                      <div
-                        *ngIf="row.get('volumes').errors.pattern">
-                        this field must be a number
-                      </div>
-                    </div>
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Unit of measure</mat-label>
-                    <mat-select formControlName="unitOfMeasure" required *ngIf="formData">
-                      <mat-option *ngFor='let unit of formData.unitOfMeasureList'
-                                  [value]="unit.ID">
-                        {{unit.UNIT_OF_MEASURE}}
-                      </mat-option>
-                    </mat-select>
-                    <div
-                      *ngIf="row.get('unitOfMeasure').invalid && (row.get('unitOfMeasure').dirty || row.get('unitOfMeasure').touched)"
-                      class="alert alert-danger">
-                      <div
-                        *ngIf="row.get('unitOfMeasure').errors.required">
-                        this field is required
-                      </div>
-                    </div>
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Type of Packaging</mat-label>
-                    <mat-select formControlName="typeOfPackaging" required *ngIf="formData">
-                      <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type.ID">
-                        {{type.PACKAGING_TYPE}}
-                      </mat-option>
-                    </mat-select>
-                    <div
-                      *ngIf="row.get('typeOfPackaging').invalid && (row.get('typeOfPackaging').dirty || row.get('typeOfPackaging').touched)"
-                      class="alert alert-danger">
-                      <div
-                        *ngIf="row.get('typeOfPackaging').errors.required">
-                        this field is required
-                      </div>
-                    </div>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row"
-                   *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
-                <div class="col-12 col-sm-6 col-lg-3">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Packaging Description</mat-label>
-                    <textarea matInput formControlName="packagingDescription"
-                              placeholder="Ex. It makes me feel..."></textarea>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row"
-                   *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
                 <div class="col-12 mt-2">
                   <div class="ingrediantDetailsContainer">
                     <div class="row" formArrayName="ingrediantDetails">
@@ -538,7 +575,7 @@
             <div class="col-12 mt-5">
               <div class="RequestingTable">
                 <app-table-list [data]="detailsListTable"
-                                [whichTable]="'newRequest'"
+                                [whichTable]="'newRequestForDetails'"
                                 (removeDetailsRowOutput)="removeDetailsRows($event)"
                                 (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
                                 (editDetailedRowOutput)="editTheDetailsRow($event)"

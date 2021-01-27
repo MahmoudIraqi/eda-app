@@ -26,6 +26,10 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Volumes', 'Actions'],
     tableBody: []
   };
+  packagingListTable = {
+    tableHeader: ['Volumes', 'Unit of measure', 'type of packaging', 'Actions'],
+    tableBody: []
+  };
   attachmentFields = [
     {
       id: 'freeSale',
@@ -114,6 +118,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   ];
   editIndex;
   editDetailedRowStatus = false;
+  editPackagingIndex;
+  editPackagingRowStatus = false;
   regHairColorantProductForAllRequestedType: FormGroup;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
@@ -196,6 +202,41 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   // Functions for Details tabls
+  PackagingRows(): FormArray {
+    return this.regHairColorantProductForAllRequestedType.get('packagingTable') as FormArray;
+  }
+
+  addPackagingRows() {
+    this.editDetailedRowStatus = false;
+    this.equalTheNewPackagingTable('add');
+    this.PackagingRows().push(this.fb.group({
+      volumes: this.fb.control('', Validators.required),
+      unitOfMeasure: this.fb.control('', Validators.required),
+      typeOfPackaging: this.fb.control('', Validators.required),
+      packagingDescription: this.fb.control(''),
+    }));
+  }
+
+  removePackagingRows(i) {
+    this.PackagingRows().removeAt(i);
+    this.equalTheNewDetailsTable('remove');
+  }
+
+  editThePackagingRows(event) {
+    this.editPackagingRowStatus = true;
+    this.editPackagingIndex = event;
+  }
+
+  equalTheNewPackagingTable(fromWhere) {
+    if (fromWhere !== 'form') {
+      if (fromWhere === 'remove') {
+        this.regHairColorantProductForAllRequestedType.get('packagingTable').value.pop();
+      }
+
+      this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
+    }
+  }
+
   DetailsRows(): FormArray {
     return this.regHairColorantProductForAllRequestedType.get('detailsTable') as FormArray;
   }
@@ -208,10 +249,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       fragrance: this.fb.control(''),
       flavor: this.fb.control(''),
       barCode: this.fb.control(''),
-      volumes: this.fb.control('', Validators.required),
-      unitOfMeasure: this.fb.control('', Validators.required),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
       ingrediantDetails: this.fb.array([this.fb.group({
         ingrediant: this.fb.control('', Validators.required),
         concentrations: this.fb.control('', Validators.required),
@@ -298,15 +335,17 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+      packagingTable: this.fb.array([this.fb.group({
+        volumes: this.fb.control('', Validators.required),
+        unitOfMeasure: this.fb.control('', Validators.required),
+        typeOfPackaging: this.fb.control('', Validators.required),
+        packagingDescription: this.fb.control(''),
+      })]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
         flavor: this.fb.control(''),
         barCode: this.fb.control(''),
-        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-        unitOfMeasure: this.fb.control('', Validators.required),
-        typeOfPackaging: this.fb.control('', Validators.required),
-        packagingDescription: this.fb.control(''),
         ingrediantDetails: this.fb.array([this.fb.group({
           ingrediant: this.fb.control('', Validators.required),
           concentrations: this.fb.control('', Validators.required),

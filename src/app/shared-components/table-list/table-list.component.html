@@ -27,7 +27,7 @@
         </span>
       </th>
     </tr>
-    <tr class="headerRow" *ngIf="whichTable === 'newRequest' || whichTable === 'productsKitList'">
+    <tr class="headerRow" *ngIf="whichTable === 'newRequestForPackaging' || whichTable === 'newRequestForDetails' || whichTable === 'productsKitList'">
       <th *ngFor="let request of data.tableHeader; let i = index">
         {{request}}
         <span (click)="sortBy(sortStatus, request)">
@@ -174,7 +174,7 @@
           </mat-expansion-panel>
         </mat-accordion>
       </td>
-      <td colspan="6" *ngIf="whichTable === 'newRequest'">
+      <td colspan="5" *ngIf="whichTable === 'newRequestForDetails'">
         <mat-accordion>
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
             <mat-expansion-panel-header>
@@ -185,7 +185,6 @@
                     <td>{{request.fragrance}}</td>
                     <td>{{request.flavor}}</td>
                     <td>{{request.barCode}}</td>
-                    <td>{{request.volumes}}</td>
                     <td>
                       <span class="mr-2" (click)="editDetailedRowFunction(i)">
                         <i class="fa fa-edit"></i>
@@ -215,22 +214,6 @@
                 <div class="col-12 col-sm-6 col-md-4">
                   <label class="label">BarCode :</label>
                   <span>{{request.barCode}}</span>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Volumes :</label>
-                  <span>{{request.volumes}}</span>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Unit of Measure :</label>
-                  <span>{{request.unitOfMeasure}}</span>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Type of Packaging :</label>
-                  <span>{{request.typeOfPackaging}}</span>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <label class="label">Packaging Description :</label>
-                  <span>{{request.packagingDescription}}</span>
                 </div>
                 <div class="col-12 mt-4" *ngIf="request.ingrediantDetails.length > 0">
                   <div class="row">
@@ -289,6 +272,51 @@
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </td>
+      <td colspan="4" *ngIf="whichTable === 'newRequestForPackaging'">
+        <mat-accordion>
+          <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <table class="table table-sm tableDetailsCont">
+                  <tr>
+                    <td>{{request.volumes}}</td>
+                    <td>{{request.unitOfMeasure}}</td>
+                    <td>{{request.typeOfPackaging}}</td>
+                    <td>
+                      <span class="mr-2" (click)="editDetailedRowFunction(i)">
+                        <i class="fa fa-edit"></i>
+                      </span>
+                      <span (click)="removeDetailsRowFunction(i,'')">
+                        <i class="fa fa-trash"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="detailsContainer pt-4">
+              <div class="row">
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Volumes :</label>
+                  <span>{{request.volumes}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Unit of Measure :</label>
+                  <span>{{request.unitOfMeasure}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Type of Packaging :</label>
+                  <span>{{request.typeOfPackaging}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                  <label class="label">Packaging Description :</label>
+                  <span>{{request.packagingDescription}}</span>
                 </div>
               </div>
             </div>

@@ -25,7 +25,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   detailsListTable = {
-    tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Volumes', 'Actions'],
+    tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Actions'],
+    tableBody: []
+  };
+  packagingListTable = {
+    tableHeader: ['Volumes', 'Unit of measure', 'type of packaging', 'Actions'],
     tableBody: []
   };
   attachmentFields = [
@@ -116,6 +120,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   ];
   editIndex;
   editDetailedRowStatus = false;
+  editPackagingIndex;
+  editPackagingRowStatus = false;
   regProductForAllRequestedType: FormGroup;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
@@ -202,6 +208,41 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   // Functions for Details tabls
+  PackagingRows(): FormArray {
+    return this.regProductForAllRequestedType.get('packagingTable') as FormArray;
+  }
+
+  addPackagingRows() {
+    this.editDetailedRowStatus = false;
+    this.equalTheNewPackagingTable('add');
+    this.PackagingRows().push(this.fb.group({
+      volumes: this.fb.control('', Validators.required),
+      unitOfMeasure: this.fb.control('', Validators.required),
+      typeOfPackaging: this.fb.control('', Validators.required),
+      packagingDescription: this.fb.control(''),
+    }));
+  }
+
+  removePackagingRows(i) {
+    this.PackagingRows().removeAt(i);
+    this.equalTheNewDetailsTable('remove');
+  }
+
+  editThePackagingRows(event) {
+    this.editPackagingRowStatus = true;
+    this.editPackagingIndex = event;
+  }
+
+  equalTheNewPackagingTable(fromWhere) {
+    if (fromWhere !== 'form') {
+      if (fromWhere === 'remove') {
+        this.regProductForAllRequestedType.get('packagingTable').value.pop();
+      }
+
+      this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
+    }
+  }
+
   DetailsRows(): FormArray {
     return this.regProductForAllRequestedType.get('detailsTable') as FormArray;
   }
@@ -214,10 +255,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       fragrance: this.fb.control(''),
       flavor: this.fb.control(''),
       barCode: this.fb.control(''),
-      volumes: this.fb.control('', Validators.required),
-      unitOfMeasure: this.fb.control('', Validators.required),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
       ingrediantDetails: this.fb.array([this.fb.group({
         ingrediant: this.fb.control('', Validators.required),
         concentrations: this.fb.control('', Validators.required),
@@ -242,7 +279,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   equalTheNewDetailsTable(fromWhere) {
-
     if (fromWhere !== 'form') {
       if (fromWhere === 'remove') {
         this.regProductForAllRequestedType.get('detailsTable').value.pop();
@@ -300,15 +336,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       shelfLife: this.fb.control(0),
       receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+      packagingTable: this.fb.array([this.fb.group({
+        volumes: this.fb.control('', Validators.required),
+        unitOfMeasure: this.fb.control('', Validators.required),
+        typeOfPackaging: this.fb.control('', Validators.required),
+        packagingDescription: this.fb.control(''),
+      })]),
       detailsTable: this.fb.array([this.fb.group({
         colour: this.fb.control(''),
         fragrance: this.fb.control(''),
         flavor: this.fb.control(''),
         barCode: this.fb.control(''),
-        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-        unitOfMeasure: this.fb.control('', Validators.required),
-        typeOfPackaging: this.fb.control('', Validators.required),
-        packagingDescription: this.fb.control(''),
         ingrediantDetails: this.fb.array([this.fb.group({
           ingrediant: this.fb.control('', Validators.required),
           concentrations: this.fb.control('', Validators.required),
