@@ -25,9 +25,9 @@ form > .row > div:nth-child(n + 4), form > tabset .row > div:nth-child(n + 4) {
 
 .labelForRange {
   position: absolute;
-  top: 8px;
+  top: 22px;
   right: 0em;
-  font-size: 12px;
+  font-size: 15px;
   color: #161c30;
 }
 

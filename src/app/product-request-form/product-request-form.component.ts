@@ -121,6 +121,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
   isloading: boolean = false;
+  rangeInput;
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
@@ -340,5 +341,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   resetForms() {
     this.getFormAsStarting();
+  }
+
+  setShelfValue(event) {
+    if (Number(event.target.value) > 60) {
+      this.regProductForAllRequestedType.get('shelfLife').patchValue(60);
+    } else {
+      this.regProductForAllRequestedType.get('shelfLife').patchValue(Number(event.target.value));
+    }
   }
 }

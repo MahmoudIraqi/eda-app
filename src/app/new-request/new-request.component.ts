@@ -34,6 +34,7 @@ export class NewRequestComponent implements OnInit {
   selectedFormType;
   selectedRequestedType;
   selectedTrackType;
+  selectedIsExport;
   error: boolean;
   errorMessage;
   successSubmission: boolean = false;
@@ -120,11 +121,13 @@ export class NewRequestComponent implements OnInit {
 
   saveData(event) {
     this.isloading = true;
+    console.log('isExport', this.selectedIsExport);
     if (this.selectedFormType === 1) {
       event = {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };
@@ -141,6 +144,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };
@@ -156,6 +160,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };
@@ -171,6 +176,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 1,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };
@@ -192,6 +198,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };
@@ -209,6 +216,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };
@@ -227,6 +235,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };
@@ -244,6 +253,7 @@ export class NewRequestComponent implements OnInit {
         isDraft: 0,
         typeOfMarketing: this.selectedFormType,
         typeOfRegistration: this.selectedRequestedType,
+        isExport: this.selectedIsExport,
         trackType: this.selectedTrackType,
         ...event
       };

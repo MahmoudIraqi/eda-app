@@ -340,4 +340,12 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   resetForms() {
     this.getFormAsStarting();
   }
+
+  setShelfValue(event) {
+    if (Number(event.target.value) > 60) {
+      this.regHairColorantProductForAllRequestedType.get('shelfLife').patchValue(60);
+    } else {
+      this.regHairColorantProductForAllRequestedType.get('shelfLife').patchValue(Number(event.target.value));
+    }
+  }
 }

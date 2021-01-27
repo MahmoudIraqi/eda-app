@@ -6,9 +6,9 @@
     <div class="col-12 mt-5">
       <div class="formTable">
         <div class="row">
-          <div class="col-sm-4 col-12">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <mat-label>Type Of marketing</mat-label>
+              <mat-label>Product type</mat-label>
               <mat-select (selectionChange)="getFormType($event)" [(ngModel)]="this.selectedFormType">
                 <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
                   {{option.MARKETING_TYPE}}
@@ -16,17 +16,30 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-sm-4 col-12">
-            <mat-form-field appearance="fill">
-              <mat-label>Type Of registration</mat-label>
-              <mat-select (selectionChange)="getRequestType($event)" [(ngModel)]="this.selectedRequestedType">
-                <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
-                  {{option.REGISTRATION_TYPE}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-12 col-sm-9">
+                <mat-form-field appearance="fill">
+                  <mat-label>Type Of registration</mat-label>
+                  <mat-select (selectionChange)="getRequestType($event)" [(ngModel)]="selectedRequestedType">
+                    <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
+                      {{option.REGISTRATION_TYPE}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-sm-3">
+                <section class="example-section mt-4">
+                  <mat-checkbox class="example-margin"
+                                [(ngModel)]="selectedIsExport"
+                                [disabled]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 ? false : true">
+                    Export only
+                  </mat-checkbox>
+                </section>
+              </div>
+            </div>
           </div>
-          <div class="col-sm-4 col-12">
+          <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Track Type</mat-label>
               <mat-select (selectionChange)="getTrackType($event)" [(ngModel)]="this.selectedTrackType">

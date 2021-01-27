@@ -22,6 +22,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ProductRequestFormComponent} from './product-request-form/product-request-form.component';
@@ -67,6 +68,7 @@ import { HomeContainerComponent } from './home-container/home-container.componen
     FormsModule,
     MatInputModule,
     MatSliderModule,
+    MatCheckboxModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
     HttpClientModule,
