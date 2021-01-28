@@ -13,6 +13,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
@@ -1143,6 +1144,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   newProductObject: any;
   selectedTrackTypeForNewProduct;
   selectedRegisteredTypeForProduct;
+  selectedRegisteredProductTypeForProduct;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -1167,14 +1169,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.regColourKitForAllRequestedType.get(fileControlName).setValue(file);
-    }
-  }
-
-  onFileSelectFromDetailsProductForKit(event, fileControlName, index) {
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.ProductGroupsRows().at(index).get(fileControlName).setValue(file);
     }
   }
 
@@ -1405,6 +1399,10 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.selectedRegisteredTypeForProduct = event.value;
   }
 
+  getProductTypeFromNewProductInKit(event) {
+    this.selectedRegisteredProductTypeForProduct = event;
+  }
+
   getDataForNewProduct(event) {
     this.ProductGroupsRows().value.filter(x => x.productStatus === 'New').map(y => {
       y.productDetails = event;
@@ -1414,11 +1412,13 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
     const data = {
       groupName: this.regColourKitForAllRequestedType.get('groupName').value,
-      typeOfMarketing: 1,
-      typeOfRegistration: this.selectedRegisteredTypeForProduct,
-      trackType: this.selectedTrackTypeForNewProduct,
+      typeOfMarketing: this.selectedRegisteredProductTypeForProduct,
+      typeOfRegistration: this.selectedRequestedType,
+      trackType: this.selectedTrackType,
       ...this.ProductGroupsRows().value[lastRowInArray].productDetails
     };
+
+    console.log('data', data);
 
     this.applyProduct(data, 'new', '');
   }

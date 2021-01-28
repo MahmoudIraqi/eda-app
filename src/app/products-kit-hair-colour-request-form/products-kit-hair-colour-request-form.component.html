@@ -321,10 +321,10 @@
                                 <app-products-hair-colour-request-form
                                   [selectedRequestedType]="selectedRequestedType"
                                   [selectedFormType]="selectedFormType"
+                                  [selectedTrackType]="selectedTrackType"
                                   [lookupsData]="lookupsData"
                                   [kitHairProductStatus]="true"
-                                  (selectedTrackTypeForKit)="getTrackTypeForProduct($event)"
-                                  (selectedRegisteredTypeForKit)="getRegisteredTypeForProduct($event)"
+                                  (selectedRegisteredProductTypeForKit)="getProductTypeFromNewProductInKit($event)"
                                   (submitDataOutput)="getDataForNewProduct($event)"
                                 ></app-products-hair-colour-request-form>
                               </div>
