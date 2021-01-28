@@ -312,10 +312,10 @@
                                 <app-product-request-form
                                   [selectedRequestedType]="selectedRequestedType"
                                   [selectedFormType]="selectedFormType"
+                                  [selectedTrackType]="selectedTrackType"
                                   [lookupsData]="lookupsData"
                                   [kitProductStatus]="true"
-                                  (selectedTrackTypeForKit)="getTrackTypeForProduct($event)"
-                                  (selectedRegisteredTypeForKit)="getRegisteredTypeForProduct($event)"
+                                  (selectedRegisteredProductTypeForKit)="getProductTypeFromNewProductInKit($event)"
                                   (submitDataOutput)="getDataForNewProduct($event)"
                                 ></app-product-request-form>
                               </div>

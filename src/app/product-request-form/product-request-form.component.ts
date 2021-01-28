@@ -14,14 +14,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() selectedTrackType;
   @Input() successSubmission;
-  @Input() saveResponseData;
   @Input() lookupsData;
   @Input() kitProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   @Output() selectedTrackTypeForKit = new EventEmitter();
   @Output() selectedRegisteredTypeForKit = new EventEmitter();
+  @Output() selectedRegisteredProductTypeForKit = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -56,7 +57,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       id: 'artWork',
       name: 'Art Work',
       fileName: '',
-      required: this.kitProductStatus !== true ? true : false
+      required: !this.kitProductStatus ? true : false
     },
     {
       id: 'leaflet',
@@ -127,6 +128,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
+  requestedProductTypeForNewProductInKit;
   isloading: boolean = false;
   rangeInput;
 
@@ -139,24 +141,104 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
 
-    console.log('saveResponseData_Change', this.saveResponseData);
-
     if (this.successSubmission) {
       this.resetForms();
     }
+
+    this.attachmentFields = [
+      {
+        id: 'freeSale',
+        name: 'Free Sale',
+        fileName: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false
+      },
+      {
+        id: 'GMP',
+        name: 'GMP',
+        fileName: '',
+        required: false
+      },
+      {
+        id: 'CoA',
+        name: 'CoA',
+        fileName: '',
+        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false
+      },
+      {
+        id: 'artWork',
+        name: 'Art Work',
+        fileName: '',
+        required: !this.kitProductStatus ? true : false
+      },
+      {
+        id: 'leaflet',
+        name: 'leaflet',
+        fileName: '',
+        required: false
+      },
+      {
+        id: 'reference',
+        name: 'reference',
+        fileName: '',
+        required: false
+      },
+      {
+        id: 'methodOfAnalysis',
+        name: 'Method of Analysis',
+        fileName: '',
+        required: false
+      },
+      {
+        id: 'specificationsOfFinishedProduct',
+        name: 'Specifications of Finished Product',
+        fileName: '',
+        required: true
+      },
+      {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        required: true
+      },
+      {
+        id: 'authorizationLetter',
+        name: 'Authorization Letter',
+        fileName: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+      },
+      {
+        id: 'manufacturingContract',
+        name: 'Manufacturing Contract',
+        fileName: '',
+        required: false
+      },
+      {
+        id: 'storageContract',
+        name: 'Storage Contract',
+        fileName: '',
+        required: false
+      },
+      {
+        id: 'others',
+        name: 'others',
+        fileName: '',
+        required: false
+      },
+      {
+        id: 'otherFees',
+        name: 'otherFees',
+        fileName: '',
+        required: true
+      }
+    ];
   }
 
   ngOnInit(): void {
   }
 
-  getRequestType(event) {
-    this.requestedTypeForNewProductInKit = event.value;
-    this.selectedRegisteredTypeForKit.emit(this.requestedTypeForNewProductInKit);
-  }
-
-  getTrackType(event) {
-    this.trackTypeForNewProductInKit = event.value;
-    this.selectedTrackTypeForKit.emit(this.trackTypeForNewProductInKit);
+  getFormType(event) {
+    this.requestedProductTypeForNewProductInKit = event.value;
+    this.selectedRegisteredProductTypeForKit.emit(this.requestedProductTypeForNewProductInKit);
   }
 
   // Functions for Short name array

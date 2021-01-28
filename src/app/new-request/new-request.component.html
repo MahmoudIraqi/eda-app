@@ -54,8 +54,8 @@
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
               [successSubmission]="successSubmission"
-              [saveResponseData]="saveResponseData"
               [lookupsData]="formData"
+              (selectedRegisteredProductTypeForKit)="getProductTypeFromNewProductInKit($event)"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>

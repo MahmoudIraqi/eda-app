@@ -13,6 +13,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
@@ -1143,6 +1144,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   newProductObject: any;
   selectedTrackTypeForNewProduct;
   selectedRegisteredTypeForProduct;
+  selectedRegisteredProductTypeForProduct;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -1395,12 +1397,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     }
   }
 
-  getTrackTypeForProduct(event) {
-    this.selectedTrackTypeForNewProduct = event.value;
-  }
-
-  getRegisteredTypeForProduct(event) {
-    this.selectedRegisteredTypeForProduct = event.value;
+  getProductTypeFromNewProductInKit(event) {
+    this.selectedRegisteredProductTypeForProduct = event;
   }
 
   getDataForNewProduct(event) {
@@ -1412,9 +1410,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
     const data = {
       groupName: this.regKitForAllRequestedType.get('groupName').value,
-      typeOfMarketing: 3,
-      typeOfRegistration: this.selectedRegisteredTypeForProduct,
-      trackType: this.selectedTrackTypeForNewProduct,
+      typeOfMarketing: this.selectedRegisteredProductTypeForProduct,
+      typeOfRegistration: this.selectedRequestedType,
+      trackType: this.selectedTrackType,
       ...this.ProductGroupsRows().value[lastRowInArray].productDetails
     };
 

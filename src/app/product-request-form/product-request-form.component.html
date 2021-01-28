@@ -10,25 +10,19 @@
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-sm-6 col-12" *ngIf="selectedFormType === 2">
-            <mat-form-field appearance="fill">
-              <mat-label>Type Of registration</mat-label>
-              <mat-select (selectionChange)="getRequestType($event)">
-                <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
-                  {{option.REGISTRATION_TYPE}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="col-sm-6 col-12" *ngIf="selectedFormType === 2">
-            <mat-form-field appearance="fill">
-              <mat-label>Track Type</mat-label>
-              <mat-select (selectionChange)="getTrackType($event)">
-                <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
-                  {{option.TRACK_TYPE_NAME}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-sm-6 col-12" *ngIf="selectedFormType === 2">
+                <mat-form-field appearance="fill">
+                  <mat-label>Product type</mat-label>
+                  <mat-select (selectionChange)="getFormType($event)">
+                    <mat-option *ngFor="let option of formData.formTypeForNewProductInKit" [value]="option.ID">
+                      {{option.MARKETING_TYPE}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
           </div>
           <div class="col-12 col-sm-6" [ngClass]="{'mt-3': selectedFormType === 2}">
             <mat-form-field class="example-full-width">

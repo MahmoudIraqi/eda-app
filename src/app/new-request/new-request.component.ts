@@ -16,6 +16,7 @@ export class NewRequestComponent implements OnInit {
 
   formData = {
     formType: [],
+    formTypeForNewProductInKit: [],
     requestType: [],
     manufacturingCompanyList: [],
     manufacturingCountryList: [],
@@ -54,6 +55,9 @@ export class NewRequestComponent implements OnInit {
     this.isloading = true;
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
+      if (res) {
+        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+      }
       this.isloading = false;
     });
     this.getService.getRequestTypeLookUp().subscribe((res: any) => {
