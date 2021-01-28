@@ -13,12 +13,16 @@ export class ApprovedRequestComponent implements OnInit {
     tableBody: []
   };
 
+  isLoading: boolean = false
+
   constructor(private getService: FormService) {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.getService.getApprovedProductsList().subscribe((res: any) => {
       this.approvedListRequests.tableBody = res;
+      this.isLoading = false;
     });
   }
 

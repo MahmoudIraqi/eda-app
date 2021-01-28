@@ -34,6 +34,7 @@ import {FormService} from './services/form.service';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './login/login.component';
 import { HomeContainerComponent } from './home-container/home-container.component';
+import { LoaderComponentComponent } from './shared-components/loader-component/loader-component.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { HomeContainerComponent } from './home-container/home-container.componen
     ProductsHairColourRequestFormComponent,
     ProductsKitHairColourRequestFormComponent,
     LoginComponent,
-    HomeContainerComponent
+    HomeContainerComponent,
+    LoaderComponentComponent
   ],
   imports: [
     BrowserModule,

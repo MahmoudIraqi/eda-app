@@ -13,13 +13,17 @@ export class TrackRequestComponent implements OnInit {
     tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type'],
     tableBody: []
   };
+  isLoading: boolean = false;
 
   constructor(private getService: FormService) {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
+
     this.getService.getTrackRequestsList().subscribe((res: any) => {
       this.trackListRequests.tableBody = res;
+      this.isLoading = false;
     });
   }
 

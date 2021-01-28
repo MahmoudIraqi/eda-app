@@ -12,13 +12,16 @@ export class DraftRequestComponent implements OnInit {
     tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
     tableBody: []
   };
+  isLoading: boolean = false;
 
   constructor(private getService: FormService) {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.getService.getDraftRequestsList().subscribe((res: any) => {
       this.draftListRequests.tableBody = res;
+      this.isLoading = false;
     });
   }
 

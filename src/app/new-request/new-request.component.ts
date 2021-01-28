@@ -42,7 +42,7 @@ export class NewRequestComponent implements OnInit {
   successSubmission: boolean = false;
   alertNotificationStatus: boolean = false;
   alertNotification: any;
-  isloading: boolean = false;
+  isLoading: boolean = false;
   saveResponseDataForRegisterProduct;
   saveResponseDataForRegisterKitProduct;
   saveResponseDataForRegisterColorantProduct;
@@ -52,67 +52,67 @@ export class NewRequestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isloading = true;
+    this.isLoading = true;
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
       if (res) {
         this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
       }
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getRequestTypeLookUp().subscribe((res: any) => {
       this.formData.requestType = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getCountryLookUp().subscribe((res: any) => {
       this.formData.manufacturingCountryList = res;
       this.formData.licenseHolderCountryList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getFunctionLookUp().subscribe((res: any) => {
       this.formData.functionList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
       this.formData.typeOfPackagingList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
       this.formData.physicalStateList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
       this.formData.unitOfMeasureList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getUsePurposeLookUp().subscribe((res: any) => {
       this.formData.purposeOfUseList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getProductColorLookUp().subscribe((res: any) => {
       this.formData.productColorList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
       this.formData.ingrediantList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
       this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
       this.formData.storagePlaceList = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
     this.getService.getTrackTypeLookUp().subscribe((res: any) => {
       this.formData.trackType = res;
-      this.isloading = false;
+      this.isLoading = false;
     });
   }
 
@@ -129,14 +129,14 @@ export class NewRequestComponent implements OnInit {
   }
 
   saveData(event) {
-    this.isloading = true;
+    this.isLoading = true;
 
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
       event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct : this.saveResponseDataForRegisterColorantProduct, event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
-        this.isloading = false;
+        this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
         this.onClosed();
@@ -146,7 +146,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductKitRequest(event).subscribe((res: any) => {
         this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
-        this.isloading = false;
+        this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
         this.onClosed();
@@ -155,13 +155,13 @@ export class NewRequestComponent implements OnInit {
   }
 
   onSubmit(event) {
-    this.isloading = true;
+    this.isLoading = true;
     this.successSubmission = false;
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
       event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
-        this.isloading = false;
+        this.isLoading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
@@ -172,7 +172,7 @@ export class NewRequestComponent implements OnInit {
       event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
 
       this.getService.createProductKitRequest(event).subscribe((res: any) => {
-        this.isloading = false;
+        this.isLoading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();

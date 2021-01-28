@@ -55,7 +55,6 @@
               [selectedFormType]="selectedFormType"
               [successSubmission]="successSubmission"
               [lookupsData]="formData"
-              (selectedRegisteredProductTypeForKit)="getProductTypeFromNewProductInKit($event)"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>
@@ -102,6 +101,4 @@
   <strong>Thank You</strong> <br> {{alertNotification.msg}}
 </alert>
 
-<div class="loadingContainer" *ngIf="isloading">
-  <mat-spinner mode="indeterminate"></mat-spinner>
-</div>
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

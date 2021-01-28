@@ -131,12 +131,12 @@ input[type=range]::-moz-range-thumb {
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   border: 1px solid #000000;
   height: 26px;
-  width: 16px;
-  border-radius: 3px;
-  background: #ffffff;
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: -12px;
+width: 16px;
+border-radius: 3px;
+background: #ffffff;
+cursor: pointer;
+-webkit-appearance: none;
+margin-top: -12px;
 }
 
 input[type=range]::-ms-track {
@@ -303,25 +303,4 @@ input[type=file] {
 /* ------------------------ Attachments ---------------------- */
 .Attachments .row > div:nth-child(n+4) {
   margin-top: 1.5em !important;
-}
-
-.loadingContainer {
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  background: rgba(255, 255, 255, 0.5);
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  pointer-events: fill !important;
-}
-
-.loadingContainer .mat-spinner {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 45vh;
-}
-
-:host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
-  stroke: #c28a30;
 }
