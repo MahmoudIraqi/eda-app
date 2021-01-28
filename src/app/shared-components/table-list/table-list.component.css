@@ -25,6 +25,10 @@
   border-radius: 0;
 }
 
+.table-responsive {
+  position: relative;
+}
+
 .mat-expansion-panel {
   box-shadow: none;
   border: 2px solid #c28a30;
@@ -83,19 +87,37 @@
   padding-left: 5.2%;
 }
 
+.tableAlertContainer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, .8);
+  text-align: center;
+  padding-top: 250px;
+  backdrop-filter: blur(5px);
+}
+
+.tableAlertContainer h1 {
+  font-size: 2rem;
+  color: #f00;
+}
+
 /* --------- responsive ---------- */
 
-@media only screen and (max-width: 768px){
-  .hide{
+@media only screen and (max-width: 768px) {
+  .hide {
     display: none !important;
   }
-  .table tr td{
+
+  .table tr td {
     padding: 3px;
   }
 }
-@media only screen and (max-width: 375px){
 
-  .table tr td{
+@media only screen and (max-width: 375px) {
+
+  .table tr td {
     font-size: 13px;
     padding: 3px;
   }

@@ -1418,8 +1418,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       ...this.ProductGroupsRows().value[lastRowInArray].productDetails
     };
 
-    console.log('data', data);
-
     this.applyProduct(data, 'new', '');
   }
 

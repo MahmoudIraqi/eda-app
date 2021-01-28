@@ -9,10 +9,7 @@ import {FormService} from '../services/form.service';
 export class TrackRequestComponent implements OnInit {
 
 
-  trackListRequests = {
-    tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type'],
-    tableBody: []
-  };
+  trackListRequests;
   isLoading: boolean = false;
 
   constructor(private getService: FormService) {
@@ -22,7 +19,11 @@ export class TrackRequestComponent implements OnInit {
     this.isLoading = true;
 
     this.getService.getTrackRequestsList().subscribe((res: any) => {
-      this.trackListRequests.tableBody = res;
+
+      this.trackListRequests = {
+        tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type'],
+        tableBody: res
+      };
       this.isLoading = false;
     });
   }

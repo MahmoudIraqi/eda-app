@@ -1,5 +1,8 @@
-<div class="table-responsive">
-  <table class="table table-sm table-ordered">
+<app-filters [filterData]="filterData"
+             (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
+
+<div class="table-responsive mt-5">
+  <table class="table table-sm table-ordered" *ngIf="data">
     <tr class="headerRow" *ngIf="whichTable === 'draft'">
       <th *ngFor="let request of data.tableHeader; let i = index"
           [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
@@ -27,7 +30,8 @@
         </span>
       </th>
     </tr>
-    <tr class="headerRow" *ngIf="whichTable === 'newRequestForPackaging' || whichTable === 'newRequestForDetails' || whichTable === 'productsKitList'">
+    <tr class="headerRow"
+        *ngIf="whichTable === 'newRequestForPackaging' || whichTable === 'newRequestForDetails' || whichTable === 'productsKitList'">
       <th *ngFor="let request of data.tableHeader; let i = index">
         {{request}}
         <span (click)="sortBy(sortStatus, request)">
@@ -558,4 +562,9 @@
       </td>
     </tr>
   </table>
+
+  <div class="tableAlertContainer" *ngIf="alertNotificationStatus">
+    <h1 class="text-uppercase"> You had the wrong data for filtering </h1>
+  </div>
 </div>
+

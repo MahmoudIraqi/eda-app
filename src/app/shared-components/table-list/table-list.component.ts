@@ -23,7 +23,14 @@ export class TableListComponent implements OnInit, OnChanges {
   ];
   filterByStatus = ['all', 'In Progress', 'starting'];
   dataAfterFilters = [];
+  filterData = {
+    filterKey: []
+  };
+  filterRow = [];
   sortStatus = false;
+  keyForFilter;
+  keyWordsForFilter;
+  alertNotificationStatus: boolean = false;
 
   @Output() removeDetailsRowOutput = new EventEmitter();
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
@@ -33,7 +40,13 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('data', this.data);
+    if (this.data !== undefined) {
+      this.data.tableBody.map(x => x.ID = x.ID.toString());
+      const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
+      this.data.tableHeader.map((x, i) => {
+        this.filterData.filterKey.push({name: this.data.tableHeader[i], id: tableColumnID[i]});
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -53,15 +66,6 @@ export class TableListComponent implements OnInit, OnChanges {
     }
   }
 
-  filterForStatus(event) {
-    const typeOfStatus = event.value;
-    if (typeOfStatus !== 'all') {
-      this.dataAfterFilters = this.data.tableBody.filter(x => x.status === typeOfStatus);
-    } else {
-      this.dataAfterFilters = this.data.tableBody;
-    }
-  }
-
   removeDetailsRowFunction(i, rowIndex) {
     this.removeDetailsRowOutput.emit({rowIndex, i});
   }
@@ -72,5 +76,30 @@ export class TableListComponent implements OnInit, OnChanges {
 
   editDetailedRowFunction(i) {
     this.editDetailedRowOutput.emit(i);
+  }
+
+  setTheFilteredData(event) {
+    if (event.keyForFilter.id) {
+      if (event.filterRow.length > 0) {
+        if (event.keyWordsForFilter) {
+          this.dataAfterFilters = this.dataAfterFilters.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter));
+          this.dataAfterFilters.length === 0 ? this.showAlertForFailedAlert() : this.alertNotificationStatus = false;
+        }
+      } else {
+        if (event.keyWordsForFilter) {
+          this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter));
+          this.dataAfterFilters.length === 0 ? this.showAlertForFailedAlert() : this.alertNotificationStatus = false;
+        }
+      }
+    }
+  }
+
+  showAlertForFailedAlert() {
+    this.dataAfterFilters = [];
+    this.alertNotificationStatus = true;
+
+    setTimeout(() => {
+      this.alertNotificationStatus = false;
+    }, 3000);
   }
 }

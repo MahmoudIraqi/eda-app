@@ -35,6 +35,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './login/login.component';
 import { HomeContainerComponent } from './home-container/home-container.component';
 import { LoaderComponentComponent } from './shared-components/loader-component/loader-component.component';
+import { FiltersComponent } from './shared-components/filters/filters.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { LoaderComponentComponent } from './shared-components/loader-component/l
     ProductsKitHairColourRequestFormComponent,
     LoginComponent,
     HomeContainerComponent,
-    LoaderComponentComponent
+    LoaderComponentComponent,
+    FiltersComponent,
   ],
   imports: [
     BrowserModule,

@@ -55,7 +55,7 @@ export class HomepageComponent implements OnInit {
         dropdownLinks:[
           {
             name:'Registration',
-            link:'/new-request'
+            link:'/track-request'
           },
           {
             name:'Re-Registration',
@@ -91,7 +91,7 @@ export class HomepageComponent implements OnInit {
         dropdownLinks:[
           {
             name:'Registration',
-            link:'/new-request'
+            link:'/draft-request'
           },
           {
             name:'Re-Registration',
