@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {FormService} from '../../services/form.service';
 
 @Component({
   selector: 'app-filters',
@@ -11,15 +12,21 @@ export class FiltersComponent implements OnInit, OnChanges {
   filterRow = [];
   keyForFilter;
   keyWordsForFilter;
+  keysForTrackType;
+  keysForTrackTypeList;
   @Output() selectedFilteredData = new EventEmitter();
 
-  constructor() {
+  constructor(private getService: FormService) {
   }
 
   ngOnChanges() {
   }
 
   ngOnInit(): void {
+    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+      console.log('res', res);
+      this.keysForTrackTypeList = res;
+    });
   }
 
   setTheFilteredData() {

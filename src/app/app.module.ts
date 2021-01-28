@@ -19,6 +19,8 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AlertModule} from 'ngx-bootstrap/alert';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule } from '@angular/material/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -33,9 +35,9 @@ import {DatePipe, DecimalPipe} from '@angular/common';
 import {FormService} from './services/form.service';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './login/login.component';
-import { HomeContainerComponent } from './home-container/home-container.component';
-import { LoaderComponentComponent } from './shared-components/loader-component/loader-component.component';
-import { FiltersComponent } from './shared-components/filters/filters.component';
+import {HomeContainerComponent} from './home-container/home-container.component';
+import {LoaderComponentComponent} from './shared-components/loader-component/loader-component.component';
+import {FiltersComponent} from './shared-components/filters/filters.component';
 
 
 @NgModule({
@@ -76,6 +78,8 @@ import { FiltersComponent } from './shared-components/filters/filters.component'
     MatProgressSpinnerModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [DecimalPipe, DatePipe, FormService],
   bootstrap: [AppComponent]
