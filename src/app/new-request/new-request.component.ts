@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, FormGroupDirective, FormsModule, Vali
 import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormService} from '../services/form.service';
+import {convertToSpecialObject} from '../../utils/formDataFunction';
 
 
 @Component({
@@ -41,6 +42,10 @@ export class NewRequestComponent implements OnInit {
   alertNotificationStatus: boolean = false;
   alertNotification: any;
   isloading: boolean = false;
+  saveResponseDataForRegisterProduct;
+  saveResponseDataForRegisterKitProduct;
+  saveResponseDataForRegisterColorantProduct;
+  saveResponseDataForRegisterColorantKitProduct;
 
   constructor(private getService: FormService) {
   }
@@ -121,67 +126,22 @@ export class NewRequestComponent implements OnInit {
 
   saveData(event) {
     this.isloading = true;
-    console.log('isExport', this.selectedIsExport);
-    if (this.selectedFormType === 1) {
-      event = {
-        isDraft: 1,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
+
+    if (this.selectedFormType === 1 || this.selectedFormType === 3) {
+      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct : this.saveResponseDataForRegisterColorantProduct, event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
+        this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
         this.isloading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
         this.onClosed();
       });
+    } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
+      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct : this.saveResponseDataForRegisterColorantKitProduct, event);
 
-    } else if (this.selectedFormType === 2) {
-      const regProductForAllRequestedTypeData = {
-        isDraft: 1,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
-
-      this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
-        this.isloading = false;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSaveRequest();
-        this.onClosed();
-      });
-    } else if (this.selectedFormType === 3) {
-      event = {
-        isDraft: 1,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
-
-      this.getService.createProductRequest(event).subscribe((res: any) => {
-        this.isloading = false;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSaveRequest();
-        this.onClosed();
-      });
-    } else if (this.selectedFormType === 4) {
-      const regHairColorantKitData = {
-        isDraft: 1,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
-
-      this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
+      this.getService.createProductKitRequest(event).subscribe((res: any) => {
+        this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
         this.isloading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
@@ -193,15 +153,8 @@ export class NewRequestComponent implements OnInit {
   onSubmit(event) {
     this.isloading = true;
     this.successSubmission = false;
-    if (this.selectedFormType === 1) {
-      event = {
-        isDraft: 0,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
+    if (this.selectedFormType === 1 || this.selectedFormType === 3) {
+      event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         this.isloading = false;
@@ -211,17 +164,10 @@ export class NewRequestComponent implements OnInit {
         this.emptyTheTopField();
         this.onClosed();
       });
-    } else if (this.selectedFormType === 2) {
-      const regProductForAllRequestedTypeData = {
-        isDraft: 0,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
+    } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
+      event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
 
-      this.getService.createProductKitRequest(regProductForAllRequestedTypeData).subscribe((res: any) => {
+      this.getService.createProductKitRequest(event).subscribe((res: any) => {
         this.isloading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
@@ -230,58 +176,7 @@ export class NewRequestComponent implements OnInit {
         this.onClosed();
       });
 
-    } else if (this.selectedFormType === 3) {
-      event = {
-        isDraft: 0,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
-
-      this.getService.createProductRequest(event).subscribe((res: any) => {
-        this.isloading = false;
-        this.successSubmission = true;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
-        this.emptyTheTopField();
-        this.onClosed();
-      });
-    } else if (this.selectedFormType === 4) {
-      const regHairColorantKitData = {
-        isDraft: 0,
-        typeOfMarketing: this.selectedFormType,
-        typeOfRegistration: this.selectedRequestedType,
-        isExport: this.selectedIsExport,
-        trackType: this.selectedTrackType,
-        ...event
-      };
-
-      this.getService.createProductKitRequest(regHairColorantKitData).subscribe((res: any) => {
-        this.isloading = false;
-        this.successSubmission = true;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
-        this.emptyTheTopField();
-        this.onClosed();
-      });
     }
-  }
-
-  changeFileObjectToBase64(objectData) {
-    Object.keys(objectData).map(x => {
-      let file;
-      if (objectData[x] instanceof File) {
-        const reader = new FileReader();
-        reader.readAsDataURL(objectData[x]);
-        reader.onload = (res: any) => {
-          objectData[x] = res.target.result;
-        };
-      }
-    });
-
-    return objectData;
   }
 
   alertForSaveRequest() {
@@ -302,5 +197,6 @@ export class NewRequestComponent implements OnInit {
     this.selectedTrackType = '';
     this.selectedFormType = '';
     this.selectedRequestedType = '';
+    this.selectedIsExport = '';
   }
 }

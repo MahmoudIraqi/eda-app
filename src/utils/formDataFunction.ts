@@ -13,3 +13,16 @@ export const formDataClass = (req?: any, FormParam?: FormGroup) => {
     return formData;
   }
 };
+
+
+export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistration, isExport, trackType, id, event) => {
+  return {
+    isDraft: WhichForm === 'save' ? 1 : 0,
+    typeOfMarketing,
+    typeOfRegistration,
+    isExport,
+    trackType,
+    id,
+    ...event
+  };
+};

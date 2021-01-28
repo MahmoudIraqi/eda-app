@@ -15,6 +15,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   @Input() selectedRequestedType;
   @Input() selectedFormType;
   @Input() successSubmission;
+  @Input() saveResponseData;
   @Input() lookupsData;
   @Input() kitProductStatus;
   @Output() saveDataOutput = new EventEmitter();
@@ -137,6 +138,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
+
+    console.log('saveResponseData_Change', this.saveResponseData);
 
     if (this.successSubmission) {
       this.resetForms();
