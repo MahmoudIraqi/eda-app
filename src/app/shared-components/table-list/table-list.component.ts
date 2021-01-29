@@ -52,12 +52,8 @@ export class TableListComponent implements OnInit, OnChanges {
     if (this.data !== undefined) {
       this.data.tableBody.map(x => x.ID = x.ID.toString());
       const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
-      console.log('tableColumnID', tableColumnID);
-      console.log('this.data.tableHeader', this.data.tableHeader);
       this.data.tableHeader.map((x, i) => {
-        console.log('x', x);
         this.filterData.filterKey.push({name: this.data.tableHeader[i], id: this.staticFilterKey[this.data.tableHeader[i]]});
-        console.log('this.filterData.filterKey', this.filterData.filterKey);
       });
     }
   }
@@ -96,28 +92,79 @@ export class TableListComponent implements OnInit, OnChanges {
     if (event.keyForFilter.id) {
       if (event.filterRow.length > 0) {
         if (event.keyWordsForFilter) {
-          this.dataAfterFilters = this.dataAfterFilters.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase()));
-          this.dataAfterFilters.length === 0 ? this.showAlertForFailedAlert() : this.alertNotificationStatus = false;
+          if (event.keyForFilter.id === 'SubmmittionDate') {
+            this.dataAfterFilters.map(x => x[event.keyForFilter.id] = new Date(x[event.keyForFilter.id]).toDateString());
+            if (this.dataAfterFilters.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString()).length > 0) {
+              this.dataAfterFilters = this.dataAfterFilters.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString());
+            } else {
+              this.showAlertForFailedAlert();
+            }
+          } else {
+            if (this.dataAfterFilters.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase())).length > 0) {
+              this.dataAfterFilters = this.dataAfterFilters.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase()));
+            } else {
+              this.showAlertForFailedAlert();
+            }
+          }
+        } else {
+          event.filterRow.map((x, i) => {
+            if (i === 0) {
+              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate') {
+                this.data.tableBody.map(y => y[this.staticFilterKey[x.columnName]] = new Date(y[this.staticFilterKey[x.columnName]]).toDateString());
+                if (this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString()).length > 0) {
+                  this.dataAfterFilters = this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString());
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              } else {
+                if (this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase())).length > 0) {
+                  this.dataAfterFilters = this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase()));
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              }
+            } else {
+              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate') {
+                this.dataAfterFilters.map(y => y[this.staticFilterKey[x.columnName]] = new Date(y[this.staticFilterKey[x.columnName]]).toDateString());
+                if (this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString()).length > 0) {
+                  this.dataAfterFilters = this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString());
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              } else {
+                if (this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase())).length > 0) {
+                  this.dataAfterFilters = this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase()));
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              }
+            }
+          });
         }
       } else {
         if (event.keyWordsForFilter) {
-          console.log('this.data.tableBody', this.data.tableBody);
-          console.log('event.keyForFilter.id', event.keyForFilter.id);
-          console.log('event.keyWordsForFilter', event.keyWordsForFilter.toJSON());
           if (event.keyForFilter.id === 'SubmmittionDate') {
-            this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id].includes(event.keyWordsForFilter.toJSON()));
+            this.data.tableBody.map(x => x[event.keyForFilter.id] = new Date(x[event.keyForFilter.id]).toDateString());
+            if (this.data.tableBody.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString()).length > 0) {
+              this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString());
+            } else {
+              this.showAlertForFailedAlert();
+            }
           } else {
-            this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase()));
+            if (this.data.tableBody.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase())).length > 0) {
+              this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase()));
+            } else {
+              this.showAlertForFailedAlert();
+            }
           }
-
-          this.dataAfterFilters.length === 0 ? this.showAlertForFailedAlert() : this.alertNotificationStatus = false;
+        } else {
+          this.dataAfterFilters = [];
         }
       }
     }
   }
 
   showAlertForFailedAlert() {
-    this.dataAfterFilters = [];
     this.alertNotificationStatus = true;
 
     setTimeout(() => {

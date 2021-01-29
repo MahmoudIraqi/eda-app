@@ -24,7 +24,6 @@ export class FiltersComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-      console.log('res', res);
       this.keysForTrackTypeList = res;
     });
   }
