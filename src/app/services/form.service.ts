@@ -204,6 +204,7 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
+    console.log('data_ForProduct', data);
 
     return this.http.post(`${this.apiBaseUrl}requests`, data, options)
       .pipe(map((res: any) => {
@@ -220,6 +221,7 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
+    console.log('data_ForKit', data);
 
     return this.http.post(`${this.apiBaseUrl}requestsKit`, data, options)
       .pipe(map((res: any) => {
@@ -273,7 +275,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}product?NotifictionNo=${notificationNumber}`, options)
+    return this.http.get(`${this.apiBaseUrl}product/GetProductByNotificationNO?NotifictionNo=${notificationNumber}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

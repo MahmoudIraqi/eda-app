@@ -1,5 +1,7 @@
-<app-filters [filterData]="filterData"
-             (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
+<div *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved'">
+  <app-filters [filterData]="filterData"
+               (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
+</div>
 
 <div class="table-responsive mt-5">
   <table class="table table-sm table-ordered" *ngIf="data">

@@ -8,10 +8,7 @@ import {FormService} from '../services/form.service';
 })
 export class DraftRequestComponent implements OnInit {
 
-  draftListRequests = {
-    tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
-    tableBody: []
-  };
+  draftListRequests;
   isLoading: boolean = false;
 
   constructor(private getService: FormService) {
@@ -20,7 +17,10 @@ export class DraftRequestComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.getService.getDraftRequestsList().subscribe((res: any) => {
-      this.draftListRequests.tableBody = res;
+      this.draftListRequests = {
+        tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
+        tableBody: res
+      };
       this.isLoading = false;
     });
   }

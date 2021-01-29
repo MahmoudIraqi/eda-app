@@ -8,12 +8,9 @@ import {FormService} from '../services/form.service';
 })
 export class ApprovedRequestComponent implements OnInit {
 
-  approvedListRequests = {
-    tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
-    tableBody: []
-  };
+  approvedListRequests;
 
-  isLoading: boolean = false
+  isLoading: boolean = false;
 
   constructor(private getService: FormService) {
   }
@@ -21,7 +18,10 @@ export class ApprovedRequestComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.getService.getApprovedProductsList().subscribe((res: any) => {
-      this.approvedListRequests.tableBody = res;
+      this.approvedListRequests = {
+        tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
+        tableBody: res
+      };
       this.isLoading = false;
     });
   }

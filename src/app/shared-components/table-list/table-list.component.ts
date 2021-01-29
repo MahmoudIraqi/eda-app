@@ -50,6 +50,7 @@ export class TableListComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.data !== undefined) {
+      debugger;
       this.data.tableBody.map(x => x.ID = x.ID.toString());
       const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
       this.data.tableHeader.map((x, i) => {

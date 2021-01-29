@@ -78,7 +78,7 @@
               <mat-label>Manufacturing Company</mat-label>
               <mat-select formControlName="manufacturingCompany" required *ngIf="formData">
                 <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company.ID">
-                  {{company.MANUFACTORY_NAME}}
+                  {{company.MANUFACTORY}}
                 </mat-option>
               </mat-select>
               <div
