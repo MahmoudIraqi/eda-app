@@ -36,7 +36,7 @@ export class TableListComponent implements OnInit, OnChanges {
     'Product Arabic name': 'NameAR',
     'Status': 'Status',
     'Track Type': 'Track_type',
-    'NotificationNo': 'NotificationNo'
+    'Notification': 'NotificationNo'
   };
   sortStatus = false;
   alertNotificationStatus: boolean = false;
@@ -54,7 +54,10 @@ export class TableListComponent implements OnInit, OnChanges {
       this.data.tableBody.map(x => x.ID = x.ID.toString());
       const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
       this.data.tableHeader.map((x, i) => {
-        this.filterData.filterKey.push({name: this.data.tableHeader[i], id: this.staticFilterKey[this.data.tableHeader[i]]});
+        console.log('x', x);
+        if (this.staticFilterKey[this.data.tableHeader[i]]) {
+          this.filterData.filterKey.push({name: this.data.tableHeader[i], id: this.staticFilterKey[this.data.tableHeader[i]]});
+        }
       });
     }
   }
