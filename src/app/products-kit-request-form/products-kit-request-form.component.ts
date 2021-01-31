@@ -1307,9 +1307,15 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   removeProductsGroupRows(index) {
+    this.allProductsInKit.tableBody = [];
+
+    let control = <FormArray> this.regKitForAllRequestedType.controls.deletedProductIdLists;
+    if (control.value.filter(x => x === this.ProductGroupsRows().value[index].productDetails.id).length < 1) {
+      control.push(this.fb.control(this.ProductGroupsRows().value[index].productDetails.id));
+    }
+
     this.ProductGroupsRows().removeAt(index);
 
-    this.allProductsInKit.tableBody = [];
     this.ProductGroupsRows().value.filter(y => y.productStatus).map(x => {
       if (this.allProductsInKit.tableBody.length === 0) {
         this.allProductsInKit.tableBody = [x.productDetails];
@@ -1336,7 +1342,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       });
 
       this.regKitForAllRequestedType.patchValue({
-        ...data
+        ...data,
       });
 
       let control = <FormArray> this.regKitForAllRequestedType.controls.ProductsForKit;
@@ -1367,6 +1373,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
           NotificationNo: this.fb.control(''),
           productDetails: this.fb.group({})
         })]),
+        deletedProductIdLists: this.fb.array([]),
         freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
