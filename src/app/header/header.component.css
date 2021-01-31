@@ -143,7 +143,7 @@
 .menu ul li a {
   color: #fff;
   font-weight: 500;
-  font-size: 22px;
+  font-size: 19px;
 }
 
 .menu ul li a:hover {
@@ -340,7 +340,7 @@
   }
 
   .menu ul li a {
-    font-size: 19px;
+    font-size: 15px;
     font-weight: 600;
   }
 
@@ -358,20 +358,11 @@
   .menu ul li {
     margin-right: 1em;
   }
-
-  .menu ul li a {
-    font-size: 18px;
-    font-weight: 600;
-  }
 }
 
 @media only screen and (max-width: 1280px) {
   .menu ul li {
     margin-right: 0.7em;
-  }
-
-  .menu ul li a {
-    font-size: 16px;
   }
 }
 
@@ -381,7 +372,7 @@
   }
 
   .menu ul li a {
-    font-size: 14px;
+    font-size: 9.5px;
     font-weight: 600;
   }
 

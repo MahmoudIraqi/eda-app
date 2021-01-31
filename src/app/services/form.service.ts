@@ -204,6 +204,7 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
+    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}requests`, data, options)
       .pipe(map((res: any) => {
@@ -268,6 +269,19 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getRejectedProductsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=30`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getProductWithNotificationNumberList(notificationNumber) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -288,6 +302,19 @@ export class FormService {
     const options = {headers};
 
     return this.http.get(`${this.apiBaseUrl}request/GetProductByProductID?ID=${productID}`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  setReRegistrationProduct(productID) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}requests/ReregRequest`, options)
       .pipe(map((res: any) => {
           return res;
         }),

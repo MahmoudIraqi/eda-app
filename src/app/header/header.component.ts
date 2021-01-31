@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Re-Registration',
-          link: '#'
+          link: '/new-request/reregistration'
         },
         {
           name: 'Tell & Do variation',
@@ -60,10 +60,6 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Registration',
           link: '/draft-request/registration'
-        },
-        {
-          name: 'Re-Registration',
-          link: '#'
         },
         {
           name: 'Tell & Do variation',
@@ -125,6 +121,11 @@ export class HeaderComponent implements OnInit {
     {
       name: 'Approved products',
       link: '/approved-request',
+      dropDownStatus: false
+    },
+    {
+      name: 'Rejected products',
+      link: '/rejected-request',
       dropDownStatus: false
     },
     {

@@ -10,6 +10,8 @@ import {HomeContainerComponent} from './home-container/home-container.component'
 import {NewRequestContainerComponent} from './new-request-container/new-request-container.component';
 import {TrackRequestContainerComponent} from './track-request-container/track-request-container.component';
 import {DraftRequestsContainerComponent} from './draft-requests-container/draft-requests-container.component';
+import {ReRegistrationComponent} from './re-registration/re-registration.component';
+import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -21,7 +23,8 @@ const routes: Routes = [
         path: 'new-request', component: NewRequestContainerComponent,
         children: [
           {path: 'registration', component: NewRequestComponent, data: {animation: 'new-request'}},
-          {path: 'registration/:id', component: NewRequestComponent, data: {animation: 'new-request'}}
+          {path: 'registration/:id', component: NewRequestComponent, data: {animation: 'new-request'}},
+          {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
         ]
       },
       {
@@ -37,6 +40,7 @@ const routes: Routes = [
         ]
       },
       {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},
+      {path: 'rejected-request', component: RejectedRequestesComponent, data: {animation: 'rejected-request'}},
     ]
   }
 ];

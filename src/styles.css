@@ -371,6 +371,11 @@ body {
   border: 0px;
 }
 
+.mat-form-field {
+  width: 100% !important;
+  position: relative;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {

@@ -23,7 +23,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Re-Registration',
-            link: '#'
+            link: '/new-request/reregistration'
           },
           {
             name: 'Tell & Do variation',
@@ -94,10 +94,6 @@ export class HomepageComponent implements OnInit {
             link: '/draft-request/registration'
           },
           {
-            name: 'Re-Registration',
-            link: '#'
-          },
-          {
             name: 'Tell & Do variation',
             link: '#'
           },
@@ -123,6 +119,12 @@ export class HomepageComponent implements OnInit {
         icon: 'flaticon-approval',
         title: 'Approved Products',
         link: '/approved-request',
+        dropDownStatus: false,
+      },
+      {
+        icon: 'flaticon-approval',
+        title: 'Rejected Products',
+        link: '/rejected-request',
         dropDownStatus: false,
       }
     ]

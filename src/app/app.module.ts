@@ -39,8 +39,10 @@ import {HomeContainerComponent} from './home-container/home-container.component'
 import {LoaderComponentComponent} from './shared-components/loader-component/loader-component.component';
 import {FiltersComponent} from './shared-components/filters/filters.component';
 import {NewRequestContainerComponent} from './new-request-container/new-request-container.component';
-import { TrackRequestContainerComponent } from './track-request-container/track-request-container.component';
-import { DraftRequestsContainerComponent } from './draft-requests-container/draft-requests-container.component';
+import {TrackRequestContainerComponent} from './track-request-container/track-request-container.component';
+import {DraftRequestsContainerComponent} from './draft-requests-container/draft-requests-container.component';
+import {ReRegistrationComponent} from './re-registration/re-registration.component';
+import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
 
 
 @NgModule({
@@ -66,6 +68,8 @@ import { DraftRequestsContainerComponent } from './draft-requests-container/draf
     NewRequestContainerComponent,
     TrackRequestContainerComponent,
     DraftRequestsContainerComponent,
+    ReRegistrationComponent,
+    RejectedRequestesComponent,
   ],
   imports: [
     BrowserModule,

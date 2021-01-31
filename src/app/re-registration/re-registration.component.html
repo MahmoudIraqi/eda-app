@@ -1,0 +1,76 @@
+<div class="whiteContainer reregistrationContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'Re-registration Product'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="formTable">
+        <div class="row">
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Product Notification Number</mat-label>
+                  <input type="text" class="form-control" matInput
+                         [(ngModel)]="NotificationNo"
+                         placeholder="">
+                </mat-form-field>
+              </div>
+              <div class="col-6 d-flex">
+                <button type="button"
+                        class="btn btn-primary ml-auto mt-sm-4"
+                        [disabled]="!NotificationNo"
+                        (click)="applyProduct(NotificationNo)">
+                  Get Product
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 1 ">
+            <app-product-request-form
+              [editData]="this.productData"
+              [lookupsData]="formData"
+              [reRegistrationStatus]="true"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-product-request-form>
+          </div>
+          <!--          <div class="col-12 mt-5" *ngIf="selectedFormType === 2 && selectedRequestedType">-->
+          <!--            <app-products-kit-request-form-->
+          <!--              [selectedRequestedType]="selectedRequestedType"-->
+          <!--              [selectedFormType]="selectedFormType"-->
+          <!--              [selectedTrackType]="selectedTrackType"-->
+          <!--              [successSubmission]="successSubmission"-->
+          <!--              [editData]="updatingProductData"-->
+          <!--              [lookupsData]="formData"-->
+          <!--              (saveDataOutput)="saveData($event)"-->
+          <!--              (submitDataOutput)="onSubmit($event)"-->
+          <!--            ></app-products-kit-request-form>-->
+          <!--          </div>-->
+          <!--          <div class="col-12 mt-5"-->
+          <!--               *ngIf="selectedFormType === 3 && selectedRequestedType">-->
+          <!--&lt;!&ndash;            <app-products-hair-colour-request-form&ndash;&gt;-->
+          <!--&lt;!&ndash;              [selectedRequestedType]="selectedRequestedType"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [successSubmission]="successSubmission"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [editData]="updatingProductData"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [lookupsData]="formData"&ndash;&gt;-->
+          <!--&lt;!&ndash;              (saveDataOutput)="saveData($event)"&ndash;&gt;-->
+          <!--&lt;!&ndash;              (submitDataOutput)="onSubmit($event)"&ndash;&gt;-->
+          <!--&lt;!&ndash;            ></app-products-hair-colour-request-form>&ndash;&gt;-->
+          <!--          </div>-->
+          <!--          <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType">-->
+          <!--&lt;!&ndash;            <app-products-kit-hair-colour-request-form&ndash;&gt;-->
+          <!--&lt;!&ndash;              [selectedRequestedType]="selectedRequestedType"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [selectedFormType]="selectedFormType"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [selectedTrackType]="selectedTrackType"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [successSubmission]="successSubmission"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [editData]="updatingProductData"&ndash;&gt;-->
+          <!--&lt;!&ndash;              [lookupsData]="formData"&ndash;&gt;-->
+          <!--&lt;!&ndash;              (saveDataOutput)="saveData($event)"&ndash;&gt;-->
+          <!--&lt;!&ndash;              (submitDataOutput)="onSubmit($event)"&ndash;&gt;-->
+          <!--&lt;!&ndash;            ></app-products-kit-hair-colour-request-form>&ndash;&gt;-->
+          <!--          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
