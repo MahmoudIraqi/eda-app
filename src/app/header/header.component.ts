@@ -21,34 +21,34 @@ export class HeaderComponent implements OnInit {
       name: 'Create requests',
       link: '#',
       dropDownStatus: true,
-      dropdownLinks:[
+      dropdownLinks: [
         {
-          name:'Registration',
-          link:'/new-request'
+          name: 'Registration',
+          link: '/new-request/registration'
         },
         {
-          name:'Re-Registration',
-          link:'#'
+          name: 'Re-Registration',
+          link: '#'
         },
         {
-          name:'Tell & Do variation',
-          link:'#'
+          name: 'Tell & Do variation',
+          link: '#'
         },
         {
-          name:'Do & Tell Variation',
-          link:'#'
+          name: 'Do & Tell Variation',
+          link: '#'
         },
         {
-          name:'Inspection',
-          link:'#'
+          name: 'Inspection',
+          link: '#'
         },
         {
-          name:'Custom Release',
-          link:'#'
+          name: 'Custom Release',
+          link: '#'
         },
         {
-          name:'General Enquiries',
-          link:'#'
+          name: 'General Enquiries',
+          link: '#'
         }
       ]
     },
@@ -56,34 +56,34 @@ export class HeaderComponent implements OnInit {
       name: 'Draft requests',
       link: '#',
       dropDownStatus: true,
-      dropdownLinks:[
+      dropdownLinks: [
         {
-          name:'Registration',
-          link:'/draft-request'
+          name: 'Registration',
+          link: '/draft-request/registration'
         },
         {
-          name:'Re-Registration',
-          link:'#'
+          name: 'Re-Registration',
+          link: '#'
         },
         {
-          name:'Tell & Do variation',
-          link:'#'
+          name: 'Tell & Do variation',
+          link: '#'
         },
         {
-          name:'Do & Tell Variation',
-          link:'#'
+          name: 'Do & Tell Variation',
+          link: '#'
         },
         {
-          name:'Inspection',
-          link:'#'
+          name: 'Inspection',
+          link: '#'
         },
         {
-          name:'Custom Release',
-          link:'#'
+          name: 'Custom Release',
+          link: '#'
         },
         {
-          name:'General Enquiries',
-          link:'#'
+          name: 'General Enquiries',
+          link: '#'
         }
       ]
     },
@@ -91,34 +91,34 @@ export class HeaderComponent implements OnInit {
       name: 'Track requests',
       link: '#',
       dropDownStatus: true,
-      dropdownLinks:[
+      dropdownLinks: [
         {
-          name:'Registration',
-          link:'/track-request'
+          name: 'Registration',
+          link: '/track-request/registration'
         },
         {
-          name:'Re-Registration',
-          link:'#'
+          name: 'Re-Registration',
+          link: '#'
         },
         {
-          name:'Tell & Do variation',
-          link:'#'
+          name: 'Tell & Do variation',
+          link: '#'
         },
         {
-          name:'Do & Tell Variation',
-          link:'#'
+          name: 'Do & Tell Variation',
+          link: '#'
         },
         {
-          name:'Inspection',
-          link:'#'
+          name: 'Inspection',
+          link: '#'
         },
         {
-          name:'Custom Release',
-          link:'#'
+          name: 'Custom Release',
+          link: '#'
         },
         {
-          name:'General Enquiries',
-          link:'#'
+          name: 'General Enquiries',
+          link: '#'
         }
       ]
     },

@@ -20,7 +20,7 @@ import {AlertModule} from 'ngx-bootstrap/alert';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule } from '@angular/material/core';
+import {MatNativeDateModule} from '@angular/material/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -38,6 +38,9 @@ import {LoginComponent} from './login/login.component';
 import {HomeContainerComponent} from './home-container/home-container.component';
 import {LoaderComponentComponent} from './shared-components/loader-component/loader-component.component';
 import {FiltersComponent} from './shared-components/filters/filters.component';
+import {NewRequestContainerComponent} from './new-request-container/new-request-container.component';
+import { TrackRequestContainerComponent } from './track-request-container/track-request-container.component';
+import { DraftRequestsContainerComponent } from './draft-requests-container/draft-requests-container.component';
 
 
 @NgModule({
@@ -60,6 +63,9 @@ import {FiltersComponent} from './shared-components/filters/filters.component';
     HomeContainerComponent,
     LoaderComponentComponent,
     FiltersComponent,
+    NewRequestContainerComponent,
+    TrackRequestContainerComponent,
+    DraftRequestsContainerComponent,
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() lookupsData;
+  @Input() editData;
   @Input() kitHairProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -130,7 +131,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe) {
-    this.getFormAsStarting();
+    this.getFormAsStarting('');
   }
 
   ngOnChanges() {
@@ -226,6 +227,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     if (this.successSubmission) {
       this.resetForms();
     }
+
+    this.getFormAsStarting(this.editData);
   }
 
   ngOnInit(): void {
@@ -294,6 +297,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.editDetailedRowStatus = false;
     this.equalTheNewPackagingTable('add');
     this.PackagingRows().push(this.fb.group({
+      volumesID: this.fb.control(''),
       volumes: this.fb.control('', Validators.required),
       unitOfMeasure: this.fb.control('', Validators.required),
       typeOfPackaging: this.fb.control('', Validators.required),
@@ -329,11 +333,14 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.editDetailedRowStatus = false;
     this.equalTheNewDetailsTable('add');
     this.DetailsRows().push(this.fb.group({
+      DetailsID: this.fb.control(''),
+      PRODUCT_ID: this.fb.control(''),
       colour: this.fb.control(''),
       fragrance: this.fb.control(''),
       flavor: this.fb.control(''),
       barCode: this.fb.control(''),
       ingrediantDetails: this.fb.array([this.fb.group({
+        Ingredient_ID: this.fb.control(''),
         ingrediant: this.fb.control('', Validators.required),
         concentrations: this.fb.control('', Validators.required),
         function: this.fb.control('', Validators.required),
@@ -374,6 +381,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   addIngrediantDetailsRows(index) {
     this.IngrediantDetailsRows(index).push(this.fb.group({
+      Ingredient_ID: this.fb.control(''),
       ingrediant: this.fb.control('', Validators.required),
       concentrations: this.fb.control('', Validators.required),
       function: this.fb.control('', Validators.required)
@@ -398,59 +406,81 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.submitDataOutput.emit(this.regHairColorantProductForAllRequestedType.value);
   }
 
-  getFormAsStarting() {
-    this.regHairColorantProductForAllRequestedType = this.fb.group({
-      productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
-      productColor: this.fb.control(''),
-      manufacturingCompany: this.fb.control('', Validators.required),
-      manufacturingCountry: this.fb.control('', Validators.required),
-      applicant: this.fb.control('', Validators.required),
-      licenseHolder: this.fb.control('', Validators.required),
-      licenseHolderTxt: this.fb.control(''),
-      countryOfLicenseHolder: this.fb.control('', Validators.required),
-      tradeMark: this.fb.control(''),
-      physicalState: this.fb.control('', Validators.required),
-      physicalStateTxt: this.fb.control(''),
-      purposeOfUse: this.fb.control('', Validators.required),
-      purposeOfUseTxt: this.fb.control(''),
-      shelfLife: this.fb.control(0),
-      storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-      packagingTable: this.fb.array([this.fb.group({
-        volumes: this.fb.control('', Validators.required),
-        unitOfMeasure: this.fb.control('', Validators.required),
-        typeOfPackaging: this.fb.control('', Validators.required),
-        packagingDescription: this.fb.control(''),
-      })]),
-      detailsTable: this.fb.array([this.fb.group({
-        colour: this.fb.control(''),
-        fragrance: this.fb.control(''),
-        flavor: this.fb.control(''),
-        barCode: this.fb.control(''),
-        ingrediantDetails: this.fb.array([this.fb.group({
-          ingrediant: this.fb.control('', Validators.required),
-          concentrations: this.fb.control('', Validators.required),
-          function: this.fb.control('', Validators.required),
-        })])
-      })]),
-      freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-      GMP: this.fb.control(''),
-      CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
-      artWork: this.fb.control('', Validators.required),
-      leaflet: this.fb.control(''),
-      reference: this.fb.control(''),
-      methodOfAnalysis: this.fb.control(''),
-      specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-      receipt: this.fb.control('', Validators.required),
-      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-      manufacturingContract: this.fb.control(''),
-      storageContract: this.fb.control(''),
-      others: this.fb.control(''),
-      otherFees: this.fb.control('', Validators.required),
-    });
+  getFormAsStarting(data) {
+    if (data) {
+      data.detailsTable.map((x, i) => {
+        x.ingrediantDetails.map((y, index) => {
+          if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
+            this.addIngrediantDetailsRows(i);
+          }
+        });
+
+        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
+          this.addDetailsRows();
+        }
+      });
+
+      this.regHairColorantProductForAllRequestedType.patchValue({
+        ...data
+      });
+    } else {
+      this.regHairColorantProductForAllRequestedType = this.fb.group({
+        productArabicName: this.fb.control(''),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
+        productColor: this.fb.control(''),
+        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCountry: this.fb.control('', Validators.required),
+        applicant: this.fb.control('', Validators.required),
+        licenseHolder: this.fb.control('', Validators.required),
+        licenseHolderTxt: this.fb.control(''),
+        countryOfLicenseHolder: this.fb.control('', Validators.required),
+        tradeMark: this.fb.control(''),
+        physicalState: this.fb.control('', Validators.required),
+        physicalStateTxt: this.fb.control(''),
+        purposeOfUse: this.fb.control('', Validators.required),
+        purposeOfUseTxt: this.fb.control(''),
+        shelfLife: this.fb.control(0),
+        storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
+        receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+        packagingTable: this.fb.array([this.fb.group({
+          volumesID: this.fb.control(''),
+          volumes: this.fb.control('', Validators.required),
+          unitOfMeasure: this.fb.control('', Validators.required),
+          typeOfPackaging: this.fb.control('', Validators.required),
+          packagingDescription: this.fb.control(''),
+        })]),
+        detailsTable: this.fb.array([this.fb.group({
+          DetailsID: this.fb.control(''),
+          PRODUCT_ID: this.fb.control(''),
+          colour: this.fb.control(''),
+          fragrance: this.fb.control(''),
+          flavor: this.fb.control(''),
+          barCode: this.fb.control(''),
+          ingrediantDetails: this.fb.array([this.fb.group({
+            Ingredient_ID: this.fb.control(''),
+            ingrediant: this.fb.control('', Validators.required),
+            concentrations: this.fb.control('', Validators.required),
+            function: this.fb.control('', Validators.required),
+          })])
+        })]),
+        freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        GMP: this.fb.control(''),
+        CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
+        artWork: this.fb.control('', Validators.required),
+        leaflet: this.fb.control(''),
+        reference: this.fb.control(''),
+        methodOfAnalysis: this.fb.control(''),
+        specificationsOfFinishedProduct: this.fb.control('', Validators.required),
+        receipt: this.fb.control('', Validators.required),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        manufacturingContract: this.fb.control(''),
+        storageContract: this.fb.control(''),
+        others: this.fb.control(''),
+        otherFees: this.fb.control('', Validators.required),
+      });
+    }
   }
 
   getDecimalValue(value) {
@@ -461,7 +491,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   resetForms() {
-    this.getFormAsStarting();
+    this.getFormAsStarting('');
   }
 
   setShelfValue(event) {

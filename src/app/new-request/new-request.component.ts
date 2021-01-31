@@ -4,6 +4,7 @@ import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormService} from '../services/form.service';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
+import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -47,8 +48,10 @@ export class NewRequestComponent implements OnInit {
   saveResponseDataForRegisterKitProduct;
   saveResponseDataForRegisterColorantProduct;
   saveResponseDataForRegisterColorantKitProduct;
+  productId;
+  updatingProductData: any;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -114,6 +117,18 @@ export class NewRequestComponent implements OnInit {
       this.formData.trackType = res;
       this.isLoading = false;
     });
+
+    this.productId = this.route.snapshot.paramMap.get('id');
+    if (this.productId) {
+      this.isLoading = true;
+      this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+        this.selectedFormType = res.typeOfMarketing;
+        this.selectedRequestedType = res.typeOfRegistration;
+        this.selectedTrackType = res.Tracktype;
+        this.selectedIsExport = res.isExport;
+        this.updatingProductData = res;
+      });
+    }
   }
 
   getFormType(event) {
@@ -132,7 +147,8 @@ export class NewRequestComponent implements OnInit {
     this.isLoading = true;
 
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct : this.saveResponseDataForRegisterColorantProduct, event);
+      const id = Number(this.productId ? this.productId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct : this.saveResponseDataForRegisterColorantProduct);
+      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
@@ -142,7 +158,8 @@ export class NewRequestComponent implements OnInit {
         this.onClosed();
       });
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct : this.saveResponseDataForRegisterColorantKitProduct, event);
+      const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct : this.saveResponseDataForRegisterColorantKitProduct);
+      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductKitRequest(event).subscribe((res: any) => {
         this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;

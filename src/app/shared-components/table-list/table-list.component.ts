@@ -1,6 +1,7 @@
 import {Component, OnInit, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import {FormService} from '../../services/form.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-table-list',
@@ -43,18 +44,18 @@ export class TableListComponent implements OnInit, OnChanges {
 
   @Output() removeDetailsRowOutput = new EventEmitter();
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
+  @Output() removeProductFromKit = new EventEmitter();
   @Output() editDetailedRowOutput = new EventEmitter();
 
-  constructor() {
+  constructor(private getServices: FormService, private router: Router) {
   }
 
   ngOnChanges() {
-    if (this.data !== undefined) {
-      debugger;
+
+    if (this.data !== undefined && (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList')) {
       this.data.tableBody.map(x => x.ID = x.ID.toString());
       const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
       this.data.tableHeader.map((x, i) => {
-        console.log('x', x);
         if (this.staticFilterKey[this.data.tableHeader[i]]) {
           this.filterData.filterKey.push({name: this.data.tableHeader[i], id: this.staticFilterKey[this.data.tableHeader[i]]});
         }
@@ -86,6 +87,10 @@ export class TableListComponent implements OnInit, OnChanges {
 
   removeIngrediantDetailsRowFunction(childIndex, i, indexRow) {
     this.removeIngrediantDetailsRowOutput.emit({childIndex, indexRow, i});
+  }
+
+  removeProductFromKitFunction(index) {
+    this.removeProductFromKit.emit(index);
   }
 
   editDetailedRowFunction(i) {
@@ -174,5 +179,9 @@ export class TableListComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.alertNotificationStatus = false;
     }, 3000);
+  }
+
+  editProduct(id) {
+    this.router.navigate([`/new-request/registration/${Number(id)}`]);
   }
 }

@@ -15,6 +15,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   @Input() selectedFormType;
   @Input() selectedTrackType;
   @Input() successSubmission;
+  @Input() editData;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -1149,16 +1150,18 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder,
               private getServices: FormService,
               private number: DecimalPipe) {
-    this.getFormAsStarting();
+    this.getFormAsStarting('');
   }
 
   ngOnChanges() {
     this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
-    this.getFormAsStarting();
+    // this.getFormAsStarting('');
 
     if (this.successSubmission) {
       this.resetForms();
     }
+
+    this.getFormAsStarting(this.editData);
   }
 
   ngOnInit(): void {
@@ -1303,47 +1306,83 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     }));
   }
 
-  removeProductsGroupRows(i) {
-    this.ProductGroupsRows().removeAt(i);
+  removeProductsGroupRows(index) {
+    this.ProductGroupsRows().removeAt(index);
+
+    this.allProductsInKit.tableBody = [];
+    this.ProductGroupsRows().value.filter(y => y.productStatus).map(x => {
+      if (this.allProductsInKit.tableBody.length === 0) {
+        this.allProductsInKit.tableBody = [x.productDetails];
+      } else {
+        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
+      }
+    });
   }
 
-  getFormAsStarting() {
-    this.regKitForAllRequestedType = this.fb.group({
-      productArabicName: this.fb.control(''),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
-      shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
-      manufacturingCompany: this.fb.control('', Validators.required),
-      manufacturingCountry: this.fb.control('', Validators.required),
-      applicant: this.fb.control('', Validators.required),
-      licenseHolder: this.fb.control('', Validators.required),
-      licenseHolderTxt: this.fb.control(''),
-      countryOfLicenseHolder: this.fb.control('', Validators.required),
-      tradeMark: this.fb.control(''),
-      shelfLife: this.fb.control(0),
-      storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-      receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-      groupName: this.fb.control('', Validators.required),
-      ProductsForKit: this.fb.array([this.fb.group({
-        productStatus: this.fb.control(''),
-        NotificationNo: this.fb.control(''),
-        productDetails: this.fb.group({})
-      })]),
-      freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-      GMP: this.fb.control(''),
-      CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
-      artWorkForTheKit: this.fb.control('', Validators.required),
-      leaflet: this.fb.control(''),
-      reference: this.fb.control(''),
-      methodOfAnalysis: this.fb.control(''),
-      specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-      receipt: this.fb.control('', Validators.required),
-      authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-      manufacturingContract: this.fb.control(''),
-      storageContract: this.fb.control(''),
-      others: this.fb.control(''),
-      otherFees: this.fb.control('', Validators.required)
-    });
+  getFormAsStarting(data) {
+    if (data) {
+      data.ProductsForKit.map((x, i) => {
+        const keyOfLookup = Object.keys(this.lookupsData);
+        keyOfLookup.map(key => {
+          const keyLowerCase = key.replace('List', '');
+          const value = x[keyLowerCase];
+
+          this.lookupsData[key].filter(y => y.ID === value).map(x => {
+            x[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+          });
+        });
+
+        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
+      });
+
+      this.regKitForAllRequestedType.patchValue({
+        ...data
+      });
+
+      let control = <FormArray> this.regKitForAllRequestedType.controls.ProductsForKit;
+      data.ProductsForKit.map(x => {
+        control.push(this.fb.group(x));
+      });
+
+      this.addProductsGroupRows();
+    } else {
+      this.regKitForAllRequestedType = this.fb.group({
+        productArabicName: this.fb.control(''),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
+        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCountry: this.fb.control('', Validators.required),
+        applicant: this.fb.control('', Validators.required),
+        licenseHolder: this.fb.control('', Validators.required),
+        licenseHolderTxt: this.fb.control(''),
+        countryOfLicenseHolder: this.fb.control('', Validators.required),
+        tradeMark: this.fb.control(''),
+        shelfLife: this.fb.control(0),
+        storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
+        receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+        groupName: this.fb.control('', Validators.required),
+        ProductsForKit: this.fb.array([this.fb.group({
+          productStatus: this.fb.control(''),
+          NotificationNo: this.fb.control(''),
+          productDetails: this.fb.group({})
+        })]),
+        freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        GMP: this.fb.control(''),
+        CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
+        artWorkForTheKit: this.fb.control('', Validators.required),
+        leaflet: this.fb.control(''),
+        reference: this.fb.control(''),
+        methodOfAnalysis: this.fb.control(''),
+        specificationsOfFinishedProduct: this.fb.control('', Validators.required),
+        receipt: this.fb.control('', Validators.required),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        manufacturingContract: this.fb.control(''),
+        storageContract: this.fb.control(''),
+        others: this.fb.control(''),
+        otherFees: this.fb.control('', Validators.required)
+      });
+    }
   }
 
   equalTheNewDetailsTable(index) {
@@ -1407,7 +1446,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     });
 
     const lastRowInArray = this.ProductGroupsRows().value.length - 1;
-
     const data = {
       groupName: this.regKitForAllRequestedType.get('groupName').value,
       typeOfMarketing: this.selectedRegisteredProductTypeForProduct,
@@ -1420,13 +1458,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   getDecimalValue(value) {
-
     this.regKitForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regKitForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
   }
 
   resetForms() {
-    this.getFormAsStarting();
+    this.getFormAsStarting('');
   }
 }

@@ -104,7 +104,7 @@
                       <td class="hide">{{request.NameAR}}</td>
                       <td>{{request.Status}}</td>
                       <td class="hide">{{request.Track_type}}</td>
-                      <td><i class="fa fa-edit"></i></td>
+                      <td (click)="editProduct(request.ID)"><i class="fa fa-edit"></i></td>
                     </tr>
                   </table>
                 </div>
@@ -343,7 +343,7 @@
                     <td>{{request.manufacturingCountry}}</td>
                     <td>{{request.applicant}}</td>
                     <td>
-                      <span (click)="removeDetailsRowFunction(i, '')">
+                      <span (click)="removeProductFromKitFunction(i)">
                         <i class="fa fa-trash"></i>
                       </span>
                     </td>

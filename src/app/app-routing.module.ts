@@ -7,6 +7,9 @@ import {DraftRequestComponent} from './draft-request/draft-request.component';
 import {ApprovedRequestComponent} from './approved-request/approved-request.component';
 import {LoginComponent} from './login/login.component';
 import {HomeContainerComponent} from './home-container/home-container.component';
+import {NewRequestContainerComponent} from './new-request-container/new-request-container.component';
+import {TrackRequestContainerComponent} from './track-request-container/track-request-container.component';
+import {DraftRequestsContainerComponent} from './draft-requests-container/draft-requests-container.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -14,9 +17,25 @@ const routes: Routes = [
   {
     path: '', component: HomeContainerComponent, children: [
       {path: 'home', component: HomepageComponent, data: {animation: 'home'}},
-      {path: 'new-request', component: NewRequestComponent, data: {animation: 'new-request'}},
-      {path: 'track-request', component: TrackRequestComponent, data: {animation: 'track-request'}},
-      {path: 'draft-request', component: DraftRequestComponent, data: {animation: 'draft-request'}},
+      {
+        path: 'new-request', component: NewRequestContainerComponent,
+        children: [
+          {path: 'registration', component: NewRequestComponent, data: {animation: 'new-request'}},
+          {path: 'registration/:id', component: NewRequestComponent, data: {animation: 'new-request'}}
+        ]
+      },
+      {
+        path: 'track-request', component: TrackRequestContainerComponent,
+        children: [
+          {path: 'registration', component: TrackRequestComponent, data: {animation: 'track-request'}}
+        ]
+      },
+      {
+        path: 'draft-request', component: DraftRequestsContainerComponent,
+        children: [
+          {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}}
+        ]
+      },
       {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},
     ]
   }
