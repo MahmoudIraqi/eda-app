@@ -324,6 +324,22 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  setReRegistrationKitProduct(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    event = JSON.stringify(event);
+    console.log('data', event);
+
+    return this.http.post(`${this.apiBaseUrl}RequestsKit/ReregRequest`, event, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     return throwError(`Error! ${error.error}`);
   }

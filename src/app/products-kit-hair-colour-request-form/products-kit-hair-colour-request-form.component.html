@@ -420,6 +420,7 @@
         </button>
         <button type="button"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
+                *ngIf="!reRegistrationStatus"
                 (click)="saveData()">
           Save
         </button>
@@ -428,7 +429,8 @@
           type="submit"
           class="btn btn-primary btn-sm"
           [disabled]="!regColourKitForAllRequestedType.valid">
-          Submit
+          <span *ngIf="!reRegistrationStatus">Submit</span>
+          <span *ngIf="reRegistrationStatus">Re-Register Product</span>
         </button>
       </div>
     </div>

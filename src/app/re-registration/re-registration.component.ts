@@ -31,6 +31,8 @@ export class ReRegistrationComponent implements OnInit {
   NotificationNo;
   productData;
   isLoading: boolean = false;
+  alertNotification: any;
+  alertNotificationStatus: boolean = false;
 
   constructor(private getService: FormService) {
   }
@@ -103,7 +105,6 @@ export class ReRegistrationComponent implements OnInit {
   applyProduct(NotificationNo) {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo).subscribe((res: any) => {
-      console.log('res', res);
       this.productData = res;
       this.isLoading = false;
     });
@@ -112,7 +113,6 @@ export class ReRegistrationComponent implements OnInit {
   onSubmit(event) {
     this.isLoading = true;
     if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
-
       const data = {
         ...this.productData,
         receiptNumber: event.receiptNumber,
@@ -121,24 +121,45 @@ export class ReRegistrationComponent implements OnInit {
         receipt: event.receipt
       };
 
-      console.log('data', data);
-
       this.getService.setReRegistrationProduct(data).subscribe((res: any) => {
-        console.log('res', res);
         this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
+        this.onClosed();
       });
     } else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
-      // event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
-      //
-      // this.getService.createProductKitRequest(event).subscribe((res: any) => {
-      //   this.isLoading = false;
-      //   this.successSubmission = true;
-      //   this.alertNotificationStatus = true;
-      //   this.alertNotification = this.alertForSubmitRequest();
-      //   this.emptyTheTopField();
-      //   this.onClosed();
-      // });
+      const data = {
+        ...this.productData,
+        receiptNumber: event.receiptNumber,
+        receiptValue: event.receiptValue,
+        otherFees: event.otherFees,
+        receipt: event.receipt
+      };
+
+      this.getService.setReRegistrationKitProduct(data).subscribe((res: any) => {
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
+        this.onClosed();
+      });
 
     }
+  }
+
+  alertForSubmitRequest() {
+    return {msg: 'You had a successful Submission'};
+  }
+
+  onClosed() {
+    setTimeout(() => {
+      this.alertNotificationStatus = false;
+    }, 2000);
+  }
+
+  emptyTheTopField() {
+    this.productData = '';
+    this.NotificationNo = '';
   }
 }

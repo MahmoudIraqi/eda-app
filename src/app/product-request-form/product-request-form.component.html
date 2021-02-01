@@ -662,7 +662,8 @@
           class="btn btn-primary btn-sm"
           [disabled]="!regProductForAllRequestedType.valid"> <!--  -->
           <span *ngIf="!kitProductStatus && !reRegistrationStatus">Submit</span>
-          <span *ngIf="kitProductStatus || reRegistrationStatus">Apply Product</span>
+          <span *ngIf="kitProductStatus">Apply Product</span>
+          <span *ngIf="reRegistrationStatus">Re-Register Product</span>
         </button>
       </div>
     </div>

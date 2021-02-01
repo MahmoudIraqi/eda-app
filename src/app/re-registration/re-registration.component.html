@@ -42,31 +42,31 @@
               (submitDataOutput)="onSubmit($event)"
             ></app-products-kit-request-form>
           </div>
-          <!--          <div class="col-12 mt-5"-->
-          <!--               *ngIf="selectedFormType === 3 && selectedRequestedType">-->
-          <!--&lt;!&ndash;            <app-products-hair-colour-request-form&ndash;&gt;-->
-          <!--&lt;!&ndash;              [selectedRequestedType]="selectedRequestedType"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [successSubmission]="successSubmission"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [editData]="updatingProductData"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [lookupsData]="formData"&ndash;&gt;-->
-          <!--&lt;!&ndash;              (saveDataOutput)="saveData($event)"&ndash;&gt;-->
-          <!--&lt;!&ndash;              (submitDataOutput)="onSubmit($event)"&ndash;&gt;-->
-          <!--&lt;!&ndash;            ></app-products-hair-colour-request-form>&ndash;&gt;-->
-          <!--          </div>-->
-          <!--          <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType">-->
-          <!--&lt;!&ndash;            <app-products-kit-hair-colour-request-form&ndash;&gt;-->
-          <!--&lt;!&ndash;              [selectedRequestedType]="selectedRequestedType"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [selectedFormType]="selectedFormType"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [selectedTrackType]="selectedTrackType"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [successSubmission]="successSubmission"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [editData]="updatingProductData"&ndash;&gt;-->
-          <!--&lt;!&ndash;              [lookupsData]="formData"&ndash;&gt;-->
-          <!--&lt;!&ndash;              (saveDataOutput)="saveData($event)"&ndash;&gt;-->
-          <!--&lt;!&ndash;              (submitDataOutput)="onSubmit($event)"&ndash;&gt;-->
-          <!--&lt;!&ndash;            ></app-products-kit-hair-colour-request-form>&ndash;&gt;-->
-          <!--          </div>-->
+          <div class="col-12 mt-5"
+               *ngIf="productData && productData.typeOfMarketing === 3">
+            <app-products-hair-colour-request-form
+              [editData]="this.productData"
+              [lookupsData]="formData"
+              [reRegistrationStatus]="true"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-hair-colour-request-form>
+          </div>
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
+            <app-products-kit-hair-colour-request-form
+              [editData]="this.productData"
+              [lookupsData]="formData"
+              [reRegistrationStatus]="true"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-kit-hair-colour-request-form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
