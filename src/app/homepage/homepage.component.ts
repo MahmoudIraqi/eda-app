@@ -59,7 +59,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Re-Registration',
-            link: '#'
+            link: '/track-request/re-registration'
           },
           {
             name: 'Tell & Do variation',

@@ -12,6 +12,7 @@ import {TrackRequestContainerComponent} from './track-request-container/track-re
 import {DraftRequestsContainerComponent} from './draft-requests-container/draft-requests-container.component';
 import {ReRegistrationComponent} from './re-registration/re-registration.component';
 import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
+import {TrackReRegistrationRequestComponent} from './track-re-registration-request/track-re-registration-request.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -30,7 +31,8 @@ const routes: Routes = [
       {
         path: 'track-request', component: TrackRequestContainerComponent,
         children: [
-          {path: 'registration', component: TrackRequestComponent, data: {animation: 'track-request'}}
+          {path: 'registration', component: TrackRequestComponent, data: {animation: 'track-request'}},
+          {path: 're-registration', component: TrackReRegistrationRequestComponent, data: {animation: 'track-request'}}
         ]
       },
       {

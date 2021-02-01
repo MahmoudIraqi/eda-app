@@ -243,6 +243,19 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getTrackReRegistrationRequestsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests/GetReRegRequestData?Type=track&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getDraftRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

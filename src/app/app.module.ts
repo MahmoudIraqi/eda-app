@@ -43,6 +43,7 @@ import {TrackRequestContainerComponent} from './track-request-container/track-re
 import {DraftRequestsContainerComponent} from './draft-requests-container/draft-requests-container.component';
 import {ReRegistrationComponent} from './re-registration/re-registration.component';
 import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
+import { TrackReRegistrationRequestComponent } from './track-re-registration-request/track-re-registration-request.component';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import {RejectedRequestesComponent} from './rejected-requestes/rejected-requeste
     DraftRequestsContainerComponent,
     ReRegistrationComponent,
     RejectedRequestesComponent,
+    TrackReRegistrationRequestComponent,
   ],
   imports: [
     BrowserModule,
