@@ -308,13 +308,16 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  setReRegistrationProduct(productID) {
+  setReRegistrationProduct(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}requests/ReregRequest`, options)
+    event = JSON.stringify(event);
+    console.log('data', event);
+
+    return this.http.post(`${this.apiBaseUrl}requests/ReregRequest`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),

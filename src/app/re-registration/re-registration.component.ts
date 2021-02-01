@@ -109,47 +109,23 @@ export class ReRegistrationComponent implements OnInit {
     });
   }
 
-  saveData(event) {
-    this.isLoading = true;
-    console.log('event', event);
-    if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
-      // event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
-
-      // this.getService.createProductRequest(event).subscribe((res: any) => {
-      //   this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
-      //   this.isLoading = false;
-      //   this.alertNotificationStatus = true;
-      //   this.alertNotification = this.alertForSaveRequest();
-      //   this.onClosed();
-      // });
-    } else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
-      // const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct : this.saveResponseDataForRegisterColorantKitProduct);
-      // event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
-      //
-      // this.getService.createProductKitRequest(event).subscribe((res: any) => {
-      //   this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
-      //   this.isLoading = false;
-      //   this.alertNotificationStatus = true;
-      //   this.alertNotification = this.alertForSaveRequest();
-      //   this.onClosed();
-      // });
-    }
-  }
-
   onSubmit(event) {
     this.isLoading = true;
     if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
-      console.log('event', event);
-      // event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
-      //
-      this.getService.setReRegistrationProduct(event).subscribe((res: any) => {
+
+      const data = {
+        ...this.productData,
+        receiptNumber: event.receiptNumber,
+        receiptValue: event.receiptValue,
+        otherFees: event.otherFees,
+        receipt: event.receipt
+      };
+
+      console.log('data', data);
+
+      this.getService.setReRegistrationProduct(data).subscribe((res: any) => {
         console.log('res', res);
         this.isLoading = false;
-        // this.successSubmission = true;cd ..
-        // // this.alertNotificationStatus = true;
-        // // this.alertNotification = this.alertForSubmitRequest();
-        // this.emptyTheTopField();
-        // this.onClosed();
       });
     } else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
       // event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);

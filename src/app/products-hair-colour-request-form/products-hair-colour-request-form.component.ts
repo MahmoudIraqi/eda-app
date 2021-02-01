@@ -15,6 +15,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Input() successSubmission;
   @Input() lookupsData;
   @Input() editData;
+  @Input() reRegistrationStatus;
   @Input() kitHairProductStatus;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();

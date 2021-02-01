@@ -16,6 +16,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
+  @Input() reRegistrationStatus;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();

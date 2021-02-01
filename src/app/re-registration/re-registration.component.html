@@ -34,18 +34,14 @@
               (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>
           </div>
-          <!--          <div class="col-12 mt-5" *ngIf="selectedFormType === 2 && selectedRequestedType">-->
-          <!--            <app-products-kit-request-form-->
-          <!--              [selectedRequestedType]="selectedRequestedType"-->
-          <!--              [selectedFormType]="selectedFormType"-->
-          <!--              [selectedTrackType]="selectedTrackType"-->
-          <!--              [successSubmission]="successSubmission"-->
-          <!--              [editData]="updatingProductData"-->
-          <!--              [lookupsData]="formData"-->
-          <!--              (saveDataOutput)="saveData($event)"-->
-          <!--              (submitDataOutput)="onSubmit($event)"-->
-          <!--            ></app-products-kit-request-form>-->
-          <!--          </div>-->
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">
+            <app-products-kit-request-form
+              [editData]="this.productData"
+              [lookupsData]="formData"
+              [reRegistrationStatus]="true"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-kit-request-form>
+          </div>
           <!--          <div class="col-12 mt-5"-->
           <!--               *ngIf="selectedFormType === 3 && selectedRequestedType">-->
           <!--&lt;!&ndash;            <app-products-hair-colour-request-form&ndash;&gt;-->

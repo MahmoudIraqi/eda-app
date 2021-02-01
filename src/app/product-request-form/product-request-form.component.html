@@ -99,7 +99,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Country</mat-label>
-              <mat-select formControlName="manufacturingCountry" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+              <mat-select formControlName="manufacturingCountry" required *ngIf="formData"
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country.ID">
                   {{country.COUNTRY_NAME}}
                 </mat-option>
@@ -117,7 +118,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
-              <mat-select formControlName="applicant" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+              <mat-select formControlName="applicant" required *ngIf="formData"
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let applicant of formData.applicantList' [value]="applicant.ID">
                   {{applicant.NAME}}
                 </mat-option>
@@ -135,7 +137,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
-              <mat-select formControlName="licenseHolder" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+              <mat-select formControlName="licenseHolder" required *ngIf="formData"
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder.ID">
                   {{licHolder.NAME}}
                 </mat-option>
@@ -161,7 +164,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Country of License Holder</mat-label>
-              <mat-select formControlName="countryOfLicenseHolder" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+              <mat-select formControlName="countryOfLicenseHolder" required *ngIf="formData"
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country.ID">
                   {{country.COUNTRY_NAME}}
                 </mat-option>
@@ -186,7 +190,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Physical State</mat-label>
-              <mat-select formControlName="physicalState" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+              <mat-select formControlName="physicalState" required *ngIf="formData"
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let state of formData.physicalStateList' [value]="state.ID">
                   {{state.NAME}}
                 </mat-option>
@@ -212,7 +217,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Purpose of use</mat-label>
-              <mat-select formControlName="purposeOfUse" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+              <mat-select formControlName="purposeOfUse" required *ngIf="formData"
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose.ID">
                   {{purpose.NAME}}
                 </mat-option>
@@ -260,7 +266,14 @@
               <div class="col-12 col-sm-9">
                 <div class="form-group">
                   <label>Shelf Life</label>
-                  <input class="form-control" type="range" min="0" max="60" formControlName="shelfLife" [disabled]="reRegistrationStatus ? true: false">
+                  <mat-slider
+                    class="example-margin mt-3"
+                    [disabled]="reRegistrationStatus ? true: false"
+                    [max]="60"
+                    [min]="0"
+                    [step]="1"
+                    formControlName="shelfLife">
+                  </mat-slider>
                 </div>
               </div>
               <div class="col-12 col-sm-3">
@@ -279,7 +292,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
-                     placeholder="Receipt Number" required >
+                     placeholder="Receipt Number" required>
               <div
                 *ngIf="regProductForAllRequestedType.get('receiptNumber').invalid && (regProductForAllRequestedType.get('receiptNumber').dirty || regProductForAllRequestedType.get('receiptNumber').touched)"
                 class="alert alert-danger">
@@ -350,7 +363,8 @@
                 <div class="col-12 col-sm-6 col-lg-4 mb-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Unit of measure</mat-label>
-                    <mat-select formControlName="unitOfMeasure" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+                    <mat-select formControlName="unitOfMeasure" required *ngIf="formData"
+                                [disabled]="reRegistrationStatus ? true: false">
                       <mat-option *ngFor='let unit of formData.unitOfMeasureList'
                                   [value]="unit.ID">
                         {{unit.UNIT_OF_MEASURE}}
@@ -369,7 +383,8 @@
                 <div class="col-12 col-sm-6 col-lg-4 mb-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Type of Packaging</mat-label>
-                    <mat-select formControlName="typeOfPackaging" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+                    <mat-select formControlName="typeOfPackaging" required *ngIf="formData"
+                                [disabled]="reRegistrationStatus ? true: false">
                       <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type.ID">
                         {{type.PACKAGING_TYPE}}
                       </mat-option>
@@ -484,7 +499,8 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Ingrediant</mat-label>
-                                <mat-select formControlName="ingrediant" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+                                <mat-select formControlName="ingrediant" required *ngIf="formData"
+                                            [disabled]="reRegistrationStatus ? true: false">
                                   <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
                                               [value]="ingrediantItem.ID">
                                     {{ingrediantItem.INCI_name}}
@@ -504,9 +520,9 @@
                               <mat-form-field class="example-full-width inputBesideSelect">
                                 <mat-label>Concentrations</mat-label>
                                 <input type="text" class="form-control" matInput
-                                       [readonly]="reRegistrationStatus ? true: false"
                                        formControlName="concentrations"
                                        placeholder="concentrations" required>
+                                <!-- [readonly]="reRegistrationStatus ? true: false" -->
                                 <div
                                   *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                                   class="alert alert-danger">
@@ -520,7 +536,8 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Function</mat-label>
-                                <mat-select formControlName="function" required *ngIf="formData" [disabled]="reRegistrationStatus ? true: false">
+                                <mat-select formControlName="function" required *ngIf="formData"
+                                            [disabled]="reRegistrationStatus ? true: false">
                                   <mat-option *ngFor='let functiontItem of formData.functionList'
                                               [value]="functiontItem.ID">
                                     {{functiontItem.FUNCTION_NAME}}

@@ -292,7 +292,14 @@
               <div class="col-12 col-sm-9">
                 <div class="form-group">
                   <label>Shelf Life</label>
-                  <input class="form-control" type="range" min="0" max="60" formControlName="shelfLife">
+                  <mat-slider
+                    class="example-margin mt-3"
+                    [disabled]="reRegistrationStatus ? true: false"
+                    [max]="60"
+                    [min]="0"
+                    [step]="1"
+                    formControlName="shelfLife">
+                  </mat-slider>
                 </div>
               </div>
               <div class="col-12 col-sm-3">
