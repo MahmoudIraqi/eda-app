@@ -521,8 +521,8 @@
                                 <mat-label>Concentrations</mat-label>
                                 <input type="text" class="form-control" matInput
                                        formControlName="concentrations"
-                                       placeholder="concentrations" required>
-                                <!-- [readonly]="reRegistrationStatus ? true: false" -->
+                                       placeholder="concentrations" required
+                                       [readonly]="reRegistrationStatus ? true: false">
                                 <div
                                   *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                                   class="alert alert-danger">

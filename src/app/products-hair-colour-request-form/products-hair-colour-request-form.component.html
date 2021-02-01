@@ -28,14 +28,14 @@
             <mat-form-field class="example-full-width">
               <mat-label>Product Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
-                     placeholder="Product Name">
+                     placeholder="Product Name" [readonly]="reRegistrationStatus ? true: false">
             </mat-form-field>
           </div>
           <div class="col-sm-6">
             <mat-form-field class="example-full-width">
               <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
-                     placeholder="Product Name" required>
+                     placeholder="Product Name" required [readonly]="reRegistrationStatus ? true: false">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('productEnglishName').invalid && (regHairColorantProductForAllRequestedType.get('productEnglishName').dirty || regHairColorantProductForAllRequestedType.get('productEnglishName').touched)"
                 class="alert alert-danger">
@@ -67,7 +67,7 @@
                   <mat-form-field class="example-full-width">
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
-                           placeholder="Short Name">
+                           placeholder="Short Name" [readonly]="reRegistrationStatus ? true: false">
                     <button type="button" (click)="removeShortName(i)" class="close">Remove</button>
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
                       this field must be in English
@@ -80,7 +80,7 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Product Color</mat-label>
-              <mat-select formControlName="productColor">
+              <mat-select formControlName="productColor" [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor="let color of formData.productColorList" [value]="color.ID">
                   {{color.NAME}}
                 </mat-option>
@@ -90,7 +90,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Company</mat-label>
-              <mat-select formControlName="manufacturingCompany" required>
+              <mat-select formControlName="manufacturingCompany" required
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company.ID">
                   {{company.MANUFACTORY}}
                 </mat-option>
@@ -108,7 +109,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Country</mat-label>
-              <mat-select formControlName="manufacturingCountry" required>
+              <mat-select formControlName="manufacturingCountry" required
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country.ID">
                   {{country.COUNTRY_NAME}}
                 </mat-option>
@@ -126,7 +128,7 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
-              <mat-select formControlName="applicant" required>
+              <mat-select formControlName="applicant" required [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let applicant of formData.applicantList' [value]="applicant.ID">
                   {{applicant.NAME}}
                 </mat-option>
@@ -144,7 +146,7 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
-              <mat-select formControlName="licenseHolder" required>
+              <mat-select formControlName="licenseHolder" required [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder.ID">
                   {{licHolder.NAME}}
                 </mat-option>
@@ -164,7 +166,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
-                     placeholder="Other License Holder" required>
+                     placeholder="Other License Holder" required [readonly]="reRegistrationStatus ? true: false">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolderTxt').invalid && (regHairColorantProductForAllRequestedType.get('licenseHolderTxt').dirty || regHairColorantProductForAllRequestedType.get('licenseHolderTxt').touched)"
                 class="alert alert-danger">
@@ -178,7 +180,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Country of License Holder</mat-label>
-              <mat-select formControlName="countryOfLicenseHolder" required>
+              <mat-select formControlName="countryOfLicenseHolder" required
+                          [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country.ID">
                   {{country.COUNTRY_NAME}}
                 </mat-option>
@@ -197,13 +200,13 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
-                     placeholder="Trade Mark">
+                     placeholder="Trade Mark" [readonly]="reRegistrationStatus ? true: false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Physical State</mat-label>
-              <mat-select formControlName="physicalState" required>
+              <mat-select formControlName="physicalState" required [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let state of formData.physicalStateList' [value]="state.ID">
                   {{state.NAME}}
                 </mat-option>
@@ -223,7 +226,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other Physical State</mat-label>
               <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
-                     placeholder="Other Physical State" required>
+                     placeholder="Other Physical State" required [readonly]="reRegistrationStatus ? true: false">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('physicalStateTxt').invalid && (regHairColorantProductForAllRequestedType.get('physicalStateTxt').dirty || regHairColorantProductForAllRequestedType.get('physicalStateTxt').touched)"
                 class="alert alert-danger">
@@ -237,7 +240,7 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Purpose of use</mat-label>
-              <mat-select formControlName="purposeOfUse" required>
+              <mat-select formControlName="purposeOfUse" required [disabled]="reRegistrationStatus ? true: false">
                 <mat-option *ngFor='let purpose of formData.purposeOfUseList' [value]="purpose.ID">
                   {{purpose.NAME}}
                 </mat-option>
@@ -257,7 +260,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other Purpose of use</mat-label>
               <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
-                     placeholder="Other Purpose of use" required>
+                     placeholder="Other Purpose of use" required [readonly]="reRegistrationStatus ? true: false">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').invalid && (regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').dirty || regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').touched)"
                 class="alert alert-danger">
@@ -272,6 +275,7 @@
             <mat-form-field class="example-full-width">
               <mat-label>Storage Place</mat-label>
               <mat-select formControlName="storagePlace" *ngIf="formData"
+                          [disabled]="reRegistrationStatus ? true: false"
                           [required]="this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6? true: false">
                 <mat-option *ngFor='let purpose of formData.storagePlaceList' [value]="purpose.ID">
                   {{purpose.STORAGE_PLACE_NAME}}
@@ -305,7 +309,9 @@
               <div class="col-12 col-sm-3">
                 <mat-form-field class="example-full-width inputBesideSelect">
                   <input type="text" class="form-control" matInput
-                         [value]="regHairColorantProductForAllRequestedType.get('shelfLife').value" formControlName="shelfLife"
+                         [value]="regHairColorantProductForAllRequestedType.get('shelfLife').value"
+                         formControlName="shelfLife"
+                         [readonly]="reRegistrationStatus ? true: false"
                          (change)="setShelfValue($event)">
                   <span class="labelForRange">Months</span>
                 </mat-form-field>
@@ -370,7 +376,7 @@
                   <mat-form-field class="example-full-width">
                     <mat-label>Volumes</mat-label>
                     <input type="text" class="form-control" matInput formControlName="volumes"
-                           placeholder="" required>
+                           placeholder="" required [readonly]="reRegistrationStatus ? true: false">
                     <div
                       *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
                       class="alert alert-danger">
@@ -388,7 +394,8 @@
                 <div class="col-12 col-sm-6 col-lg-4 mb-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Unit of measure</mat-label>
-                    <mat-select formControlName="unitOfMeasure" required *ngIf="formData">
+                    <mat-select formControlName="unitOfMeasure" required *ngIf="formData"
+                                [disabled]="reRegistrationStatus ? true: false">
                       <mat-option *ngFor='let unit of formData.unitOfMeasureList'
                                   [value]="unit.ID">
                         {{unit.UNIT_OF_MEASURE}}
@@ -407,7 +414,8 @@
                 <div class="col-12 col-sm-6 col-lg-4 mb-3">
                   <mat-form-field appearance="fill">
                     <mat-label>Type of Packaging</mat-label>
-                    <mat-select formControlName="typeOfPackaging" required *ngIf="formData">
+                    <mat-select formControlName="typeOfPackaging" required *ngIf="formData"
+                                [disabled]="reRegistrationStatus ? true: false">
                       <mat-option *ngFor='let type of formData.typeOfPackagingList' [value]="type.ID">
                         {{type.PACKAGING_TYPE}}
                       </mat-option>
@@ -428,7 +436,8 @@
                       <mat-form-field class="example-full-width">
                         <mat-label>Packaging Description</mat-label>
                         <textarea matInput formControlName="packagingDescription"
-                                  placeholder="Ex. It makes me feel..."></textarea>
+                                  placeholder="Ex. It makes me feel..."
+                                  [readonly]="reRegistrationStatus ? true: false"></textarea>
                       </mat-form-field>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3 ml-auto">
@@ -479,7 +488,7 @@
                   <mat-form-field class="example-full-width">
                     <mat-label>Colour</mat-label>
                     <input type="text" class="form-control" matInput formControlName="colour"
-                           placeholder="">
+                           placeholder="" [readonly]="reRegistrationStatus ? true: false">
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -487,21 +496,21 @@
                     <mat-label>Fragrance</mat-label>
                     <input type="text" class="form-control" matInput
                            formControlName="fragrance"
-                           placeholder="">
+                           placeholder="" [readonly]="reRegistrationStatus ? true: false">
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>Flavor</mat-label>
                     <input type="text" class="form-control" matInput formControlName="flavor"
-                           placeholder="">
+                           placeholder="" [readonly]="reRegistrationStatus ? true: false">
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
                     <mat-label>BarCode</mat-label>
                     <input type="text" class="form-control" matInput formControlName="barCode"
-                           placeholder="">
+                           placeholder="" [readonly]="reRegistrationStatus ? true: false">
                   </mat-form-field>
                 </div>
                 <div class="col-12 mt-2">
@@ -521,7 +530,8 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Ingrediant</mat-label>
-                                <mat-select formControlName="ingrediant" required *ngIf="formData">
+                                <mat-select formControlName="ingrediant" required *ngIf="formData"
+                                            [disabled]="reRegistrationStatus ? true: false">
                                   <mat-option *ngFor='let ingrediantItem of formData.ingrediantList'
                                               [value]="ingrediantItem.ID">
                                     {{ingrediantItem.INCI_name}}
@@ -542,7 +552,8 @@
                                 <mat-label>Concentrations</mat-label>
                                 <input type="text" class="form-control" matInput
                                        formControlName="concentrations"
-                                       placeholder="concentrations" required>
+                                       placeholder="concentrations" required
+                                       [readonly]="reRegistrationStatus ? true: false">
                                 <div
                                   *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                                   class="alert alert-danger">
@@ -556,7 +567,8 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill">
                                 <mat-label>Function</mat-label>
-                                <mat-select formControlName="function" required *ngIf="formData">
+                                <mat-select formControlName="function" required *ngIf="formData"
+                                            [disabled]="reRegistrationStatus ? true: false">
                                   <mat-option *ngFor='let functiontItem of formData.functionList'
                                               [value]="functiontItem.ID">
                                     {{functiontItem.FUNCTION_NAME}}
