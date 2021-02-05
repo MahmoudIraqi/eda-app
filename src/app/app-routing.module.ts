@@ -13,6 +13,7 @@ import {DraftRequestsContainerComponent} from './draft-requests-container/draft-
 import {ReRegistrationComponent} from './re-registration/re-registration.component';
 import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
 import {TrackReRegistrationRequestComponent} from './track-re-registration-request/track-re-registration-request.component';
+import {VariationComponent} from './variation/variation.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -26,6 +27,7 @@ const routes: Routes = [
           {path: 'registration', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'registration/:id', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
+          {path: 'variation', component: VariationComponent, data: {animation: 'new-request'}},
         ]
       },
       {

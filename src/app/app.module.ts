@@ -44,6 +44,7 @@ import {DraftRequestsContainerComponent} from './draft-requests-container/draft-
 import {ReRegistrationComponent} from './re-registration/re-registration.component';
 import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
 import { TrackReRegistrationRequestComponent } from './track-re-registration-request/track-re-registration-request.component';
+import { VariationComponent } from './variation/variation.component';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { TrackReRegistrationRequestComponent } from './track-re-registration-req
     ReRegistrationComponent,
     RejectedRequestesComponent,
     TrackReRegistrationRequestComponent,
+    VariationComponent,
   ],
   imports: [
     BrowserModule,

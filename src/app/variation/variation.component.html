@@ -1,0 +1,89 @@
+<div class="whiteContainer reregistrationContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'Variation for requests'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="formTable">
+        <div class="row">
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Product Notification Number</mat-label>
+                  <input type="text" class="form-control" matInput
+                         [(ngModel)]="NotificationNo"
+                         placeholder="">
+                </mat-form-field>
+              </div>
+              <div class="col-6 d-flex">
+                <button type="button"
+                        class="btn btn-primary ml-auto mt-sm-4 mb-3"
+                        [disabled]="!NotificationNo"
+                        (click)="applyProduct(NotificationNo)">
+                  Get Product
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="variationGroupList">
+            <mat-form-field appearance="fill">
+              <mat-label>Toppings</mat-label>
+              <mat-select [(ngModel)]="typeOfVariationForProduct" multiple
+                          (selectionChange)="onSelectionChange($event)">
+                <mat-option *ngFor="let topping of variationGroupList" [value]="topping">
+                  {{topping.groupName}}
+                  <p class="noteText">
+                    ( <span *ngFor="let field of topping.VARIATION_GROUP_FieldsDto; let i = index">
+                      {{field.FIELD_NAME}} <i *ngIf="(topping.VARIATION_GROUP_FieldsDto.length -1) !== i">,</i>
+                    </span> )
+                  </p>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 1 ">
+            <app-product-request-form
+              [editData]="this.productData"
+              [lookupsData]="formData"
+              [variationFieldsStatus]="true"
+              [variationFields]="variationFields"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-product-request-form>
+          </div>
+          <!--          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">-->
+          <!--            <app-products-kit-request-form-->
+          <!--              [editData]="this.productData"-->
+          <!--              [lookupsData]="formData"-->
+          <!--              [reRegistrationStatus]="true"-->
+          <!--              (submitDataOutput)="onSubmit($event)"-->
+          <!--            ></app-products-kit-request-form>-->
+          <!--          </div>-->
+          <!--          <div class="col-12 mt-5"-->
+          <!--               *ngIf="productData && productData.typeOfMarketing === 3">-->
+          <!--            <app-products-hair-colour-request-form-->
+          <!--              [editData]="this.productData"-->
+          <!--              [lookupsData]="formData"-->
+          <!--              [reRegistrationStatus]="true"-->
+          <!--              (submitDataOutput)="onSubmit($event)"-->
+          <!--            ></app-products-hair-colour-request-form>-->
+          <!--          </div>-->
+          <!--          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">-->
+          <!--            <app-products-kit-hair-colour-request-form-->
+          <!--              [editData]="this.productData"-->
+          <!--              [lookupsData]="formData"-->
+          <!--              [reRegistrationStatus]="true"-->
+          <!--              (submitDataOutput)="onSubmit($event)"-->
+          <!--            ></app-products-kit-hair-colour-request-form>-->
+          <!--          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

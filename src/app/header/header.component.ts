@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Tell & Do variation',
-          link: '#'
+          link: '/new-request//variation'
         },
         {
           name: 'Do & Tell Variation',

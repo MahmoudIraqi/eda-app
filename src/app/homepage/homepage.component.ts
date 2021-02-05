@@ -27,7 +27,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Tell & Do variation',
-            link: '#'
+            link: '/new-request//variation'
           },
           {
             name: 'Do & Tell Variation',

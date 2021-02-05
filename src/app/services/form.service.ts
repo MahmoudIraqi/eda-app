@@ -204,7 +204,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}requests`, data, options)
       .pipe(map((res: any) => {
@@ -221,7 +220,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}requestsKit`, data, options)
       .pipe(map((res: any) => {
@@ -236,7 +234,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}requests?Type=track&pageNo=1&pageSize=30`, options)
+    return this.http.get(`${this.apiBaseUrl}requests?Type=track&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -262,7 +260,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=draft&pageNo=1&pageSize=30`, options)
+    return this.http.get(`${this.apiBaseUrl}Requests?Type=draft&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -275,7 +273,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=30`, options)
+    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -288,7 +286,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=30`, options)
+    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -328,7 +326,6 @@ export class FormService {
     const options = {headers};
 
     event = JSON.stringify(event);
-    console.log('data', event);
 
     return this.http.post(`${this.apiBaseUrl}requests/ReregRequest`, event, options)
       .pipe(map((res: any) => {
@@ -344,9 +341,36 @@ export class FormService {
     const options = {headers};
 
     event = JSON.stringify(event);
-    console.log('data', event);
 
     return this.http.post(`${this.apiBaseUrl}RequestsKit/ReregRequest`, event, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  setVariationProduct(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    event = JSON.stringify(event);
+
+    return this.http.post(`${this.apiBaseUrl}requests/VariationRequest`, event, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getVariationRequiredFields(typeOfRegistrationId) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}variation_group_fields?regTypeID=${typeOfRegistrationId}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

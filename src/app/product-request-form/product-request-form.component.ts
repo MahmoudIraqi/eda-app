@@ -18,6 +18,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   @Input() successSubmission;
   @Input() editData;
   @Input() reRegistrationStatus;
+  @Input() variationFieldsStatus;
+  @Input() variationFields;
   @Input() lookupsData;
   @Input() kitProductStatus;
   @Output() saveDataOutput = new EventEmitter();
@@ -134,6 +136,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   isloading: boolean = false;
   rangeInput;
   activeTabIndex;
+  enableEditableFields = [];
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
@@ -236,6 +239,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     ];
 
     this.getFormAsStarting(this.editData);
+
+    this.getDisabledValues();
   }
 
   ngOnInit(): void {
@@ -508,6 +513,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       this.regProductForAllRequestedType.get('shelfLife').patchValue(60);
     } else {
       this.regProductForAllRequestedType.get('shelfLife').patchValue(Number(event.target.value));
+    }
+  }
+
+  getDisabledValues() {
+    if (this.variationFields.length > 0) {
+      this.enableEditableFields = [];
+      this.variationFields.map(x => {
+        this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+      });
     }
   }
 }
