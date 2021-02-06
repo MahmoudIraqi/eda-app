@@ -254,6 +254,19 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getTrackVariationRequestsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=track&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getDraftRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -274,6 +287,19 @@ export class FormService {
     const options = {headers};
 
     return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getDraftVariationProductsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=draft&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),

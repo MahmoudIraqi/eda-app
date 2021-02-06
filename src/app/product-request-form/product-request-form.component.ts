@@ -4,6 +4,8 @@ import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {FormService} from '../services/form.service';
 import {formDataClass} from '../../utils/formDataFunction';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-request-form',
@@ -137,6 +139,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   rangeInput;
   activeTabIndex;
   enableEditableFields = [];
+  testModel;
+  filteredOptions: Observable<any[]>;
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
@@ -146,6 +150,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
+
+    this.filteredOptions = this.regProductForAllRequestedType.get('manufacturingCompany').valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
 
     if (this.successSubmission) {
       this.resetForms();
@@ -244,6 +254,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.filteredOptions = this.regProductForAllRequestedType.get('manufacturingCompany').valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    console.log('1234', this.formData.manufacturingCompanyList.filter(option => option.MANUFACTORY.toLowerCase().includes(filterValue)).map(x => x.MANUFACTORY));
+
+    return this.formData.manufacturingCompanyList.filter(option => option.MANUFACTORY.toLowerCase().includes(filterValue)).map(x => x.MANUFACTORY);
   }
 
   getFormType(event) {
@@ -517,11 +540,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   getDisabledValues() {
-    if (this.variationFields.length > 0) {
+    if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
       });
     }
+  }
+
+
+  filterInsideList() {
+
   }
 }

@@ -23,6 +23,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSliderModule} from '@angular/material/slider';
@@ -43,8 +44,10 @@ import {TrackRequestContainerComponent} from './track-request-container/track-re
 import {DraftRequestsContainerComponent} from './draft-requests-container/draft-requests-container.component';
 import {ReRegistrationComponent} from './re-registration/re-registration.component';
 import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
-import { TrackReRegistrationRequestComponent } from './track-re-registration-request/track-re-registration-request.component';
-import { VariationComponent } from './variation/variation.component';
+import {TrackReRegistrationRequestComponent} from './track-re-registration-request/track-re-registration-request.component';
+import {VariationComponent} from './variation/variation.component';
+import {TrackVariationComponent} from './track-variation/track-variation.component';
+import {DraftVariationComponent} from './draft-variation/draft-variation.component';
 
 
 @NgModule({
@@ -74,6 +77,8 @@ import { VariationComponent } from './variation/variation.component';
     RejectedRequestesComponent,
     TrackReRegistrationRequestComponent,
     VariationComponent,
+    TrackVariationComponent,
+    DraftVariationComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,6 +98,7 @@ import { VariationComponent } from './variation/variation.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatDatepickerModule,
+    MatAutocompleteModule,
     MatNativeDateModule
   ],
   providers: [DecimalPipe, DatePipe, FormService],

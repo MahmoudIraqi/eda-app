@@ -14,6 +14,8 @@ import {ReRegistrationComponent} from './re-registration/re-registration.compone
 import {RejectedRequestesComponent} from './rejected-requestes/rejected-requestes.component';
 import {TrackReRegistrationRequestComponent} from './track-re-registration-request/track-re-registration-request.component';
 import {VariationComponent} from './variation/variation.component';
+import {TrackVariationComponent} from './track-variation/track-variation.component';
+import {DraftVariationComponent} from './draft-variation/draft-variation.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -34,13 +36,15 @@ const routes: Routes = [
         path: 'track-request', component: TrackRequestContainerComponent,
         children: [
           {path: 'registration', component: TrackRequestComponent, data: {animation: 'track-request'}},
-          {path: 're-registration', component: TrackReRegistrationRequestComponent, data: {animation: 'track-request'}}
+          {path: 're-registration', component: TrackReRegistrationRequestComponent, data: {animation: 'track-request'}},
+          {path: 'variation', component: TrackVariationComponent, data: {animation: 'track-request'}}
         ]
       },
       {
         path: 'draft-request', component: DraftRequestsContainerComponent,
         children: [
-          {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}}
+          {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}},
+          {path: 'variation', component: DraftVariationComponent, data: {animation: 'draft-request'}}
         ]
       },
       {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},
