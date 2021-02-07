@@ -141,7 +141,7 @@
           </mat-expansion-panel>
         </mat-accordion>
       </td>
-      <td colspan="5" *ngIf="whichTable === 'approved'">
+      <td colspan="6" *ngIf="whichTable === 'approved'">
         <mat-accordion>
           <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
             <mat-expansion-panel-header>
@@ -152,7 +152,8 @@
                     <td class="hide">{{request.SubmmittionDate | date}}</td>
                     <td>{{request.NameEN}}</td>
                     <td class="hide">{{request.NameAR}}</td>
-                    <td>{{request.actionStatus}}</td>
+                    <td>{{request.actionStatus}} <strong>{{request.ID}}</strong></td>
+                    <td (click)="editProduct(request.ID)"><i class="fa fa-edit"></i></td>
                   </tr>
                 </table>
               </mat-panel-title>
