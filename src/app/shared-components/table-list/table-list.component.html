@@ -1,4 +1,4 @@
-<div *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved'">
+<div *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'">
   <app-filters [filterData]="filterData"
                (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
 </div>
@@ -24,6 +24,15 @@
       </th>
     </tr>
     <tr class="headerRow" *ngIf="whichTable === 'approved'">
+      <th *ngFor="let request of data.tableHeader; let i = index"
+          [ngClass]="{'hide': i === 1 || i === 3 }">
+        {{request}}
+        <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+      </th>
+    </tr>
+    <tr class="headerRow" *ngIf="whichTable === 'rejected'">
       <th *ngFor="let request of data.tableHeader; let i = index"
           [ngClass]="{'hide': i === 1 || i === 3 }">
         {{request}}
@@ -154,6 +163,45 @@
                     <td class="hide">{{request.NameAR}}</td>
                     <td>{{request.actionStatus}} <strong>{{request.ID}}</strong></td>
                     <td (click)="editProduct(request.ID)"><i class="fa fa-edit"></i></td>
+                  </tr>
+                </table>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="detailsContainer pt-4">
+              <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                  <label class="label">Notification number :</label>
+                  <span>{{request.NotificationNo}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                  <label class="label">Submission date :</label>
+                  <span>{{request.SubmmittionDate}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                  <label class="label ">Product English name :</label>
+                  <span>{{request.NameEN}}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                  <label class="label">Product Arabic name :</label>
+                  <span>{{request.NameAR}}</span>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </td>
+      <td colspan="5" *ngIf="whichTable === 'rejected'">
+        <mat-accordion>
+          <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <table class="table table-sm tableDetailsCont">
+                  <tr>
+                    <td>{{request.NotificationNo}}</td>
+                    <td class="hide">{{request.SubmmittionDate | date}}</td>
+                    <td>{{request.NameEN}}</td>
+                    <td class="hide">{{request.NameAR}}</td>
+                    <td>{{request.actionStatus}} <strong>{{request.ID}}</strong></td>
                   </tr>
                 </table>
               </mat-panel-title>

@@ -115,6 +115,25 @@ export class VariationComponent implements OnInit {
     });
   }
 
+  onSave(event) {
+    this.isLoading = true;
+    if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
+      const data = {
+        ...this.productData,
+        ...event,
+        isDraft: 1
+      };
+
+      this.getService.setVariationProduct(data).subscribe((res: any) => {
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
+        this.onClosed();
+      });
+    }
+  }
+
   onSubmit(event) {
     this.isLoading = true;
     if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {

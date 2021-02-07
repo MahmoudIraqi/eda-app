@@ -375,6 +375,10 @@ body {
   border: 0px;
 }
 
+/*.inputBesideSelect .mat-form-field-wrapper {*/
+/*  padding-bottom: 0px;*/
+/*}*/
+
 .mat-form-field {
   width: 100% !important;
   position: relative;

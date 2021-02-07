@@ -263,8 +263,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         map(value => this._filterForManufacturing(value))
       );
 
-    console.log('filteredOptionsForManufacturingCompany', this.filteredOptionsForManufacturingCompany);
-
     this.filteredOptionsForIngradiant = this.filterInIngrediant(0, 0);
     this.filteredOptionsForfunction = this.filterInFunction(0, 0);
   }
@@ -472,13 +470,21 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         }
       });
 
+      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.MANUFACTORY);
+      data.detailsTable.map(x => {
+        x.ingrediantDetails.map(y => {
+          this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.INCI_name);
+          this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.FUNCTION_NAME);
+        });
+      });
+
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
     } else {
       this.regProductForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
         manufacturingCompany: this.fb.control('', Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
@@ -493,7 +499,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         purposeOfUseTxt: this.fb.control(''),
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
         shelfLife: this.fb.control(0),
-        receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+        receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
         packagingTable: this.fb.array([this.fb.group({
           volumesID: this.fb.control(''),

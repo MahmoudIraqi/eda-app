@@ -26,9 +26,9 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12" *ngIf="variationGroupList">
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="variationGroupList && NotificationNo">
             <mat-form-field appearance="fill">
-              <mat-label>Toppings</mat-label>
+              <mat-label>Variation Group Name</mat-label>
               <mat-select [(ngModel)]="typeOfVariationForProduct" multiple
                           (selectionChange)="onSelectionChange($event)">
                 <mat-option *ngFor="let topping of variationGroupList" [value]="topping">
@@ -48,6 +48,7 @@
               [lookupsData]="formData"
               [variationFieldsStatus]="true"
               [variationFields]="variationFields"
+              (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>
           </div>

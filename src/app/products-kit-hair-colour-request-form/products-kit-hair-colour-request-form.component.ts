@@ -1349,7 +1349,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     } else {
       this.regColourKitForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z ][0-9a-zA-Z ]*$')]),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
         productColor: this.fb.control(''),
         manufacturingCompany: this.fb.control('', Validators.required),
@@ -1361,7 +1361,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         tradeMark: this.fb.control(''),
         shelfLife: this.fb.control(0),
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-        receiptNumber: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]),
+        receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
         groupName: this.fb.control('', Validators.required),
         ProductsForKit: this.fb.array([this.fb.group({
