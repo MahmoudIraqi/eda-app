@@ -14,14 +14,16 @@
             <mat-form-field class="example-full-width">
               <mat-label>Product Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
-                     placeholder="Product Name" [readonly]="reRegistrationStatus ? true: false">
+                     placeholder="Product Name"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : false">
             </mat-form-field>
           </div>
           <div class="col-sm-6">
             <mat-form-field class="example-full-width">
               <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
-                     placeholder="Product Name" required [readonly]="reRegistrationStatus ? true: false">
+                     placeholder="Product Name" required
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('productEnglishName').invalid && (regKitForAllRequestedType.get('productEnglishName').dirty || regKitForAllRequestedType.get('productEnglishName').touched)"
                 class="alert alert-danger">
@@ -53,7 +55,8 @@
                   <mat-form-field class="example-full-width">
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
-                           placeholder="Short Name" [readonly]="reRegistrationStatus ? true: false">
+                           placeholder="Short Name"
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : false">
                     <button type="button" (click)="removeShortName(i)" class="close">Remove</button>
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
                       this field must be in English
@@ -66,12 +69,20 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Company</mat-label>
-              <mat-select formControlName="manufacturingCompany" required *ngIf="formData"
-                          [disabled]="reRegistrationStatus ? true: false">
-                <mat-option *ngFor="let company of formData.manufacturingCompanyList" [value]="company.ID">
-                  {{company.MANUFACTORY}}
+              <input type="text"
+                     class="form-control"
+                     placeholder="Manufacturing Company"
+                     aria-label="Manufacturing Company"
+                     matInput
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : false"
+                     formControlName="manufacturingCompany"
+                     [matAutocomplete]="manufacturingCompanyList" required>
+              <mat-autocomplete #manufacturingCompanyList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForManufacturingCompany | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
                 </mat-option>
-              </mat-select>
+              </mat-autocomplete>
               <div
                 *ngIf="regKitForAllRequestedType.get('manufacturingCompany').invalid && (regKitForAllRequestedType.get('manufacturingCompany').dirty || regKitForAllRequestedType.get('manufacturingCompany').touched)"
                 class="alert alert-danger">
@@ -85,12 +96,20 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Manufacturing Country</mat-label>
-              <mat-select formControlName="manufacturingCountry" required *ngIf="formData"
-                          [disabled]="reRegistrationStatus ? true: false">
-                <mat-option *ngFor='let country of formData.manufacturingCountryList' [value]="country.ID">
-                  {{country.COUNTRY_NAME}}
+              <input type="text"
+                     class="form-control"
+                     placeholder="Manufacturing Country"
+                     aria-label="Manufacturing Country"
+                     matInput
+                     formControlName="manufacturingCountry"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : false"
+                     [matAutocomplete]="manufacturingCountryList" required>
+              <mat-autocomplete #manufacturingCountryList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForManufacturingCountry | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
                 </mat-option>
-              </mat-select>
+              </mat-autocomplete>
               <div
                 *ngIf="regKitForAllRequestedType.get('manufacturingCountry').invalid && (regKitForAllRequestedType.get('manufacturingCountry').dirty || regKitForAllRequestedType.get('manufacturingCountry').touched)"
                 class="alert alert-danger">
@@ -104,12 +123,20 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Applicant</mat-label>
-              <mat-select formControlName="applicant" required *ngIf="formData"
-                          [disabled]="reRegistrationStatus ? true: false">
-                <mat-option *ngFor='let applicant of formData.applicantList' [value]="applicant.ID">
-                  {{applicant.NAME}}
+              <input type="text"
+                     class="form-control"
+                     placeholder="Applicant"
+                     aria-label="Applicant"
+                     matInput
+                     formControlName="applicant"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('applicant') : true : false"
+                     [matAutocomplete]="applicantList" required>
+              <mat-autocomplete #applicantList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForApplicant | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
                 </mat-option>
-              </mat-select>
+              </mat-autocomplete>
               <div
                 *ngIf="regKitForAllRequestedType.get('applicant').invalid && (regKitForAllRequestedType.get('applicant').dirty || regKitForAllRequestedType.get('applicant').touched)"
                 class="alert alert-danger">
@@ -123,12 +150,20 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
-              <mat-select formControlName="licenseHolder" required *ngIf="formData"
-                          [disabled]="reRegistrationStatus ? true: false">
-                <mat-option *ngFor='let licHolder of formData.licenseHolderList' [value]="licHolder.ID">
-                  {{licHolder.NAME}}
+              <input type="text"
+                      class="form-control"
+                      placeholder="License Holder"
+                      aria-label="License Holder"
+                      matInput
+                      formControlName="licenseHolder"
+                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : false"
+                      [matAutocomplete]="licenseHolderList" required>
+              <mat-autocomplete #licenseHolderList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForLicenseHolder | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
                 </mat-option>
-              </mat-select>
+              </mat-autocomplete>
               <div
                 *ngIf="regKitForAllRequestedType.get('licenseHolder').invalid && (regKitForAllRequestedType.get('licenseHolder').dirty || regKitForAllRequestedType.get('licenseHolder').touched)"
                 class="alert alert-danger">
@@ -144,7 +179,8 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
-                     placeholder="Other License Holder" required [readonly]="reRegistrationStatus ? true: false">
+                     placeholder="Other License Holder" required
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolderTxt') : true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('licenseHolderTxt').invalid && (regKitForAllRequestedType.get('licenseHolderTxt').dirty || regKitForAllRequestedType.get('licenseHolderTxt').touched)"
                 class="alert alert-danger">
@@ -158,12 +194,20 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Country of License Holder</mat-label>
-              <mat-select formControlName="countryOfLicenseHolder" required *ngIf="formData"
-                          [disabled]="reRegistrationStatus ? true: false">
-                <mat-option *ngFor='let country of formData.licenseHolderCountryList' [value]="country.ID">
-                  {{country.COUNTRY_NAME}}
+              <input type="text"
+                     class="form-control"
+                     placeholder="Country of License Holder"
+                     aria-label="Country of License Holder"
+                     matInput
+                     formControlName="countryOfLicenseHolder"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : false"
+                     [matAutocomplete]="licenseHolderCountryList" required>
+              <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForLicenseHolderCountry | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
                 </mat-option>
-              </mat-select>
+              </mat-autocomplete>
               <div
                 *ngIf="regKitForAllRequestedType.get('countryOfLicenseHolder').invalid && (regKitForAllRequestedType.get('countryOfLicenseHolder').dirty || regKitForAllRequestedType.get('countryOfLicenseHolder').touched)"
                 class="alert alert-danger">
@@ -178,19 +222,28 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
-                     placeholder="Trade Mark" [readonly]="reRegistrationStatus ? true: false">
+                     placeholder="Trade Mark"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width">
               <mat-label>Storage Place</mat-label>
-              <mat-select formControlName="storagePlace" *ngIf="formData"
-                          [disabled]="reRegistrationStatus ? true: false"
-                          [required]="this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6? true: false">
-                <mat-option *ngFor='let purpose of formData.storagePlaceList' [value]="purpose.ID">
-                  {{purpose.STORAGE_PLACE_NAME}}
+              <input type="text"
+                     class="form-control"
+                     placeholder="Storage Place"
+                     aria-label="Storage Place"
+                     matInput
+                     formControlName="storagePlace"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : false"
+                     [matAutocomplete]="storagePlaceList"
+                     [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
+              <mat-autocomplete #storagePlaceList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
                 </mat-option>
-              </mat-select>
+              </mat-autocomplete>
               <div
                 *ngIf="regKitForAllRequestedType.get('storagePlace').invalid && (regKitForAllRequestedType.get('storagePlace').dirty || regKitForAllRequestedType.get('storagePlace').touched)"
                 class="alert alert-danger">
@@ -205,7 +258,8 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
-                     placeholder="Receipt Number" required>
+                     placeholder="Receipt Number" required
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('receiptNumber').invalid && (regKitForAllRequestedType.get('receiptNumber').dirty || regKitForAllRequestedType.get('receiptNumber').touched)"
                 class="alert alert-danger">
@@ -226,7 +280,8 @@
               <input type="text" class="form-control" matInput
                      (change)="getDecimalValue(regKitForAllRequestedType.get('receiptValue').value)"
                      formControlName="receiptValue"
-                     placeholder="Receipt Value" required>
+                     placeholder="Receipt Value" required
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('receiptValue').invalid && (regKitForAllRequestedType.get('receiptValue').dirty || regKitForAllRequestedType.get('receiptValue').touched)"
                 class="alert alert-danger">
@@ -286,7 +341,7 @@
                             <mat-form-field appearance="fill">
                               <mat-label>Product Status</mat-label>
                               <mat-select formControlName="productStatus" *ngIf="formData"
-                                          [disabled]="reRegistrationStatus ? true: false">
+                                          [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productStatus') : true : false">
                                 <mat-option *ngFor='let type of formData.productStatusList' [value]="type">
                                   {{type}}
                                 </mat-option>

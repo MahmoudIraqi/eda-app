@@ -3,6 +3,13 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {FormService} from '../services/form.service';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+
+export interface LookupState {
+  ID: number;
+  NAME: string;
+}
 
 @Component({
   selector: 'app-products-kit-request-form',
@@ -17,6 +24,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   @Input() successSubmission;
   @Input() editData;
   @Input() reRegistrationStatus;
+  @Input() variationFieldsStatus;
+  @Input() variationFields;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -1147,6 +1156,14 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   selectedTrackTypeForNewProduct;
   selectedRegisteredTypeForProduct;
   selectedRegisteredProductTypeForProduct;
+  enableEditableFields = [];
+
+  filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
+  filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
+  filteredOptionsForApplicant: Observable<LookupState[]>;
+  filteredOptionsForLicenseHolder: Observable<LookupState[]>;
+  filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
+  filteredOptionsForStoragePlace: Observable<LookupState[]>;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -1163,9 +1180,17 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     }
 
     this.getFormAsStarting(this.editData);
+
+    this.getDisabledValues();
   }
 
   ngOnInit(): void {
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regKitForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regKitForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regKitForAllRequestedType.get('applicant'), this.formData.applicantList);
+    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regKitForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
+    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regKitForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
+    this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
   }
 
   onFileSelect(event, fileControlName) {
@@ -1209,10 +1234,17 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   saveData() {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
+
+    console.log('data', data);
     this.saveDataOutput.emit(this.regKitForAllRequestedType.value);
   }
 
   onSubmit() {
+    this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
+
+    console.log('data', data);
     this.submitDataOutput.emit(this.regKitForAllRequestedType.value);
   }
 
@@ -1341,6 +1373,19 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
         this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
       });
+
+      data.shortName.map((X, i) => {
+        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+          this.addShortName();
+        }
+      });
+
+      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
+      this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+      this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
+      this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
+      this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
+      this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
 
       this.regKitForAllRequestedType.patchValue({
         ...data,
@@ -1473,5 +1518,44 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   resetForms() {
     this.getFormAsStarting('');
+  }
+
+  getDisabledValues() {
+    if (this.variationFields && this.variationFields.length > 0) {
+      this.enableEditableFields = [];
+      this.variationFields.map(x => {
+        this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+      });
+    }
+  }
+
+  filterLookupsFunction(formControlValue, list) {
+    if (formControlValue) {
+      return formControlValue.valueChanges
+        .pipe(
+          startWith(''),
+          map(state => state ? this.filterInsideList(state, list) : list.slice())
+        );
+    }
+  }
+
+  filterInsideList(value, list): LookupState[] {
+    let filterValue;
+    if (value) {
+      filterValue = value.toLowerCase();
+    }
+
+    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+  }
+
+  convertAllNamingToId(data) {
+    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
+    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
+    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
+    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
+    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+
+    return data;
   }
 }

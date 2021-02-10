@@ -161,8 +161,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   filteredOptionsForIngradiant: Observable<LookupState[]>;
   filteredOptionsForFunction: Observable<LookupState[]>;
 
-  // tryArray
-
   constructor(private fb: FormBuilder,
               private getService: FormService,
               private number: DecimalPipe) {
@@ -627,7 +625,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
     this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
     this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
-    this.formData.unitOfMeasureList.filter(option => option.NAME === data.unitOfMeasure).map(x => data.unitOfMeasure = x.ID);
 
     data.packagingTable.map(x => {
       this.formData.unitOfMeasureList.filter(option => option.NAME === x.unitOfMeasure).map(item => x.unitOfMeasure = item.ID);
