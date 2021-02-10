@@ -3,6 +3,9 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {FormService} from '../services/form.service';
+import {Observable} from 'rxjs';
+import {LookupState} from '../products-kit-request-form/products-kit-request-form.component';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-products-kit-hair-colour-request-form',
@@ -17,6 +20,8 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   @Input() successSubmission;
   @Input() editData;
   @Input() reRegistrationStatus;
+  @Input() variationFieldsStatus;
+  @Input() variationFields;
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -1147,6 +1152,15 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   selectedTrackTypeForNewProduct;
   selectedRegisteredTypeForProduct;
   selectedRegisteredProductTypeForProduct;
+  enableEditableFields = [];
+
+  filteredOptionsForProductColor: Observable<LookupState[]>;
+  filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
+  filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
+  filteredOptionsForApplicant: Observable<LookupState[]>;
+  filteredOptionsForLicenseHolder: Observable<LookupState[]>;
+  filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
+  filteredOptionsForStoragePlace: Observable<LookupState[]>;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -1163,9 +1177,18 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     }
 
     this.getFormAsStarting(this.editData);
+
+    this.getDisabledValues();
   }
 
   ngOnInit(): void {
+    this.filteredOptionsForProductColor = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('productColor'), this.formData.productColorList);
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('applicant'), this.formData.applicantList);
+    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
+    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
+    this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
   }
 
   onFileSelect(event, fileControlName) {
@@ -1201,12 +1224,15 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   saveData() {
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
-
-    this.saveDataOutput.emit(this.regColourKitForAllRequestedType.value);
+    const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
+    this.saveDataOutput.emit(data);
   }
 
   onSubmit() {
-    this.submitDataOutput.emit(this.regColourKitForAllRequestedType.value);
+    this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
+
+    this.submitDataOutput.emit(data);
   }
 
   get ShortName(): FormArray {
@@ -1335,6 +1361,20 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
         this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
       });
+
+      data.shortName.map((X, i) => {
+        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+          this.addShortName();
+        }
+      });
+
+      this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
+      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
+      this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+      this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
+      this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
+      this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
+      this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
 
       this.regColourKitForAllRequestedType.patchValue({
         ...data,
@@ -1477,6 +1517,46 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   resetForms() {
     this.getFormAsStarting('');
+  }
+
+  getDisabledValues() {
+    if (this.variationFields && this.variationFields.length > 0) {
+      this.enableEditableFields = [];
+      this.variationFields.map(x => {
+        this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+      });
+    }
+  }
+
+  filterLookupsFunction(formControlValue, list) {
+    if (formControlValue) {
+      return formControlValue.valueChanges
+        .pipe(
+          startWith(''),
+          map(state => state ? this.filterInsideList(state, list) : list.slice())
+        );
+    }
+  }
+
+  filterInsideList(value, list): LookupState[] {
+    let filterValue;
+    if (value) {
+      filterValue = value.toLowerCase();
+    }
+
+    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+  }
+
+  convertAllNamingToId(data) {
+    this.formData.productColorList.filter(option => option.NAME === data.productColor).map(x => data.productColor = x.ID);
+    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
+    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
+    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
+    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
+    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+
+    return data;
   }
 }
 

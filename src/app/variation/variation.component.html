@@ -73,14 +73,16 @@
               (submitDataOutput)="onSubmit($event)"
             ></app-products-hair-colour-request-form>
           </div>
-          <!--          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">-->
-          <!--            <app-products-kit-hair-colour-request-form-->
-          <!--              [editData]="this.productData"-->
-          <!--              [lookupsData]="formData"-->
-          <!--              [reRegistrationStatus]="true"-->
-          <!--              (submitDataOutput)="onSubmit($event)"-->
-          <!--            ></app-products-kit-hair-colour-request-form>-->
-          <!--          </div>-->
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
+            <app-products-kit-hair-colour-request-form
+              [editData]="this.productData"
+              [lookupsData]="formData"
+              [variationFieldsStatus]="true"
+              [variationFields]="variationFields"
+              (saveDataOutput)="onSave($event)"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-kit-hair-colour-request-form>
+          </div>
         </div>
       </div>
     </div>
