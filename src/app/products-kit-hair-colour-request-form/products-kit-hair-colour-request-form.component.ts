@@ -1329,7 +1329,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           const value = x[keyLowerCase];
 
           this.lookupsData[key].filter(y => y.ID === value).map(x => {
-            x[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+            x[keyLowerCase] = x.NAME;
           });
         });
 

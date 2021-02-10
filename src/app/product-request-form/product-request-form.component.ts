@@ -458,13 +458,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    this.saveDataOutput.emit(this.regProductForAllRequestedType.value);
+    this.saveDataOutput.emit(data);
   }
 
   onSubmit() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    this.submitDataOutput.emit(this.regProductForAllRequestedType.value);
+    this.submitDataOutput.emit(data);
   }
 
   getFormAsStarting(data) {
@@ -486,6 +486,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         }
       });
 
+      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);

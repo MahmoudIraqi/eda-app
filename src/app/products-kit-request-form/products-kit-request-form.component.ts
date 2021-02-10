@@ -1236,14 +1236,14 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
-    this.saveDataOutput.emit(this.regKitForAllRequestedType.value);
+    this.saveDataOutput.emit(data);
   }
 
   onSubmit() {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
-    this.submitDataOutput.emit(this.regKitForAllRequestedType.value);
+    this.submitDataOutput.emit(data);
   }
 
   get ShortName(): FormArray {
@@ -1365,7 +1365,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
           const value = x[keyLowerCase];
 
           this.lookupsData[key].filter(y => y.ID === value).map(x => {
-            x[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+            x[keyLowerCase] = x.NAME;
           });
         });
 
