@@ -7,11 +7,17 @@ import {formDataClass} from '../../utils/formDataFunction';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
+export interface LookupState {
+  ID: number;
+  NAME: string;
+}
+
 @Component({
   selector: 'app-product-request-form',
   templateUrl: './product-request-form.component.html',
   styleUrls: ['./product-request-form.component.css']
 })
+
 export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   @Input() selectedRequestedType;
@@ -141,9 +147,21 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   enableEditableFields = [];
   testModel;
   myChangedGroup;
-  filteredOptionsForManufacturingCompany: Observable<any[]>;
-  filteredOptionsForIngradiant: Observable<any[]>;
-  filteredOptionsForfunction: Observable<any[]>;
+
+  filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
+  filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
+  filteredOptionsForApplicant: Observable<LookupState[]>;
+  filteredOptionsForLicenseHolder: Observable<LookupState[]>;
+  filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
+  filteredOptionsForPhysicalState: Observable<LookupState[]>;
+  filteredOptionsForPurposeOfUse: Observable<LookupState[]>;
+  filteredOptionsForStoragePlace: Observable<LookupState[]>;
+  filteredOptionsForUnitOfMeasure: Observable<LookupState[]>;
+  filteredOptionsForTypeOfPackaging: Observable<LookupState[]>;
+  filteredOptionsForIngradiant: Observable<LookupState[]>;
+  filteredOptionsForFunction: Observable<LookupState[]>;
+
+  // tryArray
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
@@ -153,12 +171,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
-
-    this.filteredOptionsForManufacturingCompany = this.regProductForAllRequestedType.get('manufacturingCompany').valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterForManufacturing(value))
-      );
 
     if (this.successSubmission) {
       this.resetForms();
@@ -257,14 +269,18 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.filteredOptionsForManufacturingCompany = this.regProductForAllRequestedType.get('manufacturingCompany').valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterForManufacturing(value))
-      );
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regProductForAllRequestedType.get('applicant'), this.formData.applicantList);
+    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
+    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
+    this.filteredOptionsForPhysicalState = this.filterLookupsFunction(this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
+    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction(this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
+    this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(this.regProductForAllRequestedType.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction(this.regProductForAllRequestedType.get('typeOfPackaging'), this.formData.typeOfPackagingList);
 
-    this.filteredOptionsForIngradiant = this.filterInIngrediant(0, 0);
-    this.filteredOptionsForfunction = this.filterInFunction(0, 0);
+    this.getLookupForFormArray();
   }
 
   getFormType(event) {
@@ -291,6 +307,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     } else {
       this.removeShortNameFieldStatus = true;
     }
+  }
+
+  getLookupForFormArray() {
+    this.DetailsRows().value.map((x, i) => {
+      x.ingrediantDetails.map((item, index) => {
+        this.filteredOptionsForIngradiant = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
+        this.filteredOptionsForFunction = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
+      });
+    });
   }
 
   // Functions for Tabs
@@ -380,6 +405,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         function: this.fb.control('', Validators.required),
       })])
     }));
+    this.getLookupForFormArray();
   }
 
   editDataDetailsRows(fromWhere) {
@@ -418,6 +444,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       concentrations: this.fb.control('', Validators.required),
       function: this.fb.control('', Validators.required)
     }));
+    this.getLookupForFormArray();
   }
 
   removeIngrediantDetailsRows(fromWhere, event) {
@@ -429,24 +456,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   saveData() {
-    this.formData.manufacturingCompanyList.filter(option => option.MANUFACTORY === this.regProductForAllRequestedType.value.manufacturingCompany).map(x => this.regProductForAllRequestedType.value.manufacturingCompany = x.ID);
-    this.regProductForAllRequestedType.value.detailsTable.map(x => {
-      x.ingrediantDetails.map(y => {
-        this.formData.ingrediantList.filter(option => option.INCI_name === y.ingrediant).map(item => y.ingrediant = item.ID);
-        this.formData.functionList.filter(option => option.FUNCTION_NAME === y.function).map(item => y.function = item.ID);
-      });
-    });
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+
+    console.log('data', data);
     this.saveDataOutput.emit(this.regProductForAllRequestedType.value);
   }
 
   onSubmit() {
-    this.formData.manufacturingCompanyList.filter(option => option.MANUFACTORY === this.regProductForAllRequestedType.value.manufacturingCompany).map(x => this.regProductForAllRequestedType.value.manufacturingCompany = x.ID);
-    this.regProductForAllRequestedType.value.detailsTable.map(x => {
-      x.ingrediantDetails.map(y => {
-        this.formData.ingrediantList.filter(option => option.INCI_name === y.ingrediant).map(item => y.ingrediant = item.ID);
-        this.formData.functionList.filter(option => option.FUNCTION_NAME === y.function).map(item => y.function = item.ID);
-      });
-    });
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+
+    console.log('data', data);
     this.submitDataOutput.emit(this.regProductForAllRequestedType.value);
   }
 
@@ -457,7 +476,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
           this.addShortName();
         }
       });
-
       data.detailsTable.map((x, i) => {
         x.ingrediantDetails.map((y, index) => {
           if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
@@ -470,13 +488,23 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         }
       });
 
-      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.MANUFACTORY);
+      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
+      this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+      this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
+      this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
+      this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
+      this.formData.physicalStateList.filter(option => option.ID === data.physicalState).map(x => data.physicalState = x.NAME);
+      this.formData.purposeOfUseList.filter(option => option.ID === data.purposeOfUse).map(x => data.purposeOfUse = x.NAME);
+      this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
+      this.formData.unitOfMeasureList.filter(option => option.ID === data.unitOfMeasure).map(x => data.unitOfMeasure = x.NAME);
       data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
-          this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.INCI_name);
-          this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.FUNCTION_NAME);
+          this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+          this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
         });
       });
+
+      console.log('data', data);
 
       this.regProductForAllRequestedType.patchValue({
         ...data
@@ -541,7 +569,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   getDecimalValue(value) {
-
     this.regProductForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
@@ -568,44 +595,43 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     }
   }
 
-  filterInIngrediant(parentIndex, index) {
-    return this.IngrediantDetailsRows(parentIndex).controls[index].get('ingrediant').valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterForIngrediant(value))
-      );
+  filterLookupsFunction(formControlValue, list) {
+    if (formControlValue) {
+      return formControlValue.valueChanges
+        .pipe(
+          startWith(''),
+          map(state => state ? this.filterInsideList(state, list) : list.slice())
+        );
+    }
   }
 
-  filterInFunction(parentIndex, index) {
-    return this.IngrediantDetailsRows(parentIndex).controls[index].get('function').valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterForFunction(value))
-      );
-  }
-
-  private _filterForManufacturing(value: string): string[] {
+  filterInsideList(value, list): LookupState[] {
     let filterValue;
     if (value) {
       filterValue = value.toLowerCase();
     }
-    return this.formData.manufacturingCompanyList.filter(option => option.MANUFACTORY.toLowerCase().includes(filterValue)).map(x => x);
+
+    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
-  private _filterForIngrediant(value: string): string[] {
-    let filterValue;
-    if (value) {
-      filterValue = value.toLowerCase();
-    }
-    return this.formData.ingrediantList.filter(option => option.INCI_name.toLowerCase().includes(filterValue)).map(x => x);
-  }
+  convertAllNamingToId(data) {
+    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
+    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
+    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
+    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
+    this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
+    this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
+    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+    this.formData.unitOfMeasureList.filter(option => option.NAME === data.unitOfMeasure).map(x => data.unitOfMeasure = x.ID);
+    data.detailsTable.map(x => {
+      x.ingrediantDetails.map(y => {
+        this.formData.ingrediantList.filter(option => option.NAME === y.ingrediant).map(item => y.ingrediant = item.ID);
+        this.formData.functionList.filter(option => option.NAME === y.function).map(item => y.function = item.ID);
+      });
+    });
 
-  private _filterForFunction(value: string): string[] {
-    let filterValue;
-    if (value) {
-      filterValue = value.toLowerCase();
-    }
-    return this.formData.functionList.filter(option => option.FUNCTION_NAME.toLowerCase().includes(filterValue)).map(x => x);
+    return data;
   }
 
 }
