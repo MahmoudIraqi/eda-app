@@ -48,6 +48,7 @@ import {TrackReRegistrationRequestComponent} from './track-re-registration-reque
 import {VariationComponent} from './variation/variation.component';
 import {TrackVariationComponent} from './track-variation/track-variation.component';
 import {DraftVariationComponent} from './draft-variation/draft-variation.component';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import {DraftVariationComponent} from './draft-variation/draft-variation.compone
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     MatExpansionModule,
     MatSelectModule,
     FormsModule,

@@ -2,6 +2,8 @@ import {Component, OnInit, EventEmitter, Input, OnChanges, Output} from '@angula
 import {MatInputModule} from '@angular/material/input';
 import {FormService} from '../../services/form.service';
 import {Router} from '@angular/router';
+import {PageChangedEvent} from 'ngx-bootstrap/pagination';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-table-list',
@@ -42,29 +44,40 @@ export class TableListComponent implements OnInit, OnChanges {
   sortStatus = false;
   alertNotificationStatus: boolean = false;
 
+  filteredData: Observable<any[]>;
+
   @Output() removeDetailsRowOutput = new EventEmitter();
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
   @Output() removeProductFromKit = new EventEmitter();
   @Output() editDetailedRowOutput = new EventEmitter();
 
+  contentArray = [];
+  returnedArray: string[];
+
   constructor(private getServices: FormService, private router: Router) {
   }
 
   ngOnChanges() {
+    if (this.data) {
+      if (this.data.tableBody.length > 0) {
+        if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList') {
+          this.data.tableBody.map(x => x.ID = x.ID.toString());
+          const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
+          this.data.tableHeader.map((x, i) => {
+            if (this.staticFilterKey[this.data.tableHeader[i]]) {
+              this.filterData.filterKey.push({name: this.data.tableHeader[i], id: this.staticFilterKey[this.data.tableHeader[i]]});
+            }
+          });
 
-    if (this.data !== undefined && (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList')) {
-      this.data.tableBody.map(x => x.ID = x.ID.toString());
-      const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
-      this.data.tableHeader.map((x, i) => {
-        if (this.staticFilterKey[this.data.tableHeader[i]]) {
-          this.filterData.filterKey.push({name: this.data.tableHeader[i], id: this.staticFilterKey[this.data.tableHeader[i]]});
+          this.contentArray = new Array(this.data.tableBody.length).fill('');
+          this.contentArray = this.contentArray.map((v: string, i: number) => this.data.tableBody[i]);
+          this.returnedArray = this.contentArray.slice(0, 10);
         }
-      });
+      }
     }
   }
 
   ngOnInit(): void {
-
   }
 
   setStep(index: number) {
@@ -171,6 +184,10 @@ export class TableListComponent implements OnInit, OnChanges {
         }
       }
     }
+
+    this.contentArray = new Array(this.dataAfterFilters.length > 0 ? this.dataAfterFilters.length : this.data.tableBody.length).fill('');
+    this.contentArray = this.contentArray.map((v: string, i: number) => this.dataAfterFilters.length > 0 ? this.dataAfterFilters[i] : this.data.tableBody[i]);
+    this.returnedArray = this.contentArray.slice(0, 10);
   }
 
   showAlertForFailedAlert() {
@@ -183,5 +200,11 @@ export class TableListComponent implements OnInit, OnChanges {
 
   editProduct(id) {
     this.router.navigate([`/new-request/registration/${Number(id)}`]);
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    const startItem = (event.page - 1) * event.itemsPerPage;
+    const endItem = event.page * event.itemsPerPage;
+    this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 }

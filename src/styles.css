@@ -379,10 +379,6 @@ body {
   border: 0px;
 }
 
-/*.inputBesideSelect .mat-form-field-wrapper {*/
-/*  padding-bottom: 0px;*/
-/*}*/
-
 .mat-form-field {
   width: 100% !important;
   position: relative;
@@ -402,6 +398,19 @@ body {
 
 .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
   background: #c28a30;
+}
+
+.page-link {
+  color: #c28a30;
+}
+
+.page-link:hover {
+  color: #161c30;
+}
+
+.page-item.active .page-link {
+  background-color: #c28a30;
+  border-color: #c28a30;
 }
 
 /* ----------------------- responsive -------------------------- */

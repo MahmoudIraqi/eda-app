@@ -458,14 +458,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    console.log('data', data);
     this.saveDataOutput.emit(this.regProductForAllRequestedType.value);
   }
 
   onSubmit() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    console.log('data', data);
     this.submitDataOutput.emit(this.regProductForAllRequestedType.value);
   }
 

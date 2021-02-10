@@ -118,8 +118,6 @@ export class NewRequestComponent implements OnInit {
       this.isLoading = false;
     });
 
-    console.log('formData', this.formData);
-
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {
       this.isLoading = true;

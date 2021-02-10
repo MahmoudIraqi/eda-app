@@ -1236,7 +1236,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
-    console.log('data', data);
     this.saveDataOutput.emit(this.regKitForAllRequestedType.value);
   }
 
@@ -1244,7 +1243,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
-    console.log('data', data);
     this.submitDataOutput.emit(this.regKitForAllRequestedType.value);
   }
 
