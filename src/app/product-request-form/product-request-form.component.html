@@ -315,7 +315,7 @@
                      formControlName="storagePlace"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : false"
                      [matAutocomplete]="storagePlaceList"
-                     [required]="this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6? true: false">
+                     [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
                             [value]="option.NAME">
@@ -435,7 +435,7 @@
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-4 mb-3">
-                  <mat-form-field appearance="fill">
+                  <mat-form-field class="example-full-width">
                     <mat-label>Unit of measure</mat-label>
                     <input type="text"
                            class="form-control"
@@ -444,8 +444,8 @@
                            matInput
                            formControlName="unitOfMeasure"
                            [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : false"
-                           [matAutocomplete]="storagePlaceList" required>
-                    <mat-autocomplete #storagePlaceList="matAutocomplete">
+                           [matAutocomplete]="unitOfMeasureList" required>
+                    <mat-autocomplete #unitOfMeasureList="matAutocomplete">
                       <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
                                   [value]="option.NAME">
                         {{option.NAME}}
@@ -473,7 +473,7 @@
                            [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : false"
                            [matAutocomplete]="typeOfPackagingList" required>
                     <mat-autocomplete #typeOfPackagingList="matAutocomplete">
-                      <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
+                      <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
                                   [value]="option.NAME">
                         {{option.NAME}}
                       </mat-option>

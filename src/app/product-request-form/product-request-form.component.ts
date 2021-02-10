@@ -277,9 +277,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.filteredOptionsForPhysicalState = this.filterLookupsFunction(this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
     this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction(this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
-    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(this.regProductForAllRequestedType.get('unitOfMeasure'), this.formData.unitOfMeasureList);
-    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction(this.regProductForAllRequestedType.get('typeOfPackaging'), this.formData.typeOfPackagingList);
-
     this.getLookupForFormArray();
   }
 
@@ -310,6 +307,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   }
 
   getLookupForFormArray() {
+    this.PackagingRows().controls.map((x) => {
+      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(x.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+      this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction(x.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+    });
+
     this.DetailsRows().value.map((x, i) => {
       x.ingrediantDetails.map((item, index) => {
         this.filteredOptionsForIngradiant = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
@@ -497,14 +499,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
       this.formData.purposeOfUseList.filter(option => option.ID === data.purposeOfUse).map(x => data.purposeOfUse = x.NAME);
       this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
       this.formData.unitOfMeasureList.filter(option => option.ID === data.unitOfMeasure).map(x => data.unitOfMeasure = x.NAME);
+      data.packagingTable.map(x => {
+        this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+        this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+      });
       data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
           this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
           this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
         });
       });
-
-      console.log('data', data);
 
       this.regProductForAllRequestedType.patchValue({
         ...data
@@ -624,6 +628,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
     this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
     this.formData.unitOfMeasureList.filter(option => option.NAME === data.unitOfMeasure).map(x => data.unitOfMeasure = x.ID);
+
+    data.packagingTable.map(x => {
+      this.formData.unitOfMeasureList.filter(option => option.NAME === x.unitOfMeasure).map(item => x.unitOfMeasure = item.ID);
+      this.formData.functionList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
+    });
+
     data.detailsTable.map(x => {
       x.ingrediantDetails.map(y => {
         this.formData.ingrediantList.filter(option => option.NAME === y.ingrediant).map(item => y.ingrediant = item.ID);
