@@ -125,7 +125,6 @@ a,
   border: 2px solid;
   border-color: #c28a30;
   color: #fff;
-  box-shadow: inset 600px 0 0 0 #c28a30;
 }
 
 .btn.btn-primary:disabled {

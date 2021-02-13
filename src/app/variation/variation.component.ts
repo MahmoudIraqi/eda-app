@@ -111,7 +111,7 @@ export class VariationComponent implements OnInit {
       this.productData = res;
       this.typeOfRegistrationForProduct = res.typeOfRegistration;
       this.isLoading = false;
-      this.getVariationRequiredFields(this.typeOfRegistrationForProduct);
+      this.getVariationRequiredFields(this.typeOfRegistrationForProduct, 1);
     });
   }
 
@@ -169,9 +169,9 @@ export class VariationComponent implements OnInit {
     // }
   }
 
-  getVariationRequiredFields(typeOfRegistration) {
+  getVariationRequiredFields(typeOfRegistration, whichVariation) {
     this.isLoading = true;
-    this.getService.getVariationRequiredFields(typeOfRegistration).subscribe((res: any) => {
+    this.getService.getVariationRequiredFields(typeOfRegistration, whichVariation).subscribe((res: any) => {
       this.variationGroupList = res;
       this.isLoading = false;
     });

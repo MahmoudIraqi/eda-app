@@ -1263,6 +1263,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
       this.ShortName.removeAt(i);
     } else {
       this.removeShortNameFieldStatus = true;
+
+      setTimeout(() => {
+        this.removeShortNameFieldStatus = false;
+      }, 1500);
     }
   }
 
@@ -1338,6 +1342,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   removeProductsGroupRows(index) {
+    debugger;
     this.allProductsInKit.tableBody = [];
 
     let control = <FormArray> this.regKitForAllRequestedType.controls.deletedProductIdLists;

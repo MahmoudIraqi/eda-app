@@ -61,7 +61,10 @@ export class TableListComponent implements OnInit, OnChanges {
     if (this.data) {
       if (this.data.tableBody.length > 0) {
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList') {
-          this.data.tableBody.map(x => x.ID = x.ID.toString());
+          this.data.tableBody.map(x => {
+            x.ID = x.ID.toString();
+            x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
+          });
           const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
           this.data.tableHeader.map((x, i) => {
             if (this.staticFilterKey[this.data.tableHeader[i]]) {
@@ -111,6 +114,7 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   setTheFilteredData(event) {
+    debugger;
     if (event.keyForFilter.id) {
       if (event.filterRow.length > 0) {
         if (event.keyWordsForFilter) {

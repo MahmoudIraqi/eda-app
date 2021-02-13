@@ -1252,6 +1252,10 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       this.ShortName.removeAt(i);
     } else {
       this.removeShortNameFieldStatus = true;
+
+      setTimeout(()=>{
+        this.removeShortNameFieldStatus = false;
+      }, 1500)
     }
   }
 

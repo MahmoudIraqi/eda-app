@@ -390,13 +390,13 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getVariationRequiredFields(typeOfRegistrationId) {
+  getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}variation_group_fields?regTypeID=${typeOfRegistrationId}`, options)
+    return this.http.get(`${this.apiBaseUrl}variation_group_fields?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

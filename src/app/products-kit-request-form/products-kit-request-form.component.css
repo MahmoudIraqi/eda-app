@@ -194,10 +194,11 @@ input[type=file] {
 .custom-file-label {
   border: 1px solid #161c30 !important;
   border-radius: 10px 0px 10px 10px;
+  overflow: hidden;
 }
 
 .custom-file-label:after {
-  background: none;
+  background: #fff;
   color: #161c30;
   border-left: 1px solid #161c30;
   border-radius: 0px 0px 10px 0px;

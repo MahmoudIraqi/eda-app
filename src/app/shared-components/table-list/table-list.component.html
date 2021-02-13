@@ -1,4 +1,5 @@
-<div *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'">
+<div
+  *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'">
   <app-filters [filterData]="filterData"
                (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
 </div>
@@ -62,7 +63,8 @@
         </span>
             </th>
           </tr>
-          <tr *ngFor="let request of returnedArray.length > 0 ? returnedArray : data.tableBody; let i = index">
+          <tr
+            *ngFor="let request of returnedArray && returnedArray.length > 0 ? returnedArray : data.tableBody; let i = index">
             <td colspan="7" *ngIf="whichTable === 'trackRequest'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
