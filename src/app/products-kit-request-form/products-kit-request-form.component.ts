@@ -1157,6 +1157,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   selectedRegisteredTypeForProduct;
   selectedRegisteredProductTypeForProduct;
   enableEditableFields = [];
+  disabledSaveButton: boolean = false;
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -1191,6 +1192,19 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regKitForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
     this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regKitForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+
+    this.regKitForAllRequestedType.valueChanges.subscribe(x => {
+      for (let i = 0; i < Object.values(x).length; i++) {
+        if (typeof Object.values(x)[i] !== 'object') {
+          if (!Object.values(x)[i]) {
+            this.disabledSaveButton = false;
+          } else {
+            this.disabledSaveButton = true;
+            break;
+          }
+        }
+      }
+    });
   }
 
   onFileSelect(event, fileControlName) {
@@ -1342,7 +1356,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   }
 
   removeProductsGroupRows(index) {
-    debugger;
     this.allProductsInKit.tableBody = [];
 
     let control = <FormArray> this.regKitForAllRequestedType.controls.deletedProductIdLists;

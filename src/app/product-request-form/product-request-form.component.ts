@@ -147,6 +147,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   enableEditableFields = [];
   testModel;
   myChangedGroup;
+  disabledSaveButton: boolean = false;
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -276,6 +277,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction(this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
     this.getLookupForFormArray();
+
+    this.regProductForAllRequestedType.valueChanges.subscribe(x => {
+      for (let i = 0; i < Object.values(x).length; i++) {
+        if (typeof Object.values(x)[i] !== 'object') {
+          if (!Object.values(x)[i]) {
+            this.disabledSaveButton = false;
+          } else {
+            this.disabledSaveButton = true;
+            break;
+          }
+        }
+      }
+    });
   }
 
   getFormType(event) {
@@ -370,7 +384,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
   removePackagingRows(i) {
     this.PackagingRows().removeAt(i);
-    this.equalTheNewDetailsTable('remove');
+    this.regProductForAllRequestedType.get('packagingTable').value.pop();
+    this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
   }
 
   editThePackagingRows(event) {
@@ -643,5 +658,4 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
 
     return data;
   }
-
 }

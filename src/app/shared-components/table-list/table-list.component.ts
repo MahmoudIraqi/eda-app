@@ -114,7 +114,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   setTheFilteredData(event) {
-    debugger;
     if (event.keyForFilter.id) {
       if (event.filterRow.length > 0) {
         if (event.keyWordsForFilter) {

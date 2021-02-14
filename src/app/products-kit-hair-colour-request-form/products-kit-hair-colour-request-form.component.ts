@@ -1153,6 +1153,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   selectedRegisteredTypeForProduct;
   selectedRegisteredProductTypeForProduct;
   enableEditableFields = [];
+  disabledSaveButton: boolean = false;
 
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
@@ -1189,6 +1190,19 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
     this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regColourKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+
+    this.regColourKitForAllRequestedType.valueChanges.subscribe(x => {
+      for (let i = 0; i < Object.values(x).length; i++) {
+        if (typeof Object.values(x)[i] !== 'object') {
+          if (!Object.values(x)[i]) {
+            this.disabledSaveButton = false;
+          } else {
+            this.disabledSaveButton = true;
+            break;
+          }
+        }
+      }
+    });
   }
 
   onFileSelect(event, fileControlName) {

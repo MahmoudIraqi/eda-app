@@ -151,13 +151,13 @@
             <mat-form-field appearance="fill">
               <mat-label>License Holder</mat-label>
               <input type="text"
-                      class="form-control"
-                      placeholder="License Holder"
-                      aria-label="License Holder"
-                      matInput
-                      formControlName="licenseHolder"
-                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : false"
-                      [matAutocomplete]="licenseHolderList" required>
+                     class="form-control"
+                     placeholder="License Holder"
+                     aria-label="License Holder"
+                     matInput
+                     formControlName="licenseHolder"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : false"
+                     [matAutocomplete]="licenseHolderList" required>
               <mat-autocomplete #licenseHolderList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolder | async"
                             [value]="option.NAME">
@@ -468,6 +468,7 @@
         <button type="button"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
                 *ngIf="!reRegistrationStatus"
+                [disabled]="!disabledSaveButton"
                 (click)="saveData()">
           Save
         </button>

@@ -807,6 +807,7 @@
         <button type="button"
                 *ngIf="!kitHairProductStatus && !reRegistrationStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
+                [disabled]="!disabledSaveButton"
                 (click)="saveData()">
           Save
         </button>

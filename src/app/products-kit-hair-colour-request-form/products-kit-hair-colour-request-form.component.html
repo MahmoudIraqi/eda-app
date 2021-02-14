@@ -486,6 +486,7 @@
         <button type="button"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
                 *ngIf="!reRegistrationStatus"
+                [disabled]="!disabledSaveButton"
                 (click)="saveData()">
           Save
         </button>

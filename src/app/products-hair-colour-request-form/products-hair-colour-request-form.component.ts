@@ -134,6 +134,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   requestedTypeForNewProductInKit;
   requestedProductTypeForNewProductInKit;
   enableEditableFields = [];
+  disabledSaveButton: boolean = false;
 
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
@@ -265,6 +266,19 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
     this.getLookupForFormArray();
+
+    this.regHairColorantProductForAllRequestedType.valueChanges.subscribe(x => {
+      for (let i = 0; i < Object.values(x).length; i++) {
+        if (typeof Object.values(x)[i] !== 'object') {
+          if (!Object.values(x)[i]) {
+            this.disabledSaveButton = false;
+          } else {
+            this.disabledSaveButton = true;
+            break;
+          }
+        }
+      }
+    });
   }
 
   getFormType(event) {
@@ -291,9 +305,9 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     } else {
       this.removeShortNameFieldStatus = true;
 
-      setTimeout(()=>{
+      setTimeout(() => {
         this.removeShortNameFieldStatus = false;
-      }, 1500)
+      }, 1500);
     }
   }
 
@@ -358,7 +372,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   removePackagingRows(i) {
     this.PackagingRows().removeAt(i);
-    this.equalTheNewDetailsTable('remove');
+    this.regHairColorantProductForAllRequestedType.get('packagingTable').value.pop();
+    this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
   }
 
   editThePackagingRows(event) {
