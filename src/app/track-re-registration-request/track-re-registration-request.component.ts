@@ -9,6 +9,8 @@ import {FormService} from '../services/form.service';
 export class TrackReRegistrationRequestComponent implements OnInit {
 
   trackReRegistrationListRequests;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
   isLoading: boolean = false;
 
   constructor(private getService: FormService) {
@@ -23,7 +25,18 @@ export class TrackReRegistrationRequestComponent implements OnInit {
         tableBody: res
       };
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
   }
 
+  handleError(message) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
+  }
+
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
+  }
 }

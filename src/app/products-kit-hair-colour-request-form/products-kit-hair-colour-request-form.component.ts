@@ -1154,7 +1154,9 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   selectedRegisteredProductTypeForProduct;
   enableEditableFields = [];
   disabledSaveButton: boolean = false;
-
+  isLoading: boolean = false;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -1457,8 +1459,8 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   applyProduct(data, status, index) {
     if (status === 'registered') {
+      this.isLoading = true;
       this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo).subscribe((res: any) => {
-
         if (res) {
           const objectData = {
             ...res,
@@ -1478,7 +1480,9 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
         }
-      });
+
+        this.isLoading = false;
+      },error => this.handleError(error));
     } else if (status === 'new') {
       this.newProductObject = data;
       const keyOfLookup = Object.keys(this.lookupsData);
@@ -1575,6 +1579,18 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
 
     return data;
+  }
+
+  handleError(message) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
+  }
+
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
   }
 }
 

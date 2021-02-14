@@ -1158,7 +1158,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   selectedRegisteredProductTypeForProduct;
   enableEditableFields = [];
   disabledSaveButton: boolean = false;
-
+  isLoading: boolean = false;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
   filteredOptionsForApplicant: Observable<LookupState[]>;
@@ -1465,6 +1467,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
 
   applyProduct(data, status, index) {
     if (status === 'registered') {
+
+      this.isLoading = true;
       this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo).subscribe((res: any) => {
 
         if (res) {
@@ -1487,7 +1491,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
         }
-      });
+
+        this.isLoading = false;
+      },error => this.handleError(error));
     } else if (status === 'new') {
       this.newProductObject = data;
       const keyOfLookup = Object.keys(this.lookupsData);
@@ -1564,14 +1570,18 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
-  convertAllNamingToId(data) {
-    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
-    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
-    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
-    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
-    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+  convertAllNamingToId(data)
 
-    return data;
+  // @ts-ignore
+  handleError(message) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
+  }
+
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
   }
 }

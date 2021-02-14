@@ -2,7 +2,6 @@ import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, S
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
-import {FormService} from '../services/form.service';
 import {formDataClass} from '../../utils/formDataFunction';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -163,7 +162,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   filteredOptionsForFunction: Observable<LookupState[]>;
 
   constructor(private fb: FormBuilder,
-              private getService: FormService,
               private number: DecimalPipe) {
     this.getFormAsStarting('');
   }

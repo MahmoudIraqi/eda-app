@@ -404,6 +404,6 @@ export class FormService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    return throwError(`Error! ${error.error}`);
+    return throwError(`Error! ${error.message}`);
   }
 }

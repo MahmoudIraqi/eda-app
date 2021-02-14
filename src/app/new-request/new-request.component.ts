@@ -43,6 +43,8 @@ export class NewRequestComponent implements OnInit {
   successSubmission: boolean = false;
   alertNotificationStatus: boolean = false;
   alertNotification: any;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
   isLoading: boolean = false;
   saveResponseDataForRegisterProduct;
   saveResponseDataForRegisterKitProduct;
@@ -62,61 +64,61 @@ export class NewRequestComponent implements OnInit {
         this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
       }
       this.isLoading = false;
-    });
+    }, error => this.handleError(error));
     this.getService.getRequestTypeLookUp().subscribe((res: any) => {
       this.formData.requestType = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getCountryLookUp().subscribe((res: any) => {
       this.formData.manufacturingCountryList = res;
       this.formData.licenseHolderCountryList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getFunctionLookUp().subscribe((res: any) => {
       this.formData.functionList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
       this.formData.typeOfPackagingList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
       this.formData.physicalStateList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
       this.formData.unitOfMeasureList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getUsePurposeLookUp().subscribe((res: any) => {
       this.formData.purposeOfUseList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getProductColorLookUp().subscribe((res: any) => {
       this.formData.productColorList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
       this.formData.ingrediantList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
       this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
       this.formData.storagePlaceList = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
     this.getService.getTrackTypeLookUp().subscribe((res: any) => {
       this.formData.trackType = res;
       this.isLoading = false;
-    });
+    },error => this.handleError(error));
 
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {
@@ -127,7 +129,7 @@ export class NewRequestComponent implements OnInit {
         this.selectedTrackType = res.Tracktype;
         this.selectedIsExport = res.isExport;
         this.updatingProductData = res;
-      });
+      },error => this.handleError(error));
     }
   }
 
@@ -156,7 +158,7 @@ export class NewRequestComponent implements OnInit {
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
         this.onClosed();
-      });
+      },error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
       const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct : this.saveResponseDataForRegisterColorantKitProduct);
       event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
@@ -167,7 +169,7 @@ export class NewRequestComponent implements OnInit {
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
         this.onClosed();
-      });
+      },error => this.handleError(error));
     }
   }
 
@@ -184,7 +186,7 @@ export class NewRequestComponent implements OnInit {
         this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
         this.onClosed();
-      });
+      },error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
       event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
 
@@ -195,7 +197,7 @@ export class NewRequestComponent implements OnInit {
         this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
         this.onClosed();
-      });
+      },error => this.handleError(error));
 
     }
   }
@@ -214,10 +216,22 @@ export class NewRequestComponent implements OnInit {
     }, 2000);
   }
 
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
+  }
+
   emptyTheTopField() {
     this.selectedTrackType = '';
     this.selectedFormType = '';
     this.selectedRequestedType = '';
     this.selectedIsExport = '';
+  }
+
+  handleError(message){
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
   }
 }

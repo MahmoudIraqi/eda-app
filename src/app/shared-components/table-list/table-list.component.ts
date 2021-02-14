@@ -1,6 +1,5 @@
 import {Component, OnInit, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
-import {FormService} from '../../services/form.service';
 import {Router} from '@angular/router';
 import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 import {Observable} from 'rxjs';
@@ -54,7 +53,7 @@ export class TableListComponent implements OnInit, OnChanges {
   contentArray = [];
   returnedArray: string[];
 
-  constructor(private getServices: FormService, private router: Router) {
+  constructor(private router: Router) {
   }
 
   ngOnChanges() {
