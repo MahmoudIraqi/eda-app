@@ -124,11 +124,11 @@ export class HeaderComponent implements OnInit {
       link: '/approved-request',
       dropDownStatus: false
     },
-    {
-      name: 'Rejected products',
-      link: '/rejected-request',
-      dropDownStatus: false
-    },
+    // {
+    //   name: 'Rejected products',
+    //   link: '/rejected-request',
+    //   dropDownStatus: false
+    // },
     {
       name: 'Contact us',
       link: '#',

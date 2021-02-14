@@ -121,12 +121,12 @@ export class HomepageComponent implements OnInit {
         link: '/approved-request',
         dropDownStatus: false,
       },
-      {
-        icon: 'flaticon-approval',
-        title: 'Rejected Products',
-        link: '/rejected-request',
-        dropDownStatus: false,
-      }
+      // {
+      //   icon: 'flaticon-approval',
+      //   title: 'Rejected Products',
+      //   link: '/rejected-request',
+      //   dropDownStatus: false,
+      // }
     ]
   };
 
