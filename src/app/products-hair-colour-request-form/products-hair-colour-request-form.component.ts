@@ -1,17 +1,31 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges, OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DecimalPipe} from '@angular/common';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {LookupState} from '../product-request-form/product-request-form.component';
 import {map, startWith} from 'rxjs/operators';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-products-hair-colour-request-form',
   templateUrl: './products-hair-colour-request-form.component.html',
   styleUrls: ['./products-hair-colour-request-form.component.css']
 })
-export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges {
+export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() selectedRequestedType;
   @Input() selectedFormType;
   @Input() selectedTrackType;
@@ -150,6 +164,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   filteredOptionsForIngradiant: Observable<LookupState[]>;
   filteredOptionsForFunction: Observable<LookupState[]>;
 
+  subscription: Subscription;
+  @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe) {
@@ -279,6 +295,28 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions('productColor');
+    this._subscribeToClosingActions('manufacturingCompany');
+    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('applicant');
+    this._subscribeToClosingActions('licenseHolder');
+    this._subscribeToClosingActions('countryOfLicenseHolder');
+    this._subscribeToClosingActions('physicalState');
+    this._subscribeToClosingActions('purposeOfUse');
+    this._subscribeToClosingActions('storagePlace');
+    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure');
+    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging');
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant');
+    this._subscribeToClosingActionsForDetailsFormArray('function');
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
   }
 
   getFormType(event) {
@@ -648,5 +686,64 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     });
 
     return data;
+  }
+
+  private _subscribeToClosingActions(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            if (this.regHairColorantProductForAllRequestedType.controls[field].dirty) {
+              this.regHairColorantProductForAllRequestedType.controls[field].setValue(null);
+            }
+          }
+        });
+    }
+  }
+
+  private _subscribeToClosingActionsForPackagingFormArray(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            this.PackagingRows().controls.map((x) => {
+              if (x['controls'][field].dirty) {
+                x['controls'][field].setValue(null);
+              }
+            });
+          }
+        });
+    }
+  }
+
+  private _subscribeToClosingActionsForDetailsFormArray(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            this.DetailsRows().controls.map((x) => {
+              console.log('x', x);
+              x['controls'].ingrediantDetails.controls.map((item, index) => {
+                console.log(item);
+                if (item.controls[field].dirty) {
+                  item.controls[field].setValue(null);
+                }
+              });
+            });
+          }
+        });
+    }
   }
 }

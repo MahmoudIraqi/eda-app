@@ -1,18 +1,31 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges, OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {FormService} from '../services/form.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {LookupState} from '../products-kit-request-form/products-kit-request-form.component';
 import {map, startWith} from 'rxjs/operators';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-products-kit-hair-colour-request-form',
   templateUrl: './products-kit-hair-colour-request-form.component.html',
   styleUrls: ['./products-kit-hair-colour-request-form.component.css']
 })
-export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChanges {
+export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
@@ -1164,6 +1177,8 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
   filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
   filteredOptionsForStoragePlace: Observable<LookupState[]>;
+  subscription: Subscription;
+  @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -1205,6 +1220,22 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions('productColor');
+    this._subscribeToClosingActions('manufacturingCompany');
+    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('applicant');
+    this._subscribeToClosingActions('licenseHolder');
+    this._subscribeToClosingActions('countryOfLicenseHolder');
+    this._subscribeToClosingActions('storagePlace');
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onFileSelect(event, fileControlName) {
@@ -1269,9 +1300,9 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     } else {
       this.removeShortNameFieldStatus = true;
 
-      setTimeout(()=>{
+      setTimeout(() => {
         this.removeShortNameFieldStatus = false;
-      }, 1500)
+      }, 1500);
     }
   }
 
@@ -1482,7 +1513,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         }
 
         this.isLoading = false;
-      },error => this.handleError(error));
+      }, error => this.handleError(error));
     } else if (status === 'new') {
       this.newProductObject = data;
       const keyOfLookup = Object.keys(this.lookupsData);
@@ -1591,6 +1622,23 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  private _subscribeToClosingActions(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            if (this.regColourKitForAllRequestedType.controls[field].dirty) {
+              this.regColourKitForAllRequestedType.controls[field].setValue(null);
+            }
+          }
+        });
+    }
   }
 }
 

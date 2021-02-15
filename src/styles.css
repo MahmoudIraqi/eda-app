@@ -373,11 +373,11 @@ body {
   left: calc((100% - 25%) / 2);
 }
 
-.alert-danger {
-  width: 25%;
+.AlertForAllRequests .alert-danger{
+  width: 50%;
   position: fixed;
-  bottom: 1em;
-  left: calc((100% - 25%) / 2);
+  bottom: 5em;
+  left: calc((100% - 50%) / 2);
 }
 
 .filterContanier .inputBesideSelect .mat-form-field-infix {

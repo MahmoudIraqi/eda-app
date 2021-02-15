@@ -1,10 +1,23 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges, OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {FormService} from '../services/form.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 
 export interface LookupState {
   ID: number;
@@ -16,7 +29,7 @@ export interface LookupState {
   templateUrl: './products-kit-request-form.component.html',
   styleUrls: ['./products-kit-request-form.component.css']
 })
-export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
+export class ProductsKitRequestFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
@@ -1167,6 +1180,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
   filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
   filteredOptionsForStoragePlace: Observable<LookupState[]>;
+  subscription: Subscription;
+  @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -1207,6 +1222,21 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions('manufacturingCompany');
+    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('applicant');
+    this._subscribeToClosingActions('licenseHolder');
+    this._subscribeToClosingActions('countryOfLicenseHolder');
+    this._subscribeToClosingActions('storagePlace');
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onFileSelect(event, fileControlName) {
@@ -1583,5 +1613,22 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  private _subscribeToClosingActions(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            if (this.regKitForAllRequestedType.controls[field].dirty) {
+              this.regKitForAllRequestedType.controls[field].setValue(null);
+            }
+          }
+        });
+    }
   }
 }

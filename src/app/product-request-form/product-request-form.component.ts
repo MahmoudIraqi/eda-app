@@ -1,10 +1,25 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges, OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {formDataClass} from '../../utils/formDataFunction';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+
 
 export interface LookupState {
   ID: number;
@@ -17,7 +32,7 @@ export interface LookupState {
   styleUrls: ['./product-request-form.component.css']
 })
 
-export class ProductRequestFormComponent implements OnInit, OnChanges {
+export class ProductRequestFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
@@ -37,6 +52,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
+  @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   detailsListTable = {
     tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Actions'],
     tableBody: []
@@ -136,6 +152,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
   editPackagingIndex;
   editPackagingRowStatus = false;
   regProductForAllRequestedType: FormGroup;
+  subscription: Subscription;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
@@ -288,6 +305,27 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions('manufacturingCompany');
+    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('applicant');
+    this._subscribeToClosingActions('licenseHolder');
+    this._subscribeToClosingActions('countryOfLicenseHolder');
+    this._subscribeToClosingActions('physicalState');
+    this._subscribeToClosingActions('purposeOfUse');
+    this._subscribeToClosingActions('storagePlace');
+    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure');
+    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging');
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant');
+    this._subscribeToClosingActionsForDetailsFormArray('function');
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
   }
 
   getFormType(event) {
@@ -532,7 +570,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
-        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
         licenseHolder: this.fb.control('', Validators.required),
@@ -655,5 +693,64 @@ export class ProductRequestFormComponent implements OnInit, OnChanges {
     });
 
     return data;
+  }
+
+  private _subscribeToClosingActions(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            if (this.regProductForAllRequestedType.controls[field].dirty) {
+              this.regProductForAllRequestedType.controls[field].setValue(null);
+            }
+          }
+        });
+    }
+  }
+
+  private _subscribeToClosingActionsForPackagingFormArray(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            this.PackagingRows().controls.map((x) => {
+              if (x['controls'][field].dirty) {
+                x['controls'][field].setValue(null);
+              }
+            });
+          }
+        });
+    }
+  }
+
+  private _subscribeToClosingActionsForDetailsFormArray(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            this.DetailsRows().controls.map((x) => {
+              console.log('x', x);
+              x['controls'].ingrediantDetails.controls.map((item, index) => {
+                console.log(item);
+                if (item.controls[field].dirty) {
+                  item.controls[field].setValue(null);
+                }
+              });
+            });
+          }
+        });
+    }
   }
 }
