@@ -18,11 +18,11 @@ export class HomepageComponent implements OnInit {
         dropDownStatus: true,
         dropdownLinks: [
           {
-            name: 'Registration',
+            name: 'Notification',
             link: '/new-request/registration'
           },
           {
-            name: 'Re-Registration',
+            name: 'Re-Notification',
             link: '/new-request/reregistration'
           },
           {
@@ -54,11 +54,11 @@ export class HomepageComponent implements OnInit {
         dropDownStatus: true,
         dropdownLinks: [
           {
-            name: 'Registration',
+            name: 'Notification',
             link: '/track-request/registration'
           },
           {
-            name: 'Re-Registration',
+            name: 'Re-Notification',
             link: '/track-request/re-registration'
           },
           {
@@ -90,7 +90,7 @@ export class HomepageComponent implements OnInit {
         dropDownStatus: true,
         dropdownLinks: [
           {
-            name: 'Registration',
+            name: 'Notification',
             link: '/draft-request/registration'
           },
           {
@@ -121,12 +121,12 @@ export class HomepageComponent implements OnInit {
         link: '/approved-request',
         dropDownStatus: false,
       },
-      // {
-      //   icon: 'flaticon-approval',
-      //   title: 'Rejected Products',
-      //   link: '/rejected-request',
-      //   dropDownStatus: false,
-      // }
+      {
+        icon: 'flaticon-approval',
+        title: 'Rejected Products',
+        link: '/rejected-request',
+        dropDownStatus: false,
+      }
     ]
   };
 

@@ -1,7 +1,7 @@
 <div class="homepageContainer">
   <div class="contentContainer">
     <h1>{{contentObject.title}}</h1>
-    <p>{{contentObject.paragraph}}</p>
+<!--    <p>{{contentObject.paragraph}}</p>-->
     <ul class="btnList">
       <li *ngFor="let btn of contentObject.btnList">
         <a *ngIf="!btn.dropDownStatus" class="ButtonContainer" [routerLink]="btn.link">

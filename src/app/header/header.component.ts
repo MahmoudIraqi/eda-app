@@ -23,11 +23,11 @@ export class HeaderComponent implements OnInit {
       dropDownStatus: true,
       dropdownLinks: [
         {
-          name: 'Registration',
+          name: 'Notification',
           link: '/new-request/registration'
         },
         {
-          name: 'Re-Registration',
+          name: 'Re-Notification',
           link: '/new-request/reregistration'
         },
         {
@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
       dropDownStatus: true,
       dropdownLinks: [
         {
-          name: 'Registration',
+          name: 'Notification',
           link: '/draft-request/registration'
         },
         {
@@ -89,11 +89,11 @@ export class HeaderComponent implements OnInit {
       dropDownStatus: true,
       dropdownLinks: [
         {
-          name: 'Registration',
+          name: 'Notification',
           link: '/track-request/registration'
         },
         {
-          name: 'Re-Registration',
+          name: 'Re-Notification',
           link: '/track-request/re-registration'
 
         },
@@ -124,11 +124,11 @@ export class HeaderComponent implements OnInit {
       link: '/approved-request',
       dropDownStatus: false
     },
-    // {
-    //   name: 'Rejected products',
-    //   link: '/rejected-request',
-    //   dropDownStatus: false
-    // },
+    {
+      name: 'Rejected products',
+      link: '/rejected-request',
+      dropDownStatus: false
+    },
     {
       name: 'Contact us',
       link: '#',
