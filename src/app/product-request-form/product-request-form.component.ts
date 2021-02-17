@@ -424,6 +424,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
   }
 
+  cancelThePackagingRows(index) {
+    this.PackagingRows().removeAt(index);
+    this.packagingListTable.tableBody.pop();
+  }
+
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
@@ -461,6 +466,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       })])
     }));
     this.getLookupForFormArray();
+  }
+
+  cancelTheDetailsRows(index) {
+    this.DetailsRows().removeAt(index);
+    this.detailsListTable.tableBody.pop();
   }
 
   editDataDetailsRows(fromWhere) {
@@ -741,9 +751,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         .subscribe(e => {
           if (!e || !e.source) {
             this.DetailsRows().controls.map((x) => {
-              console.log('x', x);
               x['controls'].ingrediantDetails.controls.map((item, index) => {
-                console.log(item);
                 if (item.controls[field].dirty) {
                   item.controls[field].setValue(null);
                 }

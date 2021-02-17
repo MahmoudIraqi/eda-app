@@ -503,15 +503,21 @@
                               *ngIf="!editPackagingRowStatus"
                               class="btn btn-primary ml-auto"
                               (click)="addPackagingRows()"
-                              [disabled]="!(row.get('volumes').value || row.get('unitOfMeasure').value || row.get('typeOfPackaging').value)">
+                              [disabled]="PackagingRows().status === 'INVALID'">
                         Add Details Row
                       </button>
                       <button type="button"
                               *ngIf="editPackagingRowStatus"
                               class="btn btn-primary ml-auto"
                               (click)="editThePackagingRows($event)"
-                              [disabled]="!(row.get('volumes').value || row.get('unitOfMeasure').value || row.get('typeOfPackaging').value)">
+                              [disabled]="PackagingRows().status === 'INVALID'">
                         Edit Details Row
+                      </button>
+                      <button type="button"
+                              *ngIf="!editPackagingRowStatus && PackagingRows().controls.length > 1"
+                              class="btn btn-primary ml-2"
+                              (click)="cancelThePackagingRows((PackagingRows().controls.length-1))">
+                        Cancel Details Row
                       </button>
                     </div>
                   </div>
@@ -519,7 +525,7 @@
               </div>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="packagingListTable.tableBody.length > 0">
+          <div class="row mt-4" *ngIf="packagingListTable.tableBody.length > 0 && PackagingRows().controls.length > 1">
             <div class="col-12">
               <app-title [title]="'Packaging Table'" [smallTitle]="true"></app-title>
             </div>
@@ -599,7 +605,7 @@
                                        matInput
                                        formControlName="ingrediant"
                                        [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : false"
-                                       [matAutocomplete]="autoIngrediant">
+                                       [matAutocomplete]="autoIngrediant" required>
                                 <mat-autocomplete #autoIngrediant="matAutocomplete">
                                   <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
                                               [value]="option.NAME">
@@ -642,6 +648,7 @@
                                        aria-label="Function"
                                        matInput
                                        formControlName="function"
+                                       required
                                        [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : false"
                                        [matAutocomplete]="autoFunction">
                                 <mat-autocomplete #autoFunction="matAutocomplete">
@@ -678,21 +685,27 @@
                           *ngIf="!editDetailedRowStatus"
                           class="btn btn-primary ml-auto"
                           (click)="addDetailsRows()"
-                          [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
+                          [disabled]="DetailsRows().status === 'INVALID'">
                     Add Details Row
                   </button>
                   <button type="button"
                           *ngIf="editDetailedRowStatus"
                           class="btn btn-primary ml-auto"
                           (click)="editDataDetailsRows()"
-                          [disabled]="!(row.get('colour').value || row.get('fragrance').value || row.get('flavor').value)">
+                          [disabled]="DetailsRows().status === 'INVALID'">
                     Edit Details Row
+                  </button>
+                  <button type="button"
+                          *ngIf="!editDetailedRowStatus && DetailsRows().controls.length > 1"
+                          class="btn btn-primary ml-2"
+                          (click)="cancelTheDetailsRows((DetailsRows().controls.length-1))">
+                    Cancel Details Row
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="detailsListTable.tableBody.length > 0">
+          <div class="row mt-4" *ngIf="detailsListTable.tableBody.length > 0 && DetailsRows().controls.length > 1">
             <div class="col-12">
               <app-title [title]="'Details Table'" [smallTitle]="true"></app-title>
             </div>

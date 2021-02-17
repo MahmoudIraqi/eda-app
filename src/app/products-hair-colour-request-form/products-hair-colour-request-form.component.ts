@@ -414,6 +414,11 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
   }
 
+  cancelThePackagingRows(index) {
+    this.PackagingRows().removeAt(index);
+    this.packagingListTable.tableBody.pop();
+  }
+
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
@@ -450,6 +455,11 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         function: this.fb.control('', Validators.required),
       })])
     }));
+  }
+
+  cancelTheDetailsRows(index) {
+    this.DetailsRows().removeAt(index);
+    this.detailsListTable.tableBody.pop();
   }
 
   editDataDetailsRows(fromWhere) {
@@ -734,9 +744,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         .subscribe(e => {
           if (!e || !e.source) {
             this.DetailsRows().controls.map((x) => {
-              console.log('x', x);
               x['controls'].ingrediantDetails.controls.map((item, index) => {
-                console.log(item);
                 if (item.controls[field].dirty) {
                   item.controls[field].setValue(null);
                 }

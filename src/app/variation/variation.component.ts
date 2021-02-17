@@ -108,10 +108,7 @@ export class VariationComponent implements OnInit {
       this.isLoading = false;
     }, error => this.handleError(error));
 
-
-    console.log('this.route', this.route);
     this.whichVariation = this.route.snapshot.routeConfig.path;
-    console.log('this.whichVariation', this.whichVariation);
   }
 
   applyProduct(NotificationNo) {
@@ -152,7 +149,6 @@ export class VariationComponent implements OnInit {
         LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell-variation' ? 4 : 3
       };
 
-      console.log('data', data);
       this.getService.setVariationProduct(data).subscribe((res: any) => {
         this.isLoading = false;
         this.alertNotificationStatus = true;

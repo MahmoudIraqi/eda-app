@@ -1212,7 +1212,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
 
     this.regKitForAllRequestedType.valueChanges.subscribe(x => {
-      debugger;
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
