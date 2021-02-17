@@ -1194,7 +1194,9 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       this.resetForms();
     }
 
-    this.getFormAsStarting(this.editData);
+    if (this.editData) {
+      this.getFormAsStarting(this.editData);
+    }
 
     this.getDisabledValues();
   }

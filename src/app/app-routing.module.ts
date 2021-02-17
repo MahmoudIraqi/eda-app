@@ -29,7 +29,8 @@ const routes: Routes = [
           {path: 'registration', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'registration/:id', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
-          {path: 'variation', component: VariationComponent, data: {animation: 'new-request'}},
+          {path: 'tell_do-variation', component: VariationComponent, data: {animation: 'new-request'}},
+          {path: 'do_tell-variation', component: VariationComponent, data: {animation: 'new-request'}},
         ]
       },
       {
@@ -37,14 +38,16 @@ const routes: Routes = [
         children: [
           {path: 'registration', component: TrackRequestComponent, data: {animation: 'track-request'}},
           {path: 're-registration', component: TrackReRegistrationRequestComponent, data: {animation: 'track-request'}},
-          {path: 'variation', component: TrackVariationComponent, data: {animation: 'track-request'}}
+          {path: 'tell_do-variation', component: TrackVariationComponent, data: {animation: 'track-request'}},
+          {path: 'do_tell-variation', component: TrackVariationComponent, data: {animation: 'track-request'}}
         ]
       },
       {
         path: 'draft-request', component: DraftRequestsContainerComponent,
         children: [
           {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}},
-          {path: 'variation', component: DraftVariationComponent, data: {animation: 'draft-request'}}
+          {path: 'tell_do-variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
+          {path: 'do_tell-variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
         ]
       },
       {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},

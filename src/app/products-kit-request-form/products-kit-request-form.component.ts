@@ -7,7 +7,7 @@ import {
   OnChanges, OnDestroy,
   OnInit,
   Output,
-  QueryList,
+  QueryList, SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -1189,15 +1189,16 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.getFormAsStarting('');
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
-    // this.getFormAsStarting('');
 
     if (this.successSubmission) {
       this.resetForms();
     }
 
-    this.getFormAsStarting(this.editData);
+    if (this.editData) {
+      this.getFormAsStarting(this.editData);
+    }
 
     this.getDisabledValues();
   }
@@ -1211,6 +1212,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
 
     this.regKitForAllRequestedType.valueChanges.subscribe(x => {
+      debugger;
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -1280,6 +1282,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   saveData() {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
     this.saveDataOutput.emit(data);
@@ -1523,7 +1526,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         }
 
         this.isLoading = false;
-      },error => this.handleError(error));
+      }, error => this.handleError(error));
     } else if (status === 'new') {
       this.newProductObject = data;
       const keyOfLookup = Object.keys(this.lookupsData);

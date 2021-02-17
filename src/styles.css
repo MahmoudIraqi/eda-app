@@ -369,7 +369,7 @@ body {
 .alert-success {
   width: 25%;
   position: fixed;
-  bottom: 1em;
+  bottom: 5em;
   left: calc((100% - 25%) / 2);
 }
 

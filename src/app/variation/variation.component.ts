@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-variation',
@@ -38,8 +39,9 @@ export class VariationComponent implements OnInit {
   variationFields = [];
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
+  whichVariation;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -105,6 +107,11 @@ export class VariationComponent implements OnInit {
       this.formData.trackType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
+
+
+    console.log('this.route', this.route);
+    this.whichVariation = this.route.snapshot.routeConfig.path;
+    console.log('this.whichVariation', this.whichVariation);
   }
 
   applyProduct(NotificationNo) {
@@ -113,7 +120,7 @@ export class VariationComponent implements OnInit {
       this.productData = res;
       this.typeOfRegistrationForProduct = res.typeOfRegistration;
       this.isLoading = false;
-      this.getVariationRequiredFields(this.typeOfRegistrationForProduct, 1);
+      this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell-variation' ? 2 : 1);
     }, error => this.handleError(error));
   }
 
@@ -141,9 +148,11 @@ export class VariationComponent implements OnInit {
     if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
       const data = {
         ...this.productData,
-        ...event
+        ...event,
+        LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell-variation' ? 4 : 3
       };
 
+      console.log('data', data);
       this.getService.setVariationProduct(data).subscribe((res: any) => {
         this.isLoading = false;
         this.alertNotificationStatus = true;

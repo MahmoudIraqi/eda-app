@@ -32,11 +32,11 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Tell & Do variation',
-          link: '/new-request/variation'
+          link: '/new-request/tell_do-variation'
         },
         {
           name: 'Do & Tell Variation',
-          link: '#'
+          link: '/new-request/do_tell-variation'
         },
         {
           name: 'Inspection',
@@ -63,11 +63,11 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Tell & Do variation',
-          link: '/draft-request/variation'
+          link: '/draft-request/tell_do-variation'
         },
         {
           name: 'Do & Tell Variation',
-          link: '#'
+          link: '/draft-request/do_tell-variation'
         },
         {
           name: 'Inspection',
@@ -99,11 +99,11 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Tell & Do variation',
-          link: '/track-request/variation'
+          link: '/track-request/tell_do-variation'
         },
         {
           name: 'Do & Tell Variation',
-          link: '#'
+          link: '/track-request/do_tell-variation'
         },
         {
           name: 'Inspection',
