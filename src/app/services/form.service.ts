@@ -254,13 +254,13 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getTrackVariationRequestsList() {
+  getTrackVariationRequestsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=track&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=track&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -293,13 +293,13 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getDraftVariationProductsList() {
+  getDraftVariationProductsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=draft&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),

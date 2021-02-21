@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-approved-variation',
@@ -11,14 +12,17 @@ export class DraftVariationComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
+  whichVariation;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.getService.getDraftVariationProductsList().subscribe((res: any) => {
+    this.whichVariation = this.route.snapshot.routeConfig.path;
+
+    this.getService.getDraftVariationProductsList(this.whichVariation).subscribe((res: any) => {
       this.draftVariationListRequests = {
         tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type'],
         tableBody: res

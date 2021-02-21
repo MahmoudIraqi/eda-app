@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-track-variation',
@@ -12,20 +13,23 @@ export class TrackVariationComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
+  whichVariation;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.getService.getTrackVariationRequestsList().subscribe((res: any) => {
+    this.whichVariation = this.route.snapshot.routeConfig.path;
+
+    this.getService.getTrackVariationRequestsList(this.whichVariation).subscribe((res: any) => {
       this.trackVariationListRequests = {
         tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type'],
         tableBody: res
       };
       this.isLoading = false;
-    },error => this.handleError(error));
+    }, error => this.handleError(error));
   }
 
   handleError(message) {
