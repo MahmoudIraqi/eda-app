@@ -16,6 +16,7 @@ import {TrackReRegistrationRequestComponent} from './track-re-registration-reque
 import {VariationComponent} from './variation/variation.component';
 import {TrackVariationComponent} from './track-variation/track-variation.component';
 import {DraftVariationComponent} from './draft-variation/draft-variation.component';
+import {ManufacturingCompanyComponent} from './manufacturing-company/manufacturing-company.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -48,6 +49,12 @@ const routes: Routes = [
           {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}},
           {path: 'tell_do-variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
           {path: 'do_tell-variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
+        ]
+      },
+      {
+        path: 'admin', component: DraftRequestsContainerComponent,
+        children: [
+          {path: 'manufacturing-company', component: ManufacturingCompanyComponent, data: {animation: 'admin'}},
         ]
       },
       {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},

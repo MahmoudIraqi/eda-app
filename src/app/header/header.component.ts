@@ -130,10 +130,16 @@ export class HeaderComponent implements OnInit {
       dropDownStatus: false
     },
     {
-      name: 'Contact us',
+      name: 'Administration',
       link: '#',
-      dropDownStatus: false
-    }
+      dropDownStatus: true,
+      dropdownLinks: [
+        {
+          name: 'Manufacturing Company',
+          link: '/admin/manufacturing-company'
+        }
+      ]
+    },
   ];
 
   constructor() {
