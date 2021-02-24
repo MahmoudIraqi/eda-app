@@ -108,10 +108,6 @@ export class HomepageComponent implements OnInit {
           {
             name: 'Custom Release',
             link: '#'
-          },
-          {
-            name: 'General Enquiries',
-            link: '#'
           }
         ]
       },

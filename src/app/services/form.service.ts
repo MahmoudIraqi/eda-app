@@ -390,6 +390,27 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  setManufacturingCompany(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    const data = {
+      NAME: event.manufacturingCompany,
+      COUNTRY_ID: event.manufacturingCountry
+    };
+
+    const JSONData = JSON.stringify(data);
+    console.log('event', JSONData);
+
+    return this.http.post(`${this.apiBaseUrl}manufactory_company`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

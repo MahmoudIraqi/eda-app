@@ -3,9 +3,7 @@
 
   <div class="sectionContainer">
     <div [@routerTransitionSlide]="prepareRoute(outlet)">
-      <div class="whiteContainer">
-        <router-outlet #outlet="outlet"></router-outlet>
-      </div>
+      <router-outlet #outlet="outlet"></router-outlet>
     </div>
   </div>
 

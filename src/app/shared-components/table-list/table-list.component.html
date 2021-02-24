@@ -63,6 +63,15 @@
         </span>
             </th>
           </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'manufacturing'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
           <tr
             *ngFor="let request of returnedArray && returnedArray.length > 0 ? returnedArray : data.tableBody; let i = index">
             <td colspan="7" *ngIf="whichTable === 'trackRequest'">
@@ -660,6 +669,34 @@
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="2" *ngIf="whichTable === 'manufacturing'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td>{{request.name}}</td>
+                          <td>{{request.country}}</td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Manufacturing Company Name :</label>
+                        <span>{{request.name}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Manufacturing Country :</label>
+                        <span>{{request.country}}</span>
                       </div>
                     </div>
                   </div>

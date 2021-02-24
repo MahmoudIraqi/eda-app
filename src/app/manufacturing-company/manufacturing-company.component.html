@@ -1,1 +1,93 @@
-<p>manufacturing-company works!</p>
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'Manufacturing Company Form'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="formTable">
+        <div class="row">
+          <div class="col-12">
+            <form class="mt-2" name="form" class="example-form" method="post"
+                  [formGroup]="manufacturingCompanyForm"
+                  (ngSubmit)="onSubmit()" novalidate>
+              <div class="row">
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Manufacturing Company</mat-label>
+                    <input type="text" class="form-control" matInput formControlName="manufacturingCompany"
+                           placeholder="Manufacturing Company" required>
+                    <div
+                      *ngIf="manufacturingCompanyForm.get('manufacturingCompany').invalid && (manufacturingCompanyForm.get('manufacturingCompany').dirty || manufacturingCompanyForm.get('manufacturingCompany').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="manufacturingCompanyForm.get('manufacturingCompany').errors.required">
+                        this field is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Manufacturing Country</mat-label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Manufacturing Country"
+                           aria-label="Manufacturing Country"
+                           matInput
+                           formControlName="manufacturingCountry"
+                           [matAutocomplete]="manufacturingCountryList" required>
+                    <mat-autocomplete #manufacturingCountryList="matAutocomplete">
+                      <mat-option *ngFor="let option of filteredOptionsForManufacturingCountry | async"
+                                  [value]="option.NAME">
+                        {{option.NAME}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <div
+                      *ngIf="manufacturingCompanyForm.get('manufacturingCountry').invalid && (manufacturingCompanyForm.get('manufacturingCountry').dirty || manufacturingCompanyForm.get('manufacturingCountry').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="manufacturingCompanyForm.get('manufacturingCountry').errors.required">
+                        this field is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <div class="d-flex">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-sm ml-auto btnSubmit"
+                      [disabled]="!manufacturingCompanyForm.valid">
+                      <span>Submit</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-12">
+      <app-title [title]="'Manufacturing Company Table'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12">
+      <div class="tableContainer TrackTable">
+        <app-table-list [data]="manufacturingCompanyList" [whichTable]="'manufacturing'"></app-table-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<alert type="danger" class="AlertForAllRequests" dismissible="true" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
