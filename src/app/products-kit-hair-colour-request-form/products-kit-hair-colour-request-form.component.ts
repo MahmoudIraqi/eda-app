@@ -1429,6 +1429,19 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
       this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
 
+      this.regColourKitForAllRequestedType.valueChanges.subscribe(x => {
+        for (let i = 0; i < Object.values(x).length; i++) {
+          if (typeof Object.values(x)[i] !== 'object') {
+            if (!Object.values(x)[i]) {
+              this.disabledSaveButton = false;
+            } else {
+              this.disabledSaveButton = true;
+              break;
+            }
+          }
+        }
+      });
+
       this.regColourKitForAllRequestedType.patchValue({
         ...data,
       });

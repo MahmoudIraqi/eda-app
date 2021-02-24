@@ -572,6 +572,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         });
       });
 
+      this.regProductForAllRequestedType.valueChanges.subscribe(x => {
+        for (let i = 0; i < Object.values(x).length; i++) {
+          if (typeof Object.values(x)[i] !== 'object') {
+            if (!Object.values(x)[i]) {
+              this.disabledSaveButton = false;
+            } else {
+              this.disabledSaveButton = true;
+              break;
+            }
+          }
+        }
+      });
+
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
