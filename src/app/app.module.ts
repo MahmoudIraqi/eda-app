@@ -50,6 +50,7 @@ import {TrackVariationComponent} from './track-variation/track-variation.compone
 import {DraftVariationComponent} from './draft-variation/draft-variation.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { ManufacturingCompanyComponent } from './manufacturing-company/manufacturing-company.component';
+import { GeneralEnquireiesComponent } from './general-enquireies/general-enquireies.component';
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { ManufacturingCompanyComponent } from './manufacturing-company/manufactu
     TrackVariationComponent,
     DraftVariationComponent,
     ManufacturingCompanyComponent,
+    GeneralEnquireiesComponent,
   ],
   imports: [
     BrowserModule,

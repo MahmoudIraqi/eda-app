@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'General Enquiries',
-          link: '#'
+          link: '/new-request/general-enquiries'
         }
       ]
     },

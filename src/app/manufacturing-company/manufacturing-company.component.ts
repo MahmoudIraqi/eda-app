@@ -152,6 +152,7 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSubmitRequest();
+      this.resetForms();
       this.onClosed();
     }, error => this.handleError(error));
   }

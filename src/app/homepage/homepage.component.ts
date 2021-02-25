@@ -43,7 +43,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'General Enquiries',
-            link: '#'
+            link: '/new-request/general-enquiries'
           }
         ]
       },

@@ -312,7 +312,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}/Requests?Type=rejected&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -405,6 +405,29 @@ export class FormService {
     console.log('event', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}manufactory_company`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  setGeneralEnquiries(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    const data = {
+      recieptValue: event.receiptValue,
+      recieptNumber: event.receiptNumber,
+      TITLE: event.title,
+      DESCRIPTION: event.description,
+    };
+
+    const JSONData = JSON.stringify(data);
+    console.log('event', JSONData);
+
+    return this.http.post(`${this.apiBaseUrl}/Requests/PostInquery`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),
