@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormService} from '../services/form.service';
 
 @Component({
-  selector: 'app-track-request',
-  templateUrl: './track-request.component.html',
-  styleUrls: ['./track-request.component.css']
+  selector: 'app-track-general-enquiries',
+  templateUrl: './track-general-enquiries.component.html',
+  styleUrls: ['./track-general-enquiries.component.css']
 })
-export class TrackRequestComponent implements OnInit {
-  trackListRequests;
+export class TrackGeneralEnquiriesComponent implements OnInit {
+  trackGeneralEnquiresListRequests;
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
@@ -18,9 +18,8 @@ export class TrackRequestComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.getService.getTrackRequestsList().subscribe((res: any) => {
-
-      this.trackListRequests = {
+    this.getService.getTrackGeneralEnquiriesList().subscribe((res: any) => {
+      this.trackGeneralEnquiresListRequests = {
         tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
         tableBody: res
       };

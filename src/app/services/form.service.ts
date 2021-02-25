@@ -241,6 +241,19 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getTrackGeneralEnquiriesList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests/InqueryData?Type=track&pageSize=5000&pageNo=1`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getTrackReRegistrationRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -402,7 +415,6 @@ export class FormService {
     };
 
     const JSONData = JSON.stringify(data);
-    console.log('event', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}manufactory_company`, JSONData, options)
       .pipe(map((res: any) => {
@@ -425,7 +437,6 @@ export class FormService {
     };
 
     const JSONData = JSON.stringify(data);
-    console.log('event', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}/Requests/PostInquery`, JSONData, options)
       .pipe(map((res: any) => {

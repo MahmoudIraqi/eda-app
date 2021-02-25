@@ -51,6 +51,7 @@ import {DraftVariationComponent} from './draft-variation/draft-variation.compone
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { ManufacturingCompanyComponent } from './manufacturing-company/manufacturing-company.component';
 import { GeneralEnquireiesComponent } from './general-enquireies/general-enquireies.component';
+import { TrackGeneralEnquiriesComponent } from './track-general-enquiries/track-general-enquiries.component';
 
 
 @NgModule({
@@ -84,6 +85,7 @@ import { GeneralEnquireiesComponent } from './general-enquireies/general-enquire
     DraftVariationComponent,
     ManufacturingCompanyComponent,
     GeneralEnquireiesComponent,
+    TrackGeneralEnquiriesComponent,
   ],
   imports: [
     BrowserModule,
