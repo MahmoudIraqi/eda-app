@@ -66,85 +66,134 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       id: 'freeSale',
       name: 'Free Sale',
       fileName: '',
-      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false
+      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+      enable: true
     },
     {
       id: 'GMP',
       name: 'GMP',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'CoA',
       name: 'CoA',
       fileName: '',
-      required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false
+      required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
+      enable: true
     },
     {
       id: 'artWork',
       name: 'Art Work',
       fileName: '',
-      required: !this.kitProductStatus ? true : false
+      required: !this.kitProductStatus ? true : false,
+      enable: true
     },
     {
       id: 'leaflet',
       name: 'leaflet',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'reference',
       name: 'reference',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'methodOfAnalysis',
       name: 'Method of Analysis',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
       fileName: '',
-      required: true
+      required: true,
+      enable: true
     },
     {
       id: 'receipt',
       name: 'receipt',
       fileName: '',
-      required: true
+      required: true,
+      enable: true
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+      enable: true
     },
     {
       id: 'manufacturingContract',
       name: 'Manufacturing Contract',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'storageContract',
       name: 'Storage Contract',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'others',
       name: 'others',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
-      required: true
+      required: true,
+      enable: true
+    },
+    {
+      id: 'factoryLicense',
+      name: 'Factory license',
+      fileName: '',
+      required: false,
+      enable: true
+    },
+    {
+      id: 'manufacturingAssignment',
+      name: 'Manufacturing Assignment',
+      fileName: '',
+      required: false,
+      enable: true
+    },
+    {
+      id: 'commercialRecord',
+      name: 'Commercial Record',
+      fileName: '',
+      required: false,
+      enable: true
+    },
+    {
+      id: 'stabilityStudy',
+      name: 'Stability study',
+      fileName: '',
+      required: false,
+      enable: true
+    },
+    {
+      id: 'shelfLifeAttachment',
+      name: 'Shelf life',
+      fileName: '',
+      required: false,
+      enable: true
     }
   ];
   editIndex;
@@ -195,86 +244,135 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         id: 'freeSale',
         name: 'Free Sale',
         fileName: '',
-        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true
       },
       {
         id: 'GMP',
         name: 'GMP',
         fileName: '',
-        required: false
+        required: false,
+        enable: true
       },
       {
         id: 'CoA',
         name: 'CoA',
         fileName: '',
-        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false
+        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
+        enable: true
       },
       {
         id: 'artWork',
         name: 'Art Work',
         fileName: '',
-        required: !this.kitProductStatus ? true : false
+        required: !this.kitProductStatus ? true : false,
+        enable: true
       },
       {
         id: 'leaflet',
         name: 'leaflet',
         fileName: '',
-        required: false
+        required: false,
+        enable: true
       },
       {
         id: 'reference',
         name: 'reference',
         fileName: '',
-        required: false
+        required: false,
+        enable: true
       },
       {
         id: 'methodOfAnalysis',
         name: 'Method of Analysis',
         fileName: '',
-        required: false
+        required: false,
+        enable: true
       },
       {
         id: 'specificationsOfFinishedProduct',
         name: 'Specifications of Finished Product',
         fileName: '',
-        required: true
+        required: true,
+        enable: true
       },
       {
         id: 'receipt',
         name: 'receipt',
         fileName: '',
-        required: true
+        required: true,
+        enable: true
       },
       {
         id: 'authorizationLetter',
         name: 'Authorization Letter',
         fileName: '',
         required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true
       },
       {
         id: 'manufacturingContract',
         name: 'Manufacturing Contract',
         fileName: '',
-        required: false
+        required: false,
+        enable: true
       },
       {
         id: 'storageContract',
         name: 'Storage Contract',
         fileName: '',
-        required: false
+        required: false,
+        enable: true
       },
       {
         id: 'others',
         name: 'others',
         fileName: '',
-        required: false
+        required: false,
+        enable: true
       },
       {
         id: 'otherFees',
         name: 'otherFees',
         fileName: '',
-        required: true
-      }
+        required: true,
+        enable: true
+      },
+      {
+        id: 'factoryLicense',
+        name: 'Factory license',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'manufacturingAssignment',
+        name: 'Manufacturing Assignment',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'commercialRecord',
+        name: 'Commercial Record',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'stabilityStudy',
+        name: 'Stability study',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'shelfLifeAttachment',
+        name: 'Shelf life',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
     ];
 
     this.getFormAsStarting(this.editData);
@@ -641,6 +739,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
         manufacturingContract: this.fb.control(''),
         storageContract: this.fb.control(''),
+        factoryLicense: this.fb.control(''),
+        manufacturingAssignment: this.fb.control(''),
+        commercialRecord: this.fb.control(''),
+        stabilityStudy: this.fb.control(''),
+        shelfLifeAttachment: this.fb.control(''),
         others: this.fb.control(''),
         otherFees: this.fb.control('', Validators.required),
       });

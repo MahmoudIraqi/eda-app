@@ -327,6 +327,7 @@ export class FormService {
 
     return this.http.get(`${this.apiBaseUrl}/Requests?Type=rejected&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
+          console.log('res', res);
           return res;
         }),
         catchError(this.handleError));
