@@ -133,86 +133,135 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       id: 'freeSale',
       name: 'Free Sale',
       fileName: '',
-      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false
+      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+      enable: true
     },
     {
       id: 'GMP',
       name: 'GMP',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'CoA',
       name: 'CoA',
       fileName: '',
-      required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false
+      required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
+      enable: true
     },
     {
       id: 'artWorkForTheKit',
       name: 'Art Work For The Kit',
       fileName: '',
-      required: true
+      required: true,
+      enable: true
     },
     {
       id: 'leaflet',
       name: 'leaflet',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'reference',
       name: 'reference',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'methodOfAnalysis',
       name: 'Method of Analysis',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
       fileName: '',
-      required: true
+      required: true,
+      enable: true
     },
     {
       id: 'receipt',
       name: 'receipt',
       fileName: '',
-      required: true
+      required: true,
+      enable: true
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
-      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false
+      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+      enable: true
     },
     {
       id: 'manufacturingContract',
       name: 'Manufacturing Contract',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'storageContract',
       name: 'Storage Contract',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'others',
       name: 'others',
       fileName: '',
-      required: false
+      required: false,
+      enable: true
     },
     {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
-      required: true
-    }
+      required: true,
+      enable: true
+    },
+    {
+      id: 'factoryLicense',
+      name: 'Factory license',
+      fileName: '',
+      required: false,
+      enable: this.variationFieldsStatus ? true : false
+    },
+    {
+      id: 'manufacturingAssignment',
+      name: 'Manufacturing Assignment',
+      fileName: '',
+      required: false,
+      enable: this.variationFieldsStatus ? true : false
+    },
+    {
+      id: 'commercialRecord',
+      name: 'Commercial Record',
+      fileName: '',
+      required: false,
+      enable: this.variationFieldsStatus ? true : false
+    },
+    {
+      id: 'stabilityStudy',
+      name: 'Stability study',
+      fileName: '',
+      required: false,
+      enable: this.variationFieldsStatus ? true : false
+    },
+    {
+      id: 'shelfLifeAttachment',
+      name: 'Shelf life',
+      fileName: '',
+      required: false,
+      enable: this.variationFieldsStatus ? true : false
+    },
   ];
   removeShortNameFieldStatus = false;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;

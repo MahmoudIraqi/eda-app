@@ -123,57 +123,36 @@ export class VariationComponent implements OnInit {
 
   onSave(event) {
     this.isLoading = true;
-    if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
-      const data = {
-        ...this.productData,
-        ...event,
-        isDraft: 1
-      };
+    const data = {
+      ...this.productData,
+      ...event,
+      isDraft: 1
+    };
 
-      this.getService.setVariationProduct(data).subscribe((res: any) => {
-        this.isLoading = false;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
-        this.emptyTheTopField();
-        this.onClosed();
-      }, error => this.handleError(error));
-    }
+    this.getService.setVariationProduct(data).subscribe((res: any) => {
+      this.isLoading = false;
+      this.alertNotificationStatus = true;
+      this.alertNotification = this.alertForSubmitRequest();
+      this.emptyTheTopField();
+      this.onClosed();
+    }, error => this.handleError(error));
   }
 
   onSubmit(event) {
     this.isLoading = true;
-    if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
-      const data = {
-        ...this.productData,
-        ...event,
-        LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell-variation' ? 4 : 3
-      };
+    const data = {
+      ...this.productData,
+      ...event,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell-variation' ? 4 : 3
+    };
 
-      this.getService.setVariationProduct(data).subscribe((res: any) => {
-        this.isLoading = false;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
-        this.emptyTheTopField();
-        this.onClosed();
-      }, error => this.handleError(error));
-    } // else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
-    //   const data = {
-    //     ...this.productData,
-    //     receiptNumber: event.receiptNumber,
-    //     receiptValue: event.receiptValue,
-    //     otherFees: event.otherFees,
-    //     receipt: event.receipt
-    //   };
-    //
-    //   this.getService.setReRegistrationKitProduct(data).subscribe((res: any) => {
-    //     this.isLoading = false;
-    //     this.alertNotificationStatus = true;
-    //     this.alertNotification = this.alertForSubmitRequest();
-    //     this.emptyTheTopField();
-    //     this.onClosed();
-    //   });
-    //
-    // }
+    this.getService.setVariationProduct(data).subscribe((res: any) => {
+      this.isLoading = false;
+      this.alertNotificationStatus = true;
+      this.alertNotification = this.alertForSubmitRequest();
+      this.emptyTheTopField();
+      this.onClosed();
+    }, error => this.handleError(error));
   }
 
   getVariationRequiredFields(typeOfRegistration, whichVariation) {
