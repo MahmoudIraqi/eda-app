@@ -132,9 +132,7 @@ export class VariationComponent implements OnInit {
     this.getService.setVariationProduct(data).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;
-      this.alertNotification = this.alertForSubmitRequest();
-      this.emptyTheTopField();
-      this.onClosed();
+      this.alertNotification = this.alertForSaveRequest();
     }, error => this.handleError(error));
   }
 
@@ -165,6 +163,10 @@ export class VariationComponent implements OnInit {
 
   onSelectionChange(event) {
     this.variationFields = event.value;
+  }
+
+  alertForSaveRequest() {
+    return {msg: 'You had a successful saving'};
   }
 
   alertForSubmitRequest() {

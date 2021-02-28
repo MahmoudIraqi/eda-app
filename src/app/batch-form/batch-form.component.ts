@@ -32,8 +32,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private getService: FormService,
               private fb: FormBuilder,
-              private inputService: InputService,
-              private getServices: FormService,) {
+              private inputService: InputService) {
     this.getFormAsStarting();
   }
 
@@ -67,7 +66,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   applyProduct(notificationNumber) {
     this.isLoading = true;
-    this.getServices.getProductWithNotificationNumberList(notificationNumber).subscribe((res: any) => {
+    this.getService.getProductWithNotificationNumberList(notificationNumber).subscribe((res: any) => {
       this.isLoading = false;
       this.showOtherField = true;
       this.batchForWhichProduct = res.productEnglishName;

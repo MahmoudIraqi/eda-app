@@ -10,8 +10,32 @@ import {map, catchError} from 'rxjs/operators';
 export class FormService {
 
   apiBaseUrl = environment.apiURL;
+  loginAPIURL = environment.loginAPIURL;
 
   constructor(private http: HttpClient) {
+  }
+
+  loginAPIToken(data) {
+    console.log('data', data);
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    const newStructure = {
+      UserName: data.username,
+      UserPassword: data.password,
+    };
+
+    const JSONData = JSON.stringify(newStructure);
+    console.log('JSONData', JSONData);
+
+    return this.http.post(`${this.loginAPIURL}`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
   }
 
   getRequestTypeLookUp() {

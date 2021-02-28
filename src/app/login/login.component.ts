@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FormService} from '../services/form.service';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class LoginComponent {
   form: FormGroup;
+  alertNotificationStatus: boolean = false;
+  alertNotification: any;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
+  isLoading: boolean = false;
 
   formLoginData = [
     {
@@ -26,6 +32,7 @@ export class LoginComponent {
   ];
 
   constructor(private fb: FormBuilder,
+              private getService: FormService,
               private router: Router) {
     this.form = this.fb.group({
       username: this.fb.control('', Validators.required),
@@ -40,6 +47,17 @@ export class LoginComponent {
           this.router.navigateByUrl('/home');
         }
       });
+      // this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
+      //   this.isLoading = false;
+      //   this.alertNotificationStatus = true;
+      //   console.log('rees_Logins', res);
+      // }, error => this.handleError(error));
     }
+  }
+
+  handleError(message) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
   }
 }
