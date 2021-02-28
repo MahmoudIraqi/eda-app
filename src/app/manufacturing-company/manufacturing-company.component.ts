@@ -27,71 +27,71 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
 
-  manufacturingCompanyList = {
-    tableHeader: ['Name','Country'],
-    tableBody: [
-      {
-        name: 'Company 1',
-        country: 'Country 1',
-      },
-      {
-        name: 'Company 2',
-        country: 'Country 2',
-      },
-      {
-        name: 'Company 3',
-        country: 'Country 3',
-      },
-      {
-        name: 'Company 4',
-        country: 'Country 4',
-      },
-      {
-        name: 'Company 5',
-        country: 'Country 5',
-      },
-      {
-        name: 'Company 6',
-        country: 'Country 6',
-      },
-      {
-        name: 'Company 7',
-        country: 'Country 7',
-      },
-      {
-        name: 'Company 8',
-        country: 'Country 8',
-      },
-      {
-        name: 'Company 9',
-        country: 'Country 9',
-      },
-      {
-        name: 'Company 10',
-        country: 'Country 10',
-      },
-      {
-        name: 'Company 11',
-        country: 'Country 11',
-      },
-      {
-        name: 'Company 12',
-        country: 'Country 12',
-      },
-      {
-        name: 'Company 13',
-        country: 'Country 13',
-      },
-      {
-        name: 'Company 14',
-        country: 'Country 14',
-      },
-      {
-        name: 'Company 15',
-        country: 'Country 15',
-      }
-    ],
-  };
+  // manufacturingCompanyList = {
+  //   tableHeader: ['Name','Country'],
+  //   tableBody: [
+  //     {
+  //       name: 'Company 1',
+  //       country: 'Country 1',
+  //     },
+  //     {
+  //       name: 'Company 2',
+  //       country: 'Country 2',
+  //     },
+  //     {
+  //       name: 'Company 3',
+  //       country: 'Country 3',
+  //     },
+  //     {
+  //       name: 'Company 4',
+  //       country: 'Country 4',
+  //     },
+  //     {
+  //       name: 'Company 5',
+  //       country: 'Country 5',
+  //     },
+  //     {
+  //       name: 'Company 6',
+  //       country: 'Country 6',
+  //     },
+  //     {
+  //       name: 'Company 7',
+  //       country: 'Country 7',
+  //     },
+  //     {
+  //       name: 'Company 8',
+  //       country: 'Country 8',
+  //     },
+  //     {
+  //       name: 'Company 9',
+  //       country: 'Country 9',
+  //     },
+  //     {
+  //       name: 'Company 10',
+  //       country: 'Country 10',
+  //     },
+  //     {
+  //       name: 'Company 11',
+  //       country: 'Country 11',
+  //     },
+  //     {
+  //       name: 'Company 12',
+  //       country: 'Country 12',
+  //     },
+  //     {
+  //       name: 'Company 13',
+  //       country: 'Country 13',
+  //     },
+  //     {
+  //       name: 'Company 14',
+  //       country: 'Country 14',
+  //     },
+  //     {
+  //       name: 'Company 15',
+  //       country: 'Country 15',
+  //     }
+  //   ],
+  // };
 
   constructor(private getService: FormService,
               private fb: FormBuilder) {
