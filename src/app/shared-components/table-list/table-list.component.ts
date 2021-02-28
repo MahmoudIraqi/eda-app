@@ -3,6 +3,7 @@ import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 import {Observable} from 'rxjs';
+import {InputService} from '../../services/input.service';
 
 @Component({
   selector: 'app-table-list',
@@ -53,7 +54,7 @@ export class TableListComponent implements OnInit, OnChanges {
   contentArray = [];
   returnedArray: string[];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private inputService: InputService) {
   }
 
   ngOnChanges() {
@@ -210,5 +211,10 @@ export class TableListComponent implements OnInit, OnChanges {
     const startItem = (event.page - 1) * event.itemsPerPage;
     const endItem = event.page * event.itemsPerPage;
     this.returnedArray = this.contentArray.slice(startItem, endItem);
+  }
+
+  addBatch(notificationNumber) {
+    this.inputService.publish({type: 'NotificationNumber', payload: notificationNumber});
+    this.router.navigateByUrl('/admin/adding-batch');
   }
 }

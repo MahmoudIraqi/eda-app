@@ -327,7 +327,6 @@ export class FormService {
 
     return this.http.get(`${this.apiBaseUrl}/Requests?Type=rejected&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
-          console.log('res', res);
           return res;
         }),
         catchError(this.handleError));
@@ -440,6 +439,21 @@ export class FormService {
     const JSONData = JSON.stringify(data);
 
     return this.http.post(`${this.apiBaseUrl}/Requests/PostInquery`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  setBatch(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    const JSONData = JSON.stringify(event);
+
+    return this.http.post(`${this.apiBaseUrl}/product_batches`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),

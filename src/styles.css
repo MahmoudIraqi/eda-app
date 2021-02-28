@@ -314,11 +314,11 @@ body {
 
 
 .ApprovedTable .table th:first-child, .ApprovedTable .table td:first-child {
-  width: 15%;
+  width: 10%;
 }
 
 .ApprovedTable .table th:nth-child(2), .ApprovedTable .table td:nth-child(2) {
-  width: 15%;
+  width: 10%;
 }
 
 .ApprovedTable .table th:nth-child(3), .ApprovedTable .table td:nth-child(3) {
@@ -334,6 +334,10 @@ body {
 }
 
 .ApprovedTable .table th:nth-child(6), .ApprovedTable .table td:nth-child(6) {
+  width: 10%;
+}
+
+.ApprovedTable .table th:nth-child(6), .ApprovedTable .table td:nth-child(7) {
   width: 10%;
 }
 

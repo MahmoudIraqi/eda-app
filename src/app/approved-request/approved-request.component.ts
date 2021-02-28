@@ -20,7 +20,7 @@ export class ApprovedRequestComponent implements OnInit {
     this.isLoading = true;
     this.getService.getApprovedProductsList().subscribe((res: any) => {
       this.approvedListRequests = {
-        tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product'],
+        tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product','Add Batch'],
         tableBody: res
       };
       this.isLoading = false;

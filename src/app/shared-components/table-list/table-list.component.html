@@ -222,7 +222,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="6" *ngIf="whichTable === 'approved'">
+            <td colspan="7" *ngIf="whichTable === 'approved'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
                   <mat-expansion-panel-header>
@@ -235,6 +235,7 @@
                           <td class="hide">{{request.NameAR}}</td>
                           <td>{{request.actionStatus}} <strong>{{request.ID}}</strong></td>
                           <td (click)="editProduct(request.ID)"><i class="fa fa-edit"></i></td>
+                          <td (click)="addBatch(request.NotificationNo)"><i class="fas fa-cart-plus"></i></td>
                         </tr>
                       </table>
                     </mat-panel-title>

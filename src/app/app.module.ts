@@ -52,6 +52,7 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { ManufacturingCompanyComponent } from './manufacturing-company/manufacturing-company.component';
 import { GeneralEnquireiesComponent } from './general-enquireies/general-enquireies.component';
 import { TrackGeneralEnquiriesComponent } from './track-general-enquiries/track-general-enquiries.component';
+import { BatchFormComponent } from './batch-form/batch-form.component';
 
 
 @NgModule({
@@ -86,6 +87,7 @@ import { TrackGeneralEnquiriesComponent } from './track-general-enquiries/track-
     ManufacturingCompanyComponent,
     GeneralEnquireiesComponent,
     TrackGeneralEnquiriesComponent,
+    BatchFormComponent,
   ],
   imports: [
     BrowserModule,

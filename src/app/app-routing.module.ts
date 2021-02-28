@@ -19,6 +19,7 @@ import {DraftVariationComponent} from './draft-variation/draft-variation.compone
 import {ManufacturingCompanyComponent} from './manufacturing-company/manufacturing-company.component';
 import {GeneralEnquireiesComponent} from './general-enquireies/general-enquireies.component';
 import {TrackGeneralEnquiriesComponent} from './track-general-enquiries/track-general-enquiries.component';
+import {BatchFormComponent} from './batch-form/batch-form.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -59,6 +60,7 @@ const routes: Routes = [
         path: 'admin', component: DraftRequestsContainerComponent,
         children: [
           {path: 'manufacturing-company', component: ManufacturingCompanyComponent, data: {animation: 'admin'}},
+          {path: 'adding-batch', component: BatchFormComponent, data: {animation: 'admin'}},
         ]
       },
       {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},

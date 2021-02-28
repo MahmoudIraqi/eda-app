@@ -133,6 +133,10 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Manufacturing Company',
           link: '/admin/manufacturing-company'
+        },
+        {
+          name: 'Adding Batch',
+          link: '/admin/adding-batch'
         }
       ]
     },
