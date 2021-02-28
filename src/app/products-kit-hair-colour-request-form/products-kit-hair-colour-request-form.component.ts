@@ -262,6 +262,13 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       required: false,
       enable: this.variationFieldsStatus ? true : false
     },
+    {
+      id: 'letterOfVariationFromLicenseHolder',
+      name: 'letter of variation from license holder',
+      fileName: '',
+      required: false,
+      enable: this.variationFieldsStatus ? true : false
+    }
   ];
   removeShortNameFieldStatus = false;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
@@ -1537,6 +1544,12 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
         manufacturingContract: this.fb.control(''),
         storageContract: this.fb.control(''),
+        factoryLicense: this.fb.control(''),
+        manufacturingAssignment: this.fb.control(''),
+        commercialRecord: this.fb.control(''),
+        stabilityStudy: this.fb.control(''),
+        shelfLifeAttachment: this.fb.control(''),
+        letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
         otherFees: this.fb.control('', Validators.required),
       });

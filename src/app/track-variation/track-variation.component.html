@@ -1,7 +1,9 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="'Track Variation requests'" [bigTitle]="true"></app-title>
+      <app-title
+        [title]="'Track requests for '+ (whichVariation === 'tell_do-variation'? 'Tell & Do variation' : 'Do & Tell Variation')"
+        [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
       <div class="tableContainer TrackTable">
@@ -11,7 +13,8 @@
   </div>
 </div>
 
-<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
   <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 

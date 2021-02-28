@@ -194,6 +194,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileName: '',
       required: false,
       enable: true
+    },
+    {
+      id: 'letterOfVariationFromLicenseHolder',
+      name: 'letter of variation from license holder',
+      fileName: '',
+      required: false,
+      enable: this.variationFieldsStatus ? true : false
     }
   ];
   editIndex;
@@ -373,6 +380,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         required: false,
         enable: this.variationFieldsStatus ? true : false
       },
+      {
+        id: 'letterOfVariationFromLicenseHolder',
+        name: 'letter of variation from license holder',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      }
     ];
 
     this.getFormAsStarting(this.editData);
@@ -744,6 +758,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         commercialRecord: this.fb.control(''),
         stabilityStudy: this.fb.control(''),
         shelfLifeAttachment: this.fb.control(''),
+        letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
         otherFees: this.fb.control('', Validators.required),
       });
