@@ -50,7 +50,6 @@ export class LoginComponent {
       // this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
       //   this.isLoading = false;
       //   this.alertNotificationStatus = true;
-      //   console.log('rees_Logins', res);
       // }, error => this.handleError(error));
     }
   }

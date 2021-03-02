@@ -40,8 +40,6 @@ export class RejectedRequestesComponent implements OnInit {
           tableBody: this.responseForRejectedList.filter(x => x.canAppeld)
         };
       }
-
-      console.log('typeOfRejectedList', this.typeOfRejectedList);
     }
   }
 

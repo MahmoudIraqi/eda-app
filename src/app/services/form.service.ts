@@ -16,8 +16,6 @@ export class FormService {
   }
 
   loginAPIToken(data) {
-    console.log('data', data);
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
     });
@@ -29,7 +27,6 @@ export class FormService {
     };
 
     const JSONData = JSON.stringify(newStructure);
-    console.log('JSONData', JSONData);
 
     return this.http.post(`${this.loginAPIURL}`, JSONData, options)
       .pipe(map((res: any) => {

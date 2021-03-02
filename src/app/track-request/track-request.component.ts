@@ -19,7 +19,6 @@ export class TrackRequestComponent implements OnInit {
     this.isLoading = true;
 
     this.getService.getTrackRequestsList().subscribe((res: any) => {
-
       this.trackListRequests = {
         tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
         tableBody: res
