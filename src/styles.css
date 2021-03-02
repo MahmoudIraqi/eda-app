@@ -127,6 +127,13 @@ a,
   color: #fff;
 }
 
+.btn.btn-primary.active {
+  background: #c28a30 !important;
+  border: 2px solid;
+  border-color: #c28a30 !important;
+  color: #fff;
+}
+
 .btn.btn-primary:disabled {
   cursor: not-allowed;
 }
@@ -377,7 +384,7 @@ body {
   left: calc((100% - 25%) / 2);
 }
 
-.AlertForAllRequests .alert-danger{
+.AlertForAllRequests .alert-danger {
   width: 50%;
   position: fixed;
   bottom: 5em;

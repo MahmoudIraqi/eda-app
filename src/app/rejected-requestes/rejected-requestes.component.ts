@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 
 @Component({
@@ -9,7 +9,8 @@ import {FormService} from '../services/form.service';
 export class RejectedRequestesComponent implements OnInit {
 
   rejectedListRequests;
-
+  responseForRejectedList = [];
+  typeOfRejectedList;
   isLoading: boolean = false;
 
   constructor(private getService: FormService) {
@@ -18,12 +19,30 @@ export class RejectedRequestesComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.getService.getRejectedProductsList().subscribe((res: any) => {
-      this.rejectedListRequests = {
-        tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
-        tableBody: res
-      };
+      this.responseForRejectedList = res;
+      this.selectRejectedType('Final');
       this.isLoading = false;
     });
+  }
+
+  selectRejectedType(whichType) {
+    if (this.responseForRejectedList.length > 0) {
+      if (whichType === 'Final') {
+        this.typeOfRejectedList = 'Final';
+        this.rejectedListRequests = {
+          tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
+          tableBody: this.responseForRejectedList.filter(x => !x.canAppeld)
+        };
+      } else if (whichType === 'Appealed') {
+        this.typeOfRejectedList = 'Appealed';
+        this.rejectedListRequests = {
+          tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
+          tableBody: this.responseForRejectedList.filter(x => x.canAppeld)
+        };
+      }
+
+      console.log('typeOfRejectedList', this.typeOfRejectedList);
+    }
   }
 
 }
