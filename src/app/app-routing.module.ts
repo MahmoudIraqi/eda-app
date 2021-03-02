@@ -63,8 +63,8 @@ const routes: Routes = [
           {path: 'adding-batch', component: BatchFormComponent, data: {animation: 'admin'}},
         ]
       },
-      {path: 'approved-request', component: ApprovedRequestComponent, data: {animation: 'approved-request'}},
-      {path: 'rejected-request', component: RejectedRequestesComponent, data: {animation: 'rejected-request'}},
+      {path: 'approved-product', component: ApprovedRequestComponent, data: {animation: 'approved-product'}},
+      {path: 'rejected-product', component: RejectedRequestesComponent, data: {animation: 'rejected-request'}},
     ]
   }
 ];

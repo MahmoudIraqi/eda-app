@@ -1,5 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {FormService} from '../services/form.service';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       name: 'Create requests',
-      link: '#',
+      link: '/new-request',
       dropDownStatus: true,
       dropdownLinks: [
         {
@@ -54,7 +55,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       name: 'Draft requests',
-      link: '#',
+      link: '/draft-request',
       dropDownStatus: true,
       dropdownLinks: [
         {
@@ -81,7 +82,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       name: 'Track requests',
-      link: '#',
+      link: '/track-request',
       dropDownStatus: true,
       dropdownLinks: [
         {
@@ -116,14 +117,23 @@ export class HeaderComponent implements OnInit {
       ]
     },
     {
-      name: 'Approved products',
-      link: '/approved-request',
-      dropDownStatus: false
-    },
-    {
-      name: 'Rejected products',
-      link: '/rejected-request',
-      dropDownStatus: false
+      name: 'Products',
+      link: '-product',
+      dropDownStatus: true,
+      dropdownLinks: [
+        {
+          name: 'Approved products',
+          link: '/approved-product'
+        },
+        {
+          name: 'Rejected products',
+          link: '/rejected-product',
+        },
+        {
+          name: 'Legacy',
+          link: '#',
+        }
+      ]
     },
     {
       name: 'Administration',
@@ -137,12 +147,17 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Adding Batch',
           link: '/admin/adding-batch'
+        },
+        {
+          name: 'Users/Roles',
+          link: '#'
         }
       ]
     },
   ];
 
-  constructor() {
+  constructor(private readonly route: ActivatedRoute,
+              private readonly router: Router) {
     this.onResize();
   }
 
@@ -154,4 +169,7 @@ export class HeaderComponent implements OnInit {
     this.screenWidth = window.innerWidth;
   }
 
+  isActive(link) {
+    return this.router.url.includes(`${link}`);
+  }
 }

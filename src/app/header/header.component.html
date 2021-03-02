@@ -25,7 +25,7 @@
               <div class="dropdown-content">
                 <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                     role="menu" aria-labelledby="button-basic">
-                  <li *ngFor="let item of menuObject" role="menuitem">
+                  <li *ngFor="let item of menuObject;let i =index" role="menuitem">
                     <a class="dropdown-item" routerLink="{{item.link}}" routerLinkActive="active">
                       {{item.name}}
                     </a>
@@ -79,7 +79,8 @@
                   </a>
                   <div *ngIf="item.dropDownStatus" class="btn-group dropdown" dropdown triggers="hover">
                     <a dropdownToggle
-                       aria-controls="dropdown-basic">
+                       aria-controls="dropdown-basic"
+                       [ngClass]="{'active': isActive(item.link)}">
                       {{item.name}}
                       <i class="fas fa-chevron-down"></i>
                     </a>
