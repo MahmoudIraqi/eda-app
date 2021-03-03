@@ -220,6 +220,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   testModel;
   myChangedGroup;
   disabledSaveButton: boolean = false;
+  productFlags;
+  productComments;
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -663,7 +665,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           this.addDetailsRows();
         }
       });
-
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
@@ -697,6 +698,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           }
         }
       });
+
+      this.productFlags = data.productFlags;
+      this.productComments = data.productComments;
 
       this.regProductForAllRequestedType.patchValue({
         ...data

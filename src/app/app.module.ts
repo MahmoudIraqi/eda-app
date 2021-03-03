@@ -15,6 +15,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AccordionModule} from 'ngx-bootstrap/accordion';
+import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AlertModule} from 'ngx-bootstrap/alert';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -49,10 +50,10 @@ import {VariationComponent} from './variation/variation.component';
 import {TrackVariationComponent} from './track-variation/track-variation.component';
 import {DraftVariationComponent} from './draft-variation/draft-variation.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
-import { ManufacturingCompanyComponent } from './manufacturing-company/manufacturing-company.component';
-import { GeneralEnquireiesComponent } from './general-enquireies/general-enquireies.component';
-import { TrackGeneralEnquiriesComponent } from './track-general-enquiries/track-general-enquiries.component';
-import { BatchFormComponent } from './batch-form/batch-form.component';
+import {ManufacturingCompanyComponent} from './manufacturing-company/manufacturing-company.component';
+import {GeneralEnquireiesComponent} from './general-enquireies/general-enquireies.component';
+import {TrackGeneralEnquiriesComponent} from './track-general-enquiries/track-general-enquiries.component';
+import {BatchFormComponent} from './batch-form/batch-form.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { BatchFormComponent } from './batch-form/batch-form.component';
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
+    TooltipModule.forRoot(),
     AlertModule.forRoot(),
     PaginationModule.forRoot(),
     MatExpansionModule,

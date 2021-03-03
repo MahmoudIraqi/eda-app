@@ -29,7 +29,7 @@
               <mat-label>Product Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
                      placeholder="Product Name"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : productFlags['productArabicName'] ? false : true">
             </mat-form-field>
           </div>
           <div class="col-sm-6">
@@ -37,7 +37,7 @@
               <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
                      placeholder="Product Name" required
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : productFlags['productEnglishName'] ? false : true">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('productEnglishName').invalid && (regHairColorantProductForAllRequestedType.get('productEnglishName').dirty || regHairColorantProductForAllRequestedType.get('productEnglishName').touched)"
                 class="alert alert-danger">
@@ -70,7 +70,7 @@
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
-                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : false">
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : productFlags['shortName'] ? false : true">
                     <button type="button" (click)="removeShortName(i)" class="close">Remove</button>
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
                       this field must be in English
@@ -89,7 +89,7 @@
                      aria-label="Product Color"
                      matInput
                      formControlName="productColor"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : productFlags['productColor'] ? false : true"
                      [matAutocomplete]="productColorList" required>
               <mat-autocomplete #productColorList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForProductColor | async"
@@ -108,7 +108,7 @@
                      aria-label="Manufacturing Company"
                      matInput
                      formControlName="manufacturingCompany"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : productFlags['manufacturingCompany'] ? false : true"
                      [matAutocomplete]="manufacturingCompanyList" required>
               <mat-autocomplete #manufacturingCompanyList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForManufacturingCompany | async"
@@ -135,7 +135,7 @@
                      aria-label="Manufacturing Country"
                      matInput
                      formControlName="manufacturingCountry"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : productFlags['manufacturingCountry'] ? false : true"
                      [matAutocomplete]="manufacturingCountryList" required>
               <mat-autocomplete #manufacturingCountryList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForManufacturingCountry | async"
@@ -162,7 +162,7 @@
                      aria-label="Applicant"
                      matInput
                      formControlName="applicant"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('applicant') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('applicant') : true : productFlags['applicant'] ? false : true"
                      [matAutocomplete]="applicantList" required>
               <mat-autocomplete #applicantList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForApplicant | async"
@@ -189,7 +189,7 @@
                      aria-label="License Holder"
                      matInput
                      formControlName="licenseHolder"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : productFlags['licenseHolder'] ? false : true"
                      [matAutocomplete]="licenseHolderList" required>
               <mat-autocomplete #licenseHolderList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolder | async"
@@ -212,7 +212,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
-                     placeholder="Other License Holder" required [readonly]="reRegistrationStatus ? true: false">
+                     placeholder="Other License Holder" required [readonly]="reRegistrationStatus ? true: productFlags['licenseHolderTxt'] ? false : true">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolderTxt').invalid && (regHairColorantProductForAllRequestedType.get('licenseHolderTxt').dirty || regHairColorantProductForAllRequestedType.get('licenseHolderTxt').touched)"
                 class="alert alert-danger">
@@ -232,7 +232,7 @@
                      aria-label="Country of License Holder"
                      matInput
                      formControlName="countryOfLicenseHolder"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : productFlags['countryOfLicenseHolder'] ? false : true"
                      [matAutocomplete]="licenseHolderCountryList" required>
               <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolderCountry | async"
@@ -255,7 +255,7 @@
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : productFlags['tradeMark'] ? false : true">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
@@ -267,7 +267,7 @@
                      aria-label="Physical State"
                      matInput
                      formControlName="physicalState"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalState') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalState') : true : productFlags['physicalState'] ? false : true"
                      [matAutocomplete]="physicalStateList" required>
               <mat-autocomplete #physicalStateList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForPhysicalState | async"
@@ -290,7 +290,7 @@
             <mat-form-field class="example-full-width inputBesideSelect">
               <mat-label>Other Physical State</mat-label>
               <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
-                     placeholder="Other Physical State" required [readonly]="reRegistrationStatus ? true: false">
+                     placeholder="Other Physical State" required [readonly]="reRegistrationStatus ? true: productFlags['physicalStateTxt'] ? false : true">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('physicalStateTxt').invalid && (regHairColorantProductForAllRequestedType.get('physicalStateTxt').dirty || regHairColorantProductForAllRequestedType.get('physicalStateTxt').touched)"
                 class="alert alert-danger">
@@ -310,7 +310,7 @@
                      aria-label="Purpose of use"
                      matInput
                      formControlName="purposeOfUse"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUse') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUse') : true : productFlags['purposeOfUse'] ? false : true"
                      [matAutocomplete]="purposeOfUseList" required>
               <mat-autocomplete #purposeOfUseList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForPurposeOfUse | async"
@@ -334,7 +334,7 @@
               <mat-label>Other Purpose of use</mat-label>
               <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
                      placeholder="Other Purpose of use" required
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUseTxt') : true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUseTxt') : true : productFlags['purposeOfUseTxt'] ? false : true">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').invalid && (regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').dirty || regHairColorantProductForAllRequestedType.get('purposeOfUseTxt').touched)"
                 class="alert alert-danger">
@@ -354,7 +354,7 @@
                      aria-label="Storage Place"
                      matInput
                      formControlName="storagePlace"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : productFlags['storagePlace'] ? false : true"
                      [matAutocomplete]="storagePlaceList"
                      [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
@@ -380,7 +380,7 @@
                   <label>Shelf Life</label>
                   <mat-slider
                     class="example-margin mt-3"
-                    [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : false"
+                    [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : productFlags['shelfLife'] ? false : true"
                     [max]="60"
                     [min]="0"
                     [step]="1"
@@ -393,7 +393,7 @@
                   <input type="text" class="form-control" matInput
                          [value]="regHairColorantProductForAllRequestedType.get('shelfLife').value"
                          formControlName="shelfLife"
-                         [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : false"
+                         [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : productFlags['shelfLife'] ? false : true"
                          (change)="setShelfValue($event)">
                   <span class="labelForRange">Months</span>
                 </mat-form-field>
@@ -406,7 +406,7 @@
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
                      placeholder="Receipt Number" required
-                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : false">
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : productFlags['receiptNumber'] ? false : true">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('receiptNumber').invalid && (regHairColorantProductForAllRequestedType.get('receiptNumber').dirty || regHairColorantProductForAllRequestedType.get('receiptNumber').touched)"
                 class="alert alert-danger">
@@ -428,7 +428,7 @@
                      (change)="getDecimalValue(regHairColorantProductForAllRequestedType.get('receiptValue').value)"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required
-                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : false">
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : productFlags['receiptValue'] ? false : true">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('receiptValue').invalid && (regHairColorantProductForAllRequestedType.get('receiptValue').dirty || regHairColorantProductForAllRequestedType.get('receiptValue').touched)"
                 class="alert alert-danger">
@@ -461,7 +461,7 @@
                     <mat-label>Volumes</mat-label>
                     <input type="text" class="form-control" matInput formControlName="volumes"
                            placeholder="" required
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('volumes') : true : false">
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('volumes') : true : productFlags['volumes'] ? false : true">
                     <div
                       *ngIf="row.get('volumes').invalid && (row.get('volumes').dirty || row.get('volumes').touched)"
                       class="alert alert-danger">
@@ -485,7 +485,7 @@
                            aria-label="Unit of measure"
                            matInput
                            formControlName="unitOfMeasure"
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : false"
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : productFlags['unitOfMeasure'] ? false : true"
                            [matAutocomplete]="unitOfMeasureList" required>
                     <mat-autocomplete #unitOfMeasureList="matAutocomplete">
                       <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
@@ -512,7 +512,7 @@
                            aria-label="Type of Packaging"
                            matInput
                            formControlName="typeOfPackaging"
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : false"
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : productFlags['typeOfPackaging'] ? false : true"
                            [matAutocomplete]="typeOfPackagingList" required>
                     <mat-autocomplete #typeOfPackagingList="matAutocomplete">
                       <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
@@ -537,7 +537,7 @@
                         <mat-label>Packaging Description</mat-label>
                         <textarea matInput formControlName="packagingDescription"
                                   placeholder="Ex. It makes me feel..."
-                                  [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : false"></textarea>
+                                  [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : productFlags['packagingDescription'] ? false : true"></textarea>
                       </mat-form-field>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3 ml-auto">
@@ -595,7 +595,7 @@
                     <mat-label>Colour</mat-label>
                     <input type="text" class="form-control" matInput formControlName="colour"
                            placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('colour') : true : false">
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('colour') : true : productFlags['colour'] ? false : true">
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -604,7 +604,7 @@
                     <input type="text" class="form-control" matInput
                            formControlName="fragrance"
                            placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : false">
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : productFlags['fragrance'] ? false : true">
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -612,7 +612,7 @@
                     <mat-label>Flavor</mat-label>
                     <input type="text" class="form-control" matInput formControlName="flavor"
                            placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : false">
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : productFlags['flavor'] ? false : true">
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -620,7 +620,7 @@
                     <mat-label>BarCode</mat-label>
                     <input type="text" class="form-control" matInput formControlName="barCode"
                            placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : false">
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : productFlags['barCode'] ? false : true">
                   </mat-form-field>
                 </div>
                 <div class="col-12 mt-2">
@@ -646,7 +646,7 @@
                                        aria-label="Ingrediant"
                                        matInput
                                        formControlName="ingrediant"
-                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : false"
+                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : productFlags['ingrediant'] ? false : true"
                                        [matAutocomplete]="autoIngrediant">
                                 <mat-autocomplete #autoIngrediant="matAutocomplete">
                                   <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
@@ -670,7 +670,7 @@
                                 <input type="text" class="form-control" matInput
                                        formControlName="concentrations"
                                        placeholder="concentrations" required
-                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : false">
+                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : productFlags['concentrations'] ? false : true">
                                 <div
                                   *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                                   class="alert alert-danger">
@@ -690,7 +690,7 @@
                                        aria-label="Function"
                                        matInput
                                        formControlName="function"
-                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : false"
+                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : productFlags['function'] ? false : true"
                                        [matAutocomplete]="autoFunction">
                                 <mat-autocomplete #autoFunction="matAutocomplete">
                                   <mat-option *ngFor="let option of filteredOptionsForFunction | async"

@@ -205,6 +205,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   requestedProductTypeForNewProductInKit;
   enableEditableFields = [];
   disabledSaveButton: boolean = false;
+  productFlags;
+  productComments;
 
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
@@ -686,6 +688,9 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
           }
         }
       });
+
+      this.productFlags = data.productFlags;
+      this.productComments = data.productComments;
 
       this.regHairColorantProductForAllRequestedType.patchValue({
         ...data

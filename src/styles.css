@@ -185,6 +185,36 @@ body {
   width: 100%;
 }
 
+.mat-form-field {
+  position: relative;
+}
+
+.InfoIconContainer {
+  position: absolute;
+  width: 100%;
+  right: 0px;
+  top: -1em;
+  text-align: right;
+}
+
+.InfoIconContainer span.infoIcon {
+  margin-left: auto;
+}
+
+.InfoIconContainer span.infoIcon i {
+  font-size: 18px;
+  color: #c28a30;
+}
+
+.tooltip-inner {
+  border-radius: 10px 0px 10px 10px;
+  background-color: #c28a30;
+}
+
+.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  border-top-color: #c28a30;
+}
+
 /*.detailsTable .mat-form-field-wrapper {*/
 /*  padding-bottom: 0em !important;*/
 /*}*/
