@@ -383,6 +383,27 @@ body {
 }
 
 
+.NotificationList .table th:first-child, .NotificationList .table td:first-child {
+  width: 30%;
+}
+
+.NotificationList .table th:nth-child(2), .NotificationList .table td:nth-child(2) {
+  width: 30%;
+}
+
+.NotificationList .table th:nth-child(3), .NotificationList .table td:nth-child(3) {
+  width: 30%;
+}
+
+.NotificationList .table th:nth-child(4), .NotificationList .table td:nth-child(4) {
+  width: 10%;
+}
+
+.NotificationList .table td .btn-primary {
+  pointer-events: fill;
+}
+
+
 .RequestingTable .table .headerRow th:first-child, .RequestingTable .table td:first-child {
   width: 15%;
 }

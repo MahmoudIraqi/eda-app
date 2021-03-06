@@ -239,7 +239,7 @@
   padding: 0.5em;
   border-radius: 10px 0px 10px 10px !important;
   border: 1px solid #161c30;
-  background: rgba(22, 28, 48,0.51);
+  background: rgba(22, 28, 48, 0.51);
 }
 
 .dropdown-content ul li {
@@ -332,6 +332,12 @@
 .forResponsiveMenu .dropdown:hover .dropbtn {
 
   background-color: #92918e;
+}
+
+/* ---------------- Notification ------------- */
+.notification {
+  color: #c28a30;
+  font-size: 25px;
 }
 
 /* ---------------- responsive --------------- */

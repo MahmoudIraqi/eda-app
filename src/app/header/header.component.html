@@ -14,7 +14,12 @@
             [ngClass]="{'text-right': screenWidth > 960, 'd-flex flex-column flex-sm-row': screenWidth <= 960, 'mt-5': screenWidth <= 960 && screenWidth > 640}">
             <div class="TitleContainer"
                  [ngClass]="{'w-100 w-sm-85': screenWidth <= 960 }">
-              <h2>Egycosm</h2>
+              <div class="d-flex align-items-center">
+                <h2>Egycosm</h2>
+                <a class="ml-auto notification" routerLink="/notification-list">
+                  <i class="fas fa-bell"></i>
+                </a>
+              </div>
             </div>
             <div class="btn-group mx-auto ml-sm-auto dropdown forResponsiveMenu" dropdown>
               <button class="dropbtn btn btn-primary" type="button" dropdownToggle aria-controls="dropdown-basic">
@@ -100,9 +105,9 @@
             </div>
             <div class="profile d-inline-flex justify-content-center align-items-center ml-auto none">
               <div class="profileIcon">
-              <span>
-                <i class="fas fa-user"></i>
-              </span>
+                <span>
+                  <i class="fas fa-user"></i>
+                </span>
               </div>
               <div class="profileMenu">
                 <div class="btn-group text-right" dropdown>

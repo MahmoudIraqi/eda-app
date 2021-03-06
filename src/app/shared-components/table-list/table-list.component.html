@@ -72,6 +72,15 @@
               </span>
             </th>
           </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'notificationList'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
           <tr
             *ngFor="let request of this.dataAfterFilters.length> 0 ? this.dataAfterFilters : returnedArray && returnedArray.length > 0 ? returnedArray : data.tableBody; let i = index">
             <td colspan="7" *ngIf="whichTable === 'trackRequest'">
@@ -699,6 +708,55 @@
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Manufacturing Country :</label>
                         <span>{{request.country}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="4" *ngIf="whichTable === 'notificationList'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td>{{request.ID}}</td>
+                          <td>{{request.COMMENTS}}</td>
+                          <td>{{request.NOTIFICATION_TIME}}</td>
+                          <td>
+                            <button *ngIf="!request.F_Seen" type="button" class="btn btn-primary" (click)="seenNotificationFunction(request.ID)">
+                              <i class="fas fa-eye"></i> Read
+                            </button>
+                            <button *ngIf="request.F_Seen" type="button" class="btn btn-primary active">
+                              <i class="fas fa-eye-slash"></i> Unread
+                            </button>
+                          </td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notificaiton Id :</label>
+                        <span>{{request.ID}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notification comment :</label>
+                        <span>{{request.COMMENTS}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notification date :</label>
+                        <span>{{request.NOTIFICATION_TIME}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notification from :</label>
+                        <span>{{request.FROM_ROLE}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notification To :</label>
+                        <span>{{request.TO_ROLE}}</span>
                       </div>
                     </div>
                   </div>

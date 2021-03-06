@@ -20,6 +20,7 @@ import {ManufacturingCompanyComponent} from './manufacturing-company/manufacturi
 import {GeneralEnquireiesComponent} from './general-enquireies/general-enquireies.component';
 import {TrackGeneralEnquiriesComponent} from './track-general-enquiries/track-general-enquiries.component';
 import {BatchFormComponent} from './batch-form/batch-form.component';
+import {NotificationListComponent} from './notification-list/notification-list.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -65,6 +66,7 @@ const routes: Routes = [
       },
       {path: 'approved-product', component: ApprovedRequestComponent, data: {animation: 'approved-product'}},
       {path: 'rejected-product', component: RejectedRequestesComponent, data: {animation: 'rejected-request'}},
+      {path: 'notification-list', component: NotificationListComponent, data: {animation: 'notification-list'}}
     ]
   }
 ];

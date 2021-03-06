@@ -50,6 +50,7 @@ export class TableListComponent implements OnInit, OnChanges {
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
   @Output() removeProductFromKit = new EventEmitter();
   @Output() editDetailedRowOutput = new EventEmitter();
+  @Output() seenNotification = new EventEmitter();
 
   contentArray = [];
   returnedArray: string[];
@@ -215,5 +216,9 @@ export class TableListComponent implements OnInit, OnChanges {
   addBatch(notificationNumber) {
     this.inputService.publish({type: 'NotificationNumber', payload: notificationNumber});
     this.router.navigateByUrl('/admin/adding-batch');
+  }
+
+  seenNotificationFunction(id) {
+    this.seenNotification.emit(id);
   }
 }

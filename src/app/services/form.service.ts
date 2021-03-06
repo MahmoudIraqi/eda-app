@@ -379,6 +379,32 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getNotificationLogsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}notification_log`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  setSeenNotificationByID(id) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.post(`${this.apiBaseUrl}notification_log/SeenNotificaion?id=${id}`, {}, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   setReRegistrationProduct(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
