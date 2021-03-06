@@ -54,6 +54,7 @@ import {ManufacturingCompanyComponent} from './manufacturing-company/manufacturi
 import {GeneralEnquireiesComponent} from './general-enquireies/general-enquireies.component';
 import {TrackGeneralEnquiriesComponent} from './track-general-enquiries/track-general-enquiries.component';
 import {BatchFormComponent} from './batch-form/batch-form.component';
+import { NotificationListComponent } from './notification-list/notification-list.component';
 
 
 @NgModule({
@@ -89,6 +90,7 @@ import {BatchFormComponent} from './batch-form/batch-form.component';
     GeneralEnquireiesComponent,
     TrackGeneralEnquiriesComponent,
     BatchFormComponent,
+    NotificationListComponent,
   ],
   imports: [
     BrowserModule,

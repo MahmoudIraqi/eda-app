@@ -28,8 +28,8 @@
           <mat-form-field appearance="fill" *ngIf="keyForFilter && keyForFilter.id === 'Track_type'">
             <mat-label>Which Track type do you want to search in ?</mat-label>
             <mat-select [(ngModel)]="keyWordsForFilter" (selectionChange)="setTheFilteredData()">
-              <mat-option *ngFor="let item of keysForTrackTypeList" [value]="item.TRACK_TYPE_NAME">
-                {{item.TRACK_TYPE_NAME}}
+              <mat-option *ngFor="let item of keysForTrackTypeList" [value]="item.NAME">
+                {{item.NAME}}
               </mat-option>
             </mat-select>
           </mat-form-field>

@@ -73,7 +73,7 @@
             </th>
           </tr>
           <tr
-            *ngFor="let request of returnedArray && returnedArray.length > 0 ? returnedArray : data.tableBody; let i = index">
+            *ngFor="let request of this.dataAfterFilters.length> 0 ? this.dataAfterFilters : returnedArray && returnedArray.length > 0 ? returnedArray : data.tableBody; let i = index">
             <td colspan="7" *ngIf="whichTable === 'trackRequest'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>

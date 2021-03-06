@@ -91,11 +91,10 @@ export class TableListComponent implements OnInit, OnChanges {
 
   sortBy(status, columnName) {
     this.sortStatus = !status;
-
     if (!this.sortStatus) {
-      this.dataAfterFilters = this.data.tableBody.sort((a, b) => (a[columnName.toLowerCase()] > b[columnName.toLowerCase()]) ? 1 : -1);
+      this.dataAfterFilters = this.returnedArray.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() > b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
     } else if (this.sortStatus) {
-      this.dataAfterFilters = this.data.tableBody.sort((a, b) => (a[columnName.toLowerCase()] < b[columnName.toLowerCase()]) ? 1 : -1);
+      this.dataAfterFilters = this.returnedArray.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() < b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
     }
   }
 
