@@ -215,6 +215,10 @@ body {
   border-top-color: #c28a30;
 }
 
+.bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: #c28a30;
+}
+
 /*.detailsTable .mat-form-field-wrapper {*/
 /*  padding-bottom: 0em !important;*/
 /*}*/

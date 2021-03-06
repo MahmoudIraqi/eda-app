@@ -20,6 +20,7 @@ export class RejectedRequestesComponent implements OnInit {
     this.isLoading = true;
     this.getService.getRejectedProductsList().subscribe((res: any) => {
       this.responseForRejectedList = res;
+      console.log('res',res)
       this.selectRejectedType('Final');
       this.isLoading = false;
     });
