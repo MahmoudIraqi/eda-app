@@ -35,7 +35,9 @@ const routes: Routes = [
           {path: 'registration/:id', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do-variation', component: VariationComponent, data: {animation: 'new-request'}},
+          {path: 'tell_do-variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'do_tell-variation', component: VariationComponent, data: {animation: 'new-request'}},
+          {path: 'do_tell-variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'general-enquiries', component: GeneralEnquireiesComponent, data: {animation: 'new-request'}},
         ]
       },

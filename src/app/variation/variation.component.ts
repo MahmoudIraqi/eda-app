@@ -40,6 +40,7 @@ export class VariationComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   whichVariation;
+  productNotificationNumber;
 
   constructor(private getService: FormService, private route: ActivatedRoute) {
   }
@@ -109,6 +110,12 @@ export class VariationComponent implements OnInit {
     }, error => this.handleError(error));
 
     this.whichVariation = this.route.snapshot.routeConfig.path;
+
+    this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
+    if (this.productNotificationNumber) {
+      this.NotificationNo = this.productNotificationNumber;
+      this.applyProduct(this.NotificationNo);
+    }
   }
 
   applyProduct(NotificationNo) {
