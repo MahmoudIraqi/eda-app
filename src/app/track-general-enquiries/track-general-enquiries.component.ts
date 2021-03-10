@@ -19,8 +19,9 @@ export class TrackGeneralEnquiriesComponent implements OnInit {
     this.isLoading = true;
 
     this.getService.getTrackGeneralEnquiriesList().subscribe((res: any) => {
+      console.log('res', res);
       this.trackGeneralEnquiresListRequests = {
-        tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
+        tableHeader: ['Request id', 'Submission date', 'Title', 'Status', 'Submission Date'],
         tableBody: res
       };
       this.isLoading = false;

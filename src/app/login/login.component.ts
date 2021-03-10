@@ -48,7 +48,6 @@ export class LoginComponent {
       //   }
       // });
       this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
-        console.log('res', res);
         if(res.Status){
           this.isLoading = false;
           this.alertNotificationStatus = true;

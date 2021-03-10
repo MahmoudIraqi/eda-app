@@ -27,6 +27,15 @@
         </span>
             </th>
           </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'trackGeneralEnquiries'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
           <tr class="headerRow" *ngIf="whichTable === 'track'">
             <th *ngFor="let request of data.tableHeader; let i = index"
                 [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
@@ -174,6 +183,49 @@
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Track Type :</label>
                         <span>{{request.Track_type}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="5" *ngIf="whichTable === 'trackGeneralEnquiries'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td class="hide">{{request.requestID}}</td>
+                          <td>{{request.submitionDate | date}}</td>
+                          <td class="hide">{{request.title}}</td>
+                          <td>{{request.status}}</td>
+                          <td class="hide">{{request.description}}</td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Request id :</label>
+                        <span>{{request.requestID}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Submission date :</label>
+                        <span>{{request.submitionDate | date}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Title :</label>
+                        <span>{{request.title}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label ">Status :</label>
+                        <span>{{request.status}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Description :</label>
+                        <span>{{request.description}}</span>
                       </div>
                     </div>
                   </div>

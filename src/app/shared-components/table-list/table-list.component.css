@@ -40,7 +40,7 @@
 }
 
 .mat-expansion-panel.danger {
-  background-color: #ff8c8c;
+  background-color: #ffa4a4;
 }
 
 .colorSchema h4 {
@@ -69,7 +69,7 @@
 }
 
 .colorSchema ul li.danger {
-  background-color: #ff8c8c;
+  background-color: #ffa4a4;
 }
 
 .mat-expansion-panel-header {
@@ -112,6 +112,10 @@
   color: #c28a30;
   font-size: 16px;
   padding: 3px;
+}
+
+.danger .detailsContainer span {
+  color: #fff;
 }
 
 .detailsContainer .notificationContainer {

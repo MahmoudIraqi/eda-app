@@ -61,7 +61,7 @@ export class TableListComponent implements OnInit, OnChanges {
     ngOnChanges() {
         if (this.data) {
             if (this.data.tableBody.length > 0) {
-                if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList') {
+                if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries') {
                     if (this.whichTable !== 'manufacturing') {
                         this.data.tableBody.map(x => {
                             x.ID = x.ID.toString();
@@ -207,8 +207,6 @@ export class TableListComponent implements OnInit, OnChanges {
     }
 
     editProduct(request) {
-        console.log('request', request);
-
         const editFrom = this.route.snapshot.routeConfig.path;
         if (editFrom === 'tell_do-variation') {
             this.router.navigate([`/new-request/tell_do-variation/${Number(request.NotificationNo)}`]);
