@@ -42,15 +42,19 @@ export class LoginComponent {
 
   submit() {
     if (this.form.valid) {
-      this.formLoginData.filter(x => x.username === this.form.get('username').value).map(y => {
-        if (y.password === this.form.get('password').value) {
+      // this.formLoginData.filter(x => x.username === this.form.get('username').value).map(y => {
+      //   if (y.password === this.form.get('password').value) {
+      //     this.router.navigateByUrl('/home');
+      //   }
+      // });
+      this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
+        console.log('res', res);
+        if(res.Status){
+          this.isLoading = false;
+          this.alertNotificationStatus = true;
           this.router.navigateByUrl('/home');
         }
-      });
-      // this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
-      //   this.isLoading = false;
-      //   this.alertNotificationStatus = true;
-      // }, error => this.handleError(error));
+      }, error => this.handleError(error));
     }
   }
 
