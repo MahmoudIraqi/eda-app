@@ -1,35 +1,42 @@
-<div class="homepageContainer">
+<!--<div class="homepageContainer">-->
+<!--  <div class="contentContainer">-->
+<!--    <h1>{{contentObject.title}}</h1>-->
+<!--&lt;!&ndash;    <p>{{contentObject.paragraph}}</p>&ndash;&gt;-->
+<!--    <ul class="btnList">-->
+<!--      <li *ngFor="let btn of contentObject.btnList">-->
+<!--        <a *ngIf="!btn.dropDownStatus" class="ButtonContainer" [routerLink]="btn.link">-->
+<!--          <span class="icon">-->
+<!--            <i class="{{btn.icon}}"></i>-->
+<!--          </span>-->
+<!--          <span class="title">{{btn.title}}</span>-->
+<!--        </a>-->
+<!--        <div *ngIf="btn.dropDownStatus" class="btn-group dropdown" dropdown triggers="hover">-->
+<!--          <a class="ButtonContainer" routerLinkActive="active" dropdownToggle-->
+<!--             aria-controls="dropdown-basic">-->
+<!--            <span class="icon">-->
+<!--            <i class="{{btn.icon}}"></i>-->
+<!--          </span>-->
+<!--            <span class="title">{{btn.title}}</span>-->
+<!--          </a>-->
+<!--          <div class="dropdown-content">-->
+<!--            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"-->
+<!--                role="menu" aria-labelledby="button-basic">-->
+<!--              <li *ngFor="let element of btn.dropdownLinks" role="menuitem">-->
+<!--                <a class="dropdown-item" routerLink="{{element.link}}" routerLinkActive="active">-->
+<!--                  {{element.name}}-->
+<!--                </a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="whiteContainer">
   <div class="contentContainer">
     <h1>{{contentObject.title}}</h1>
-<!--    <p>{{contentObject.paragraph}}</p>-->
-    <ul class="btnList">
-      <li *ngFor="let btn of contentObject.btnList">
-        <a *ngIf="!btn.dropDownStatus" class="ButtonContainer" [routerLink]="btn.link">
-          <span class="icon">
-            <i class="{{btn.icon}}"></i>
-          </span>
-          <span class="title">{{btn.title}}</span>
-        </a>
-        <div *ngIf="btn.dropDownStatus" class="btn-group dropdown" dropdown triggers="hover">
-          <a class="ButtonContainer" routerLinkActive="active" dropdownToggle
-             aria-controls="dropdown-basic">
-            <span class="icon">
-            <i class="{{btn.icon}}"></i>
-          </span>
-            <span class="title">{{btn.title}}</span>
-          </a>
-          <div class="dropdown-content">
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li *ngFor="let element of btn.dropdownLinks" role="menuitem">
-                <a class="dropdown-item" routerLink="{{element.link}}" routerLinkActive="active">
-                  {{element.name}}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </li>
-    </ul>
   </div>
+  <app-dashboard></app-dashboard>
 </div>

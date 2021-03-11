@@ -23,6 +23,7 @@
     "@angular/router": "~10.0.6",
     "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
     "bootstrap": "^4.5.3",
+    "d3": "^6.6.0",
     "font-awesome": "^4.7.0",
     "ngx-bootstrap": "^6.2.0",
     "ngx-mat-select-search": "^3.2.0",
