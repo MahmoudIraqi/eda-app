@@ -327,6 +327,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getBatchList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}/product_batches`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+
   getDraftVariationProductsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

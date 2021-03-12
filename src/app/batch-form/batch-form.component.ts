@@ -29,6 +29,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   showOtherField: boolean = false;
   batchForWhichProduct;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  batchList;
 
   constructor(private getService: FormService,
               private fb: FormBuilder,
@@ -43,6 +44,17 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe(res => {
       this.batchForm.get('notificationNumber').patchValue(res.payload);
     });
+
+    this.isLoading = true;
+
+    this.getService.getBatchList().subscribe((res: any) => {
+      console.log('res', res);
+      this.batchList = {
+        tableHeader: ['Batch Number', 'Product Id', 'Submission Date', 'Production Date', 'Expiration Date'],
+        tableBody: res
+      };
+      this.isLoading = false;
+    }, error => this.handleError(error));
   }
 
   ngAfterViewInit() {
