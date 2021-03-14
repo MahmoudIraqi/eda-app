@@ -10,8 +10,6 @@ import {FormService} from '../services/form.service';
 export class HeaderComponent implements OnInit {
 
   screenWidth;
-
-
   menuObject = [
     {
       name: 'Home',
@@ -45,7 +43,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Custom Release',
-          link: '#'
+          link: '/new-request/custom-release'
         },
         {
           name: 'General Enquiries',

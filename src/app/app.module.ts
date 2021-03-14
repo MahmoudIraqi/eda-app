@@ -55,6 +55,7 @@ import {GeneralEnquireiesComponent} from './general-enquireies/general-enquireie
 import {TrackGeneralEnquiriesComponent} from './track-general-enquiries/track-general-enquiries.component';
 import {BatchFormComponent} from './batch-form/batch-form.component';
 import { NotificationListComponent } from './notification-list/notification-list.component';
+import { CustomReleaseComponent } from './custom-release/custom-release.component';
 
 
 @NgModule({
@@ -91,6 +92,7 @@ import { NotificationListComponent } from './notification-list/notification-list
     TrackGeneralEnquiriesComponent,
     BatchFormComponent,
     NotificationListComponent,
+    CustomReleaseComponent,
   ],
   imports: [
     BrowserModule,

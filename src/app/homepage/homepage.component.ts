@@ -39,7 +39,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Custom Release',
-            link: '#'
+            link: '/new-request/custom-release'
           },
           {
             name: 'General Enquiries',
