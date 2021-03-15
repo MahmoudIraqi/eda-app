@@ -10,7 +10,7 @@ import {map, catchError} from 'rxjs/operators';
 export class FormService {
 
   apiBaseUrl = environment.apiURL;
-  loginAPIURL = environment.loginAPIURL;
+  // loginAPIURL = environment.loginAPIURL;
 
   constructor(private http: HttpClient) {
   }
@@ -28,7 +28,7 @@ export class FormService {
 
     const JSONData = JSON.stringify(newStructure);
 
-    return this.http.post(`${this.loginAPIURL}`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}Accounts/Login?username=${data.username}&password=${data.password}`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),

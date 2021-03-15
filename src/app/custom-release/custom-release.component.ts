@@ -197,8 +197,6 @@ export class CustomReleaseComponent implements OnInit {
       id: 'sealedLetterFromTheExternalManufacturer',
       name: 'Sealed Letter From The External Manufacturer',
       fileName: '',
-      required: true,
-      enable: true
     },
     {
       id: 'anExternalFactoryShallSubmitCertificateForChemicalTreatment',
@@ -300,29 +298,36 @@ export class CustomReleaseComponent implements OnInit {
     this.getService.getCountryLookUp().subscribe((res: any) => {
       this.formData.manufacturingCountryList = res;
       this.isLoading = false;
-    }, error => this.handleError(error));
+    }, error => this.handleError(error), () => this.getLookupForFormArray());
+
+    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
+      this.formData.applicantList = res;
+      console.log('res', res);
+      this.isLoading = false;
+    }, error => this.handleError(error), () => {
+      this.filteredOptionsForApplicant = this.filterLookupsFunction(this.customReleaseForm.get('applicant'), this.formData.applicantList);
+    });
+
     this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
       this.isLoading = false;
-    }, error => this.handleError(error));
+    }, error => this.handleError(error), () => this.getLookupForFormArray());
     this.getService.getFunctionLookUp().subscribe((res: any) => {
       this.formData.functionList = res;
       this.isLoading = false;
-    }, error => this.handleError(error));
+    }, error => this.handleError(error), () => this.getLookupForFormArray());
     this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
       this.formData.unitOfMeasureList = res;
       this.isLoading = false;
-    }, error => this.handleError(error));
+    }, error => this.handleError(error), () => this.getLookupForFormArray());
     this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
       this.formData.ingrediantList = res;
       this.isLoading = false;
-    }, error => this.handleError(error));
+    }, error => this.handleError(error), () => this.getLookupForFormArray());
 
     this.filteredOptionsForImportReason = this.filterLookupsFunction(this.customReleaseForm.get('importReason'), this.formData.importReasonList);
     this.filteredOptionsForCurrency = this.filterLookupsFunction(this.customReleaseForm.get('currency'), this.formData.currencyList);
-    this.filteredOptionsForApplicant = this.filterLookupsFunction(this.customReleaseForm.get('applicant'), this.formData.applicantList);
     this.filteredOptionsForPortName = this.filterLookupsFunction(this.customReleaseForm.get('portName'), this.formData.portNameList);
-    this.getLookupForFormArray();
 
     this.productId = this.route.snapshot.paramMap.get('id');
 
@@ -381,16 +386,20 @@ export class CustomReleaseComponent implements OnInit {
       reader.onload = (res: any) => {
         this.customReleaseForm.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
       };
+
+      // this.customReleaseForm.get(fileControlName).setValue(file);
     }
   }
 
   getLookupForFormArray() {
-    this.InvoiceProductsRows().value.map((x, i) => {
+    this.InvoiceProductsRows().controls.map((x, i) => {
       this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(x.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
       this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(x.get('manufacturingCountry'), this.formData.manufacturingCountryList);
       this.filteredOptionsForQuantity = this.filterLookupsFunction(x.get('quantity'), this.formData.quantityList);
       this.filteredOptionsForUOM = this.filterLookupsFunction(x.get('UOM'), this.formData.unitOfMeasureList);
+    });
 
+    this.InvoiceProductsRows().value.map((x, i) => {
       x.ingrediantDetails.map((item, index) => {
         this.filteredOptionsForIngradiant = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
         this.filteredOptionsForFunction = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
