@@ -562,7 +562,7 @@
                            aria-label="Unit of measure"
                            matInput
                            formControlName="unitOfMeasure"
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : productFlags && productFlags.unitOfMeasure ? false : true"
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : productFlags && !productFlags.unitOfMeasure ? true : false"
                            [matAutocomplete]="unitOfMeasureList" required>
                     <mat-autocomplete #unitOfMeasureList="matAutocomplete">
                       <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
@@ -595,7 +595,7 @@
                            aria-label="Type of Packaging"
                            matInput
                            formControlName="typeOfPackaging"
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : productFlags && productFlags.typeOfPackaging ? false : true"
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : productFlags && !productFlags.typeOfPackaging ? true : false"
                            [matAutocomplete]="typeOfPackagingList" required>
                     <mat-autocomplete #typeOfPackagingList="matAutocomplete">
                       <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
@@ -719,7 +719,7 @@
                     <mat-label>Flavor</mat-label>
                     <input type="text" class="form-control" matInput formControlName="flavor"
                            placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : productFlags && productFlags.flavor ? false : true">
+                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : productFlags && !productFlags.flavor ? true : false">
                   </mat-form-field>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">

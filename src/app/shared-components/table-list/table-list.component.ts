@@ -69,6 +69,7 @@ export class TableListComponent implements OnInit, OnChanges {
                         });
                     }
                     const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
+                    this.filterData.filterKey = [];
                     this.data.tableHeader.map((x, i) => {
                         if (this.staticFilterKey[this.data.tableHeader[i]]) {
                             this.filterData.filterKey.push({
