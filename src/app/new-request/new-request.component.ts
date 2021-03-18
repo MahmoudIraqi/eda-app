@@ -112,6 +112,7 @@ export class NewRequestComponent implements OnInit {
       this.isLoading = false;
     },error => this.handleError(error));
     this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+      console.log('res', res);
       this.formData.storagePlaceList = res;
       this.isLoading = false;
     },error => this.handleError(error));

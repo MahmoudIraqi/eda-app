@@ -53,6 +53,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  isDraft: boolean = false;
   detailsListTable = {
     tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Actions'],
     tableBody: []
@@ -648,6 +649,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getFormAsStarting(data) {
     if (data) {
+      console.log('data', data);
+      this.isDraft = data.isDraft === 1;
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();
@@ -841,7 +844,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   private _subscribeToClosingActions(field): void {
-    debugger;
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }

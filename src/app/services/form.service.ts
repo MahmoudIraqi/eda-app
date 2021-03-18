@@ -341,7 +341,6 @@ export class FormService {
         catchError(this.handleError));
   }
 
-
   getDraftVariationProductsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
