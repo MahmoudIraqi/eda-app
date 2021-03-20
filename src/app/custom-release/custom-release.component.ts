@@ -302,7 +302,6 @@ export class CustomReleaseComponent implements OnInit {
 
     this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
       this.formData.applicantList = res;
-      console.log('res', res);
       this.isLoading = false;
     }, error => this.handleError(error), () => {
       this.filteredOptionsForApplicant = this.filterLookupsFunction(this.customReleaseForm.get('applicant'), this.formData.applicantList);
@@ -408,7 +407,6 @@ export class CustomReleaseComponent implements OnInit {
   }
 
   getFormType(event) {
-    console.log('event', event);
   }
 
   InvoiceProductsRows(): FormArray {

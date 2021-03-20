@@ -48,7 +48,6 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isLoading = true;
 
     this.getService.getBatchList().subscribe((res: any) => {
-      console.log('res', res);
       this.batchList = {
         tableHeader: ['Batch Number', 'Product Id', 'Submission Date', 'Production Date', 'Expiration Date'],
         tableBody: res

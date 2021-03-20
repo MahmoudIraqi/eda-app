@@ -426,7 +426,6 @@ export class FormService {
     const options = {headers};
 
     event = JSON.stringify(event);
-    console.log('event', event);
 
     return this.http.post(`${this.apiBaseUrl}requests/ReregRequest`, event, options)
       .pipe(map((res: any) => {
@@ -499,7 +498,6 @@ export class FormService {
     };
 
     const JSONData = JSON.stringify(data);
-    console.log('JSONData', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}Requests/PostInquery`, JSONData, options)
       .pipe(map((res: any) => {

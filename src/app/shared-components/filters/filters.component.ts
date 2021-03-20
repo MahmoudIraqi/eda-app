@@ -20,7 +20,6 @@ export class FiltersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('filterData', this.filterData);
   }
 
   ngOnInit(): void {

@@ -224,6 +224,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  isDraft: boolean = false;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe) {
@@ -638,6 +639,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   getFormAsStarting(data) {
     if (data) {
+      this.isDraft = data.isDraft === 1;
+
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();

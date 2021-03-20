@@ -42,16 +42,21 @@ export class LoginComponent {
 
   submit() {
     if (this.form.valid) {
+      this.isLoading = true;
       // this.formLoginData.filter(x => x.username === this.form.get('username').value).map(y => {
       //   if (y.password === this.form.get('password').value) {
       //     this.router.navigateByUrl('/home');
       //   }
       // });
       this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
-        if(res.Status){
+        if (res) {
           this.isLoading = false;
-          this.alertNotificationStatus = true;
-          this.router.navigateByUrl('/home');
+          if (res.Status === '1') {
+            this.alertNotificationStatus = true;
+            this.router.navigateByUrl('/home');
+          } else {
+            this.alertErrorNotificationStatus = true;
+          }
         }
       }, error => this.handleError(error));
     }

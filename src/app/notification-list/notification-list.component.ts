@@ -64,7 +64,6 @@ export class NotificationListComponent implements OnInit {
     // this.isLoading = true;
 
     // this.getService.getNotificationLogsList().subscribe((res: any) => {
-    //   console.log('res', res);
     //   this.notificationListRequest = {
     //     tableHeader: ['Notification id', 'Notification comment', 'Notification date'],
     //     tableBody: res

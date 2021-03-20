@@ -24,7 +24,7 @@ export class DraftRequestComponent implements OnInit {
         tableBody: res
       };
       this.isLoading = false;
-    },error => this.handleError(error));
+    }, error => this.handleError(error));
   }
 
   handleError(message) {

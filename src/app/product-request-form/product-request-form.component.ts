@@ -649,7 +649,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getFormAsStarting(data) {
     if (data) {
-      console.log('data', data);
       this.isDraft = data.isDraft === 1;
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
