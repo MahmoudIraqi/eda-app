@@ -22,6 +22,7 @@ import {TrackGeneralEnquiriesComponent} from './track-general-enquiries/track-ge
 import {BatchFormComponent} from './batch-form/batch-form.component';
 import {NotificationListComponent} from './notification-list/notification-list.component';
 import {CustomReleaseComponent} from './custom-release/custom-release.component';
+import {TestCustomReleaseComponent} from './test-custom-release/test-custom-release.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
@@ -40,6 +41,7 @@ const routes: Routes = [
           {path: 'do_tell-variation', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'do_tell-variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'custom-release', component: CustomReleaseComponent, data: {animation: 'new-request'}},
+          {path: 'custom-release2', component: TestCustomReleaseComponent, data: {animation: 'new-request'}},
           {path: 'general-enquiries', component: GeneralEnquireiesComponent, data: {animation: 'new-request'}},
         ]
       },
