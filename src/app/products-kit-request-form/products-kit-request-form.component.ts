@@ -407,6 +407,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   onSubmit() {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    console.log('this.regKitForAllRequestedType.value', this.regKitForAllRequestedType.value);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
     this.submitDataOutput.emit(data);
@@ -739,7 +740,20 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
-  convertAllNamingToId(data)
+  convertAllNamingToId(data) {
+    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
+    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
+    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
+    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
+    this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
+    this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
+    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+
+    console.log('data', data);
+
+    return data;
+  }
 
   // @ts-ignore
   handleError(message) {
