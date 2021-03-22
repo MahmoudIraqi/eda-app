@@ -244,6 +244,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
+    console.log('formData', this.formData);
 
     if (this.successSubmission) {
       this.resetForms();
@@ -828,7 +829,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     data.packagingTable.map(x => {
       this.formData.unitOfMeasureList.filter(option => option.NAME === x.unitOfMeasure).map(item => x.unitOfMeasure = item.ID);
-      this.formData.functionList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
+      this.formData.typeOfPackagingList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
     });
 
     data.detailsTable.map(x => {
