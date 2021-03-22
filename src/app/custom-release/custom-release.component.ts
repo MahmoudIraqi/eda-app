@@ -152,108 +152,7 @@ export class CustomReleaseComponent implements OnInit {
     ingrediantList: [],
     functionList: [],
   };
-  attachmentFields = [
-    {
-      id: 'invoiceInEnglish',
-      name: 'Invoice In English',
-      fileName: '',
-    },
-    {
-      id: 'countryOfOriginCertificate',
-      name: 'Country Of Origin Certificate',
-      fileName: '',
-    },
-    {
-      id: 'copyOfTheRelationsOfFactoriesAndCompanies',
-      name: 'copy Of The Relations Of Factories And Companies',
-      fileName: '',
-    },
-    {
-      id: 'shippingPolicy',
-      name: 'Shipping Policy',
-      fileName: '',
-    },
-    {
-      id: 'packingList',
-      name: 'Packing List',
-      fileName: '',
-    },
-    {
-      id: 'receipt',
-      name: 'receipt',
-      fileName: '',
-    },
-    {
-      id: 'healthCertificate',
-      name: 'Health Certificate',
-      fileName: '',
-    },
-    {
-      id: 'materialSafetyDataSheet',
-      name: 'Material Safety DataSheet',
-      fileName: '',
-    },
-    {
-      id: 'sealedLetterFromTheExternalManufacturer',
-      name: 'Sealed Letter From The External Manufacturer',
-      fileName: '',
-    },
-    {
-      id: 'anExternalFactoryShallSubmitCertificateForChemicalTreatment',
-      name: 'An External Factory Shall Submit Certificate For Chemical Treatment',
-      fileName: '',
-    },
-    {
-      id: 'healthCertificateIsFreeFromEpidemicDiseases',
-      name: 'Health Certificate Is Free From Epidemic Diseases',
-      fileName: '',
-    },
-    {
-      id: 'certificateImportedFromMarineOriginFromTheManufacturerShall',
-      name: 'Certificate Imported From Marine Origin From The Manufacturer Shall',
-      fileName: '',
-    },
-    {
-      id: 'copyOfTheRegistrationNotice',
-      name: 'Copy Of The Registration Notice',
-      fileName: '',
-    },
-    {
-      id: 'copyOfTheApprovedCompositionOfThePreparation',
-      name: 'copy Of The Approved Composition Of The Preparation',
-      fileName: '',
-    },
-    {
-      id: 'compositionOfTheColors',
-      name: 'Composition Of The Colors',
-      fileName: '',
-    },
-    {
-      id: 'approvalOfTheGeneralSecurity',
-      name: 'Approval Of The General Security',
-      fileName: '',
-    },
-    {
-      id: 'benefitOfManufacturingCompanyWithOthers',
-      name: 'Benefit Of Manufacturing Company With Others',
-      fileName: '',
-    },
-    {
-      id: 'manufacturingCompanyImportsItselfFromOthers',
-      name: 'Mmanufacturing Company Imports Itself From Others',
-      fileName: '',
-    },
-    {
-      id: 'benefitOfManufacturingCompanyWithThirdParty',
-      name: 'Benefit Of Manufacturing Company With Third Party',
-      fileName: '',
-    },
-    {
-      id: 'productionEntrantEntersIntoItsManufacture',
-      name: 'Production Entrant Enters Into Its Manufacture',
-      fileName: '',
-    }
-  ];
+  attachmentFields = [];
   productId;
   selectedFormType;
   isLoading: boolean = false;
@@ -266,9 +165,16 @@ export class CustomReleaseComponent implements OnInit {
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   editDetailedRowStatus = false;
   editIndex;
+
+  editIngrediantDetailedRowStatus = false;
+  editIngrediantIndex;
   editProductIndex = false;
   productInInvoiceTable = {
     tableHeader: ['Volumes', 'Unit of measure', 'type of packaging', 'Actions'],
+    tableBody: []
+  };
+  IngrediantTable = {
+    tableHeader: ['Ingrediant', 'Concentrations', 'Function', 'Actions'],
     tableBody: []
   };
   filteredOptionsForImportReason: Observable<LookupState[]>;
@@ -342,6 +248,8 @@ export class CustomReleaseComponent implements OnInit {
         }
       }
     });
+
+    this.setValueInAttachementList();
   }
 
   ngAfterViewInit() {
@@ -353,6 +261,9 @@ export class CustomReleaseComponent implements OnInit {
     this._subscribeToClosingActionsForPackagingFormArray('manufacturingCountry');
     this._subscribeToClosingActionsForPackagingFormArray('quantity');
     this._subscribeToClosingActionsForPackagingFormArray('UOM');
+    this._subscribeToClosingActionsForIngrediants('UOM');
+    this._subscribeToClosingActionsForPackagingFormArray('ingrediant');
+    this._subscribeToClosingActionsForPackagingFormArray('function');
   }
 
   ngOnDestroy() {
@@ -398,15 +309,15 @@ export class CustomReleaseComponent implements OnInit {
       this.filteredOptionsForUOM = this.filterLookupsFunction(x.get('UOM'), this.formData.unitOfMeasureList);
     });
 
-    this.InvoiceProductsRows().value.map((x, i) => {
-      x.ingrediantDetails.map((item, index) => {
-        this.filteredOptionsForIngradiant = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
-        this.filteredOptionsForFunction = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
-      });
+    this.IngrediantDetailsRows().controls.map((item, index) => {
+      this.filteredOptionsForIngradiant = this.filterLookupsFunction(item.get('ingrediant'), this.formData.ingrediantList);
+      this.filteredOptionsForFunction = this.filterLookupsFunction(item.get('function'), this.formData.functionList);
     });
   }
 
   getFormType(event) {
+    this.selectedFormType = event.value;
+    this.setValueInAttachementList();
   }
 
   InvoiceProductsRows(): FormArray {
@@ -425,13 +336,7 @@ export class CustomReleaseComponent implements OnInit {
       manufacturingCountry: this.fb.control(''),
       batchNo: this.fb.control(''),
       quantity: this.fb.control(''),
-      UOM: this.fb.control(''),
-      ingrediantDetails: this.fb.array([this.fb.group({
-        Ingredient_ID: this.fb.control(''),
-        ingrediant: this.fb.control(''),
-        concentrations: this.fb.control(''),
-        function: this.fb.control(''),
-      })])
+      UOM: this.fb.control('')
     }));
   }
 
@@ -461,12 +366,14 @@ export class CustomReleaseComponent implements OnInit {
     }
   }
 
-  IngrediantDetailsRows(index): FormArray {
-    return this.InvoiceProductsRows().at(index).get('ingrediantDetails') as FormArray;
+  IngrediantDetailsRows(): FormArray {
+    return this.customReleaseForm.get('ingrediantDetails') as FormArray;
   }
 
-  addIngrediantDetailsRows(index) {
-    this.IngrediantDetailsRows(index).push(this.fb.group({
+  addIngrediantDetailsRows() {
+    this.editIngrediantDetailedRowStatus = false;
+    this.equalTheIngrediantDetailsTable('add');
+    this.IngrediantDetailsRows().push(this.fb.group({
       Ingredient_ID: this.fb.control(''),
       ingrediant: this.fb.control('', Validators.required),
       concentrations: this.fb.control('', Validators.required),
@@ -474,12 +381,30 @@ export class CustomReleaseComponent implements OnInit {
     }));
   }
 
-  removeIngrediantDetailsRows(fromWhere, event) {
-    if (this.IngrediantDetailsRows(event.i).length > 1) {
-      this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
-    }
+  editTheIngrediantDetailsRows(event) {
+    this.editIngrediantDetailedRowStatus = true;
+    this.editIngrediantIndex = event;
+  }
 
-    this.equalTheNewProductInInvoiceTable(fromWhere);
+  removeIngrediantDetailsRows(fromWhere, i) {
+    this.InvoiceProductsRows().removeAt(i);
+    this.customReleaseForm.get('ingrediantDetails').value.pop();
+    this.IngrediantTable.tableBody = this.customReleaseForm.get('ingrediantDetails').value;
+  }
+
+  cancelTheIngrediantDetailsRows(index) {
+    this.IngrediantDetailsRows().removeAt(index);
+    this.IngrediantTable.tableBody.pop();
+  }
+
+  equalTheIngrediantDetailsTable(fromWhere) {
+    if (fromWhere !== 'form') {
+      if (fromWhere === 'remove') {
+        this.customReleaseForm.get('ingrediantDetails').value.pop();
+      }
+
+      this.IngrediantTable.tableBody = this.customReleaseForm.get('ingrediantDetails').value;
+    }
   }
 
   getFormAsStarting(data) {
@@ -559,13 +484,13 @@ export class CustomReleaseComponent implements OnInit {
           manufacturingCountry: this.fb.control(''),
           batchNo: this.fb.control(''),
           quantity: this.fb.control(''),
-          UOM: this.fb.control(''),
-          ingrediantDetails: this.fb.array([this.fb.group({
-            Ingredient_ID: this.fb.control(''),
-            ingrediant: this.fb.control(''),
-            concentrations: this.fb.control(''),
-            function: this.fb.control(''),
-          })])
+          UOM: this.fb.control('')
+        })]),
+        ingrediantDetails: this.fb.array([this.fb.group({
+          Ingredient_ID: this.fb.control(''),
+          ingrediant: this.fb.control(''),
+          concentrations: this.fb.control(''),
+          function: this.fb.control(''),
         })]),
         invoiceInEnglish: this.fb.control(''),
         countryOfOriginCertificate: this.fb.control(''),
@@ -684,17 +609,41 @@ export class CustomReleaseComponent implements OnInit {
     }
   }
 
+  private _subscribeToClosingActionsForIngrediants(field): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    for (var trigger of this.triggerCollection.toArray()) {
+      this.subscription = trigger.panelClosingActions
+        .subscribe(e => {
+          if (!e || !e.source) {
+            this.IngrediantDetailsRows().controls.map((x) => {
+              if (x['controls'][field].dirty) {
+                x['controls'][field].setValue(null);
+              }
+            });
+          }
+        });
+    }
+  }
+
   convertAllNamingToId(data) {
-    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    this.formData.importReasonList.filter(option => option.NAME === data.importReason).map(x => data.importReason = x.ID);
+    this.formData.currencyList.filter(option => option.NAME === data.currency).map(x => data.currency = x.ID);
     this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
+    this.formData.portNameList.filter(option => option.NAME === data.portName).map(x => data.portName = x.ID);
+    this.formData.portNameList.filter(option => option.NAME === data.portName).map(x => data.portName = x.ID);
 
-
-    data.productsInInvoice.map(x => {
-      x.ingrediantDetails.map(y => {
-        this.formData.ingrediantList.filter(option => option.NAME === y.ingrediant).map(item => y.ingrediant = item.ID);
-        this.formData.functionList.filter(option => option.NAME === y.function).map(item => y.function = item.ID);
-      });
+    data.productsInInvoice(x => {
+      this.formData.manufacturingCompanyList.filter(option => option.NAME === x.manufacturingCompany).map(y => x.manufacturingCompany = y.ID);
+      this.formData.manufacturingCountryList.filter(option => option.NAME === x.manufacturingCountry).map(y => x.manufacturingCountry = y.ID);
+      this.formData.quantityList.filter(option => option.NAME === x.quantity).map(y => x.quantity = y.ID);
+      this.formData.unitOfMeasureList.filter(option => option.NAME === x.UOM).map(y => x.UOM = y.ID);
+    });
+    data.ingrediantDetails.map(y => {
+      this.formData.ingrediantList.filter(option => option.NAME === y.ingrediant).map(item => y.ingrediant = item.ID);
+      this.formData.functionList.filter(option => option.NAME === y.function).map(item => y.function = item.ID);
     });
 
     return data;
@@ -724,5 +673,151 @@ export class CustomReleaseComponent implements OnInit {
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: message};
     this.isLoading = false;
+  }
+
+  setValueInAttachementList() {
+
+    this.attachmentFields = [
+      {
+        id: 'invoiceInEnglish',
+        name: 'Invoice In English',
+        fileName: '',
+        enable: true,
+        required: true,
+      },
+      {
+        id: 'countryOfOriginCertificate',
+        name: 'Country Of Origin Certificate',
+        fileName: '',
+        enable: this.selectedFormType !== 1,
+        required: false
+      },
+      {
+        id: 'copyOfTheRelationsOfFactoriesAndCompanies',
+        name: 'copy Of The Relations Of Factories And Companies',
+        fileName: '',
+        enable: this.selectedFormType === 0,
+        required: true
+      },
+      {
+        id: 'shippingPolicy',
+        name: 'Shipping Policy',
+        fileName: '',
+        enable: true,
+        required: true,
+      },
+      {
+        id: 'packingList',
+        name: 'Packing List',
+        fileName: '',
+        enable: true,
+        required: true,
+      },
+      {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        enable: true,
+        required: true,
+      },
+      {
+        id: 'healthCertificate',
+        name: 'Health Certificate',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4 || this.selectedFormType === 5,
+        required: false
+      },
+      {
+        id: 'materialSafetyDataSheet',
+        name: 'Material Safety DataSheet',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4 || this.selectedFormType === 5,
+        required: true
+      },
+      {
+        id: 'sealedLetterFromTheExternalManufacturer',
+        name: 'Sealed Letter From The External Manufacturer',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4,
+        required: true
+      },
+      {
+        id: 'anExternalFactoryShallSubmitCertificateForChemicalTreatment',
+        name: 'An External Factory Shall Submit Certificate For Chemical Treatment',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4,
+        required: true
+      },
+      {
+        id: 'healthCertificateIsFreeFromEpidemicDiseases',
+        name: 'Health Certificate Is Free From Epidemic Diseases',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4,
+        required: true
+      },
+      {
+        id: 'certificateImportedFromMarineOriginFromTheManufacturerShall',
+        name: 'Certificate Imported From Marine Origin From The Manufacturer Shall',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4,
+        required: true
+      },
+      {
+        id: 'copyOfTheRegistrationNotice',
+        name: 'Copy Of The Registration Notice',
+        fileName: '',
+        enable: this.selectedFormType === 2,
+        required: true
+      },
+      {
+        id: 'copyOfTheApprovedCompositionOfThePreparation',
+        name: 'copy Of The Approved Composition Of The Preparation',
+        fileName: '',
+        enable: this.selectedFormType === 2,
+        required: true
+      },
+      {
+        id: 'compositionOfTheColors',
+        name: 'Composition Of The Colors',
+        fileName: '',
+        enable: this.selectedFormType === 2,
+        required: true
+      },
+      {
+        id: 'approvalOfTheGeneralSecurity',
+        name: 'Approval Of The General Security',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4,
+        required: true
+      },
+      {
+        id: 'benefitOfManufacturingCompanyWithOthers',
+        name: 'Benefit Of Manufacturing Company With Others',
+        fileName: '',
+        enable: this.selectedFormType === 2,
+        required: true
+      },
+      {
+        id: 'manufacturingCompanyImportsItselfFromOthers',
+        name: 'Mmanufacturing Company Imports Itself From Others',
+        fileName: '',
+        enable: this.selectedFormType === 2,
+        required: true
+      },
+      {
+        id: 'benefitOfManufacturingCompanyWithThirdParty',
+        name: 'Benefit Of Manufacturing Company With Third Party',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 6,
+        required: true
+      },
+      {
+        id: 'productionEntrantEntersIntoItsManufacture',
+        name: 'Production Entrant Enters Into Its Manufacture',
+        fileName: '',
+        enable: this.selectedFormType === 2 || this.selectedFormType === 6,
+        required: true
+      }
+    ];
   }
 }

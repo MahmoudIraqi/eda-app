@@ -10,14 +10,14 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Fields type</mat-label>
-              <mat-select (selectionChange)="getFormType($event)" [(ngModel)]="this.selectedFormType">
+              <mat-select (selectionChange)="getFormType($event)" [(ngModel)]="selectedFormType">
                 <mat-option *ngFor="let option of formData.fieldsType" [value]="option.ID">
                   {{option.NAME}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-12 mt-5">
+          <div class="col-12 mt-5" *ngIf="selectedFormType || selectedFormType === 0">
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="customReleaseForm"
                   (ngSubmit)="onSubmit()" novalidate xmlns="http://www.w3.org/1999/html">
@@ -255,79 +255,6 @@
                                 </mat-autocomplete>
                               </mat-form-field>
                             </div>
-                            <div class="col-12 mt-2">
-                              <div class="ingrediantDetailsContainer">
-                                <div class="row" formArrayName="ingrediantDetails">
-                                  <div class="col-12 d-flex">
-                                    <button type="button" class="btn btn-primary ml-auto"
-                                            (click)="addIngrediantDetailsRows(i)">
-                                      Add Ingrediant Details Row
-                                    </button>
-                                  </div>
-                                  <div class="col-12 mt-5"
-                                       *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
-                                       [formGroupName]="index">
-                                    <div class="rowContainer">
-                                      <div class="row">
-                                        <div class="col-12 col-sm-6 col-lg-3">
-                                          <mat-form-field appearance="fill"
-                                                          class="example-full-width inputBesideSelect">
-                                            <mat-label>Ingrediant</mat-label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   placeholder="Ingrediant"
-                                                   aria-label="Ingrediant"
-                                                   matInput
-                                                   formControlName="ingrediant"
-                                                   [matAutocomplete]="autoIngrediant">
-                                            <mat-autocomplete #autoIngrediant="matAutocomplete">
-                                              <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
-                                                          [value]="option.NAME">
-                                                {{option.NAME}}
-                                              </mat-option>
-                                            </mat-autocomplete>
-                                          </mat-form-field>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-lg-3 conSpace">
-                                          <mat-form-field class="example-full-width inputBesideSelect">
-                                            <mat-label>Concentrations</mat-label>
-                                            <input type="text" class="form-control" matInput
-                                                   formControlName="concentrations"
-                                                   placeholder="concentrations">
-                                          </mat-form-field>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-lg-3">
-                                          <mat-form-field appearance="fill"
-                                                          class="example-full-width inputBesideSelect">
-                                            <mat-label>Function</mat-label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   placeholder="Function"
-                                                   aria-label="Function"
-                                                   matInput
-                                                   formControlName="function"
-                                                   [matAutocomplete]="autoFunction">
-                                            <mat-autocomplete #autoFunction="matAutocomplete">
-                                              <mat-option *ngFor="let option of filteredOptionsForFunction | async"
-                                                          [value]="option.NAME">
-                                                {{option.NAME}}
-                                              </mat-option>
-                                            </mat-autocomplete>
-                                          </mat-form-field>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-lg-3 d-flex">
-                                          <button type="button" class=" btn btn-primary btn-sm ml-auto mt-3"
-                                                  [disabled]="IngrediantDetailsRows(i).controls.length < 2"
-                                                  (click)="removeIngrediantDetailsRows('form',{i: i,childIndex: index})">
-                                            Delete Row
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
                             <div class="col-12 mt-3 d-flex">
                               <button type="button"
                                       *ngIf="!editDetailedRowStatus"
@@ -370,13 +297,110 @@
                         </div>
                       </div>
                     </div>
+                    <div formArrayName="ingrediantDetails" class="detailsTable mt-4">
+                      <div class="col-12">
+                        <app-title [smallTitle]="true" [title]="'Invoice Products Form'"></app-title>
+                      </div>
+                      <div class="addDetailsRequestContainer">
+                        <div *ngFor="let row of IngrediantDetailsRows().controls; let i=index" [formGroupName]="i">
+                          <div class="row"
+                               *ngIf="(editIngrediantDetailedRowStatus && editIngrediantIndex === i ) || (!editIngrediantDetailedRowStatus && (IngrediantDetailsRows().controls.length === 0 || IngrediantDetailsRows().controls.length -1 === i))">
+                            <div class="col-12 col-sm-6 col-lg-3">
+                              <mat-form-field appearance="fill"
+                                              class="example-full-width inputBesideSelect">
+                                <mat-label>Ingrediant</mat-label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Ingrediant"
+                                       aria-label="Ingrediant"
+                                       matInput
+                                       formControlName="ingrediant"
+                                       [matAutocomplete]="autoIngrediant">
+                                <mat-autocomplete #autoIngrediant="matAutocomplete">
+                                  <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
+                                              [value]="option.NAME">
+                                    {{option.NAME}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3 conSpace">
+                              <mat-form-field class="example-full-width inputBesideSelect">
+                                <mat-label>Concentrations</mat-label>
+                                <input type="text" class="form-control" matInput
+                                       formControlName="concentrations"
+                                       placeholder="concentrations">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3">
+                              <mat-form-field appearance="fill"
+                                              class="example-full-width inputBesideSelect">
+                                <mat-label>Function</mat-label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Function"
+                                       aria-label="Function"
+                                       matInput
+                                       formControlName="function"
+                                       [matAutocomplete]="autoFunction">
+                                <mat-autocomplete #autoFunction="matAutocomplete">
+                                  <mat-option *ngFor="let option of filteredOptionsForFunction | async"
+                                              [value]="option.NAME">
+                                    {{option.NAME}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 mt-3 d-flex">
+                              <button type="button"
+                                      *ngIf="!editIngrediantDetailedRowStatus"
+                                      class="btn btn-primary ml-auto"
+                                      (click)="addIngrediantDetailsRows()"
+                                      [disabled]="IngrediantDetailsRows().status === 'INVALID'">
+                                Add Ingrediant Details Row
+                              </button>
+                              <button type="button"
+                                      *ngIf="editIngrediantDetailedRowStatus"
+                                      class="btn btn-primary ml-auto"
+                                      (click)="editTheIngrediantDetailsRows($event)"
+                                      [disabled]="IngrediantDetailsRows().status === 'INVALID'">
+                                Edit Ingrediant Details Row
+                              </button>
+                              <button type="button"
+                                      *ngIf="!editIngrediantDetailedRowStatus && IngrediantDetailsRows().controls.length > 1"
+                                      class="btn btn-primary ml-2"
+                                      (click)="cancelTheIngrediantDetailsRows((IngrediantDetailsRows().controls.length-1))">
+                                Cancel Ingrediant Details Row
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-4"
+                           *ngIf="productInInvoiceTable.tableBody.length > 0 && InvoiceProductsRows().controls.length > 1">
+                        <div class="col-12">
+                          <app-title [title]="'Details Table'" [smallTitle]="true"></app-title>
+                        </div>
+                        <div class="col-12 mt-5">
+                          <div class="RequestingTable">
+                            <app-table-list [data]="IngrediantTable"
+                                            [whichTable]="'newProductForInvoice'"
+                                            (removeDetailsRowOutput)="removeProductInInvoiceRows($event)"
+                                            (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
+                                            (editDetailedRowOutput)="cancelTheProductInInvoiceRows($event)"
+                            ></app-table-list>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </tab>
                 <tab heading="Attachments" class="Attachments">
                   <div class="mt-5">
                     <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
                     <div class="row mt-3">
-                      <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields">
+                      <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields"
+                           [ngClass]="{'d-none': !field.enable}">
                         <div class="form-group">
                           <label>
                             {{field.name}}
