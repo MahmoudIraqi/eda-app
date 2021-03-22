@@ -48,9 +48,13 @@ export class TableListComponent implements OnInit, OnChanges {
 
     @Output() removeDetailsRowOutput = new EventEmitter();
     @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
+    @Output() removeIngrediantRowOutput = new EventEmitter();
+    @Output() editIngrediantRowOutput = new EventEmitter();
     @Output() removeProductFromKit = new EventEmitter();
     @Output() editDetailedRowOutput = new EventEmitter();
     @Output() seenNotification = new EventEmitter();
+    @Output() editProductInInvoicesRows = new EventEmitter();
+    @Output() removeProductInInvoicesRows = new EventEmitter();
 
     contentArray = [];
     returnedArray: string[];
@@ -61,7 +65,7 @@ export class TableListComponent implements OnInit, OnChanges {
     ngOnChanges() {
         if (this.data) {
             if (this.data.tableBody.length > 0) {
-                if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'batchTable') {
+                if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'batchTable' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
                     if (this.whichTable !== 'manufacturing') {
                         this.data.tableBody.map(x => {
                             x.ID = x.ID.toString();
@@ -109,6 +113,22 @@ export class TableListComponent implements OnInit, OnChanges {
 
     removeIngrediantDetailsRowFunction(childIndex, i, indexRow) {
         this.removeIngrediantDetailsRowOutput.emit({childIndex, indexRow, i});
+    }
+
+    removeIngrediantDetailsRows(index) {
+        this.removeIngrediantRowOutput.emit(index);
+    }
+
+    editIngrediantDetailsRows(index) {
+        this.editIngrediantRowOutput.emit(index);
+    }
+
+    removeProductInInvoicesRowsFunction(index) {
+        this.removeProductInInvoicesRows.emit(index);
+    }
+
+    editProductInInvoicesRowsFunction(index) {
+        this.editProductInInvoicesRows.emit(index);
     }
 
     removeProductFromKitFunction(index) {
@@ -208,7 +228,6 @@ export class TableListComponent implements OnInit, OnChanges {
     }
 
     editProduct(request) {
-        console.log('request', request);
         const editFrom = this.route.snapshot.routeConfig.path;
         if (editFrom === 'tell_do-variation') {
             this.router.navigate([`/new-request/tell_do-variation/${Number(request.NotificationNo)}`]);

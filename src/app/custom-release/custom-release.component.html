@@ -248,7 +248,7 @@
                                        formControlName="UOM"
                                        [matAutocomplete]="unitOfMeasureList">
                                 <mat-autocomplete #unitOfMeasureList="matAutocomplete">
-                                  <mat-option *ngFor="let option of filteredOptionsForQuantity | async"
+                                  <mat-option *ngFor="let option of filteredOptionsForUOM | async"
                                               [value]="option.NAME">
                                     {{option.NAME}}
                                   </mat-option>
@@ -283,15 +283,14 @@
                       <div class="row mt-4"
                            *ngIf="productInInvoiceTable.tableBody.length > 0 && InvoiceProductsRows().controls.length > 1">
                         <div class="col-12">
-                          <app-title [title]="'Details Table'" [smallTitle]="true"></app-title>
+                          <app-title [title]="'Products in invoice Table'" [smallTitle]="true"></app-title>
                         </div>
                         <div class="col-12 mt-5">
                           <div class="RequestingTable">
                             <app-table-list [data]="productInInvoiceTable"
                                             [whichTable]="'newProductForInvoice'"
-                                            (removeDetailsRowOutput)="removeProductInInvoiceRows($event)"
-                                            (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
-                                            (editDetailedRowOutput)="cancelTheProductInInvoiceRows($event)"
+                                            (removeProductInInvoicesRows)="removeProductInInvoiceRows($event)"
+                                            (editProductInInvoicesRows)="editTheProductInInvoiceRows($event)"
                             ></app-table-list>
                           </div>
                         </div>
@@ -377,17 +376,16 @@
                         </div>
                       </div>
                       <div class="row mt-4"
-                           *ngIf="productInInvoiceTable.tableBody.length > 0 && InvoiceProductsRows().controls.length > 1">
+                           *ngIf="IngrediantTable.tableBody.length > 0 && IngrediantDetailsRows().controls.length > 1">
                         <div class="col-12">
-                          <app-title [title]="'Details Table'" [smallTitle]="true"></app-title>
+                          <app-title [title]="'Ingrediant Table'" [smallTitle]="true"></app-title>
                         </div>
                         <div class="col-12 mt-5">
                           <div class="RequestingTable">
                             <app-table-list [data]="IngrediantTable"
-                                            [whichTable]="'newProductForInvoice'"
-                                            (removeDetailsRowOutput)="removeProductInInvoiceRows($event)"
-                                            (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
-                                            (editDetailedRowOutput)="cancelTheProductInInvoiceRows($event)"
+                                            [whichTable]="'newIngrediantTable'"
+                                            (removeIngrediantRowOutput)="removeIngrediantDetailsRows($event)"
+                                            (editIngrediantRowOutput)="editTheIngrediantDetailsRows($event)"
                             ></app-table-list>
                           </div>
                         </div>

@@ -101,6 +101,24 @@
               </span>
             </th>
           </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'newIngrediantTable'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'newProductForInvoice'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
           <tr
             *ngFor="let request of this.dataAfterFilters.length> 0 ? this.dataAfterFilters : returnedArray && returnedArray.length > 0 ? returnedArray : data.tableBody; let i = index">
             <td colspan="7" *ngIf="whichTable === 'trackRequest'">
@@ -873,6 +891,93 @@
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Notification Number :</label>
                         <span>{{request.notificationNumber}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="4" *ngIf="whichTable === 'newIngrediantTable'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td>{{request.ingrediant}}</td>
+                          <td>{{request.concentrations}}</td>
+                          <td>{{request.function}}</td>
+                          <td>
+                             <span class="mr-2" (click)="editDetailedRowFunction(i)">
+                              <i class="fa fa-edit"></i>
+                            </span>
+                                  <span (click)="removeIngrediantDetailsRows(i)">
+                              <i class="fa fa-trash"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Ingrediant :</label>
+                        <span>{{request.ingrediant}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Concentrations :</label>
+                        <span>{{request.concentrations}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Function :</label>
+                        <span>{{request.function}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="4" *ngIf="whichTable === 'newProductForInvoice'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td>{{request.notificationNumber}}</td>
+                          <td>{{request.productArabicName}}</td>
+                          <td>{{request.productEnglishName}}</td>
+                          <td>{{request.manufacturingCompany}}</td>
+                          <td>{{request.manufacturingCountry}}</td>
+                          <td>{{request.batchNo}}</td>
+                          <td>{{request.quantity}}</td>
+                          <td>{{request.UOM}}</td>
+                          <td>
+                             <span class="mr-2" (click)="editDetailedRowFunction(i)">
+                              <i class="fa fa-edit"></i>
+                            </span>
+                                  <span (click)="removeIngrediantDetailsRows(i)">
+                              <i class="fa fa-trash"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Ingrediant :</label>
+                        <span>{{request.ingrediant}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Concentrations :</label>
+                        <span>{{request.concentrations}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Function :</label>
+                        <span>{{request.function}}</span>
                       </div>
                     </div>
                   </div>

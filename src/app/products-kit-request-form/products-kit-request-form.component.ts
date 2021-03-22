@@ -407,7 +407,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   onSubmit() {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
-    console.log('this.regKitForAllRequestedType.value', this.regKitForAllRequestedType.value);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
     this.submitDataOutput.emit(data);
@@ -749,8 +748,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
     this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
     this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
-
-    console.log('data', data);
 
     return data;
   }

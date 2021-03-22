@@ -386,7 +386,7 @@ export class CustomReleaseComponent implements OnInit {
     this.editIngrediantIndex = event;
   }
 
-  removeIngrediantDetailsRows(fromWhere, i) {
+  removeIngrediantDetailsRows(i) {
     this.InvoiceProductsRows().removeAt(i);
     this.customReleaseForm.get('ingrediantDetails').value.pop();
     this.IngrediantTable.tableBody = this.customReleaseForm.get('ingrediantDetails').value;
@@ -635,7 +635,7 @@ export class CustomReleaseComponent implements OnInit {
     this.formData.portNameList.filter(option => option.NAME === data.portName).map(x => data.portName = x.ID);
     this.formData.portNameList.filter(option => option.NAME === data.portName).map(x => data.portName = x.ID);
 
-    data.productsInInvoice(x => {
+    data.productsInInvoice.map(x => {
       this.formData.manufacturingCompanyList.filter(option => option.NAME === x.manufacturingCompany).map(y => x.manufacturingCompany = y.ID);
       this.formData.manufacturingCountryList.filter(option => option.NAME === x.manufacturingCountry).map(y => x.manufacturingCountry = y.ID);
       this.formData.quantityList.filter(option => option.NAME === x.quantity).map(y => x.quantity = y.ID);
