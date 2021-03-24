@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Inspection',
-          link: '#'
+          link: '/new-request/inspection'
         },
         {
           name: 'Custom Release',

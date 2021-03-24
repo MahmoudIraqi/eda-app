@@ -57,6 +57,7 @@ import {BatchFormComponent} from './batch-form/batch-form.component';
 import { NotificationListComponent } from './notification-list/notification-list.component';
 import { CustomReleaseComponent } from './custom-release/custom-release.component';
 import { TestCustomReleaseComponent } from './test-custom-release/test-custom-release.component';
+import { InspectionComponent } from './inspection/inspection.component';
 
 
 @NgModule({
@@ -95,6 +96,7 @@ import { TestCustomReleaseComponent } from './test-custom-release/test-custom-re
     NotificationListComponent,
     CustomReleaseComponent,
     TestCustomReleaseComponent,
+    InspectionComponent,
   ],
   imports: [
     BrowserModule,

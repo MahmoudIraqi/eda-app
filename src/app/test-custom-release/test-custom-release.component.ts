@@ -870,10 +870,8 @@ export class TestCustomReleaseComponent implements OnInit {
   }
 
   applyProduct(data) {
-    console.log('data', data);
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(data.value.notificationNumber).subscribe((res: any) => {
-      console.log('res', res);
       if (res) {
         this.InvoiceProductsRows().controls[this.InvoiceProductsRows().controls.length - 1].patchValue({
           productArabicName: res.productArabicName,

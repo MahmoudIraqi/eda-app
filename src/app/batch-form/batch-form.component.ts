@@ -71,7 +71,9 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
       notificationNumber: this.fb.control('', Validators.required),
       batchNumber: this.fb.control('', Validators.required),
       productionDate: this.fb.control('', Validators.required),
-      expirationDate: this.fb.control('', Validators.required)
+      expirationDate: this.fb.control('', Validators.required),
+      batchQuantity: this.fb.control('', Validators.required),
+      UOM: this.fb.control('', Validators.required),
     });
   }
 
