@@ -14,7 +14,6 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class NewRequestComponent implements OnInit {
 
-
   formData = {
     formType: [],
     formTypeForNewProductInKit: [],

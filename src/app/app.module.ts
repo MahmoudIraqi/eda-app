@@ -58,6 +58,7 @@ import { NotificationListComponent } from './notification-list/notification-list
 import { CustomReleaseComponent } from './custom-release/custom-release.component';
 import { TestCustomReleaseComponent } from './test-custom-release/test-custom-release.component';
 import { InspectionComponent } from './inspection/inspection.component';
+import { InspectionFinalProductComponent } from './inspection-final-product/inspection-final-product.component';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import { InspectionComponent } from './inspection/inspection.component';
     CustomReleaseComponent,
     TestCustomReleaseComponent,
     InspectionComponent,
+    InspectionFinalProductComponent,
   ],
   imports: [
     BrowserModule,
