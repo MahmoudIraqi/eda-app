@@ -42,6 +42,7 @@ export class LoginComponent {
 
   submit() {
     if (this.form.valid) {
+      console.log('test Git Account');
       this.isLoading = true;
       // this.formLoginData.filter(x => x.username === this.form.get('username').value).map(y => {
       //   if (y.password === this.form.get('password').value) {
