@@ -197,6 +197,7 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   handleError(message) {
+    console.log('message', message);
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: message};
     this.isLoading = false;

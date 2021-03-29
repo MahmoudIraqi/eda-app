@@ -1,6 +1,9 @@
 import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DecimalPipe} from '@angular/common';
+import {FormService} from '../services/form.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-inspection-final-product',
@@ -14,6 +17,7 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
   @Output() submitDataOutput = new EventEmitter();
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
+  requestType = [];
   inspectFinalProductRequest: FormGroup;
   attachmentFields = [
     {
@@ -32,8 +36,70 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
     }
   ];
   disabledSaveButton: boolean = false;
+  isLoading: boolean = false;
+  activeTabIndex;
+  batchList = [
+    {
+      batchNumber: '12345',
+      expirationDate: '2021-02-27T09:09:35.617',
+      id: 0,
+      notificationNumber: null,
+      productID: 37,
+      productionDate: '2021-02-27T09:09:35.617',
+      submitionDate: '2021-02-27T11:11:34.047',
+      batchQuantity: 'test1',
+      UOM: 'test1',
+    },
+    {
+      batchNumber: '23456',
+      expirationDate: '2021-02-27T09:09:35.617',
+      id: 0,
+      notificationNumber: null,
+      productID: 37,
+      productionDate: '2021-02-27T09:09:35.617',
+      submitionDate: '2021-02-27T11:11:34.047',
+      batchQuantity: 'test2',
+      UOM: 'test2',
+    },
+    {
+      batchNumber: '34567',
+      expirationDate: '2021-02-27T09:09:35.617',
+      id: 0,
+      notificationNumber: null,
+      productID: 37,
+      productionDate: '2021-02-27T09:09:35.617',
+      submitionDate: '2021-02-27T11:11:34.047',
+      batchQuantity: 'test3',
+      UOM: 'test3',
+    },
+    {
+      batchNumber: '45678',
+      expirationDate: '2021-02-27T09:09:35.617',
+      id: 0,
+      notificationNumber: null,
+      productID: 37,
+      productionDate: '2021-02-27T09:09:35.617',
+      submitionDate: '2021-02-27T11:11:34.047',
+      batchQuantity: 'test4',
+      UOM: 'test4',
+    },
+    {
+      batchNumber: '56789',
+      expirationDate: '2021-02-27T09:09:35.617',
+      id: 0,
+      notificationNumber: null,
+      productID: 37,
+      productionDate: '2021-02-27T09:09:35.617',
+      submitionDate: '2021-02-27T11:11:34.047',
+      batchQuantity: 'test5',
+      UOM: 'test5',
+    }
+  ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private number: DecimalPipe,
+              private getService: FormService,
+              private readonly route: ActivatedRoute) {
     this.getFormAsStarting('');
   }
 
@@ -44,6 +110,11 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.getService.getRequestTypeLookUp().subscribe((res: any) => {
+      this.requestType = res;
+      this.isLoading = false;
+    }, error => this.handleError(error));
+
     this.inspectFinalProductRequest.valueChanges.subscribe(x => {
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
@@ -80,19 +151,19 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
 
       reader.readAsDataURL(file);
       reader.onload = (res: any) => {
-        this.regProductForAllRequestedType.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
+        this.inspectFinalProductRequest.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
       };
 
-      // this.regProductForAllRequestedType.get(fileControlName).setValue(file);
+      // this.inspectFinalProductRequest.get(fileControlName).setValue(file);
     }
   }
 
   saveData() {
-    this.saveDataOutput.emit(data);
+    this.saveDataOutput.emit(this.inspectFinalProductRequest.value);
   }
 
   onSubmit() {
-    this.submitDataOutput.emit(data);
+    this.submitDataOutput.emit(this.inspectFinalProductRequest.value);
   }
 
   getFormAsStarting(data) {
@@ -115,27 +186,60 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
   }
 
   getDecimalValue(value) {
-    this.regProductForAllRequestedType.patchValue({
-      receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
+    this.inspectFinalProductRequest.patchValue({
+      receiptValue: this.number.transform(this.inspectFinalProductRequest.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
   }
 
   applyProduct(form) {
-    console.log('form', form);
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(form.notificationNo).subscribe((res: any) => {
-      console.log('res', res);
       if (res) {
+        const notificationType = this.requestType.filter(item => item.ID === res.typeOfRegistration).map(x => x.NAME);
+
         this.inspectFinalProductRequest.patchValue({
           productArabicName: res.productArabicName,
           productEnglishName: res.productEnglishName,
-          typeOfNotification: res.typeOfNotification
+          typeOfNotification: notificationType
         });
       }
     }, error => this.handleError(error));
   }
 
+  getBatchValues(form) {
+    // this.isLoading = true;
+    // this.getService.getProductWithNotificationNumberList(form.notificationNo).subscribe((res: any) => {
+    //   if (res) {
+    //     const notificationType = this.requestType.filter(item => item.ID === res.typeOfRegistration).map(x => x.NAME);
+    //
+    //     this.inspectFinalProductRequest.patchValue({
+    //       productArabicName: res.productArabicName,
+    //       productEnglishName: res.productEnglishName,
+    //       typeOfNotification: notificationType
+    //     });
+    //   }
+    // }, error => this.handleError(error));
+
+    console.log('this.batchList.filter(x => x.batchNumber === form.batchNo)', this.batchList.filter(x => x.batchNumber === form.batchNo));
+
+    this.batchList.filter(x => x.batchNumber === form.batchNo).map(y => {
+      debugger;
+      this.inspectFinalProductRequest.patchValue({
+        productionDate: y.productionDate,
+        expirationDate: y.expirationDate,
+        batchQuantity: y.batchQuantity,
+        UOM: y.UOM,
+      });
+    });
+
+    console.log('inspectFinalProductRequest', this.inspectFinalProductRequest.value);
+  }
+
   handleError(message) {
+  }
+
+  resetForms() {
+    this.getFormAsStarting('');
   }
 
 }

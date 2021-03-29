@@ -485,6 +485,12 @@ body {
   border-color: #c28a30;
 }
 
+
+.tabs {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {
