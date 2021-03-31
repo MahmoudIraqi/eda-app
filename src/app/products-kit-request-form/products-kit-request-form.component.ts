@@ -639,26 +639,29 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       this.isLoading = true;
       this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit`').subscribe((res: any) => {
-
         if (res) {
-          const objectData = {
-            ...res,
-            groupName: this.regKitForAllRequestedType.get('groupName').value
-          };
+          if (res.canUse) {
+            const objectData = {
+              ...res,
+              groupName: this.regKitForAllRequestedType.get('groupName').value
+            };
 
-          this.ProductGroupsRows().value[index].productDetails = res;
-          const keyOfLookup = Object.keys(this.lookupsData);
-          keyOfLookup.map(key => {
-            const keyLowerCase = key.replace('List', '');
-            const value = objectData[keyLowerCase];
+            this.ProductGroupsRows().value[index].productDetails = res;
+            const keyOfLookup = Object.keys(this.lookupsData);
+            keyOfLookup.map(key => {
+              const keyLowerCase = key.replace('List', '');
+              const value = objectData[keyLowerCase];
 
-            this.lookupsData[key].filter(y => y.ID === value).map(x => {
-              objectData[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+              this.lookupsData[key].filter(y => y.ID === value).map(x => {
+                objectData[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+              });
             });
-          });
 
-          this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
-          this.addProductsGroupRows();
+            this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
+            this.addProductsGroupRows();
+          } else {
+            this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+          }
         }
 
         this.isLoading = false;

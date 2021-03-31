@@ -527,7 +527,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.equalTheNewPackagingTable('add');
     this.PackagingRows().push(this.fb.group({
       volumesID: this.fb.control(''),
-      volumes: this.fb.control('', Validators.required),
+      volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       unitOfMeasure: this.fb.control('', Validators.required),
       typeOfPackaging: this.fb.control('', Validators.required),
       packagingDescription: this.fb.control(''),
@@ -760,7 +760,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
         packagingTable: this.fb.array([this.fb.group({
           volumesID: this.fb.control(''),
-          volumes: this.fb.control('', Validators.required),
+          volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
           unitOfMeasure: this.fb.control('', Validators.required),
           typeOfPackaging: this.fb.control('', Validators.required),
           packagingDescription: this.fb.control(''),
