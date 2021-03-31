@@ -526,8 +526,17 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   removePackagingRows(i) {
     this.PackagingRows().removeAt(i);
-    this.regHairColorantProductForAllRequestedType.get('packagingTable').value.pop();
-    this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
+
+    this.regHairColorantProductForAllRequestedType.get('packagingTable').value.map(x => {
+      this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+      this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+    });
+    this.packagingListTable.tableBody = [];
+    this.regHairColorantProductForAllRequestedType.get('packagingTable').value.map((x, i) => {
+      if (this.regHairColorantProductForAllRequestedType.get('packagingTable').value.length > 1 && i < this.regHairColorantProductForAllRequestedType.get('packagingTable').value.length - 1) {
+        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+      }
+    });
   }
 
   cancelThePackagingRows(index) {
@@ -664,8 +673,19 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         }
       });
 
-      this.packagingListTable.tableBody = data.packagingTable;
-      this.detailsListTable.tableBody = data.detailsTable;
+      this.packagingListTable.tableBody = [];
+      data.packagingTable.map((x, i) => {
+        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
+          this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+        }
+      });
+
+      this.detailsListTable.tableBody = [];
+      data.detailsTable.map((x, i) => {
+        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
+          this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+        }
+      });
 
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);

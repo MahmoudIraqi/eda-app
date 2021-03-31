@@ -118,7 +118,7 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   removeDetailsRowFunction(i, rowIndex) {
-    this.removeDetailsRowOutput.emit({rowIndex, i});
+    this.removeDetailsRowOutput.emit(i);
   }
 
   removeIngrediantDetailsRowFunction(childIndex, i, indexRow) {

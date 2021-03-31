@@ -536,8 +536,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   removePackagingRows(i) {
     this.PackagingRows().removeAt(i);
-    this.regProductForAllRequestedType.get('packagingTable').value.pop();
-    this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
+
+    this.regProductForAllRequestedType.get('packagingTable').value.map(x => {
+      this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+      this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+    });
+    this.packagingListTable.tableBody = [];
+    this.regProductForAllRequestedType.get('packagingTable').value.map((x, i) => {
+      if (this.regProductForAllRequestedType.get('packagingTable').value.length > 1 && i < this.regProductForAllRequestedType.get('packagingTable').value.length - 1) {
+        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+      }
+    });
   }
 
   cancelThePackagingRows(index) {
@@ -673,8 +682,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         }
       });
 
-      this.packagingListTable.tableBody = data.packagingTable;
-      this.detailsListTable.tableBody = data.detailsTable;
+      this.packagingListTable.tableBody = [];
+      data.packagingTable.map((x, i) => {
+        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
+          this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+        }
+      });
+
+      this.detailsListTable.tableBody = [];
+      data.detailsTable.map((x, i) => {
+        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
+          this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+        }
+      });
 
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
