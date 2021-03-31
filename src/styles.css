@@ -384,18 +384,24 @@ body {
 
 
 .NotificationList .table th:first-child, .NotificationList .table td:first-child {
-  width: 30%;
+  width: 20%;
 }
 
 .NotificationList .table th:nth-child(2), .NotificationList .table td:nth-child(2) {
-  width: 30%;
+  width: 20%;
 }
 
 .NotificationList .table th:nth-child(3), .NotificationList .table td:nth-child(3) {
-  width: 30%;
+  width: 20%;
 }
 
 .NotificationList .table th:nth-child(4), .NotificationList .table td:nth-child(4) {
+  width: 15%;
+}
+.NotificationList .table th:nth-child(5), .NotificationList .table td:nth-child(5) {
+  width: 15%;
+}
+.NotificationList .table th:nth-child(6), .NotificationList .table td:nth-child(6) {
   width: 10%;
 }
 

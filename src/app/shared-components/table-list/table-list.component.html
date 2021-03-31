@@ -230,7 +230,8 @@
             </td>
             <td colspan="6" *ngIf="whichTable === 'track'">
               <mat-accordion>
-                <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
+                                     (opened)="setStep(i)" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
@@ -854,22 +855,24 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="4" *ngIf="whichTable === 'notificationList'">
+            <td colspan="6" *ngIf="whichTable === 'notificationList'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                      <table class="table table-sm tableDetailsCont">
+                      <table class="table table-sm notificationListTable">
                         <tr>
-                          <td>{{request.ID}}</td>
-                          <td>{{request.COMMENTS}}</td>
-                          <td>{{request.NOTIFICATION_TIME}}</td>
+                          <td>{{request.notification_no}}</td>
+                          <td>{{request.comments}}</td>
+                          <td>{{request.requestTypeName}}</td>
+                          <td>{{request.notification_time | date}}</td>
+                          <td>{{request.productName}}</td>
                           <td>
-                            <button *ngIf="!request.F_Seen" type="button" class="btn btn-primary"
-                                    (click)="seenNotificationFunction(request.ID)">
+                            <button *ngIf="!request.f_seen" type="button" class="btn btn-primary"
+                                    (click)="request.f_seen =! request.f_seen; seenNotificationFunction(request.id)">
                               <i class="fas fa-eye"></i> Read
                             </button>
-                            <button *ngIf="request.F_Seen" type="button" class="btn btn-primary active">
+                            <button *ngIf="request.f_seen" type="button" class="btn btn-primary active">
                               <i class="fas fa-eye-slash"></i> Unread
                             </button>
                           </td>
@@ -880,24 +883,32 @@
                   <div class="detailsContainer pt-4">
                     <div class="row">
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Notificaiton Id :</label>
-                        <span>{{request.ID}}</span>
+                        <label class="label">Notificaiton Number :</label>
+                        <span>{{request.notification_no}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Notification comment :</label>
-                        <span>{{request.COMMENTS}}</span>
+                        <span>{{request.comments}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Request Type Name :</label>
+                        <span>{{request.requestTypeName}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Notification date :</label>
-                        <span>{{request.NOTIFICATION_TIME}}</span>
+                        <span>{{request.notification_time | date}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Notification from :</label>
-                        <span>{{request.FROM_ROLE}}</span>
+                        <label class="label">Product Name :</label>
+                        <span>{{request.productName}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notification From :</label>
+                        <span>{{request.from_role}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Notification To :</label>
-                        <span>{{request.TO_ROLE}}</span>
+                        <span>{{request.to_role}}</span>
                       </div>
                     </div>
                   </div>
