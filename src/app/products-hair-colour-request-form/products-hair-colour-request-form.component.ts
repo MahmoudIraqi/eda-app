@@ -658,6 +658,14 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
           this.addDetailsRows();
         }
       });
+      data.packagingTable.map((x, i) => {
+        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
+          this.addPackagingRows();
+        }
+      });
+
+      this.packagingListTable.tableBody = data.packagingTable;
+      this.detailsListTable.tableBody = data.detailsTable;
 
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);

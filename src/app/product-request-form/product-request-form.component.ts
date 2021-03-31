@@ -667,6 +667,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           this.addDetailsRows();
         }
       });
+      data.packagingTable.map((x, i) => {
+        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
+          this.addPackagingRows();
+        }
+      });
+
+      this.packagingListTable.tableBody = data.packagingTable;
+      this.detailsListTable.tableBody = data.detailsTable;
+
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
@@ -703,9 +712,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
 
+      console.log('data', data);
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
+
+      console.log(this.regProductForAllRequestedType.value);
     } else {
       this.regProductForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
