@@ -566,29 +566,35 @@ export class TestCustomReleaseComponent implements OnInit {
   saveData() {
     const data = this.convertAllNamingToId(this.customReleaseForm.value);
 
-    console.log('save_data', JSON.stringify(data));
+    const newData = {
+      ...data,
+      isDraft: 1
+    };
 
-    // this.getService.createProductRequest(data).subscribe((res: any) => {
-    //   this.isLoading = false;
-    //   this.alertNotificationStatus = true;
-    //   this.alertNotification = this.alertForSaveRequest();
-    //   this.onClosed();
-    // },error => this.handleError(error));
+    this.isLoading = true;
+    this.getService.setCustomRelease(newData).subscribe((res: any) => {
+      this.isLoading = false;
+      this.alertNotification = this.alertForSaveRequest();
+    }, error => this.handleError(error));
   }
 
   onSubmit() {
     const data = this.convertAllNamingToId(this.customReleaseForm.value);
 
-    console.log('submit_data', JSON.stringify(data));
+    const newData = {
+      ...data,
+      isDraft: 0
+    };
 
-    // this.getService.createProductRequest(data).subscribe((res: any) => {
-    //   this.isLoading = false;
-    //   this.successSubmission = true;
-    //   this.alertNotificationStatus = true;
-    //   this.alertNotification = this.alertForSubmitRequest();
-    //   this.resetForms();
-    //   this.onClosed();
-    // },error => this.handleError(error));
+    this.isLoading = true;
+    this.getService.setCustomRelease(newData).subscribe((res: any) => {
+      this.isLoading = false;
+      this.successSubmission = true;
+      this.alertNotificationStatus = true;
+      this.alertNotification = this.alertForSubmitRequest();
+      this.resetForms();
+      this.onClosed();
+    }, error => this.handleError(error));
   }
 
   getDecimalValue(value) {

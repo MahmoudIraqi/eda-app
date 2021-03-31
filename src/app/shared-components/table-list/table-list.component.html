@@ -230,7 +230,7 @@
             </td>
             <td colspan="6" *ngIf="whichTable === 'track'">
               <mat-accordion>
-                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
@@ -1056,7 +1056,7 @@
                   (pageChanged)="pageChanged($event)"></pagination>
 
       <div class="colorSchema ml-auto"
-           *ngIf="(whichTable === 'rejected' || whichTable === 'approved') && contentArray.length > 0">
+           *ngIf="(whichTable === 'rejected' || whichTable === 'approved' || whichTable === 'track') && contentArray.length > 0">
         <h4>Color guide for Appealed Product</h4>
         <ul>
           <li class="warning" tooltip="warning products" placement="bottom"></li>

@@ -695,6 +695,26 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  setCustomRelease(event) {
+    this.getToken();
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    console.log('event', event);
+
+    const JSONData = JSON.stringify(event);
+
+    return this.http.post(`${this.apiBaseUrl}Requests/PostInquery`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   setBatch(event) {
     this.getToken();
 
