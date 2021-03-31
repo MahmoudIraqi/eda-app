@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
+import {convertToSpecialObjectForLegacy} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-legacy',
@@ -126,10 +127,27 @@ export class LegacyComponent implements OnInit {
 
   onSave(event) {
     console.log('event', event);
+    event = convertToSpecialObjectForLegacy('save', event);
+    // this.getService.createProductRequest(event).subscribe((res: any) => {
+    //   this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
+    //   this.isLoading = false;
+    //   this.alertNotificationStatus = true;
+    //   this.alertNotification = this.alertForSaveRequest();
+    //   this.onClosed();
+    // }, error => this.handleError(error));
   }
 
   onSubmit(event) {
     console.log('event', event);
+
+    // this.getService.createProductRequest(event).subscribe((res: any) => {
+    //   this.isLoading = false;
+    //   this.successSubmission = true;
+    //   this.alertNotificationStatus = true;
+    //   this.alertNotification = this.alertForSubmitRequest();
+    //   this.emptyTheTopField();
+    //   this.onClosed();
+    // }, error => this.handleError(error));
   }
 
   alertForSubmitRequest() {

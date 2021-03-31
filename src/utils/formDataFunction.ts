@@ -26,3 +26,10 @@ export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistr
     ...event
   };
 };
+
+export const convertToSpecialObjectForLegacy = (WhichForm, event) => {
+  return {
+    isDraft: WhichForm === 'save' ? 1 : 0,
+    ...event
+  };
+};
