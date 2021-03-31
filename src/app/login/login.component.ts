@@ -9,13 +9,14 @@ import {InputService} from '../services/input.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   form: FormGroup;
   alertNotificationStatus: boolean = false;
   alertNotification: any;
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
+  returnUrl: string;
 
   formLoginData = [
     {
@@ -35,11 +36,17 @@ export class LoginComponent {
   constructor(private fb: FormBuilder,
               private getService: FormService,
               private inputService: InputService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
     this.form = this.fb.group({
       username: this.fb.control('', Validators.required),
       password: this.fb.control('', Validators.required),
     });
+  }
+
+  ngOnInit(){
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   submit() {
