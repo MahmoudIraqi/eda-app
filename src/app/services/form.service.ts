@@ -51,6 +51,23 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  logoutAPIToken() {
+    this.getToken();
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.post(`${this.apiBaseUrl}Accounts/Logout`, '', options)
+      .pipe(map((res: any) => {
+          this.isLoggedIn = false;
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   get isLoggedIn() {
     return this._isLoggedIn;
   }
@@ -725,6 +742,8 @@ export class FormService {
     const options = {headers};
 
     const JSONData = JSON.stringify(event);
+
+    console.log('JSONData', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}/product_batches`, JSONData, options)
       .pipe(map((res: any) => {

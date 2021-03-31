@@ -1,6 +1,8 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {FormService} from '../services/form.service';
+import {FormBuilder} from '@angular/forms';
+import {InputService} from '../services/input.service';
 
 @Component({
   selector: 'app-header',
@@ -165,9 +167,17 @@ export class HeaderComponent implements OnInit {
       ]
     },
   ];
+  alertNotificationStatus: boolean = false;
+  alertNotification: any;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
+  isLoading: boolean = false;
 
-  constructor(private readonly route: ActivatedRoute,
-              private readonly router: Router) {
+  constructor(private fb: FormBuilder,
+              private getService: FormService,
+              private inputService: InputService,
+              private router: Router,
+              private route: ActivatedRoute) {
     this.onResize();
   }
 
@@ -181,5 +191,25 @@ export class HeaderComponent implements OnInit {
 
   isActive(link) {
     return this.router.url.includes(`${link}`);
+  }
+
+  logoutFunction() {
+    this.getService.logoutAPIToken().subscribe((res: any) => {
+      console.log('res', res);
+      if (res) {
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.inputService.publish({type: 'Token', payload: res.Token});
+        this.router.navigateByUrl('/login');
+      } else {
+        this.alertErrorNotificationStatus = true;
+      }
+    }, error => this.handleError(error));
+  }
+
+  handleError(message) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
   }
 }

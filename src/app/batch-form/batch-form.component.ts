@@ -16,6 +16,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formData = {
     manufacturingCountryList: [],
+    unitOfMeasureList: [],
   };
   batchForm: FormGroup;
   alertNotificationStatus: boolean = false;
@@ -25,6 +26,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   isLoading: boolean = false;
   fromApprovedTable: boolean = false;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
+  filteredOptionsForUnitOfMeasure: Observable<LookupState[]>;
   subscription: Subscription;
   showOtherField: boolean = false;
   batchForWhichProduct;
@@ -47,11 +49,12 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isLoading = true;
 
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
+    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+      this.formData.unitOfMeasureList = res;
       this.isLoading = false;
     }, error => this.handleError(error), () => {
-      this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.batchForm.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(this.batchForm.get('UOM'), this.formData.unitOfMeasureList);
+      console.log('filteredOptionsForUnitOfMeasure', this.filteredOptionsForUnitOfMeasure);
     });
 
     this.getService.getBatchList().subscribe((res: any) => {
@@ -64,7 +67,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
+    this._subscribeToClosingActions('UOM', this.filteredOptionsForUnitOfMeasure);
   }
 
   ngOnDestroy() {
@@ -117,8 +120,10 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSubmit() {
+    const data = this.convertAllNamingToId(this.batchForm.value);
+
     this.isLoading = true;
-    this.getService.setBatch(this.batchForm.value).subscribe((res: any) => {
+    this.getService.setBatch(data).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSubmitRequest();
@@ -132,7 +137,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   convertAllNamingToId(data) {
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    this.formData.unitOfMeasureList.filter(option => option.NAME === data.UOM).map(x => data.UOM = x.ID);
 
     return data;
   }

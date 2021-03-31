@@ -9,7 +9,7 @@ import {InputService} from '../services/input.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   form: FormGroup;
   alertNotificationStatus: boolean = false;
   alertNotification: any;
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit{
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }

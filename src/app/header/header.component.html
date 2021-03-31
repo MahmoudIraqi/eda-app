@@ -128,7 +128,7 @@
                       <a class="dropdown-item" href="#">My profile</a>
                     </li>
                     <li role="menuitem">
-                      <a class="dropdown-item" routerLink="/login">Logout</a>
+                      <a class="dropdown-item" (click)="logoutFunction()">Logout</a>
                     </li>
                   </ul>
                 </div>
@@ -140,3 +140,13 @@
     </div>
   </div>
 </div>
+
+<alert type="success" *ngIf="alertNotificationStatus">
+  <strong>Welcome</strong> <br> in the Portal
+</alert>
+
+<alert type="danger" class="AlertForAllRequests" dismissible="true" *ngIf="alertErrorNotificationStatus">
+  <strong>Please Take Care</strong> <br> Failed Login
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
