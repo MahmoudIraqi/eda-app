@@ -54,7 +54,6 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isLoading = false;
     }, error => this.handleError(error), () => {
       this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(this.batchForm.get('UOM'), this.formData.unitOfMeasureList);
-      console.log('filteredOptionsForUnitOfMeasure', this.filteredOptionsForUnitOfMeasure);
     });
 
     this.getService.getBatchList().subscribe((res: any) => {

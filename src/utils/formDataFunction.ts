@@ -20,7 +20,7 @@ export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistr
     isDraft: WhichForm === 'save' ? 1 : 0,
     typeOfMarketing,
     typeOfRegistration,
-    isExport,
+    isExport: isExport ? 1 : 0,
     trackType,
     id,
     ...event

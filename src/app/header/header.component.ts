@@ -195,7 +195,6 @@ export class HeaderComponent implements OnInit {
 
   logoutFunction() {
     this.getService.logoutAPIToken().subscribe((res: any) => {
-      console.log('res', res);
       if (res) {
         this.isLoading = false;
         this.alertNotificationStatus = true;

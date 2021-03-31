@@ -148,7 +148,7 @@ export class NewRequestComponent implements OnInit {
     this.isLoading = true;
 
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-      const id = Number(this.productId ? this.productId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct : this.saveResponseDataForRegisterColorantProduct);
+      const id = Number(this.productId ? this.productId : null);
       event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
@@ -159,7 +159,7 @@ export class NewRequestComponent implements OnInit {
         this.onClosed();
       }, error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-      const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct : this.saveResponseDataForRegisterColorantKitProduct);
+      const id = Number(this.productId ? this.productId : null);
       event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductKitRequest(event).subscribe((res: any) => {

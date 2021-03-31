@@ -37,6 +37,7 @@ export class LegacyComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   productId;
+  successSubmission: boolean = false;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute) {
   }
@@ -129,28 +130,44 @@ export class LegacyComponent implements OnInit {
   }
 
   onSave(event) {
+
+    console.log('this.productData', this.productData);
+    const newData = {
+      ...this.productData,
+      ...event
+    };
+    event = convertToSpecialObjectForLegacy('save', newData);
+
     console.log('event', event);
-    event = convertToSpecialObjectForLegacy('save', event);
-    // this.getService.createProductRequest(event).subscribe((res: any) => {
-    //   this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
-    //   this.isLoading = false;
-    //   this.alertNotificationStatus = true;
-    //   this.alertNotification = this.alertForSaveRequest();
-    //   this.onClosed();
-    // }, error => this.handleError(error));
+    this.getService.createProductRequest(event).subscribe((res: any) => {
+      this.isLoading = false;
+      this.alertNotificationStatus = true;
+      this.alertNotification = this.alertForSaveRequest();
+      this.onClosed();
+    }, error => this.handleError(error));
   }
 
   onSubmit(event) {
     console.log('event', event);
 
-    // this.getService.createProductRequest(event).subscribe((res: any) => {
-    //   this.isLoading = false;
-    //   this.successSubmission = true;
-    //   this.alertNotificationStatus = true;
-    //   this.alertNotification = this.alertForSubmitRequest();
-    //   this.emptyTheTopField();
-    //   this.onClosed();
-    // }, error => this.handleError(error));
+    const newData = {
+      ...this.productData,
+      ...event
+    };
+    event = convertToSpecialObjectForLegacy('submit', newData);
+
+    this.getService.createProductRequest(event).subscribe((res: any) => {
+      this.isLoading = false;
+      this.successSubmission = true;
+      this.alertNotificationStatus = true;
+      this.alertNotification = this.alertForSubmitRequest();
+      this.emptyTheTopField();
+      this.onClosed();
+    }, error => this.handleError(error));
+  }
+
+  alertForSaveRequest() {
+    return {msg: 'You had a successful saving'};
   }
 
   alertForSubmitRequest() {

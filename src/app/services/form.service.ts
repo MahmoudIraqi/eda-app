@@ -721,8 +721,6 @@ export class FormService {
     });
     const options = {headers};
 
-    console.log('event', event);
-
     const JSONData = JSON.stringify(event);
 
     return this.http.post(`${this.apiBaseUrl}Requests/PostInquery`, JSONData, options)
@@ -742,8 +740,6 @@ export class FormService {
     const options = {headers};
 
     const JSONData = JSON.stringify(event);
-
-    console.log('JSONData', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}/product_batches`, JSONData, options)
       .pipe(map((res: any) => {
