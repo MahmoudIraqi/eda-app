@@ -26,6 +26,9 @@ import {TestCustomReleaseComponent} from './test-custom-release/test-custom-rele
 import {ApplicationGuard} from './application.guard';
 import {InspectionComponent} from './inspection/inspection.component';
 import {LegacyComponent} from './legacy/legacy.component';
+import {LegacyProductsComponent} from './legacy-products/legacy-products.component';
+import {TrackLegacyComponent} from './track-legacy/track-legacy.component';
+import {DraftLegacyComponent} from './draft-legacy/draft-legacy.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -56,7 +59,8 @@ const routes: Routes = [
           {path: 're-registration', component: TrackReRegistrationRequestComponent, data: {animation: 'track-request'}},
           {path: 'tell_do-variation', component: TrackVariationComponent, data: {animation: 'track-request'}},
           {path: 'do_tell-variation', component: TrackVariationComponent, data: {animation: 'track-request'}},
-          {path: 'general-enquiries', component: TrackGeneralEnquiriesComponent, data: {animation: 'track-request'}}
+          {path: 'general-enquiries', component: TrackGeneralEnquiriesComponent, data: {animation: 'track-request'}},
+          {path: 'legacy', component: TrackLegacyComponent, data: {animation: 'track-request'}},
         ], canActivate: [ApplicationGuard]
       },
       {
@@ -65,6 +69,7 @@ const routes: Routes = [
           {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}},
           {path: 'tell_do-variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
           {path: 'do_tell-variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
+          {path: 'legacy', component: DraftLegacyComponent, data: {animation: 'draft-request'}},
         ], canActivate: [ApplicationGuard]
       },
       {
@@ -88,6 +93,18 @@ const routes: Routes = [
       },
       {
         path: 'legacy-products',
+        component: LegacyProductsComponent,
+        data: {animation: 'legacy-products'},
+        canActivate: [ApplicationGuard]
+      },
+      {
+        path: 'legacy-form/',
+        component: LegacyComponent,
+        data: {animation: 'legacy-products'},
+        canActivate: [ApplicationGuard]
+      },
+      {
+        path: 'legacy-form/:id',
         component: LegacyComponent,
         data: {animation: 'legacy-products'},
         canActivate: [ApplicationGuard]

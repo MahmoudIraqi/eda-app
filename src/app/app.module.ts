@@ -61,6 +61,9 @@ import { InspectionComponent } from './inspection/inspection.component';
 import { InspectionFinalProductComponent } from './inspection-final-product/inspection-final-product.component';
 import { CompletionTheLabComponent } from './completion-the-lab/completion-the-lab.component';
 import { LegacyComponent } from './legacy/legacy.component';
+import { LegacyProductsComponent } from './legacy-products/legacy-products.component';
+import { TrackLegacyComponent } from './track-legacy/track-legacy.component';
+import { DraftLegacyComponent } from './draft-legacy/draft-legacy.component';
 
 
 @NgModule({
@@ -103,6 +106,9 @@ import { LegacyComponent } from './legacy/legacy.component';
     InspectionFinalProductComponent,
     CompletionTheLabComponent,
     LegacyComponent,
+    LegacyProductsComponent,
+    TrackLegacyComponent,
+    DraftLegacyComponent,
   ],
   imports: [
     BrowserModule,

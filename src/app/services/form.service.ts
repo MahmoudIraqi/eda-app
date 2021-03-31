@@ -419,6 +419,54 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getApprovedLegacyProductsList() {
+    this.getToken();
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests/GetLegacyProducts?Type=approved&pageNo=1&pageSize=50000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getTrackLegacyProductsList() {
+    this.getToken();
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests/GetLegacyProducts?Type=track&pageNo=1&pageSize=50000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getDraftLegacyProductsList() {
+    this.getToken();
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Requests/GetLegacyProducts?Type=draft&pageNo=1&pageSize=50000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getBatchList() {
     this.getToken();
 
@@ -493,6 +541,22 @@ export class FormService {
     const options = {headers};
 
     return this.http.get(`${this.apiBaseUrl}request/GetProductByProductID?ID=${productID}`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getLegacyProductWithProductIDList(productID) {
+    this.getToken();
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Request/GetProductLegacyByProductID?ID=${productID}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

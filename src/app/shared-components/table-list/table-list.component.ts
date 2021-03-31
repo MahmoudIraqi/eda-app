@@ -235,6 +235,8 @@ export class TableListComponent implements OnInit, OnChanges {
       this.router.navigate([`/new-request/do_tell-variation/${Number(request.NotificationNo)}`]);
     } else if (editFrom === 'registration') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}`]);
+    } else if (editFrom === 'legacy') {
+      this.router.navigate([`/legacy-form/${Number(request.ID)}`]);
     }
   }
 

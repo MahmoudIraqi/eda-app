@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-legacy',
@@ -34,8 +35,9 @@ export class LegacyComponent implements OnInit {
   alertNotificationStatus: boolean = false;
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
+  productId;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -101,6 +103,16 @@ export class LegacyComponent implements OnInit {
       this.formData.trackType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
+
+    this.productId = this.route.snapshot.paramMap.get('id');
+    if (this.productId) {
+      this.isLoading = true;
+      console.log('this.productId');
+      this.getService.getLegacyProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+        this.productData = res;
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    }
   }
 
   applyProduct(NotificationNo) {

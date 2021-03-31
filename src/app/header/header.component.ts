@@ -79,7 +79,11 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Custom Release',
           link: '#'
-        }
+        },
+        {
+          name: 'Legacy',
+          link: '/draft-request/legacy'
+        },
       ]
     },
     {
@@ -115,7 +119,11 @@ export class HeaderComponent implements OnInit {
         {
           name: 'General Enquiries',
           link: '/track-request/general-enquiries'
-        }
+        },
+        {
+          name: 'Legacy',
+          link: '/track-request/legacy'
+        },
       ]
     },
     {
