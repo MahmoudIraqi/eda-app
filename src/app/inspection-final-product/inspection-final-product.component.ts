@@ -220,10 +220,7 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
     //   }
     // }, error => this.handleError(error));
 
-    console.log('this.batchList.filter(x => x.batchNumber === form.batchNo)', this.batchList.filter(x => x.batchNumber === form.batchNo));
-
     this.batchList.filter(x => x.batchNumber === form.batchNo).map(y => {
-      debugger;
       this.inspectFinalProductRequest.patchValue({
         productionDate: y.productionDate,
         expirationDate: y.expirationDate,
@@ -231,8 +228,6 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
         UOM: y.UOM,
       });
     });
-
-    console.log('inspectFinalProductRequest', this.inspectFinalProductRequest.value);
   }
 
   handleError(message) {

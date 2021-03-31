@@ -222,8 +222,6 @@ export class FormService {
   getProductIngrediantsLookUp() {
     this.getToken();
 
-    console.log('this.token', this.Token);
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token

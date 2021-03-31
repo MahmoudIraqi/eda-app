@@ -64,18 +64,15 @@ export class InspectionComponent implements OnInit {
     if (this.productId) {
       this.isLoading = true;
       this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
-        console.log('res', res);
       }, error => this.handleError(error));
     }
   }
 
   getFormType(event) {
-    console.log('event', event);
     this.selectedFormType = event.value;
   }
 
   getFieldsType(event) {
-    console.log('event', event);
     this.getFieldsType = event.value;
   }
 

@@ -1568,7 +1568,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   applyProduct(data, status, index) {
     if (status === 'registered') {
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kitProduct').subscribe((res: any) => {
+      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
         if (res) {
           const objectData = {
             ...res,

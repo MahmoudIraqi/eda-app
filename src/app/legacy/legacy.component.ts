@@ -108,7 +108,7 @@ export class LegacyComponent implements OnInit {
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {
       this.isLoading = true;
-      console.log('this.productId');
+
       this.getService.getLegacyProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
         this.productData = res;
         this.isLoading = false;
@@ -117,7 +117,6 @@ export class LegacyComponent implements OnInit {
   }
 
   applyProduct(NotificationNo) {
-    debugger;
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'legacy').subscribe((res: any) => {
       this.productData = res;

@@ -39,7 +39,10 @@ export class TableListComponent implements OnInit, OnChanges {
     'Product Arabic name': 'NameAR',
     'Status': 'Status',
     'Track Type': 'Track_type',
-    'Notification': 'NotificationNo'
+    'Notification': 'NotificationNo',
+    'Batch Number': 'batchNumber',
+    'Production Date': 'productionDate',
+    'Expiration Date': 'expirationDate',
   };
   sortStatus = false;
   alertNotificationStatus: boolean = false;
@@ -66,16 +69,23 @@ export class TableListComponent implements OnInit, OnChanges {
     if (this.data) {
       if (this.data.tableBody.length > 0) {
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
-          if (this.whichTable !== 'manufacturing') {
+          if (this.whichTable !== 'manufacturing' && this.whichTable !== 'batchTable') {
             this.data.tableBody.map(x => {
               x.ID = x.ID.toString();
               x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
             });
           }
+          if (this.whichTable === 'batchTable') {
+            this.data.tableBody.map(x => {
+              x.productID = x.productID.toString();
+            });
+          }
           const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
           this.filterData.filterKey = [];
+
           this.data.tableHeader.map((x, i) => {
             if (this.staticFilterKey[this.data.tableHeader[i]]) {
+
               this.filterData.filterKey.push({
                 name: this.data.tableHeader[i],
                 id: this.staticFilterKey[this.data.tableHeader[i]]
@@ -143,7 +153,7 @@ export class TableListComponent implements OnInit, OnChanges {
     if (event.keyForFilter.id) {
       if (event.filterRow.length > 0) {
         if (event.keyWordsForFilter) {
-          if (event.keyForFilter.id === 'SubmmittionDate') {
+          if (event.keyForFilter.id === 'SubmmittionDate' || event.keyForFilter.id === 'productionDate' || event.keyForFilter.id === 'expirationDate') {
             this.dataAfterFilters.map(x => x[event.keyForFilter.id] = new Date(x[event.keyForFilter.id]).toDateString());
             if (this.dataAfterFilters.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString()).length > 0) {
               this.dataAfterFilters = this.dataAfterFilters.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString());
@@ -160,7 +170,7 @@ export class TableListComponent implements OnInit, OnChanges {
         } else {
           event.filterRow.map((x, i) => {
             if (i === 0) {
-              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate') {
+              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate' || this.staticFilterKey[x.columnName] === 'productionDate' || this.staticFilterKey[x.columnName] === 'expirationDate') {
                 this.data.tableBody.map(y => y[this.staticFilterKey[x.columnName]] = new Date(y[this.staticFilterKey[x.columnName]]).toDateString());
                 if (this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString()).length > 0) {
                   this.dataAfterFilters = this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString());
@@ -175,7 +185,7 @@ export class TableListComponent implements OnInit, OnChanges {
                 }
               }
             } else {
-              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate') {
+              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate' || this.staticFilterKey[x.columnName] === 'productionDate' || this.staticFilterKey[x.columnName] === 'expirationDate') {
                 this.dataAfterFilters.map(y => y[this.staticFilterKey[x.columnName]] = new Date(y[this.staticFilterKey[x.columnName]]).toDateString());
                 if (this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString()).length > 0) {
                   this.dataAfterFilters = this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString());
@@ -194,7 +204,7 @@ export class TableListComponent implements OnInit, OnChanges {
         }
       } else {
         if (event.keyWordsForFilter) {
-          if (event.keyForFilter.id === 'SubmmittionDate') {
+          if (event.keyForFilter.id === 'SubmmittionDate' || event.keyForFilter.id === 'productionDate' || event.keyForFilter.id === 'expirationDate') {
             this.data.tableBody.map(x => x[event.keyForFilter.id] = new Date(x[event.keyForFilter.id]).toDateString());
             if (this.data.tableBody.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString()).length > 0) {
               this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString());

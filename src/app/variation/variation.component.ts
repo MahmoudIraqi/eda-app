@@ -162,6 +162,7 @@ export class VariationComponent implements OnInit {
 
   getVariationRequiredFields(typeOfRegistration, whichVariation) {
     this.isLoading = true;
+
     this.getService.getVariationRequiredFields(typeOfRegistration, whichVariation).subscribe((res: any) => {
       this.variationGroupList = res;
       this.isLoading = false;

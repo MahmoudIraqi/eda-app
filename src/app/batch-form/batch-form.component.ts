@@ -47,8 +47,14 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isLoading = true;
 
+    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+      this.formData.manufacturingCountryList = res;
+      this.isLoading = false;
+    }, error => this.handleError(error), () => {
+      this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.batchForm.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    });
+
     this.getService.getBatchList().subscribe((res: any) => {
-      console.log('res', res);
       this.batchList = {
         tableHeader: ['Batch Number', 'Product Id', 'Submission Date', 'Production Date', 'Expiration Date'],
         tableBody: res
@@ -132,13 +138,15 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    list.subscribe(x => {
-      if (x.length === 0) {
-        if (this.batchForm.controls[field].dirty) {
-          this.batchForm.controls[field].setValue(null);
+    if (list) {
+      list.subscribe(x => {
+        if (x.length === 0) {
+          if (this.batchForm.controls[field].dirty) {
+            this.batchForm.controls[field].setValue(null);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   onClosed() {

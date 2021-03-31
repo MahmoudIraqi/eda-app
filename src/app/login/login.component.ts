@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit{
     if (this.form.valid) {
       this.isLoading = true;
       this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
-        console.log('res', res);
         if (res) {
           this.isLoading = false;
           this.alertNotificationStatus = true;
