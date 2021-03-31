@@ -60,6 +60,7 @@ import { TestCustomReleaseComponent } from './test-custom-release/test-custom-re
 import { InspectionComponent } from './inspection/inspection.component';
 import { InspectionFinalProductComponent } from './inspection-final-product/inspection-final-product.component';
 import { CompletionTheLabComponent } from './completion-the-lab/completion-the-lab.component';
+import { LegacyComponent } from './legacy/legacy.component';
 
 
 @NgModule({
@@ -101,6 +102,7 @@ import { CompletionTheLabComponent } from './completion-the-lab/completion-the-l
     InspectionComponent,
     InspectionFinalProductComponent,
     CompletionTheLabComponent,
+    LegacyComponent,
   ],
   imports: [
     BrowserModule,

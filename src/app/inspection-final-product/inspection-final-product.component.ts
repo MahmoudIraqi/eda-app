@@ -193,7 +193,7 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
 
   applyProduct(form) {
     this.isLoading = true;
-    this.getService.getProductWithNotificationNumberList(form.notificationNo).subscribe((res: any) => {
+    this.getService.getProductWithNotificationNumberList(form.notificationNo, 'inspection').subscribe((res: any) => {
       if (res) {
         const notificationType = this.requestType.filter(item => item.ID === res.typeOfRegistration).map(x => x.NAME);
 

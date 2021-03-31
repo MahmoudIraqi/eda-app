@@ -106,7 +106,7 @@ export class ReRegistrationComponent implements OnInit {
 
   applyProduct(NotificationNo) {
     this.isLoading = true;
-    this.getService.getProductWithNotificationNumberList(NotificationNo).subscribe((res: any) => {
+    this.getService.getProductWithNotificationNumberList(NotificationNo, 'renotification').subscribe((res: any) => {
       this.productData = res;
       this.isLoading = false;
     },error => this.handleError(error));

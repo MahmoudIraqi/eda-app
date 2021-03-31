@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormService} from '../services/form.service';
+import {InputService} from '../services/input.service';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +34,7 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
+              private inputService: InputService,
               private router: Router) {
     this.form = this.fb.group({
       username: this.fb.control('', Validators.required),
@@ -44,9 +46,11 @@ export class LoginComponent {
     if (this.form.valid) {
       this.isLoading = true;
       this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
+        console.log('res', res);
         if (res) {
           this.isLoading = false;
           this.alertNotificationStatus = true;
+          this.inputService.publish({type: 'Token', payload: res.Token});
           this.router.navigateByUrl('/home');
         } else {
           this.alertErrorNotificationStatus = true;

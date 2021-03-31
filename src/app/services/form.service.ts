@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {map, catchError} from 'rxjs/operators';
+import {map, catchError, filter, distinctUntilChanged} from 'rxjs/operators';
+import {InputService} from './input.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +11,26 @@ import {map, catchError} from 'rxjs/operators';
 export class FormService {
   private _isLoggedIn: boolean;
   apiBaseUrl = environment.apiURL;
+  Token;
 
   // loginAPIURL = environment.loginAPIURL;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private inputService: InputService) {
+  }
+
+  getToken() {
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'Token'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.Token = res.payload;
+    });
   }
 
   loginAPIToken(data) {
     const headers = new HttpHeaders({
-      'Content-type': 'application/json',
+      'Content-type': 'application/json'
     });
     const options = {headers};
 
@@ -48,8 +60,11 @@ export class FormService {
   }
 
   getRequestTypeLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -61,8 +76,11 @@ export class FormService {
   }
 
   getMarketingTypeLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -74,8 +92,11 @@ export class FormService {
   }
 
   getCountryLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -87,8 +108,11 @@ export class FormService {
   }
 
   getFunctionLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -100,8 +124,11 @@ export class FormService {
   }
 
   getManufacturingCompanyLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -113,8 +140,11 @@ export class FormService {
   }
 
   getPackagingTypeLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -126,8 +156,11 @@ export class FormService {
   }
 
   getPhysicalStateLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -139,8 +172,11 @@ export class FormService {
   }
 
   getUnitOfMeasureLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -152,8 +188,11 @@ export class FormService {
   }
 
   getUsePurposeLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -165,8 +204,11 @@ export class FormService {
   }
 
   getProductColorLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -178,8 +220,13 @@ export class FormService {
   }
 
   getProductIngrediantsLookUp() {
+    this.getToken();
+
+    console.log('this.token', this.Token);
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -191,8 +238,11 @@ export class FormService {
   }
 
   getCompanyProfileLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -204,8 +254,11 @@ export class FormService {
   }
 
   getStoragePlaceLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -217,8 +270,11 @@ export class FormService {
   }
 
   getTrackTypeLookUp() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -230,8 +286,11 @@ export class FormService {
   }
 
   createProductRequest(data) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
 
     const options = {headers};
@@ -246,8 +305,11 @@ export class FormService {
   }
 
   createProductKitRequest(data) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
 
     const options = {headers};
@@ -262,8 +324,11 @@ export class FormService {
   }
 
   getTrackRequestsList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -275,8 +340,11 @@ export class FormService {
   }
 
   getTrackGeneralEnquiriesList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -288,8 +356,11 @@ export class FormService {
   }
 
   getTrackReRegistrationRequestsList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -301,8 +372,11 @@ export class FormService {
   }
 
   getTrackVariationRequestsList(whichVariation) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -314,8 +388,11 @@ export class FormService {
   }
 
   getDraftRequestsList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -327,8 +404,11 @@ export class FormService {
   }
 
   getApprovedProductsList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -340,8 +420,11 @@ export class FormService {
   }
 
   getBatchList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -353,8 +436,11 @@ export class FormService {
   }
 
   getDraftVariationProductsList(whichVariation) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -366,8 +452,11 @@ export class FormService {
   }
 
   getRejectedProductsList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -378,13 +467,16 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getProductWithNotificationNumberList(notificationNumber) {
+  getProductWithNotificationNumberList(notificationNumber, typeParameter) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}product/GetProductByNotificationNO?NotifictionNo=${notificationNumber}`, options)
+    return this.http.get(`${this.apiBaseUrl}product/GetProductByNotificationNO?NotifictionNo=${notificationNumber}&type=${typeParameter}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -392,8 +484,11 @@ export class FormService {
   }
 
   getProductWithProductIDList(productID) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -405,8 +500,11 @@ export class FormService {
   }
 
   getNotificationLogsList() {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -418,8 +516,11 @@ export class FormService {
   }
 
   setSeenNotificationByID(id) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -431,8 +532,11 @@ export class FormService {
   }
 
   setReRegistrationProduct(event) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -446,8 +550,11 @@ export class FormService {
   }
 
   setReRegistrationKitProduct(event) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -461,8 +568,11 @@ export class FormService {
   }
 
   setVariationProduct(event) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -476,8 +586,11 @@ export class FormService {
   }
 
   setManufacturingCompany(event) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -496,8 +609,11 @@ export class FormService {
   }
 
   setGeneralEnquiries(event) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -518,8 +634,11 @@ export class FormService {
   }
 
   setBatch(event) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -533,8 +652,11 @@ export class FormService {
   }
 
   getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
+    this.getToken();
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 

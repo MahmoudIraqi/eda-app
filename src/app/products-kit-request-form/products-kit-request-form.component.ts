@@ -638,7 +638,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     if (status === 'registered') {
 
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo).subscribe((res: any) => {
+      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kitProduct').subscribe((res: any) => {
 
         if (res) {
           const objectData = {

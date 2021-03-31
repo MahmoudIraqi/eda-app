@@ -25,6 +25,7 @@ import {CustomReleaseComponent} from './custom-release/custom-release.component'
 import {TestCustomReleaseComponent} from './test-custom-release/test-custom-release.component';
 import {ApplicationGuard} from './application.guard';
 import {InspectionComponent} from './inspection/inspection.component';
+import {LegacyComponent} from './legacy/legacy.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -83,6 +84,12 @@ const routes: Routes = [
         path: 'rejected-product',
         component: RejectedRequestesComponent,
         data: {animation: 'rejected-request'},
+        canActivate: [ApplicationGuard]
+      },
+      {
+        path: 'legacy-products',
+        component: LegacyComponent,
+        data: {animation: 'legacy-products'},
         canActivate: [ApplicationGuard]
       },
       {

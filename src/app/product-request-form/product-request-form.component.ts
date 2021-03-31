@@ -39,6 +39,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
+  @Input() legacyStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;

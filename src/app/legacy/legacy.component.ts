@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
-import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-variation',
-  templateUrl: './variation.component.html',
-  styleUrls: ['./variation.component.css']
+  selector: 'app-legacy',
+  templateUrl: './legacy.component.html',
+  styleUrls: ['./legacy.component.css']
 })
-export class VariationComponent implements OnInit {
+export class LegacyComponent implements OnInit {
 
   formData = {
     formType: [],
@@ -31,18 +30,12 @@ export class VariationComponent implements OnInit {
   NotificationNo;
   productData;
   isLoading: boolean = false;
-  typeOfRegistrationForProduct;
-  typeOfVariationForProduct;
-  variationGroupList;
   alertNotification: any;
   alertNotificationStatus: boolean = false;
-  variationFields = [];
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
-  whichVariation;
-  productNotificationNumber;
 
-  constructor(private getService: FormService, private route: ActivatedRoute) {
+  constructor(private getService: FormService) {
   }
 
   ngOnInit(): void {
@@ -108,72 +101,23 @@ export class VariationComponent implements OnInit {
       this.formData.trackType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-
-    this.whichVariation = this.route.snapshot.routeConfig.path;
-
-    this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
-    if (this.productNotificationNumber) {
-      this.NotificationNo = this.productNotificationNumber;
-      this.applyProduct(this.NotificationNo);
-    }
   }
 
   applyProduct(NotificationNo) {
+    debugger;
     this.isLoading = true;
-    this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
+    this.getService.getProductWithNotificationNumberList(NotificationNo, 'legacy').subscribe((res: any) => {
       this.productData = res;
-      this.typeOfRegistrationForProduct = res.typeOfRegistration;
       this.isLoading = false;
-      this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell-variation' ? 2 : 1);
     }, error => this.handleError(error));
   }
 
   onSave(event) {
-    this.isLoading = true;
-    const data = {
-      ...this.productData,
-      ...event,
-      isDraft: 1
-    };
-
-    this.getService.setVariationProduct(data).subscribe((res: any) => {
-      this.isLoading = false;
-      this.alertNotificationStatus = true;
-      this.alertNotification = this.alertForSaveRequest();
-    }, error => this.handleError(error));
+    console.log('event', event);
   }
 
   onSubmit(event) {
-    this.isLoading = true;
-    const data = {
-      ...this.productData,
-      ...event,
-      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell-variation' ? 4 : 3
-    };
-
-    this.getService.setVariationProduct(data).subscribe((res: any) => {
-      this.isLoading = false;
-      this.alertNotificationStatus = true;
-      this.alertNotification = this.alertForSubmitRequest();
-      this.emptyTheTopField();
-      this.onClosed();
-    }, error => this.handleError(error));
-  }
-
-  getVariationRequiredFields(typeOfRegistration, whichVariation) {
-    this.isLoading = true;
-    this.getService.getVariationRequiredFields(typeOfRegistration, whichVariation).subscribe((res: any) => {
-      this.variationGroupList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-  }
-
-  onSelectionChange(event) {
-    this.variationFields = event.value;
-  }
-
-  alertForSaveRequest() {
-    return {msg: 'You had a successful saving'};
+    console.log('event', event);
   }
 
   alertForSubmitRequest() {
@@ -189,8 +133,6 @@ export class VariationComponent implements OnInit {
   emptyTheTopField() {
     this.productData = '';
     this.NotificationNo = '';
-    this.typeOfVariationForProduct = '';
-    this.variationGroupList = [];
   }
 
   handleError(message) {
@@ -204,5 +146,4 @@ export class VariationComponent implements OnInit {
       this.alertErrorNotificationStatus = false;
     }, 2000);
   }
-
 }

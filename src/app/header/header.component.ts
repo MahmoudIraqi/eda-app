@@ -133,7 +133,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Legacy',
-          link: '#',
+          link: '/legacy-products',
         }
       ]
     },

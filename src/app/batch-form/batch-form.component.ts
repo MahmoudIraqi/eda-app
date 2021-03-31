@@ -80,7 +80,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   applyProduct(notificationNumber) {
     this.isLoading = true;
-    this.getService.getProductWithNotificationNumberList(notificationNumber).subscribe((res: any) => {
+    this.getService.getProductWithNotificationNumberList(notificationNumber, 'batch').subscribe((res: any) => {
       this.isLoading = false;
       this.showOtherField = true;
       this.batchForWhichProduct = res.productEnglishName;

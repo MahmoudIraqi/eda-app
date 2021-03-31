@@ -1,0 +1,78 @@
+<div class="whiteContainer reregistrationContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'Create request for Legacy'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="formTable">
+        <div class="row">
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Product Notification Number</mat-label>
+                  <input type="text" class="form-control" matInput
+                         [(ngModel)]="NotificationNo"
+                         placeholder="">
+                </mat-form-field>
+              </div>
+              <div class="col-6 d-flex">
+                <button type="button"
+                        class="btn btn-primary ml-auto mt-sm-4 mb-3"
+                        [disabled]="!NotificationNo"
+                        (click)="applyProduct(NotificationNo)">
+                  Get Product
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 1 ">
+            <app-product-request-form
+              [lookupsData]="formData"
+              [editData]="productData"
+              [legacyStatus]="true"
+              (saveDataOutput)="onSave($event)"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-product-request-form>
+          </div>
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">
+            <app-products-kit-request-form
+              [lookupsData]="formData"
+              [editData]="productData"
+              (saveDataOutput)="onSave($event)"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-kit-request-form>
+          </div>
+          <div class="col-12 mt-5"
+               *ngIf="productData && productData.typeOfMarketing === 3">
+            <app-products-hair-colour-request-form
+              [lookupsData]="formData"
+              [editData]="productData"
+              (saveDataOutput)="onSave($event)"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-hair-colour-request-form>
+          </div>
+          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
+            <app-products-kit-hair-colour-request-form
+              [lookupsData]="formData"
+              [editData]="productData"
+              (saveDataOutput)="onSave($event)"
+              (submitDataOutput)="onSubmit($event)"
+            ></app-products-kit-hair-colour-request-form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
