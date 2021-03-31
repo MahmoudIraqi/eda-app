@@ -8,7 +8,7 @@ import {map, catchError} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class FormService {
-
+  private _isLoggedIn: boolean;
   apiBaseUrl = environment.apiURL;
 
   // loginAPIURL = environment.loginAPIURL;
@@ -31,9 +31,20 @@ export class FormService {
 
     return this.http.post(`${this.apiBaseUrl}Accounts/Login?username=${data.username}&password=${data.password}`, JSONData, options)
       .pipe(map((res: any) => {
-          return res;
+          if (res.Status === '1') {
+            this.isLoggedIn = true;
+            return res;
+          }
         }),
         catchError(this.handleError));
+  }
+
+  get isLoggedIn() {
+    return this._isLoggedIn;
+  }
+
+  set isLoggedIn(v) {
+    this._isLoggedIn = v;
   }
 
   getRequestTypeLookUp() {

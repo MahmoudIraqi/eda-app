@@ -48,6 +48,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isLoading = true;
 
     this.getService.getBatchList().subscribe((res: any) => {
+      console.log('res', res);
       this.batchList = {
         tableHeader: ['Batch Number', 'Product Id', 'Submission Date', 'Production Date', 'Expiration Date'],
         tableBody: res
@@ -71,7 +72,9 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
       notificationNumber: this.fb.control('', Validators.required),
       batchNumber: this.fb.control('', Validators.required),
       productionDate: this.fb.control('', Validators.required),
-      expirationDate: this.fb.control('', Validators.required)
+      expirationDate: this.fb.control('', Validators.required),
+      batchQuantity: this.fb.control('', Validators.required),
+      UOM: this.fb.control('', Validators.required),
     });
   }
 

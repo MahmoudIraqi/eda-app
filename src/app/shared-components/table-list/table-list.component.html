@@ -1,6 +1,6 @@
 <div *ngIf="data && data.tableBody.length > 0">
   <div
-    *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'">
+    *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest' || whichTable === 'batchTable'">
     <app-filters [filterData]="filterData"
                  (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
   </div>
@@ -911,7 +911,7 @@
                              <span class="mr-2" (click)="editDetailedRowFunction(i)">
                               <i class="fa fa-edit"></i>
                             </span>
-                                  <span (click)="removeIngrediantDetailsRows(i)">
+                            <span (click)="removeIngrediantDetailsRows(i)">
                               <i class="fa fa-trash"></i>
                             </span>
                           </td>
@@ -957,7 +957,7 @@
                              <span class="mr-2" (click)="editDetailedRowFunction(i)">
                               <i class="fa fa-edit"></i>
                             </span>
-                                  <span (click)="removeIngrediantDetailsRows(i)">
+                            <span (click)="removeIngrediantDetailsRows(i)">
                               <i class="fa fa-trash"></i>
                             </span>
                           </td>

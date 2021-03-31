@@ -244,7 +244,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
-    console.log('formData', this.formData);
 
     if (this.successSubmission) {
       this.resetForms();

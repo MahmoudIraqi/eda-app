@@ -60,7 +60,23 @@
                     <mat-datepicker #picker0></mat-datepicker>
                   </mat-form-field>
                 </div>
-                <div class="col-12">
+                <div class="col-lg-4 col-sm-6 col-12 mt-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Batch Quantity</mat-label>
+                    <input type="text" class="form-control" matInput
+                           formControlName="batchQuantity"
+                           placeholder="" required>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 mt-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Unit of measure</mat-label>
+                    <input type="text" class="form-control" matInput
+                           formControlName="UOM"
+                           placeholder="" required>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 mt-3">
                   <div class="d-flex">
                     <button
                       type="submit"
