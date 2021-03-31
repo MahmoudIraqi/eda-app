@@ -32,6 +32,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Input() successSubmission;
   @Input() lookupsData;
   @Input() editData;
+  @Input() legacyStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
