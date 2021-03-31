@@ -121,10 +121,14 @@ export class VariationComponent implements OnInit {
   applyProduct(NotificationNo) {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
-      this.productData = res;
-      this.typeOfRegistrationForProduct = res.typeOfRegistration;
-      this.isLoading = false;
-      this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell-variation' ? 2 : 1);
+      if (res.canUse) {
+        this.productData = res;
+        this.typeOfRegistrationForProduct = res.typeOfRegistration;
+        this.isLoading = false;
+        this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell-variation' ? 2 : 1);
+      } else {
+        this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+      }
     }, error => this.handleError(error));
   }
 

@@ -119,8 +119,12 @@ export class LegacyComponent implements OnInit {
   applyProduct(NotificationNo) {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'legacy').subscribe((res: any) => {
-      this.productData = res;
-      this.isLoading = false;
+      if (res.canUse) {
+        this.productData = res;
+        this.isLoading = false;
+      } else {
+        this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+      }
     }, error => this.handleError(error));
   }
 
