@@ -842,7 +842,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     return data;
   }
 
-  _subscribeToClosingActions(field, list): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }

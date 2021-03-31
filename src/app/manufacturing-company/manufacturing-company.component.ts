@@ -109,7 +109,7 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
   }
 
   ngOnDestroy() {
@@ -167,21 +167,18 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
     return data;
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.manufacturingCompanyForm.controls[field].dirty) {
-              this.manufacturingCompanyForm.controls[field].setValue(null);
-            }
-          }
-        });
-    }
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.manufacturingCompanyForm.controls[field].dirty) {
+          this.manufacturingCompanyForm.controls[field].setValue(null);
+        }
+      }
+    });
   }
 
   onClosed() {

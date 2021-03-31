@@ -1281,13 +1281,13 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('productColor');
-    this._subscribeToClosingActions('manufacturingCompany');
-    this._subscribeToClosingActions('manufacturingCountry');
-    this._subscribeToClosingActions('applicant');
-    this._subscribeToClosingActions('licenseHolder');
-    this._subscribeToClosingActions('countryOfLicenseHolder');
-    this._subscribeToClosingActions('storagePlace');
+    this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
+    this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
+    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
+    this._subscribeToClosingActions('applicant', this.filteredOptionsForApplicant);
+    this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
+    this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
+    this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
   }
 
   ngOnDestroy() {
@@ -1701,21 +1701,18 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     }, 2000);
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.regColourKitForAllRequestedType.controls[field].dirty) {
-              this.regColourKitForAllRequestedType.controls[field].setValue(null);
-            }
-          }
-        });
-    }
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.regColourKitForAllRequestedType.controls[field].dirty) {
+          this.regColourKitForAllRequestedType.controls[field].setValue(null);
+        }
+      }
+    });
   }
 }
 

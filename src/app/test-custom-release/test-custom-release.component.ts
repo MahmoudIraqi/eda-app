@@ -298,17 +298,16 @@ export class TestCustomReleaseComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('importReason');
-    this._subscribeToClosingActions('currency');
-    this._subscribeToClosingActions('applicant');
-    this._subscribeToClosingActions('portName');
-    this._subscribeToClosingActionsForPackagingFormArray('manufacturingCompany');
-    this._subscribeToClosingActionsForPackagingFormArray('manufacturingCountry');
-    this._subscribeToClosingActionsForPackagingFormArray('quantity');
-    this._subscribeToClosingActionsForPackagingFormArray('UOM');
-    this._subscribeToClosingActionsForIngrediants('UOM');
-    this._subscribeToClosingActionsForPackagingFormArray('ingrediant');
-    this._subscribeToClosingActionsForPackagingFormArray('function');
+    this._subscribeToClosingActions('importReason', this.filteredOptionsForImportReason);
+    this._subscribeToClosingActions('currency', this.filteredOptionsForCurrency);
+    this._subscribeToClosingActions('applicant', this.filteredOptionsForApplicant);
+    this._subscribeToClosingActions('portName', this.filteredOptionsForPortName);
+    this._subscribeToClosingActionsForPackagingFormArray('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
+    this._subscribeToClosingActionsForPackagingFormArray('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
+    this._subscribeToClosingActionsForPackagingFormArray('quantity', this.filteredOptionsForQuantity);
+    this._subscribeToClosingActionsForPackagingFormArray('UOM', this.filteredOptionsForUOM);
+    this._subscribeToClosingActionsForPackagingFormArray('ingrediant', this.filteredOptionsForIngradiant);
+    this._subscribeToClosingActionsForPackagingFormArray('function', this.filteredOptionsForFunction);
   }
 
   ngOnDestroy() {
@@ -621,59 +620,50 @@ export class TestCustomReleaseComponent implements OnInit {
     return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.customReleaseForm.controls[field].dirty) {
-              this.customReleaseForm.controls[field].setValue(null);
-            }
-          }
-        });
-    }
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.customReleaseForm.controls[field].dirty) {
+          this.customReleaseForm.controls[field].setValue(null);
+        }
+      }
+    });
   }
 
-  private _subscribeToClosingActionsForPackagingFormArray(field): void {
+  private _subscribeToClosingActionsForPackagingFormArray(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            this.InvoiceProductsRows().controls.map((x) => {
-              if (x['controls'][field].dirty) {
-                x['controls'][field].setValue(null);
-              }
-            });
+    list.subscribe(x => {
+      if (x.length === 0) {
+        this.InvoiceProductsRows().controls.map((x) => {
+          if (x['controls'][field].dirty) {
+            x['controls'][field].setValue(null);
           }
         });
-    }
+      }
+    });
   }
 
-  private _subscribeToClosingActionsForIngrediants(field): void {
+  private _subscribeToClosingActionsForIngrediants(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            this.IngrediantDetailsRows().controls.map((x) => {
-              if (x['controls'][field].dirty) {
-                x['controls'][field].setValue(null);
-              }
-            });
+    list.subscribe(x => {
+      if (x.length === 0) {
+        this.IngrediantDetailsRows().controls.map((x) => {
+          if (x['controls'][field].dirty) {
+            x['controls'][field].setValue(null);
           }
         });
-    }
+      }
+    });
   }
 
   convertAllNamingToId(data) {

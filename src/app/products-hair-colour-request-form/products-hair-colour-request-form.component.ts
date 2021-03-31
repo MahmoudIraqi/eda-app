@@ -414,19 +414,19 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('productColor');
-    this._subscribeToClosingActions('manufacturingCompany');
-    this._subscribeToClosingActions('manufacturingCountry');
-    this._subscribeToClosingActions('applicant');
-    this._subscribeToClosingActions('licenseHolder');
-    this._subscribeToClosingActions('countryOfLicenseHolder');
-    this._subscribeToClosingActions('physicalState');
-    this._subscribeToClosingActions('purposeOfUse');
-    this._subscribeToClosingActions('storagePlace');
-    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure');
-    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging');
-    this._subscribeToClosingActionsForDetailsFormArray('ingrediant');
-    this._subscribeToClosingActionsForDetailsFormArray('function');
+    this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
+    this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
+    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
+    this._subscribeToClosingActions('applicant', this.filteredOptionsForApplicant);
+    this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
+    this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
+    this._subscribeToClosingActions('physicalState', this.filteredOptionsForPhysicalState);
+    this._subscribeToClosingActions('purposeOfUse', this.filteredOptionsForPurposeOfUse);
+    this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
+    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
+    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant);
+    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction);
   }
 
   ngOnDestroy() {
@@ -838,60 +838,51 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     return data;
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.regHairColorantProductForAllRequestedType.controls[field].dirty) {
-              this.regHairColorantProductForAllRequestedType.controls[field].setValue(null);
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.regHairColorantProductForAllRequestedType.controls[field].dirty) {
+          this.regHairColorantProductForAllRequestedType.controls[field].setValue(null);
+        }
+      }
+    });
+  }
+
+  private _subscribeToClosingActionsForPackagingFormArray(field, list): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    list.subscribe(y => {
+      if (y.length === 0) {
+        this.PackagingRows().controls.map((x) => {
+          if (x['controls'][field].dirty) {
+            x['controls'][field].setValue(null);
+          }
+        });
+      }
+    });
+  }
+
+  private _subscribeToClosingActionsForDetailsFormArray(field, list): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    list.subscribe(y => {
+      if (y.length === 0) {
+        this.DetailsRows().controls.map((x) => {
+          x['controls'].ingrediantDetails.controls.map((item, index) => {
+            if (item.controls[field].dirty) {
+              item.controls[field].setValue(null);
             }
-          }
+          });
         });
-    }
-  }
-
-  private _subscribeToClosingActionsForPackagingFormArray(field): void {
-    if (this.subscription && !this.subscription.closed) {
-      this.subscription.unsubscribe();
-    }
-
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            this.PackagingRows().controls.map((x) => {
-              if (x['controls'][field].dirty) {
-                x['controls'][field].setValue(null);
-              }
-            });
-          }
-        });
-    }
-  }
-
-  private _subscribeToClosingActionsForDetailsFormArray(field): void {
-    if (this.subscription && !this.subscription.closed) {
-      this.subscription.unsubscribe();
-    }
-
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            this.DetailsRows().controls.map((x) => {
-              x['controls'].ingrediantDetails.controls.map((item, index) => {
-                if (item.controls[field].dirty) {
-                  item.controls[field].setValue(null);
-                }
-              });
-            });
-          }
-        });
-    }
+      }
+    });
   }
 }

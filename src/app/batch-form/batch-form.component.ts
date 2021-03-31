@@ -58,7 +58,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
   }
 
   ngOnDestroy() {
@@ -127,21 +127,18 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
     return data;
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.batchForm.controls[field].dirty) {
-              this.batchForm.controls[field].setValue(null);
-            }
-          }
-        });
-    }
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.batchForm.controls[field].dirty) {
+          this.batchForm.controls[field].setValue(null);
+        }
+      }
+    });
   }
 
   onClosed() {
