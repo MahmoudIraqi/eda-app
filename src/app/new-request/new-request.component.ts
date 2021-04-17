@@ -51,6 +51,7 @@ export class NewRequestComponent implements OnInit {
   saveResponseDataForRegisterColorantKitProduct;
   productId;
   updatingProductData: any;
+  requestId;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute) {
   }
@@ -123,6 +124,8 @@ export class NewRequestComponent implements OnInit {
     if (this.productId) {
       this.isLoading = true;
       this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+        console.log('res_ProductId', res);
+
         this.selectedFormType = res.typeOfMarketing;
         this.selectedRequestedType = res.typeOfRegistration;
         this.selectedTrackType = res.Tracktype;
@@ -148,10 +151,13 @@ export class NewRequestComponent implements OnInit {
     this.isLoading = true;
 
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-      const id = Number(this.productId ? this.productId : null);
-      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+      const id = Number(this.productId ? this.productId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductRequest(event).subscribe((res: any) => {
+      console.log('event', newEvent);
+
+      this.getService.createProductRequest(newEvent).subscribe((res: any) => {
+        console.log('res', res);
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
         this.isLoading = false;
         this.alertNotificationStatus = true;
@@ -159,10 +165,10 @@ export class NewRequestComponent implements OnInit {
         this.onClosed();
       }, error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-      const id = Number(this.productId ? this.productId : null);
-      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+      const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductKitRequest(event).subscribe((res: any) => {
+      this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
         this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
         this.isLoading = false;
         this.alertNotificationStatus = true;
@@ -176,7 +182,8 @@ export class NewRequestComponent implements OnInit {
     this.isLoading = true;
     this.successSubmission = false;
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-      event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
+      const id = Number(this.productId ? this.productId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductRequest(event).subscribe((res: any) => {
         this.isLoading = false;
@@ -187,9 +194,10 @@ export class NewRequestComponent implements OnInit {
         this.onClosed();
       }, error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-      event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
+      const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductKitRequest(event).subscribe((res: any) => {
+      this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;

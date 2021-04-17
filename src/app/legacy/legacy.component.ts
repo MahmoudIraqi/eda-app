@@ -130,15 +130,12 @@ export class LegacyComponent implements OnInit {
   }
 
   onSave(event) {
-
-    console.log('this.productData', this.productData);
     const newData = {
       ...this.productData,
       ...event
     };
     event = convertToSpecialObjectForLegacy('save', newData);
 
-    console.log('event', event);
     this.getService.createProductRequest(event).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;
@@ -148,7 +145,6 @@ export class LegacyComponent implements OnInit {
   }
 
   onSubmit(event) {
-    console.log('event', event);
 
     const newData = {
       ...this.productData,

@@ -647,7 +647,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
-    console.log('data', data);
     this.saveDataOutput.emit(data);
   }
 
@@ -658,7 +657,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getFormAsStarting(data) {
-    console.log('data', data);
     if (data) {
       this.isDraft = data.isDraft === 1;
       data.shortName.map((X, i) => {

@@ -198,8 +198,8 @@ export class HeaderComponent implements OnInit {
       if (res) {
         this.isLoading = false;
         this.alertNotificationStatus = true;
-        this.inputService.publish({type: 'Token', payload: res.Token});
         this.router.navigateByUrl('/login');
+        this.inputService.publish({type: 'Token', payload: ''});
       } else {
         this.alertErrorNotificationStatus = true;
       }

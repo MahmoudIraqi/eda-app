@@ -300,6 +300,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   filteredOptionsForStoragePlace: Observable<LookupState[]>;
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  productFlags;
+  productComments;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -315,6 +317,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }
 
     if (this.editData) {
+      console.log('this.editData', this.editData);
       this.getFormAsStarting(this.editData);
     }
 
@@ -528,19 +531,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   getFormAsStarting(data) {
     if (data) {
-      data.ProductsForKit.map((x, i) => {
-        const keyOfLookup = Object.keys(this.lookupsData);
-        keyOfLookup.map(key => {
-          const keyLowerCase = key.replace('List', '');
-          const value = x[keyLowerCase];
-
-          this.lookupsData[key].filter(y => y.ID === value).map(x => {
-            x[keyLowerCase] = x.NAME;
-          });
-        });
-
-        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
-      });
 
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
@@ -548,13 +538,15 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         }
       });
 
+      console.log('formData', this.formData);
+
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
       this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
-
+      
       this.regKitForAllRequestedType.valueChanges.subscribe(x => {
         for (let i = 0; i < Object.values(x).length; i++) {
           if (typeof Object.values(x)[i] !== 'object') {
@@ -568,16 +560,24 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         }
       });
 
+      this.productFlags = data.productFlags;
+      this.productComments = data.productComments;
+
+      console.log(' this.regKitForAllRequestedType', this.regKitForAllRequestedType.value);
+      console.log('data', data);
+
       this.regKitForAllRequestedType.patchValue({
         ...data,
       });
 
-      let control = <FormArray> this.regKitForAllRequestedType.controls.ProductsForKit;
-      data.ProductsForKit.map(x => {
-        control.push(this.fb.group(x));
-      });
+      // let control = <FormArray> this.regKitForAllRequestedType.controls.ProductsForKit;
+      // data.ProductsForKit.map(x => {
+      //   control.push(this.fb.group(x));
+      // });
+      //
+      // this.addProductsGroupRows();
 
-      this.addProductsGroupRows();
+
     } else {
       this.regKitForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),

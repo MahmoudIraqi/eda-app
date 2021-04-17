@@ -1235,6 +1235,8 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   filteredOptionsForStoragePlace: Observable<LookupState[]>;
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  productFlags;
+  productComments;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,

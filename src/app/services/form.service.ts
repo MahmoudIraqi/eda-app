@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {map, catchError, filter, distinctUntilChanged} from 'rxjs/operators';
+import {map, catchError, filter, distinctUntilChanged, tap} from 'rxjs/operators';
 import {InputService} from './input.service';
 
 @Injectable({
@@ -20,6 +20,7 @@ export class FormService {
   }
 
   getToken() {
+    this.Token = '';
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'Token'),
       distinctUntilChanged()
@@ -42,7 +43,9 @@ export class FormService {
     const JSONData = JSON.stringify(newStructure);
 
     return this.http.post(`${this.apiBaseUrl}Accounts/Login?username=${data.username}&password=${data.password}`, JSONData, options)
-      .pipe(map((res: any) => {
+      .pipe(
+        distinctUntilChanged(),
+        tap((res: any) => {
           if (res.Status === '1') {
             this.isLoggedIn = true;
             return res;
