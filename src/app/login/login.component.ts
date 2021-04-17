@@ -46,8 +46,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.inputService.publish({type: 'Token', payload: ''});
-
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
@@ -56,13 +54,15 @@ export class LoginComponent implements OnInit {
       this.isLoading = true;
       this.getService.loginAPIToken(this.form.value).subscribe((res: any) => {
         if (res) {
-          this.isLoading = false;
-          this.alertNotificationStatus = true;
-          this.inputService.publish({type: 'Token', payload: res.Token});
-          this.router.navigateByUrl('/home');
-        } else {
-          this.isLoading = false;
-          this.alertErrorNotificationStatus = true;
+          if (res.Status === '1') {
+            this.isLoading = false;
+            this.alertNotificationStatus = true;
+            this.inputService.publish({type: 'Token', payload: res.Token});
+            this.router.navigateByUrl('/home');
+          } else {
+            this.isLoading = false;
+            this.alertErrorNotificationStatus = true;
+          }
         }
       }, error => this.handleError(error));
     }

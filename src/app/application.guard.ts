@@ -20,7 +20,6 @@ export class ApplicationGuard implements CanActivate {
       return true;
     } else {
       this.routing.navigateByUrl('/login');
-      this.inputService.publish({type: 'Token', payload: ''});
       return false;
     }
   }

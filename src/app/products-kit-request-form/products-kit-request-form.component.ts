@@ -546,7 +546,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
       this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
-      
+
       this.regKitForAllRequestedType.valueChanges.subscribe(x => {
         for (let i = 0; i < Object.values(x).length; i++) {
           if (typeof Object.values(x)[i] !== 'object') {
@@ -582,7 +582,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.regKitForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
+        shortName: this.fb.array([this.fb.control('', [this.selectedRequestedType !== 6 && this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 ? Validators.required : null, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')])]),
         manufacturingCompany: this.fb.control('', Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
@@ -611,7 +611,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
         receipt: this.fb.control('', Validators.required),
         authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-        manufacturingContract: this.fb.control(''),
+        manufacturingContract: this.fb.control('', this.selectedRequestedType === 7 ? Validators.required : null),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
         manufacturingAssignment: this.fb.control(''),

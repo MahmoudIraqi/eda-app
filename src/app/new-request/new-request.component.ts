@@ -236,9 +236,10 @@ export class NewRequestComponent implements OnInit {
     this.selectedIsExport = '';
   }
 
-  handleError(message) {
+  handleError(error) {
     this.alertErrorNotificationStatus = true;
-    this.alertErrorNotification = {msg: message};
+    this.alertErrorNotification = {msg: error.message};
     this.isLoading = false;
   }
+
 }

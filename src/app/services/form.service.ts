@@ -17,16 +17,17 @@ export class FormService {
 
   constructor(private http: HttpClient,
               private inputService: InputService) {
-  }
-
-  getToken() {
-    this.Token = '';
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'Token'),
       distinctUntilChanged()
     ).subscribe(res => {
+      console.log('res', res);
       this.Token = res.payload;
     });
+  }
+
+  getToken() {
+
   }
 
   loginAPIToken(data) {
@@ -48,8 +49,8 @@ export class FormService {
         tap((res: any) => {
           if (res.Status === '1') {
             this.isLoggedIn = true;
-            return res;
           }
+          return res;
         }),
         catchError(this.handleError));
   }
@@ -768,6 +769,10 @@ export class FormService {
   }
 
   private handleError(error: HttpErrorResponse) {
+    console.log('error', error);
+    if (error.status === 401) {
+      this.isLoggedIn = false;
+    }
     return throwError(`Error! ${error.message}`);
   }
 }

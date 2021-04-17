@@ -738,7 +738,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
+        shortName: this.fb.array([this.fb.control('', [this.selectedRequestedType !== 6 && this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 ? Validators.required : null, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')])]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
@@ -785,7 +785,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
         receipt: this.fb.control('', Validators.required),
         authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-        manufacturingContract: this.fb.control(''),
+        manufacturingContract: this.fb.control('', this.selectedRequestedType === 7 ? Validators.required : null),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
         manufacturingAssignment: this.fb.control(''),
