@@ -11,9 +11,4 @@ export class AppComponent {
 
   constructor() {
   }
-
-  @HostListener('window:unload', ['$event'])
-  unloadHandler(event) {
-    debugger;
-  }
 }

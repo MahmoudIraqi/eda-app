@@ -538,10 +538,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   removePackagingRows(i) {
-    if (this.saveResponseDataForRegisterProductID) {
-
-    }
-
     this.PackagingRows().removeAt(i);
 
     this.regProductForAllRequestedType.get('packagingTable').value.map(x => {
@@ -554,6 +550,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
       }
     });
+  }
+
+  deletedPackagingIdsList(event) {
+    this.regProductForAllRequestedType.get('deletedpacklstIds').patchValue(event);
+
+    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
   }
 
   cancelThePackagingRows(index) {
@@ -613,6 +615,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   removeDetailsRows(i) {
     this.DetailsRows().removeAt(i);
     this.equalTheNewDetailsTable('remove');
+  }
+
+  deletedDetailsIdsList(event) {
+    this.regProductForAllRequestedType.get('deletedProductIdLists').patchValue(event);
+
+    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
   }
 
   editTheDetailsRow(event) {
@@ -782,6 +790,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             function: this.fb.control('', Validators.required),
           })])
         })]),
+        deletedIngredientsIds: this.fb.control(null),
+        deletedProductIdLists: this.fb.control(null),
+        deletedpacklstIds: this.fb.control(null),
         freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),

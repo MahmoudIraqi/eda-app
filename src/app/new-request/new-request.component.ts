@@ -154,6 +154,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
+        this.updatingProductData = res;
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
@@ -165,6 +166,7 @@ export class NewRequestComponent implements OnInit {
 
       this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
         this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
+        this.updatingProductData = res;
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();

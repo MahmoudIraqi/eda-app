@@ -50,6 +50,7 @@ export class TableListComponent implements OnInit, OnChanges {
   filteredData: Observable<any[]>;
 
   @Output() removeDetailsRowOutput = new EventEmitter();
+  @Output() removeDetailsRowIDs = new EventEmitter();
   @Output() removePackagingRowOutput = new EventEmitter();
   @Output() removePackagingRowIDs = new EventEmitter();
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
@@ -64,6 +65,7 @@ export class TableListComponent implements OnInit, OnChanges {
   contentArray = [];
   returnedArray: string[];
   deletedIdsListForPackaging = [];
+  deletedIdsListForDetailsRow = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private inputService: InputService) {
   }
@@ -122,11 +124,13 @@ export class TableListComponent implements OnInit, OnChanges {
 
   removeDetailsRowFunction(i, requestID) {
     this.removeDetailsRowOutput.emit(i);
+    this.deletedIdsListForDetailsRow.push(requestID);
+    this.removeDetailsRowIDs.emit(this.deletedIdsListForDetailsRow);
   }
 
   removePackagingRowFunction(i, requestID) {
     this.removePackagingRowOutput.emit(i);
-    this.deletedIdsListForPackaging.push();
+    this.deletedIdsListForPackaging.push(requestID);
     console.log('this.deletedIdsList', this.deletedIdsListForPackaging);
     this.removePackagingRowIDs.emit(this.deletedIdsListForPackaging);
   }

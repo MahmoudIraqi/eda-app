@@ -9,7 +9,7 @@ import {HomeContainerComponent} from './home-container/home-container.component'
 @Injectable({
   providedIn: 'root'
 })
-export class ApplicationGuard implements CanActivate, CanDeactivate<HomeContainerComponent> {
+export class ApplicationGuard implements CanActivate {
   Token;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute,
@@ -19,18 +19,8 @@ export class ApplicationGuard implements CanActivate, CanDeactivate<HomeContaine
       filter(x => x.type === 'Token'),
       distinctUntilChanged()
     ).subscribe(res => {
-      debugger;
       this.Token = res.payload;
     });
-  }
-
-  canDeactivate(
-    component: HomeContainerComponent,
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-    debugger;
-
-    return false;
   }
 
   canActivate(

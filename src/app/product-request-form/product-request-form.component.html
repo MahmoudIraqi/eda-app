@@ -677,6 +677,7 @@
                 <app-table-list [data]="packagingListTable"
                                 [whichTable]="'newRequestForPackaging'"
                                 (removePackagingRowOutput)="removePackagingRows($event)"
+                                (removePackagingRowIDs)="deletedPackagingIdsList($event)"
                                 (editDetailedRowOutput)="editThePackagingRows($event)"
                 ></app-table-list>
               </div>
@@ -900,6 +901,7 @@
                 <app-table-list [data]="detailsListTable"
                                 [whichTable]="'newRequestForDetails'"
                                 (removeDetailsRowOutput)="removeDetailsRows($event)"
+                                (removeDetailsRowIDs)="deletedDetailsIdsList($event)"
                                 (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
                                 (editDetailedRowOutput)="editTheDetailsRow($event)"
                 ></app-table-list>
