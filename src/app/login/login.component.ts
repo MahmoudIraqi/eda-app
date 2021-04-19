@@ -58,6 +58,7 @@ export class LoginComponent implements OnInit {
             this.isLoading = false;
             this.alertNotificationStatus = true;
             this.inputService.publish({type: 'Token', payload: res.Token});
+            localStorage.setItem('privateData', res.Token);
             this.router.navigateByUrl('/home');
           } else {
             this.isLoading = false;

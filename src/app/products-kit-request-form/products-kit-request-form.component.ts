@@ -317,7 +317,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }
 
     if (this.editData) {
-      console.log('this.editData', this.editData);
       this.getFormAsStarting(this.editData);
     }
 

@@ -21,7 +21,7 @@ export class FormService {
       filter(x => x.type === 'Token'),
       distinctUntilChanged()
     ).subscribe(res => {
-      console.log('res', res);
+
       this.Token = res.payload;
     });
   }
@@ -55,12 +55,10 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  logoutAPIToken() {
-    this.getToken();
-
+  logoutAPIToken(token) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
-      'Token': this.Token
+      'Token': token
     });
     const options = {headers};
 
@@ -769,7 +767,6 @@ export class FormService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.log('error', error);
     if (error.status === 401) {
       this.isLoggedIn = false;
     }

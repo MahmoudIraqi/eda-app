@@ -13,7 +13,6 @@ export class InputService {
   }
 
   publish(inputAction) {
-    console.log('inputAction', inputAction);
     this.subject.next(inputAction);
   }
 

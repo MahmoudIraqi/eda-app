@@ -3,6 +3,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {FormService} from '../services/form.service';
 import {FormBuilder} from '@angular/forms';
 import {InputService} from '../services/input.service';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -172,6 +173,7 @@ export class HeaderComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
+  Token;
 
   constructor(private fb: FormBuilder,
               private getService: FormService,
@@ -182,6 +184,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'Token'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.Token = res.payload;
+    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -194,12 +202,12 @@ export class HeaderComponent implements OnInit {
   }
 
   logoutFunction() {
-    this.getService.logoutAPIToken().subscribe((res: any) => {
+    this.getService.logoutAPIToken(this.Token).subscribe((res: any) => {
       if (res) {
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.router.navigateByUrl('/login');
-        this.inputService.publish({type: 'Token', payload: ''});
+        // this.inputService.publish({type: 'Token', payload: ''});
       } else {
         this.alertErrorNotificationStatus = true;
       }

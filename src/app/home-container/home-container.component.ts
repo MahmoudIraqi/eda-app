@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import { routerTransitionSlide } from 'src/app/animation/routable.animations';
+import {routerTransitionSlide} from 'src/app/animation/routable.animations';
 
 @Component({
   selector: 'app-home-container',
@@ -10,11 +10,17 @@ import { routerTransitionSlide } from 'src/app/animation/routable.animations';
     routerTransitionSlide
   ]
 })
-export class HomeContainerComponent implements OnInit {
+export class HomeContainerComponent implements OnInit{
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  canDeactivate() {
+    debugger;
+    return false;
   }
 
   prepareRoute(outlet: RouterOutlet) {

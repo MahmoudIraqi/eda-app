@@ -1,24 +1,47 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, ActivatedRoute, Router} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, ActivatedRoute, Router, CanDeactivate} from '@angular/router';
 import {Observable} from 'rxjs';
 import {FormService} from './services/form.service';
 import {InputService} from './services/input.service';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
+import {HomeContainerComponent} from './home-container/home-container.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApplicationGuard implements CanActivate {
+export class ApplicationGuard implements CanActivate, CanDeactivate<HomeContainerComponent> {
+  Token;
+
   constructor(private getService: FormService, private readonly route: ActivatedRoute,
               private inputService: InputService, private readonly routing: Router) {
+
+    inputService.getInput$().pipe(
+      filter(x => x.type === 'Token'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      debugger;
+      this.Token = res.payload;
+    });
+  }
+
+  canDeactivate(
+    component: HomeContainerComponent,
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean {
+    debugger;
+
+    return false;
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-    console.log('1234', this.getService.isLoggedIn);
     if (this.getService.isLoggedIn) {
       return true;
     } else {
+      const token = localStorage.getItem('privateData');
+      this.getService.logoutAPIToken(token).subscribe((res: any) => {});
+      localStorage.setItem('privateData', '');
       this.routing.navigateByUrl('/login');
       return false;
     }

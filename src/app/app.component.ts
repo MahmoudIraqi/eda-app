@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, OutletContext, RouterOutlet, RouterEvent} from '@angular/router';
 
 @Component({
@@ -8,4 +8,12 @@ import {ActivatedRoute, Router, OutletContext, RouterOutlet, RouterEvent} from '
 })
 export class AppComponent {
   title = 'eda-app';
+
+  constructor() {
+  }
+
+  @HostListener('window:unload', ['$event'])
+  unloadHandler(event) {
+    debugger;
+  }
 }

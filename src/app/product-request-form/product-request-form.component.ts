@@ -45,6 +45,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() variationFields;
   @Input() lookupsData;
   @Input() kitProductStatus;
+  @Input() saveResponseDataForRegisterProductID;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   @Output() selectedTrackTypeForKit = new EventEmitter();
@@ -224,6 +225,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   disabledSaveButton: boolean = false;
   productFlags;
   productComments;
+
+  deletedPackagingList = [];
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -535,6 +538,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   removePackagingRows(i) {
+    if (this.saveResponseDataForRegisterProductID) {
+
+    }
+
     this.PackagingRows().removeAt(i);
 
     this.regProductForAllRequestedType.get('packagingTable').value.map(x => {
