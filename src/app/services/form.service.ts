@@ -46,7 +46,7 @@ export class FormService {
 
     const JSONData = JSON.stringify(newStructure);
 
-    return this.http.post(`${this.apiBaseUrl}Accounts/Login?username=${data.username}&password=${data.password}`, JSONData, options)
+    return this.http.get(`${this.apiBaseUrl}Accounts/Login?username=${data.username}&password=${data.password}`, options)
       .pipe(
         distinctUntilChanged(),
         tap((res: any) => {
@@ -316,8 +316,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}requests`, data, options)
       .pipe(map((res: any) => {

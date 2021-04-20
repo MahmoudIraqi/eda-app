@@ -52,6 +52,7 @@ export class NewRequestComponent implements OnInit {
   productId;
   updatingProductData: any;
   requestId;
+  estimatedValue;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute) {
   }

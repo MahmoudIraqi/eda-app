@@ -100,6 +100,12 @@ export class TableListComponent implements OnInit, OnChanges {
             }
           });
 
+          console.log('this.data.tableBody', this.data.tableBody);
+
+          this.data.tableBody.sort((a, b) => (a.ID > b.ID) ? 1 : -1);
+
+          console.log('this.data.tableBody_After', this.data.tableBody);
+
           this.contentArray = new Array(this.data.tableBody.length).fill('');
           this.contentArray = this.contentArray.map((v: string, i: number) => this.data.tableBody[i]);
           this.returnedArray = this.contentArray.slice(0, 10);
@@ -138,7 +144,6 @@ export class TableListComponent implements OnInit, OnChanges {
 
     if (requestID) {
       this.deletedIdsListForPackaging.push(requestID);
-      console.log('this.deletedIdsList', this.deletedIdsListForPackaging);
       this.removePackagingRowIDs.emit(this.deletedIdsListForPackaging);
     }
   }
@@ -148,7 +153,6 @@ export class TableListComponent implements OnInit, OnChanges {
 
     if (idRequest) {
       this.deletedIdsListForIngrediant.push(idRequest);
-      console.log('this.deletedIdsList', this.deletedIdsListForIngrediant);
       this.removeIngrediantDetailsIDs.emit(this.deletedIdsListForIngrediant);
     }
   }

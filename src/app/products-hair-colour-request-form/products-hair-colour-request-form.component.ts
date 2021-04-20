@@ -544,6 +544,13 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.packagingListTable.tableBody.pop();
   }
 
+  deletedPackagingIdsList(event) {
+    this.regHairColorantProductForAllRequestedType.get('deletedpacklstIds').patchValue(event);
+
+    console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType);
+  }
+
+
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
@@ -597,6 +604,13 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.equalTheNewDetailsTable('remove');
   }
 
+  deletedDetailsIdsList(event) {
+    console.log('event', event);
+    this.regHairColorantProductForAllRequestedType.get('deletedProductDetailsIds').patchValue(event);
+
+    console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType);
+  }
+
   editTheDetailsRow(event) {
     this.editDetailedRowStatus = true;
     this.editIndex = event;
@@ -633,6 +647,13 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     }
 
     this.equalTheNewDetailsTable(fromWhere);
+  }
+
+  deletedIngrediantIdsList(event) {
+    console.log('event', event);
+    this.regHairColorantProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
+
+    console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType);
   }
 
   saveData() {
@@ -769,6 +790,9 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
             function: this.fb.control('', Validators.required),
           })])
         })]),
+        deletedIngredientsIds: this.fb.control(null),
+        deletedProductDetailsIds: this.fb.control(null),
+        deletedpacklstIds: this.fb.control(null),
         freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
