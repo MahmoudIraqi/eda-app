@@ -54,6 +54,7 @@ export class TableListComponent implements OnInit, OnChanges {
   @Output() removePackagingRowOutput = new EventEmitter();
   @Output() removePackagingRowIDs = new EventEmitter();
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
+  @Output() removeIngrediantDetailsIDs = new EventEmitter();
   @Output() removeIngrediantRowOutput = new EventEmitter();
   @Output() editIngrediantRowOutput = new EventEmitter();
   @Output() removeProductFromKit = new EventEmitter();
@@ -66,6 +67,7 @@ export class TableListComponent implements OnInit, OnChanges {
   returnedArray: string[];
   deletedIdsListForPackaging = [];
   deletedIdsListForDetailsRow = [];
+  deletedIdsListForIngrediant = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private inputService: InputService) {
   }
@@ -124,19 +126,31 @@ export class TableListComponent implements OnInit, OnChanges {
 
   removeDetailsRowFunction(i, requestID) {
     this.removeDetailsRowOutput.emit(i);
-    this.deletedIdsListForDetailsRow.push(requestID);
-    this.removeDetailsRowIDs.emit(this.deletedIdsListForDetailsRow);
+
+    if (requestID) {
+      this.deletedIdsListForDetailsRow.push(requestID);
+      this.removeDetailsRowIDs.emit(this.deletedIdsListForDetailsRow);
+    }
   }
 
   removePackagingRowFunction(i, requestID) {
     this.removePackagingRowOutput.emit(i);
-    this.deletedIdsListForPackaging.push(requestID);
-    console.log('this.deletedIdsList', this.deletedIdsListForPackaging);
-    this.removePackagingRowIDs.emit(this.deletedIdsListForPackaging);
+
+    if (requestID) {
+      this.deletedIdsListForPackaging.push(requestID);
+      console.log('this.deletedIdsList', this.deletedIdsListForPackaging);
+      this.removePackagingRowIDs.emit(this.deletedIdsListForPackaging);
+    }
   }
 
-  removeIngrediantDetailsRowFunction(childIndex, i, indexRow) {
+  removeIngrediantDetailsRowFunction(childIndex, i, indexRow, idRequest) {
     this.removeIngrediantDetailsRowOutput.emit({childIndex, indexRow, i});
+
+    if (idRequest) {
+      this.deletedIdsListForIngrediant.push(idRequest);
+      console.log('this.deletedIdsList', this.deletedIdsListForIngrediant);
+      this.removeIngrediantDetailsIDs.emit(this.deletedIdsListForIngrediant);
+    }
   }
 
   removeIngrediantDetailsRows(index) {

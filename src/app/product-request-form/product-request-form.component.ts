@@ -618,6 +618,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   deletedDetailsIdsList(event) {
+    console.log('event', event);
     this.regProductForAllRequestedType.get('deletedProductIdLists').patchValue(event);
 
     console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
@@ -629,12 +630,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   equalTheNewDetailsTable(fromWhere) {
-    if (fromWhere !== 'form') {
-      if (fromWhere === 'remove') {
-        this.regProductForAllRequestedType.get('detailsTable').value.pop();
+      if (fromWhere !== 'form') {
+        this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
       }
-      this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
-    }
   }
 
   //functions for IngrediantDetailsRows
@@ -658,6 +656,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
 
     this.equalTheNewDetailsTable(fromWhere);
+  }
+
+  deletedIngrediantIdsList(event) {
+    console.log('event', event);
+    this.regProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
+
+    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
   }
 
   saveData() {
@@ -749,6 +754,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
+      console.log('this.regProductForAllRequestedType.', this.regProductForAllRequestedType.value);
     } else {
       this.regProductForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),

@@ -17,6 +17,9 @@ export class FormService {
 
   constructor(private http: HttpClient,
               private inputService: InputService) {
+
+    console.log('apiBaseUrl', this.apiBaseUrl);
+
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'Token'),
       distinctUntilChanged()
@@ -313,6 +316,8 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
+
+    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}requests`, data, options)
       .pipe(map((res: any) => {
