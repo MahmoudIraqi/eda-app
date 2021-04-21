@@ -17,20 +17,12 @@ export class FormService {
 
   constructor(private http: HttpClient,
               private inputService: InputService) {
-
-    console.log('apiBaseUrl', this.apiBaseUrl);
-
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'Token'),
       distinctUntilChanged()
     ).subscribe(res => {
-
       this.Token = res.payload;
     });
-  }
-
-  getToken() {
-
   }
 
   loginAPIToken(data) {
@@ -46,7 +38,7 @@ export class FormService {
 
     const JSONData = JSON.stringify(newStructure);
 
-    return this.http.get(`${this.apiBaseUrl}Accounts/Login?username=${data.username}&password=${data.password}`, options)
+    return this.http.get(`${this.apiBaseUrl}LoginApi?username=${data.username}&password=${data.password}`, options)
       .pipe(
         distinctUntilChanged(),
         tap((res: any) => {
@@ -65,7 +57,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.post(`${this.apiBaseUrl}Accounts/Logout`, '', options)
+    return this.http.post(`${this.apiBaseUrl}Logout`, '', options)
       .pipe(map((res: any) => {
           this.isLoggedIn = false;
           return res;
@@ -82,15 +74,13 @@ export class FormService {
   }
 
   getRequestTypeLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}registration_type`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/registrationtype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -98,15 +88,13 @@ export class FormService {
   }
 
   getMarketingTypeLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}marketing_type`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/marketingtype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -114,15 +102,13 @@ export class FormService {
   }
 
   getCountryLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}country`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/Country`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -130,15 +116,13 @@ export class FormService {
   }
 
   getFunctionLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}function`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/functions`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -146,15 +130,13 @@ export class FormService {
   }
 
   getManufacturingCompanyLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}manufactory_company`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/manufactorycompany`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -162,15 +144,13 @@ export class FormService {
   }
 
   getPackagingTypeLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}packaging_type`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/packagingtype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -178,15 +158,13 @@ export class FormService {
   }
 
   getPhysicalStateLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}product_physical_state`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/productphysicalstate`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -194,15 +172,13 @@ export class FormService {
   }
 
   getUnitOfMeasureLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}UOM`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/unitofmessure`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -210,15 +186,13 @@ export class FormService {
   }
 
   getUsePurposeLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}use_purpose`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/usepurpose`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -226,15 +200,13 @@ export class FormService {
   }
 
   getProductColorLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}product_colour`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/productcolour`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -242,15 +214,13 @@ export class FormService {
   }
 
   getProductIngrediantsLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}ingredients`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -258,15 +228,13 @@ export class FormService {
   }
 
   getCompanyProfileLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}company_profile`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/CompanyProfile`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -274,15 +242,13 @@ export class FormService {
   }
 
   getStoragePlaceLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}storage_place`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/storageplaces`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -290,15 +256,13 @@ export class FormService {
   }
 
   getTrackTypeLookUp() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}track_type`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/tracktype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -306,8 +270,6 @@ export class FormService {
   }
 
   createProductRequest(data) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -317,7 +279,7 @@ export class FormService {
 
     data = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}requests`, data, options)
+    return this.http.post(`${this.apiBaseUrl}product/Notification`, data, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -325,8 +287,6 @@ export class FormService {
   }
 
   createProductKitRequest(data) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -336,7 +296,7 @@ export class FormService {
 
     data = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}requestsKit`, data, options)
+    return this.http.post(`${this.apiBaseUrl}product/KitNotification`, data, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -344,15 +304,13 @@ export class FormService {
   }
 
   getTrackRequestsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}requests?Type=track&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=track&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -360,15 +318,13 @@ export class FormService {
   }
 
   getTrackGeneralEnquiriesList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/InqueryData?Type=track&pageSize=5000&pageNo=1`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/InqueryData?Type=track&pageSize=5000&pageNo=1`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -376,15 +332,13 @@ export class FormService {
   }
 
   getTrackReRegistrationRequestsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetReRegRequestData?Type=track&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetReRegRequestData?Type=track&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -392,15 +346,13 @@ export class FormService {
   }
 
   getTrackVariationRequestsList(whichVariation) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=track&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=track&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -408,15 +360,13 @@ export class FormService {
   }
 
   getDraftRequestsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=draft&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=draft&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -424,15 +374,13 @@ export class FormService {
   }
 
   getApprovedProductsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=approved&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -440,15 +388,13 @@ export class FormService {
   }
 
   getApprovedLegacyProductsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetLegacyProducts?Type=approved&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetLegacyProducts?Type=approved&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -456,15 +402,13 @@ export class FormService {
   }
 
   getTrackLegacyProductsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetLegacyProducts?Type=track&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetLegacyProducts?Type=track&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -472,15 +416,13 @@ export class FormService {
   }
 
   getDraftLegacyProductsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetLegacyProducts?Type=draft&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetLegacyProducts?Type=draft&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -488,15 +430,13 @@ export class FormService {
   }
 
   getBatchList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}/product_batches`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/productbatches`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -504,15 +444,13 @@ export class FormService {
   }
 
   getDraftVariationProductsList(whichVariation) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -520,15 +458,13 @@ export class FormService {
   }
 
   getRejectedProductsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}/Requests?Type=rejected&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=rejected&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -536,8 +472,6 @@ export class FormService {
   }
 
   getProductWithNotificationNumberList(notificationNumber, typeParameter) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -552,15 +486,13 @@ export class FormService {
   }
 
   getProductWithProductIDList(productID) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}request/GetProductByProductID?ID=${productID}`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetProductByProductID?ID=${productID}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -568,15 +500,13 @@ export class FormService {
   }
 
   getLegacyProductWithProductIDList(productID) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Request/GetProductLegacyByProductID?ID=${productID}`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetProductLegacyByProductID?ID=${productID}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -584,15 +514,13 @@ export class FormService {
   }
 
   getNotificationLogsList() {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}notification_log`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/notificationlog`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -600,15 +528,13 @@ export class FormService {
   }
 
   setSeenNotificationByID(id) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.post(`${this.apiBaseUrl}notification_log/SeenNotificaion?id=${id}`, {}, options)
+    return this.http.post(`${this.apiBaseUrl}product/SeenNotificaion?id=${id}`, {}, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -616,8 +542,6 @@ export class FormService {
   }
 
   setReRegistrationProduct(event) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -626,7 +550,7 @@ export class FormService {
 
     event = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}requests/ReregRequest`, event, options)
+    return this.http.post(`${this.apiBaseUrl}product/ReNotification`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -634,8 +558,6 @@ export class FormService {
   }
 
   setReRegistrationKitProduct(event) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -644,7 +566,7 @@ export class FormService {
 
     event = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}RequestsKit/ReregRequest`, event, options)
+    return this.http.post(`${this.apiBaseUrl}product/KitReNotification`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -652,8 +574,6 @@ export class FormService {
   }
 
   setVariationProduct(event) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -662,7 +582,7 @@ export class FormService {
 
     event = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}requests/VariationRequest`, event, options)
+    return this.http.post(`${this.apiBaseUrl}product/VariationRequest`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -670,8 +590,6 @@ export class FormService {
   }
 
   setManufacturingCompany(event) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -685,7 +603,7 @@ export class FormService {
 
     const JSONData = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}manufactory_company`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}product/manufactorycompany`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -693,8 +611,6 @@ export class FormService {
   }
 
   setGeneralEnquiries(event) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -710,7 +626,7 @@ export class FormService {
 
     const JSONData = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}Requests/PostInquery`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}product/PostInquery`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -718,8 +634,6 @@ export class FormService {
   }
 
   setCustomRelease(event) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -728,7 +642,7 @@ export class FormService {
 
     const JSONData = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}Requests/PostInquery`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}product/CustomRelease`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -736,8 +650,6 @@ export class FormService {
   }
 
   setBatch(event) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
@@ -746,7 +658,7 @@ export class FormService {
 
     const JSONData = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}/product_batches`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}product/productbatches`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -754,15 +666,13 @@ export class FormService {
   }
 
   getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
-    this.getToken();
-
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}variation_group_fields?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/variationgroups?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
