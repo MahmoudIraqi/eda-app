@@ -208,7 +208,6 @@ export class TestCustomReleaseComponent implements OnInit {
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   editDetailedRowStatus = false;
   editIndex;
-
   editIngrediantDetailedRowStatus = false;
   editIngrediantIndex;
   editProductIndex = false;
@@ -236,6 +235,7 @@ export class TestCustomReleaseComponent implements OnInit {
   activeTabIndex;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
+  estimatedValue;
 
   constructor(private getService: FormService,
               private readonly route: ActivatedRoute,

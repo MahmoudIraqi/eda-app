@@ -23,6 +23,7 @@ export class GeneralEnquireiesComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
+  estimatedValue;
 
   constructor(private getService: FormService,
               private fb: FormBuilder,

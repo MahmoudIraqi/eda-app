@@ -55,6 +55,7 @@ export class InspectionComponent implements OnInit {
   alertErrorNotification: any;
   isLoading: boolean = false;
   productId;
+  estimatedValue;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute) {
   }

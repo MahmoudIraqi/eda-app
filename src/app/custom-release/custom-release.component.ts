@@ -189,6 +189,7 @@ export class CustomReleaseComponent implements OnInit {
   filteredOptionsForFunction: Observable<LookupState[]>;
   disabledSaveButton: boolean = false;
   activeTabIndex;
+  estimatedValue;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
 

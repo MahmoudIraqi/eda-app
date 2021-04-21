@@ -35,6 +35,7 @@ export class ReRegistrationComponent implements OnInit {
   alertNotificationStatus: boolean = false;
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
+  estimatedValue;
 
   constructor(private getService: FormService) {
   }

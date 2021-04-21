@@ -41,6 +41,7 @@ export class VariationComponent implements OnInit {
   alertErrorNotification: any;
   whichVariation;
   productNotificationNumber;
+  estimatedValue;
 
   constructor(private getService: FormService, private route: ActivatedRoute) {
   }
