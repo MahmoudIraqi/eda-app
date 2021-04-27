@@ -279,6 +279,8 @@ export class FormService {
 
     data = JSON.stringify(data);
 
+    console.log('data', data);
+
     return this.http.post(`${this.apiBaseUrl}product/Notification`, data, options)
       .pipe(map((res: any) => {
           return res;
@@ -673,6 +675,20 @@ export class FormService {
     const options = {headers};
 
     return this.http.get(`${this.apiBaseUrl}Lookups/variationgroups?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getVariablesPricesLookUp() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Lookups/variables`, options)
       .pipe(map((res: any) => {
           return res;
         }),

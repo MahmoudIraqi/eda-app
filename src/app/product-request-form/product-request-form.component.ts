@@ -39,6 +39,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
+  @Input() getAllLookupsStatus;
   @Input() legacyStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
@@ -396,12 +397,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     ];
 
+
     this.getFormAsStarting(this.editData);
 
     this.getDisabledValues();
   }
 
   ngOnInit(): void {
+
     this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
     this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
     this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regProductForAllRequestedType.get('applicant'), this.formData.applicantList);
@@ -553,28 +556,39 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   deletedPackagingIdsList(event) {
+    this.deletedPackagingList = event;
     this.regProductForAllRequestedType.get('deletedpacklstIds').patchValue(event);
-
-    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
   }
 
-  cancelThePackagingRows(index) {
+  cancelThePackagingRows(index, event) {
+    this.deletedPackagingList.push(event.value.volumesID);
+    this.regProductForAllRequestedType.get('deletedpacklstIds').patchValue(this.deletedPackagingList);
     this.PackagingRows().removeAt(index);
-    this.packagingListTable.tableBody.pop();
+
+    this.equalTheNewPackagingTable('cancel');
+  }
+
+  editDataPackagingsRows(fromWhere) {
+    this.editPackagingRowStatus = false;
+    this.equalTheNewPackagingTable(fromWhere);
   }
 
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
+
+    this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
+    this.packagingListTable.tableBody.splice(event, 1);
   }
 
   equalTheNewPackagingTable(fromWhere) {
     if (fromWhere !== 'form') {
-      if (fromWhere === 'remove') {
-        this.regProductForAllRequestedType.get('packagingTable').value.pop();
+      this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
+
+      if (fromWhere === 'cancel') {
+        this.packagingListTable.tableBody.pop();
       }
 
-      this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
     }
   }
 
@@ -595,7 +609,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ingrediantDetails: this.fb.array([this.fb.group({
         Ingredient_ID: this.fb.control(''),
         ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', Validators.required),
+        concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
         function: this.fb.control('', Validators.required),
       })])
     }));
@@ -618,21 +632,23 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   deletedDetailsIdsList(event) {
-    console.log('event', event);
     this.regProductForAllRequestedType.get('deletedProductDetailsIds').patchValue(event);
-
-    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
   }
 
   editTheDetailsRow(event) {
     this.editDetailedRowStatus = true;
     this.editIndex = event;
+
+    this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+    this.detailsListTable.tableBody.splice(event, 1);
   }
 
   equalTheNewDetailsTable(fromWhere) {
-      if (fromWhere !== 'form') {
-        this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
-      }
+    if (fromWhere !== 'form') {
+      this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+
+      this.detailsListTable.tableBody.pop();
+    }
   }
 
   //functions for IngrediantDetailsRows
@@ -659,10 +675,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   deletedIngrediantIdsList(event) {
-    console.log('event', event);
     this.regProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
-
-    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
   }
 
   saveData() {
@@ -715,6 +728,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         }
       });
 
+      console.log('this.formData.manufacturingCompanyList', this.formData.manufacturingCompanyList);
+      console.log('data.manufacturingCompany', data.manufacturingCompany);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
@@ -754,7 +769,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
-      console.log('this.regProductForAllRequestedType.', this.regProductForAllRequestedType.value);
     } else {
       this.regProductForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
@@ -863,7 +877,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   filterInsideList(value, list): LookupState[] {
     let filterValue;
     if (value) {
-      filterValue = value.toLowerCase();
+      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
     }
 
     return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);

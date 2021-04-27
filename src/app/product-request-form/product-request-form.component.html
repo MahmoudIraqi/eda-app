@@ -652,14 +652,14 @@
                       <button type="button"
                               *ngIf="editPackagingRowStatus"
                               class="btn btn-primary ml-auto"
-                              (click)="editThePackagingRows($event)"
+                              (click)="editDataPackagingsRows('edit')"
                               [disabled]="PackagingRows().status === 'INVALID'">
                         Edit Details Row
                       </button>
                       <button type="button"
                               *ngIf="!editPackagingRowStatus && PackagingRows().controls.length > 1"
                               class="btn btn-primary ml-2"
-                              (click)="cancelThePackagingRows((PackagingRows().controls.length-1))">
+                              (click)="cancelThePackagingRows((PackagingRows().controls.length-1),(PackagingRows().controls[PackagingRows().controls.length-1]))">
                         Cancel Details Row
                       </button>
                     </div>
@@ -678,7 +678,7 @@
                                 [whichTable]="'newRequestForPackaging'"
                                 (removePackagingRowOutput)="removePackagingRows($event)"
                                 (removePackagingRowIDs)="deletedPackagingIdsList($event)"
-                                (editDetailedRowOutput)="editThePackagingRows($event)"
+                                (editPackagingRowIDs)="editThePackagingRows($event)"
                 ></app-table-list>
               </div>
             </div>
@@ -708,7 +708,8 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 mb-3">
                   <mat-form-field class="example-full-width">
-                    <div *ngIf="!legacyStatus && productComments && productComments.fragrance" class="InfoIconContainer">
+                    <div *ngIf="!legacyStatus && productComments && productComments.fragrance"
+                         class="InfoIconContainer">
                           <span class="infoIcon" tooltip="{{productComments.fragrance}}"
                                 placement="top">
                             <i class="fas fa-info-circle"></i>
@@ -765,7 +766,8 @@
                           <div class="row">
                             <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill" class="example-full-width inputBesideSelect">
-                                <div *ngIf="!legacyStatus && productComments && productComments.ingrediant" class="InfoIconContainer">
+                                <div *ngIf="!legacyStatus && productComments && productComments.ingrediant"
+                                     class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.ingrediant}}"
                                         placement="top">
                                     <i class="fas fa-info-circle"></i>
@@ -822,7 +824,8 @@
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                               <mat-form-field appearance="fill" class="example-full-width inputBesideSelect">
-                                <div *ngIf="!legacyStatus && productComments && productComments.function" class="InfoIconContainer">
+                                <div *ngIf="!legacyStatus && productComments && productComments.function"
+                                     class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.function}}"
                                         placement="top">
                                     <i class="fas fa-info-circle"></i>

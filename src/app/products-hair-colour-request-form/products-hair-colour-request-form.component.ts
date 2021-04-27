@@ -223,6 +223,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   filteredOptionsForIngradiant: Observable<LookupState[]>;
   filteredOptionsForFunction: Observable<LookupState[]>;
 
+  deletedPackagingList = [];
+
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   isDraft: boolean = false;
@@ -539,30 +541,40 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     });
   }
 
-  cancelThePackagingRows(index) {
-    this.PackagingRows().removeAt(index);
-    this.packagingListTable.tableBody.pop();
-  }
-
   deletedPackagingIdsList(event) {
+    this.deletedPackagingList = event;
     this.regHairColorantProductForAllRequestedType.get('deletedpacklstIds').patchValue(event);
-
-    console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType);
   }
 
+  cancelThePackagingRows(index, event) {
+    this.deletedPackagingList.push(event.value.volumesID);
+    this.regHairColorantProductForAllRequestedType.get('deletedpacklstIds').patchValue(this.deletedPackagingList);
+    this.PackagingRows().removeAt(index);
+
+    this.equalTheNewPackagingTable('cancel');
+  }
+
+  editDataPackagingsRows(fromWhere) {
+    this.editPackagingRowStatus = false;
+    this.equalTheNewPackagingTable(fromWhere);
+  }
 
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
+
+    this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
+    this.packagingListTable.tableBody.splice(event, 1);
   }
 
   equalTheNewPackagingTable(fromWhere) {
     if (fromWhere !== 'form') {
-      if (fromWhere === 'remove') {
-        this.regHairColorantProductForAllRequestedType.get('packagingTable').value.pop();
+      this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
+
+      if (fromWhere === 'cancel') {
+        this.packagingListTable.tableBody.pop();
       }
 
-      this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
     }
   }
 
@@ -583,10 +595,11 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       ingrediantDetails: this.fb.array([this.fb.group({
         Ingredient_ID: this.fb.control(''),
         ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', Validators.required),
+        concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
         function: this.fb.control('', Validators.required),
       })])
     }));
+    this.getLookupForFormArray();
   }
 
   cancelTheDetailsRows(index) {
@@ -605,26 +618,23 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   deletedDetailsIdsList(event) {
-    console.log('event', event);
     this.regHairColorantProductForAllRequestedType.get('deletedProductDetailsIds').patchValue(event);
-
-    console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType);
   }
 
   editTheDetailsRow(event) {
     this.editDetailedRowStatus = true;
     this.editIndex = event;
+
+    this.detailsListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('detailsTable').value;
+    this.detailsListTable.tableBody.splice(event, 1);
   }
 
   equalTheNewDetailsTable(fromWhere) {
-
     if (fromWhere !== 'form') {
-      if (fromWhere === 'remove') {
-        this.regHairColorantProductForAllRequestedType.get('detailsTable').value.pop();
-      }
       this.detailsListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('detailsTable').value;
-    }
 
+      this.detailsListTable.tableBody.pop();
+    }
   }
 
   //functions for IngrediantDetailsRows
@@ -650,10 +660,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   deletedIngrediantIdsList(event) {
-    console.log('event', event);
     this.regHairColorantProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
-
-    console.log('regHairColorantProductForAllRequestedType', this.regHairColorantProductForAllRequestedType);
   }
 
   saveData() {

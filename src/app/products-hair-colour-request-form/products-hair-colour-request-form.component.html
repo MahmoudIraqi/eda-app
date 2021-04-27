@@ -681,7 +681,7 @@
                       <button type="button"
                               *ngIf="!editPackagingRowStatus && PackagingRows().controls.length > 1"
                               class="btn btn-primary ml-2"
-                              (click)="cancelThePackagingRows((PackagingRows().controls.length-1))">
+                              (click)="cancelThePackagingRows((PackagingRows().controls.length-1),(PackagingRows().controls[PackagingRows().controls.length-1]))">
                         Cancel Details Row
                       </button>
                     </div>
@@ -698,9 +698,9 @@
               <div class="RequestingTable">
                 <app-table-list [data]="packagingListTable"
                                 [whichTable]="'newRequestForPackaging'"
-                                (removeDetailsRowOutput)="removePackagingRows($event)"
+                                (removePackagingRowOutput)="removePackagingRows($event)"
                                 (removePackagingRowIDs)="deletedPackagingIdsList($event)"
-                                (editDetailedRowOutput)="editThePackagingRows($event)"
+                                (editPackagingRowIDs)="editThePackagingRows($event)"
                 ></app-table-list>
               </div>
             </div>

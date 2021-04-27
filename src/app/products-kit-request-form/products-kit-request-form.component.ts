@@ -537,8 +537,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         }
       });
 
-      console.log('formData', this.formData);
-
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
@@ -561,9 +559,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
-
-      console.log(' this.regKitForAllRequestedType', this.regKitForAllRequestedType.value);
-      console.log('data', data);
 
       this.regKitForAllRequestedType.patchValue({
         ...data,
@@ -637,7 +632,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     if (status === 'registered') {
 
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit`').subscribe((res: any) => {
+      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
         if (res) {
           if (res.canUse) {
             const objectData = {

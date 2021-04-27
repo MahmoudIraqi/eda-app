@@ -53,6 +53,7 @@ export class TableListComponent implements OnInit, OnChanges {
   @Output() removeDetailsRowIDs = new EventEmitter();
   @Output() removePackagingRowOutput = new EventEmitter();
   @Output() removePackagingRowIDs = new EventEmitter();
+  @Output() editPackagingRowIDs = new EventEmitter();
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
   @Output() removeIngrediantDetailsIDs = new EventEmitter();
   @Output() removeIngrediantRowOutput = new EventEmitter();
@@ -75,8 +76,12 @@ export class TableListComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.data) {
       if (this.data.tableBody.length > 0) {
+
+
+
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
           if (this.whichTable !== 'manufacturing' && this.whichTable !== 'batchTable' && this.whichTable !== 'notificationList') {
+            this.data.tableBody.sort((a, b) => (a.ID > b.ID) ? 1 : -1);
             this.data.tableBody.map(x => {
               x.ID = x.ID.toString();
               x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
@@ -99,12 +104,6 @@ export class TableListComponent implements OnInit, OnChanges {
               });
             }
           });
-
-          console.log('this.data.tableBody', this.data.tableBody);
-
-          this.data.tableBody.sort((a, b) => (a.ID > b.ID) ? 1 : -1);
-
-          console.log('this.data.tableBody_After', this.data.tableBody);
 
           this.contentArray = new Array(this.data.tableBody.length).fill('');
           this.contentArray = this.contentArray.map((v: string, i: number) => this.data.tableBody[i]);
@@ -146,6 +145,10 @@ export class TableListComponent implements OnInit, OnChanges {
       this.deletedIdsListForPackaging.push(requestID);
       this.removePackagingRowIDs.emit(this.deletedIdsListForPackaging);
     }
+  }
+
+  editPackagingRowFunction(i) {
+    this.editPackagingRowIDs.emit(i);
   }
 
   removeIngrediantDetailsRowFunction(childIndex, i, indexRow, idRequest) {

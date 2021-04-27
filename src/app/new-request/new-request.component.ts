@@ -53,6 +53,7 @@ export class NewRequestComponent implements OnInit {
   updatingProductData: any;
   requestId;
   estimatedValue;
+  getAllLookupsStatus = false;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute) {
   }
