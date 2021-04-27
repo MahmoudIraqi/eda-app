@@ -5,6 +5,8 @@ import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormService} from '../services/form.service';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
 import {ActivatedRoute} from '@angular/router';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
+import {InputService} from '../services/input.service';
 
 
 @Component({
@@ -54,8 +56,10 @@ export class NewRequestComponent implements OnInit {
   requestId;
   estimatedValue;
   getAllLookupsStatus = false;
+  companyProfileId: any;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute,
+              private inputService: InputService) {
   }
 
   ngOnInit(): void {
@@ -121,6 +125,14 @@ export class NewRequestComponent implements OnInit {
       this.formData.trackType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      console.log('res', res);
+      this.companyProfileId = res.payload;
+    });
 
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {

@@ -33,6 +33,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Input() lookupsData;
   @Input() editData;
   @Input() legacyStatus;
+  @Input() companyProfile;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
@@ -212,7 +213,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
-  filteredOptionsForApplicant: Observable<LookupState[]>;
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
   filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
   filteredOptionsForPhysicalState: Observable<LookupState[]>;
@@ -386,6 +386,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
     this.getFormAsStarting(this.editData);
 
+    this.setApplicant(this.companyProfile);
+
     this.getDisabledValues();
   }
 
@@ -393,7 +395,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.filteredOptionsForProductColor = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('productColor'), this.formData.productColorList);
     this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
     this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
-    this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('applicant'), this.formData.applicantList);
     this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
     this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
     this.filteredOptionsForPhysicalState = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
@@ -419,7 +420,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
     this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
     this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
-    this._subscribeToClosingActions('applicant', this.filteredOptionsForApplicant);
     this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
     this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
     this._subscribeToClosingActions('physicalState', this.filteredOptionsForPhysicalState);
@@ -718,7 +718,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
-      this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
       this.formData.physicalStateList.filter(option => option.ID === data.physicalState).map(x => data.physicalState = x.NAME);
@@ -895,6 +894,13 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     });
 
     return data;
+  }
+
+  setApplicant(companyProfileID) {
+    console.log('companyProfileID', companyProfileID);
+    this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regHairColorantProductForAllRequestedType.patchValue({
+      applicant: x.NAME
+    }));
   }
 
   private _subscribeToClosingActions(field, list): void {

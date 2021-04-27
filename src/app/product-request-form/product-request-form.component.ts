@@ -45,6 +45,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() variationFieldsStatus;
   @Input() variationFields;
   @Input() lookupsData;
+  @Input() companyProfile;
   @Input() kitProductStatus;
   @Input() saveResponseDataForRegisterProductID;
   @Output() saveDataOutput = new EventEmitter();
@@ -231,7 +232,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
-  filteredOptionsForApplicant: Observable<LookupState[]>;
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
   filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
   filteredOptionsForPhysicalState: Observable<LookupState[]>;
@@ -397,8 +397,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     ];
 
-
     this.getFormAsStarting(this.editData);
+
+    console.log('this.companyProfile', this.companyProfile);
+    this.setApplicant(this.companyProfile);
 
     this.getDisabledValues();
   }
@@ -407,7 +409,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
     this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
-    this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regProductForAllRequestedType.get('applicant'), this.formData.applicantList);
     this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
     this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
     this.filteredOptionsForPhysicalState = this.filterLookupsFunction(this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
@@ -432,7 +433,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   ngAfterViewInit() {
     this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
     this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
-    this._subscribeToClosingActions('applicant', this.filteredOptionsForApplicant);
     this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
     this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
     this._subscribeToClosingActions('physicalState', this.filteredOptionsForPhysicalState);
@@ -732,7 +732,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       console.log('data.manufacturingCompany', data.manufacturingCompany);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
-      this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
       this.formData.physicalStateList.filter(option => option.ID === data.physicalState).map(x => data.physicalState = x.NAME);
@@ -906,6 +905,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
 
     return data;
+  }
+
+  setApplicant(companyProfileID){
+    this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regProductForAllRequestedType.patchValue({
+      applicant: x.NAME
+    }));
   }
 
   private _subscribeToClosingActions(field, list): void {
