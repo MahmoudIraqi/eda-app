@@ -33,7 +33,7 @@ import {ProductRequestFormComponent} from './product-request-form/product-reques
 import {ProductsKitRequestFormComponent} from './products-kit-request-form/products-kit-request-form.component';
 import {ProductsHairColourRequestFormComponent} from './products-hair-colour-request-form/products-hair-colour-request-form.component';
 import {ProductsKitHairColourRequestFormComponent} from './products-kit-hair-colour-request-form/products-kit-hair-colour-request-form.component';
-import {DatePipe, DecimalPipe} from '@angular/common';
+import {CurrencyPipe, DatePipe, DecimalPipe} from '@angular/common';
 import {FormService} from './services/form.service';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './login/login.component';
@@ -133,7 +133,7 @@ import { DraftLegacyComponent } from './draft-legacy/draft-legacy.component';
     MatAutocompleteModule,
     MatNativeDateModule
   ],
-  providers: [DecimalPipe, DatePipe, FormService],
+  providers: [DecimalPipe, DatePipe, FormService, CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

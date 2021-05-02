@@ -81,11 +81,8 @@ export class InspectionComponent implements OnInit {
     this.isLoading = true;
 
     if (this.selectedFormType === 1) {
-      console.log('event_1', event);
     } else if (this.selectedFormType === 2) {
-      console.log('event_2', event);
     } else if (this.selectedFormType === 3) {
-      console.log('event_3', event);
     }
   }
 
@@ -93,11 +90,8 @@ export class InspectionComponent implements OnInit {
     this.isLoading = true;
     this.successSubmission = false;
     if (this.selectedFormType === 1) {
-      console.log('event_1_submit', event);
     } else if (this.selectedFormType === 2) {
-      console.log('event_2_submit', event);
     } else if (this.selectedFormType === 3) {
-      console.log('event_3_submit', event);
     }
   }
 

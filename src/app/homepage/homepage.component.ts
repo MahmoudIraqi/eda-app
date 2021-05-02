@@ -27,7 +27,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Tell & Do variation',
-            link: '/new-request/tell_do-variation'
+            link: '/new-request/tell_do_variation'
           },
           {
             name: 'Do & Tell Variation',
@@ -63,7 +63,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Tell & Do variation',
-            link: '/track-request/tell_do-variation'
+            link: '/track-request/tell_do_variation'
           },
           {
             name: 'Do & Tell Variation',
@@ -95,7 +95,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Tell & Do variation',
-            link: '/draft-request/tell_do-variation'
+            link: '/draft-request/tell_do_variation'
           },
           {
             name: 'Do & Tell Variation',

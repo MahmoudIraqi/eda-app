@@ -897,7 +897,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   setApplicant(companyProfileID) {
-    console.log('companyProfileID', companyProfileID);
     this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regHairColorantProductForAllRequestedType.patchValue({
       applicant: x.NAME
     }));

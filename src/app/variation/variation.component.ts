@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
+import {InputService} from '../services/input.service';
+import {CurrencyPipe} from '@angular/common';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-variation',
@@ -42,8 +45,13 @@ export class VariationComponent implements OnInit {
   whichVariation;
   productNotificationNumber;
   estimatedValue;
+  selectedTrackType;
+  selectedRequestedType;
+  variablesPricingList: any;
+  trackTypeVariable;
+  typeOfNotificationVariable;
 
-  constructor(private getService: FormService, private route: ActivatedRoute) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
@@ -117,12 +125,24 @@ export class VariationComponent implements OnInit {
       this.NotificationNo = this.productNotificationNumber;
       this.applyProduct(this.NotificationNo);
     }
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
   }
 
   applyProduct(NotificationNo) {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
       if (res.canUse) {
+        console.log('res', res);
+        this.selectedTrackType = res.Tracktype;
+        this.selectedRequestedType = res.typeOfRegistration;
         this.productData = res;
         this.typeOfRegistrationForProduct = res.typeOfRegistration;
         this.isLoading = false;
@@ -176,6 +196,7 @@ export class VariationComponent implements OnInit {
 
   onSelectionChange(event) {
     this.variationFields = event.value;
+    this.getPricing();
   }
 
   alertForSaveRequest() {
@@ -209,6 +230,28 @@ export class VariationComponent implements OnInit {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  getPricing() {
+    console.log('formData', this.formData);
+    console.log('variablesPricingList', this.variablesPricingList);
+
+    console.log('variationGroupList', this.variationGroupList);
+    console.log('typeOfVariationForProduct', this.typeOfVariationForProduct);
+
+    console.log('selectedTrackType', this.selectedTrackType);
+    console.log('selectedRequestedType', this.selectedRequestedType);
+
+    if (this.trackTypeVariable && this.typeOfNotificationVariable) {
+      const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
+
+      console.log('concatVariableCode', concatVariableCode);
+
+
+      this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
+        this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
+      }) : null;
+    }
   }
 
 }

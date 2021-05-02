@@ -399,7 +399,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.getFormAsStarting(this.editData);
 
-    console.log('this.companyProfile', this.companyProfile);
     this.setApplicant(this.companyProfile);
 
     this.getDisabledValues();
@@ -728,8 +727,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         }
       });
 
-      console.log('this.formData.manufacturingCompanyList', this.formData.manufacturingCompanyList);
-      console.log('data.manufacturingCompany', data.manufacturingCompany);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);

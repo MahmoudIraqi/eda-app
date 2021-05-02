@@ -7,6 +7,7 @@ import {convertToSpecialObject} from '../../utils/formDataFunction';
 import {ActivatedRoute} from '@angular/router';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {InputService} from '../services/input.service';
+import {CurrencyPipe} from '@angular/common';
 
 
 @Component({
@@ -57,9 +58,12 @@ export class NewRequestComponent implements OnInit {
   estimatedValue;
   getAllLookupsStatus = false;
   companyProfileId: any;
+  variablesPricingList: any;
+  trackTypeVariable;
+  typeOfNotificationVariable;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute,
-              private inputService: InputService) {
+              private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
@@ -130,7 +134,6 @@ export class NewRequestComponent implements OnInit {
       filter(x => x.type === 'CompanyId'),
       distinctUntilChanged()
     ).subscribe(res => {
-      console.log('res', res);
       this.companyProfileId = res.payload;
     });
 
@@ -145,6 +148,15 @@ export class NewRequestComponent implements OnInit {
         this.updatingProductData = res;
       }, error => this.handleError(error));
     }
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
   }
 
   getFormType(event) {
@@ -251,6 +263,22 @@ export class NewRequestComponent implements OnInit {
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: error.message};
     this.isLoading = false;
+  }
+
+  getPricing(fromWhere) {
+    if (fromWhere === 'trackType') {
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+    } else if (fromWhere === 'typeOfNotification') {
+      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+    }
+
+    if (this.trackTypeVariable && this.typeOfNotificationVariable) {
+      const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
+
+      this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
+        this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
+      }) : null;
+    }
   }
 
 }

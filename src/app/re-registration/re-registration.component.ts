@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
+import {InputService} from '../services/input.service';
+import {CurrencyPipe} from '@angular/common';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-re-registration',
@@ -36,8 +40,13 @@ export class ReRegistrationComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   estimatedValue;
+  selectedTrackType;
+  selectedRequestedType;
+  variablesPricingList: any;
+  trackTypeVariable;
+  typeOfNotificationVariable;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
@@ -103,12 +112,24 @@ export class ReRegistrationComponent implements OnInit {
       this.formData.trackType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
   }
 
   applyProduct(NotificationNo) {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'renotification').subscribe((res: any) => {
       if (res.canUse) {
+        this.selectedTrackType = res.Tracktype;
+        this.selectedRequestedType = res.typeOfRegistration;
+        this.getPricing();
         this.productData = res;
         this.isLoading = false;
       } else {
@@ -180,5 +201,18 @@ export class ReRegistrationComponent implements OnInit {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  getPricing() {
+    this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+    this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+
+    if (this.trackTypeVariable && this.typeOfNotificationVariable) {
+      const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
+
+      this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
+        this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
+      }) : null;
+    }
   }
 }
