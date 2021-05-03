@@ -44,8 +44,8 @@ const routes: Routes = [
           {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do_variation', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do_variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},
-          {path: 'do_tell-variation', component: VariationComponent, data: {animation: 'new-request'}},
-          {path: 'do_tell-variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},
+          {path: 'do_tell_variation', component: VariationComponent, data: {animation: 'new-request'}},
+          {path: 'do_tell_variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'custom-release', component: CustomReleaseComponent, data: {animation: 'new-request'}},
           {path: 'custom-release2', component: TestCustomReleaseComponent, data: {animation: 'new-request'}},
           {path: 'inspection', component: InspectionComponent, data: {animation: 'new-request'}},
@@ -58,7 +58,7 @@ const routes: Routes = [
           {path: 'registration', component: TrackRequestComponent, data: {animation: 'track-request'}},
           {path: 're-registration', component: TrackReRegistrationRequestComponent, data: {animation: 'track-request'}},
           {path: 'tell_do_variation', component: TrackVariationComponent, data: {animation: 'track-request'}},
-          {path: 'do_tell-variation', component: TrackVariationComponent, data: {animation: 'track-request'}},
+          {path: 'do_tell_variation', component: TrackVariationComponent, data: {animation: 'track-request'}},
           {path: 'general-enquiries', component: TrackGeneralEnquiriesComponent, data: {animation: 'track-request'}},
           {path: 'legacy', component: TrackLegacyComponent, data: {animation: 'track-request'}},
         ], canActivate: [ApplicationGuard]
@@ -68,7 +68,7 @@ const routes: Routes = [
         children: [
           {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}},
           {path: 'tell_do_variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
-          {path: 'do_tell-variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
+          {path: 'do_tell_variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
           {path: 'legacy', component: DraftLegacyComponent, data: {animation: 'draft-request'}},
         ], canActivate: [ApplicationGuard]
       },

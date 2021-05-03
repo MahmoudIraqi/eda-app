@@ -352,7 +352,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=track&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=track&variationTypeID=${whichVariation === 'do_tell_variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -450,7 +450,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell_variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),

@@ -21,7 +21,7 @@ export class InspectionComponent implements OnInit {
       },
       {
         ID: 2,
-        NAME: 'Completion of the NODCAR labs'
+        NAME: 'Completion of the CADC labs'
       },
       {
         ID: 3,
@@ -31,7 +31,7 @@ export class InspectionComponent implements OnInit {
     fieldsType: [
       {
         ID: 1,
-        NAME: 'Withdrawing a complete product from registration notices issued for export only'
+        NAME: 'Sampling a complete product from registration notices issued for export only'
       },
       {
         ID: 2,
@@ -39,7 +39,7 @@ export class InspectionComponent implements OnInit {
       },
       {
         ID: 3,
-        NAME: 'Re-withdraw'
+        NAME: 'Re-sampling'
       }
     ],
   };

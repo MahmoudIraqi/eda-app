@@ -142,11 +142,10 @@ export class VariationComponent implements OnInit {
       if (res.canUse) {
         console.log('res', res);
         this.selectedTrackType = res.Tracktype;
-        this.selectedRequestedType = res.typeOfRegistration;
         this.productData = res;
         this.typeOfRegistrationForProduct = res.typeOfRegistration;
         this.isLoading = false;
-        this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell-variation' ? 2 : 1);
+        this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
       } else {
         this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
       }
@@ -173,7 +172,7 @@ export class VariationComponent implements OnInit {
     const data = {
       ...this.productData,
       ...event,
-      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell-variation' ? 4 : 3
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
 
     this.getService.setVariationProduct(data).subscribe((res: any) => {
@@ -196,6 +195,7 @@ export class VariationComponent implements OnInit {
 
   onSelectionChange(event) {
     this.variationFields = event.value;
+    console.log('this.variationFields', this.variationFields);
     this.getPricing();
   }
 
@@ -233,25 +233,29 @@ export class VariationComponent implements OnInit {
   }
 
   getPricing() {
-    console.log('formData', this.formData);
-    console.log('variablesPricingList', this.variablesPricingList);
+    this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
 
-    console.log('variationGroupList', this.variationGroupList);
-    console.log('typeOfVariationForProduct', this.typeOfVariationForProduct);
+    let allCodes = [];
+    let PricesList = [];
 
-    console.log('selectedTrackType', this.selectedTrackType);
-    console.log('selectedRequestedType', this.selectedRequestedType);
+    this.variationFields.map(x => {
+      allCodes.push(`${this.trackTypeVariable}_${x.Code}`);
+    });
 
-    if (this.trackTypeVariable && this.typeOfNotificationVariable) {
-      const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
+    console.log('allCodes', allCodes);
 
-      console.log('concatVariableCode', concatVariableCode);
+    if (this.trackTypeVariable && allCodes.length > 0) {
+      allCodes.map(code => {
+        console.log('this.variablesPricingList.LKUPVARIABLESDto', this.variablesPricingList);
+        this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === code).map(y => {
+          PricesList.push(y.variableValue);
+        }) : null;
+      });
 
-
-      this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
-        this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
-      }) : null;
+      console.log('PricesList.reduce((acc, curr) => acc + curr)', PricesList.reduce((acc, curr) => acc + curr));
+      this.estimatedValue = this.currencyPipe.transform(PricesList.reduce((acc, curr) => acc + curr), 'EGP', 'symbol');
+    } else {
+      this.estimatedValue = '';
     }
   }
-
 }
