@@ -20,7 +20,6 @@ export class NewRequestContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.getService.getVariablesPricesLookUp().subscribe((res: any) => {
-      console.log('res_Variables', res);
       this.inputService.publish({type: 'variablesPrices', payload: res});
     }, error => this.handleError(error));
   }

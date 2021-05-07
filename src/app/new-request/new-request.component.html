@@ -22,7 +22,8 @@
               <div class="col-12 col-sm-9">
                 <mat-form-field appearance="fill">
                   <mat-label>Type Of Notification</mat-label>
-                  <mat-select (selectionChange)="getRequestType($event); getPricing('typeOfNotification');" [(ngModel)]="selectedRequestedType" required>
+                  <mat-select (selectionChange)="getRequestType($event); getPricing('typeOfNotification');"
+                              [(ngModel)]="selectedRequestedType" required>
                     <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>
@@ -45,7 +46,8 @@
               <div class="col-12 col-sm-6">
                 <mat-form-field appearance="fill">
                   <mat-label>Track Type</mat-label>
-                  <mat-select (selectionChange)="getTrackType($event); getPricing('trackType');" [(ngModel)]="this.selectedTrackType" required>
+                  <mat-select (selectionChange)="getTrackType($event); getPricing('trackType');"
+                              [(ngModel)]="this.selectedTrackType" required>
                     <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>
@@ -70,9 +72,15 @@
               [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"
               [lookupsData]="formData"
+              [manufacturingCompanyList]="manufacturingCompanyList"
               [getAllLookupsStatus]="getAllLookupsStatus"
               [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
+              (submitDataOutput)="onSubmit($event)"
+              (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
+              (companyProfileSearchText)="filterInBigSizeLookups('licenseHolder', $event)"
+              (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
+              (submitDataOutput)="onSubmit($event)"
               (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>
           </div>

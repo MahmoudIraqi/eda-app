@@ -50,12 +50,21 @@ export class VariationComponent implements OnInit {
   variablesPricingList: any;
   trackTypeVariable;
   typeOfNotificationVariable;
+  companyProfileId: any;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
     this.isLoading = true;
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.companyProfileId = res.payload;
+    });
+
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
       if (res) {
@@ -72,7 +81,7 @@ export class VariationComponent implements OnInit {
       this.formData.licenseHolderCountryList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+    this.getService.getManufacturingCompanyLookUp(1,'').subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
@@ -100,11 +109,11 @@ export class VariationComponent implements OnInit {
       this.formData.productColorList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
+    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
       this.formData.ingrediantList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
+    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
       this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
       this.isLoading = false;
@@ -140,7 +149,6 @@ export class VariationComponent implements OnInit {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
       if (res.canUse) {
-        console.log('res', res);
         this.selectedTrackType = res.Tracktype;
         this.productData = res;
         this.typeOfRegistrationForProduct = res.typeOfRegistration;
@@ -195,7 +203,6 @@ export class VariationComponent implements OnInit {
 
   onSelectionChange(event) {
     this.variationFields = event.value;
-    console.log('this.variationFields', this.variationFields);
     this.getPricing();
   }
 
@@ -242,17 +249,13 @@ export class VariationComponent implements OnInit {
       allCodes.push(`${this.trackTypeVariable}_${x.Code}`);
     });
 
-    console.log('allCodes', allCodes);
-
     if (this.trackTypeVariable && allCodes.length > 0) {
       allCodes.map(code => {
-        console.log('this.variablesPricingList.LKUPVARIABLESDto', this.variablesPricingList);
         this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === code).map(y => {
           PricesList.push(y.variableValue);
         }) : null;
       });
 
-      console.log('PricesList.reduce((acc, curr) => acc + curr)', PricesList.reduce((acc, curr) => acc + curr));
       this.estimatedValue = this.currencyPipe.transform(PricesList.reduce((acc, curr) => acc + curr), 'EGP', 'symbol');
     } else {
       this.estimatedValue = '';

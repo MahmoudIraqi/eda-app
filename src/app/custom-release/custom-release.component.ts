@@ -3,12 +3,13 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
 import {DecimalPipe} from '@angular/common';
-import {map, startWith} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
 import {LookupState} from '../product-request-form/product-request-form.component';
 import {Observable, Subscription} from 'rxjs';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
+import {InputService} from '../services/input.service';
 
 @Component({
   selector: 'app-custom-release',
@@ -192,29 +193,36 @@ export class CustomReleaseComponent implements OnInit {
   estimatedValue;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
+  companyProfileId: any;
 
   constructor(private getService: FormService,
               private readonly route: ActivatedRoute,
               private fb: FormBuilder,
+              private inputService: InputService,
               private number: DecimalPipe) {
   }
 
   ngOnInit(): void {
     this.getFormAsStarting('');
 
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.companyProfileId = res.payload;
+    });
+
     this.getService.getCountryLookUp().subscribe((res: any) => {
       this.formData.manufacturingCountryList = res;
       this.isLoading = false;
     }, error => this.handleError(error), () => this.getLookupForFormArray());
-
-    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
+    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
       this.formData.applicantList = res;
       this.isLoading = false;
     }, error => this.handleError(error), () => {
       this.filteredOptionsForApplicant = this.filterLookupsFunction(this.customReleaseForm.get('applicant'), this.formData.applicantList);
     });
-
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+    this.getService.getManufacturingCompanyLookUp(1,'').subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
       this.isLoading = false;
     }, error => this.handleError(error), () => this.getLookupForFormArray());
@@ -226,7 +234,7 @@ export class CustomReleaseComponent implements OnInit {
       this.formData.unitOfMeasureList = res;
       this.isLoading = false;
     }, error => this.handleError(error), () => this.getLookupForFormArray());
-    this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
+    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
       this.formData.ingrediantList = res;
       this.isLoading = false;
     }, error => this.handleError(error), () => this.getLookupForFormArray());

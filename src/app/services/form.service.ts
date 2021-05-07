@@ -129,14 +129,14 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getManufacturingCompanyLookUp() {
+  getManufacturingCompanyLookUp(page, filterText) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/manufactorycompany`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/manufactorycompany?pagesize=100&pageNo=${page}&searchname=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -213,28 +213,28 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getProductIngrediantsLookUp() {
+  getProductIngrediantsLookUp(page, filterText) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients?pagesize=100&pageNo=${page}&searchname=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
         catchError(this.handleError));
   }
 
-  getCompanyProfileLookUp() {
+  getCompanyProfileLookUp(page, companyProfile, filterText) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/CompanyProfile`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/CompanyProfile?pageNo=${page}&pageSize=100&companyprofileid=${companyProfile}&searchName=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

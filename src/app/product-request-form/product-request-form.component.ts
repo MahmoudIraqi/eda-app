@@ -1,8 +1,8 @@
 import {
   AfterViewInit,
-  Component,
+  Component, DoCheck,
   ElementRef,
-  EventEmitter,
+  EventEmitter, HostListener,
   Input,
   OnChanges, OnDestroy,
   OnInit,
@@ -45,6 +45,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() variationFieldsStatus;
   @Input() variationFields;
   @Input() lookupsData;
+  @Input() manufacturingCompanyList;
   @Input() companyProfile;
   @Input() kitProductStatus;
   @Input() saveResponseDataForRegisterProductID;
@@ -53,6 +54,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Output() selectedTrackTypeForKit = new EventEmitter();
   @Output() selectedRegisteredTypeForKit = new EventEmitter();
   @Output() selectedRegisteredProductTypeForKit = new EventEmitter();
+  @Output() manufacturingSearchText = new EventEmitter();
+  @Output() companyProfileSearchText = new EventEmitter();
+  @Output() ingrediantSearchText = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -405,14 +409,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   ngOnInit(): void {
-
-    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
-    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
-    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
-    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
-    this.filteredOptionsForPhysicalState = this.filterLookupsFunction(this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
-    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction(this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
-    this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction('licenseHolder', this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
+    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction('countryOfLicenseHolder', this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
+    this.filteredOptionsForPhysicalState = this.filterLookupsFunction('physicalState', this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
+    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction('purposeOfUse', this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
+    this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
     this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
@@ -481,14 +484,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getLookupForFormArray() {
     this.PackagingRows().controls.map((x) => {
-      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(x.get('unitOfMeasure'), this.formData.unitOfMeasureList);
-      this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction(x.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', x.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+      this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', x.get('typeOfPackaging'), this.formData.typeOfPackagingList);
     });
 
     this.DetailsRows().value.map((x, i) => {
       x.ingrediantDetails.map((item, index) => {
-        this.filteredOptionsForIngradiant = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
-        this.filteredOptionsForFunction = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
+        this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
+        this.filteredOptionsForFunction = this.filterLookupsFunction('function', this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
       });
     });
   }
@@ -860,17 +863,26 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
-  filterLookupsFunction(formControlValue, list) {
+  filterLookupsFunction(whichLookup, formControlValue, list) {
     if (formControlValue) {
       return formControlValue.valueChanges
         .pipe(
           startWith(''),
-          map(state => state ? this.filterInsideList(state, list) : list.slice())
+          map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
         );
     }
   }
 
-  filterInsideList(value, list): LookupState[] {
+  filterInsideList(lookup, value, list): LookupState[] {
+    // debugger;
+    // if (lookup === 'manufacturingCompany') {
+    //   this.manufacturingSearchText.emit(value);
+    // } else if (lookup === 'licenseHolder') {
+    //   this.companyProfileSearchText.emit(value);
+    // } else if (lookup === 'ingrediant') {
+    //   this.ingrediantSearchText.emit(value);
+    // }
+
     let filterValue;
     if (value) {
       filterValue = value.toLowerCase() ? value.toLowerCase() : '';
@@ -904,7 +916,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     return data;
   }
 
-  setApplicant(companyProfileID){
+  setApplicant(companyProfileID) {
     this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regProductForAllRequestedType.patchValue({
       applicant: x.NAME
     }));

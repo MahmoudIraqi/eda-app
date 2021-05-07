@@ -36,6 +36,7 @@ export class NewRequestComponent implements OnInit {
     storagePlaceList: [],
     trackType: []
   };
+  manufacturingCompanyList = [];
   selectedFormType;
   selectedRequestedType;
   selectedTrackType;
@@ -68,6 +69,14 @@ export class NewRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.companyProfileId = res.payload;
+    });
+
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
       if (res) {
@@ -84,7 +93,7 @@ export class NewRequestComponent implements OnInit {
       this.formData.licenseHolderCountryList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+    this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
@@ -112,11 +121,11 @@ export class NewRequestComponent implements OnInit {
       this.formData.productColorList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
+    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
       this.formData.ingrediantList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
+    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
       this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
       this.isLoading = false;
@@ -129,13 +138,6 @@ export class NewRequestComponent implements OnInit {
       this.formData.trackType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-
-    this.inputService.getInput$().pipe(
-      filter(x => x.type === 'CompanyId'),
-      distinctUntilChanged()
-    ).subscribe(res => {
-      this.companyProfileId = res.payload;
-    });
 
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {
@@ -281,4 +283,24 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
+  filterInBigSizeLookups(whichLookups, value) {
+    if (whichLookups === 'manufacturingCompany') {
+      console.log('value', value);
+      this.getService.getManufacturingCompanyLookUp(1, value).subscribe((res: any) => {
+        this.manufacturingCompanyList = res;
+        console.log('this.manufacturingCompanyList', this.manufacturingCompanyList);
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else if (whichLookups === 'companyProfile') {
+      this.getService.getCompanyProfileLookUp(1, this.companyProfileId, value).subscribe((res: any) => {
+        this.formData.licenseHolderList = res;
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else if (whichLookups === 'ingrediant') {
+      this.getService.getProductIngrediantsLookUp(1, value).subscribe((res: any) => {
+        this.formData.ingrediantList = res;
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    }
+  }
 }

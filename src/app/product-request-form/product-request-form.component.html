@@ -769,7 +769,7 @@
                                        formControlName="ingrediant"
                                        [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.ingrediant ? true : false"
                                        [matAutocomplete]="autoIngrediant" required>
-                                <mat-autocomplete #autoIngrediant="matAutocomplete">
+                                <mat-autocomplete #autoIngrediant="matAutocomplete" >
                                   <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
                                               [value]="option.NAME">
                                     {{option.NAME}}

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
 import {convertToSpecialObjectForLegacy} from '../../utils/formDataFunction';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
+import {InputService} from '../services/input.service';
 
 @Component({
   selector: 'app-legacy',
@@ -38,12 +40,22 @@ export class LegacyComponent implements OnInit {
   alertErrorNotification: any;
   productId;
   successSubmission: boolean = false;
+  companyProfileId: any;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute,
+              private inputService: InputService) {
   }
 
   ngOnInit(): void {
     this.isLoading = true;
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.companyProfileId = res.payload;
+    });
+
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
       if (res) {
@@ -60,7 +72,7 @@ export class LegacyComponent implements OnInit {
       this.formData.licenseHolderCountryList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
+    this.getService.getManufacturingCompanyLookUp(1,'').subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
@@ -88,11 +100,11 @@ export class LegacyComponent implements OnInit {
       this.formData.productColorList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
+    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
       this.formData.ingrediantList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
+    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
       this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
       this.isLoading = false;
