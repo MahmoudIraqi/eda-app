@@ -22,8 +22,8 @@ export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistr
     typeOfRegistration,
     isExport: isExport ? 1 : 0,
     trackType,
-    id,
-    ...event
+    ...event,
+    id
   };
 };
 

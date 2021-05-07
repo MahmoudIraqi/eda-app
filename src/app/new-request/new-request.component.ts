@@ -62,6 +62,7 @@ export class NewRequestComponent implements OnInit {
   variablesPricingList: any;
   trackTypeVariable;
   typeOfNotificationVariable;
+  fromAttachment;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute,
               private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -173,11 +174,15 @@ export class NewRequestComponent implements OnInit {
     this.selectedTrackType = event.value;
   }
 
+  getRequestId(event) {
+    this.requestId = event;
+  }
+
   saveData(event) {
     this.isLoading = true;
 
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-      const id = Number(this.productId ? this.productId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
       const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
@@ -189,7 +194,7 @@ export class NewRequestComponent implements OnInit {
         this.onClosed();
       }, error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-      const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const id = Number(this.productId ? this.productId :  this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
       const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
@@ -285,10 +290,8 @@ export class NewRequestComponent implements OnInit {
 
   filterInBigSizeLookups(whichLookups, value) {
     if (whichLookups === 'manufacturingCompany') {
-      console.log('value', value);
       this.getService.getManufacturingCompanyLookUp(1, value).subscribe((res: any) => {
         this.manufacturingCompanyList = res;
-        console.log('this.manufacturingCompanyList', this.manufacturingCompanyList);
         this.isLoading = false;
       }, error => this.handleError(error));
     } else if (whichLookups === 'companyProfile') {

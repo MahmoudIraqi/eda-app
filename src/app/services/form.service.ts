@@ -665,6 +665,23 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  setAttachmentFile(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    const JSONData = JSON.stringify(event);
+    console.log('JSONData', JSONData);
+
+    return this.http.post(`${this.apiBaseUrl}product/UploadAttachment`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

@@ -68,6 +68,8 @@
             <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
+              [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
               [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"
@@ -76,12 +78,11 @@
               [getAllLookupsStatus]="getAllLookupsStatus"
               [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
+              (saveDataOutputForAttachment)="getRequestId($event)"
               (submitDataOutput)="onSubmit($event)"
               (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
               (companyProfileSearchText)="filterInBigSizeLookups('licenseHolder', $event)"
               (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
-              (submitDataOutput)="onSubmit($event)"
-              (submitDataOutput)="onSubmit($event)"
             ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 2 && selectedRequestedType && selectedTrackType">
