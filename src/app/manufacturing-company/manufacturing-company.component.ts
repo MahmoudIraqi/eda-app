@@ -92,6 +92,15 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   //     }
   //   ],
   // };
+  attachmentFields = [
+    {
+      id: 'attachment',
+      name: 'Attachment',
+      fileName: '',
+      required: true,
+      enable: true
+    },
+  ];
 
   constructor(private getService: FormService,
               private fb: FormBuilder) {
@@ -118,10 +127,25 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
+  onFileSelect(event, fileControlName) {
+    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = (res: any) => {
+        this.manufacturingCompanyForm.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
+      };
+      // this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
+    }
+  }
+
   getFormAsStarting() {
     this.manufacturingCompanyForm = this.fb.group({
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
+      attachment: this.fb.control('', Validators.required),
     });
   }
 

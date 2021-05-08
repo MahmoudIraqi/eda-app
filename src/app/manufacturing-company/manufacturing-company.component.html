@@ -52,6 +52,31 @@
                     </div>
                   </mat-form-field>
                 </div>
+                <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields">
+                  <div class="form-group" *ngIf="field.enable">
+                    <label>
+                      {{field.name}}
+                      <span *ngIf="field.required">*</span>
+                    </label>
+                    <div class="custom-file fileUpload mr-3">
+                      <input type="file" class="custom-file-input"
+                             aria-describedby="fileHelp"
+                             (change)="onFileSelect($event, field.id)"
+                             [required]="field.required">
+                      <div
+                        *ngIf="manufacturingCompanyForm.get(field.id).invalid && (manufacturingCompanyForm.get(field.id).dirty || manufacturingCompanyForm.get(field.id).touched)"
+                        class="alert alert-danger">
+                        <div
+                          *ngIf="manufacturingCompanyForm.get(field.id).errors.required">
+                          this field is required
+                        </div>
+                      </div>
+                      <label class="custom-file-label">
+                        {{manufacturingCompanyForm.get(field.id).value ? manufacturingCompanyForm.get(field.id).value.name : 'Choose file'}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-lg-4 col-sm-6 col-12">
                   <div class="d-flex">
                     <button

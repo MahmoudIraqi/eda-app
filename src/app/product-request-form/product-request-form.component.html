@@ -932,7 +932,7 @@
                   </div>
                 </div>
                 <label class="custom-file-label" [for]="field.id">
-                  {{regProductForAllRequestedType.get(field.id).value ? regProductForAllRequestedType.get(field.id).value.name : 'Choose file'}}
+                  {{field.fileName ? field.fileName : 'Choose file'}}
                 </label>
               </div>
             </div>

@@ -558,9 +558,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     let cardImageBase64;
     let resForSetAttachment;
     let attachmentValue;
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => attachmentValue = y.fileValue);
-    console.log('attachmentValue', attachmentValue);
+    this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
+      y.fileName = event.target.value.split(/(\\|\/)/g).pop();
+      attachmentValue = y.fileValue;
+    });
+
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -575,7 +577,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
         console.log('resForSetAttachment', resForSetAttachment);
 
-        this.regProductForAllRequestedType.get(fileControlName).setValue(resForSetAttachment);
+
       };
 
       // this.regProductForAllRequestedType.get(fileControlName).setValue(file);
@@ -1046,6 +1048,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getService.setAttachmentFile(dataForRequest).subscribe((res: any) => {
       this.attachmentFields.filter(x => x.id === FileID).map(y => {
         y.fileValue = res.ID;
+        this.regProductForAllRequestedType.get(FileID).setValue(res.ID);
       });
 
       return res;
