@@ -278,6 +278,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
+    console.log('this.formData', this.formData);
+
 
     if (this.successSubmission) {
       this.resetForms();
@@ -765,13 +767,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getFormAsStarting(data) {
     if (data) {
+      debugger;
       this.isDraft = data.isDraft === 1;
-      data.shortName.map((X, i) => {
+      data.shortName ? data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();
         }
-      });
-      data.detailsTable.map((x, i) => {
+      }) : data.shortName = [];
+      data.detailsTable ? data.detailsTable.map((x, i) => {
         x.ingrediantDetails.map((y, index) => {
           if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
             this.addIngrediantDetailsRows(i);
@@ -781,45 +784,46 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
           this.addDetailsRows();
         }
-      });
-      data.packagingTable.map((x, i) => {
+      }) : data.detailsTable = [];
+      data.packagingTable ? data.packagingTable.map((x, i) => {
         if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
           this.addPackagingRows();
         }
-      });
+      }) : data.packagingTable = [];
 
       this.packagingListTable.tableBody = [];
-      data.packagingTable.map((x, i) => {
+      data.packagingTable ? data.packagingTable.map((x, i) => {
         if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
           this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
         }
-      });
+      }) : null;
 
       this.detailsListTable.tableBody = [];
-      data.detailsTable.map((x, i) => {
+      data.detailsTable ? data.detailsTable.map((x, i) => {
         if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
           this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
         }
-      });
+      }) : null;
 
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+      this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
       this.formData.physicalStateList.filter(option => option.ID === data.physicalState).map(x => data.physicalState = x.NAME);
       this.formData.purposeOfUseList.filter(option => option.ID === data.purposeOfUse).map(x => data.purposeOfUse = x.NAME);
       this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
       this.formData.unitOfMeasureList.filter(option => option.ID === data.unitOfMeasure).map(x => data.unitOfMeasure = x.NAME);
-      data.packagingTable.map(x => {
+      data.packagingTable ? data.packagingTable.map(x => {
         this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
         this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-      });
-      data.detailsTable.map(x => {
+      }) : null;
+      data.detailsTable ? data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
           this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
           this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
         });
-      });
+      }) : null;
 
       this.regProductForAllRequestedType.valueChanges.subscribe(x => {
         for (let i = 0; i < Object.values(x).length; i++) {
@@ -836,6 +840,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
+
+      console.log('data', data);
 
       this.regProductForAllRequestedType.patchValue({
         ...data

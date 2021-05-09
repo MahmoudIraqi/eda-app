@@ -65,6 +65,15 @@
         </span>
             </th>
           </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'legacyOldProduct'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 1 || i === 3 }">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
           <tr class="headerRow" *ngIf="whichTable === 'rejected'">
             <th *ngFor="let request of data.tableHeader; let i = index"
                 [ngClass]="{'hide': i === 1 || i === 3 }">
@@ -413,6 +422,47 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
+            <td colspan="6" *ngIf="whichTable === 'legacyOldProduct'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
+                                     (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td>{{request.oldNotificationNo}}</td>
+                          <td class="hide">{{request.dueDate | date}}</td>
+                          <td>{{request.productEnglishName}}</td>
+                          <td class="hide">{{request.productArabicName}}</td>
+                          <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
+                          <td (click)="addBatch(request.oldNotificationNo)"><i class="fas fa-cart-plus"></i></td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-3">
+                        <label class="label">Notification number :</label>
+                        <span>{{request.oldNotificationNo}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-3">
+                        <label class="label">Submission date :</label>
+                        <span>{{request.dueDate}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-3">
+                        <label class="label ">Product English name :</label>
+                        <span>{{request.productEnglishName}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-3">
+                        <label class="label">Product Arabic name :</label>
+                        <span>{{request.productArabicName}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
             <td colspan="5" *ngIf="whichTable === 'rejected'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
@@ -537,7 +587,8 @@
                                                 <td>{{requestDetails.ingrediant}}</td>
                                                 <td>{{requestDetails.concentrations}}</td>
                                                 <td>{{requestDetails.function}}</td>
-                                                <td><span (click)="removeIngrediantDetailsRowFunction(index, i, '', requestDetails.Ingredient_ID)"><i
+                                                <td><span
+                                                  (click)="removeIngrediantDetailsRowFunction(index, i, '', requestDetails.Ingredient_ID)"><i
                                                   class="fa fa-trash"></i></span></td>
                                               </tr>
                                             </table>

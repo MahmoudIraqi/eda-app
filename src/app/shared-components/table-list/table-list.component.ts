@@ -78,8 +78,7 @@ export class TableListComponent implements OnInit, OnChanges {
       if (this.data.tableBody.length > 0) {
 
 
-
-        if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
+        if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice'&& this.whichTable !== 'legacyOldProduct') {
           if (this.whichTable !== 'manufacturing' && this.whichTable !== 'batchTable' && this.whichTable !== 'notificationList') {
             this.data.tableBody.sort((a, b) => (a.ID > b.ID) ? -1 : 1);
             this.data.tableBody.map(x => {
@@ -273,6 +272,7 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
+    debugger
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
       this.router.navigate([`/new-request/tell_do_variation/${Number(request.NotificationNo)}`]);
@@ -280,8 +280,8 @@ export class TableListComponent implements OnInit, OnChanges {
       this.router.navigate([`/new-request/do_tell_variation/${Number(request.NotificationNo)}`]);
     } else if (editFrom === 'registration') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}`]);
-    } else if (editFrom === 'legacy') {
-      this.router.navigate([`/legacy-form/${Number(request.ID)}`]);
+    } else if (editFrom === 'legacy-products') {
+      this.router.navigate([`/legacy-form/${Number(request.oldProductID)}`]);
     }
   }
 

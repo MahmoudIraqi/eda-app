@@ -72,7 +72,8 @@ export class LegacyComponent implements OnInit {
       this.formData.licenseHolderCountryList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp(1,'').subscribe((res: any) => {
+    this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
+      console.log('res_getManufacturingCompanyLookUp', res);
       this.formData.manufacturingCompanyList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
@@ -105,6 +106,7 @@ export class LegacyComponent implements OnInit {
       this.isLoading = false;
     }, error => this.handleError(error));
     this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
+      console.log('res_getCompanyProfileLookUp', res);
       this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
       this.isLoading = false;
@@ -123,6 +125,7 @@ export class LegacyComponent implements OnInit {
       this.isLoading = true;
 
       this.getService.getLegacyProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+        console.log('res', res);
         this.productData = res;
         this.isLoading = false;
       }, error => this.handleError(error));
