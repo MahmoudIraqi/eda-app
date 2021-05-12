@@ -71,6 +71,9 @@
                           this field is required
                         </div>
                       </div>
+                      <div *ngIf="field.attachmentTypeStatus === 'No'" class="alert alert-danger">
+                        this file must be as PDF
+                      </div>
                       <label class="custom-file-label">
                         {{manufacturingCompanyForm.get(field.id).value ? manufacturingCompanyForm.get(field.id).value.name : 'Choose file'}}
                       </label>

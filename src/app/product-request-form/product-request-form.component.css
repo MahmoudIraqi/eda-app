@@ -208,6 +208,25 @@ input[type=file] {
   border-radius: 0px 0px 10px 0px;
 }
 
+.custom-file-download-Button {
+  position: absolute;
+  z-index: 1000;
+  background: #c28a30;
+  border: none;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: rgb(118, 118, 118);
+  height: 100%;
+  right: 5em;
+  color: #fff;
+}
+
+.custom-file-download-Button:hover {
+  background: transparent;
+  border-left: 2px solid #c28a30;
+  color: #c28a30;
+}
+
 /* -------------------- Button Container ---------------------------- */
 .buttonContainer {
   margin-top: 3em;
@@ -309,15 +328,17 @@ input[type=file] {
 
 
 /* -------------------------- Responsive --------------------- */
-@media only screen and (max-width: 1000px){
-  .conSpace{
+@media only screen and (max-width: 1000px) {
+  .conSpace {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
-  .inputBesideSelect .mat-form-field-infix{
+
+  .inputBesideSelect .mat-form-field-infix {
     padding: 0 !important;
   }
 }
+
 @media only screen and (max-width: 640px) {
   .buttonContainer .btn-primary {
     width: 100%;

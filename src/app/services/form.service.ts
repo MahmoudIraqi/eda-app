@@ -604,7 +604,6 @@ export class FormService {
     };
 
     const JSONData = JSON.stringify(data);
-    console.log('JSon', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}product/manufactorycompany`, JSONData, options)
       .pipe(map((res: any) => {
@@ -629,7 +628,6 @@ export class FormService {
     };
 
     const JSONData = JSON.stringify(data);
-    console.log('JSON', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}product/PostInquery`, JSONData, options)
       .pipe(map((res: any) => {
@@ -678,9 +676,22 @@ export class FormService {
     const options = {headers};
 
     const JSONData = JSON.stringify(event);
-    console.log('JSONData', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}product/UploadAttachment`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getAttachmentFileByID(requestID, attachmentName) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}product/GetAttachment?requestId=${requestID}&attachmentName=${attachmentName}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

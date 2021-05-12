@@ -57,7 +57,6 @@ export class GeneralEnquireiesComponent implements OnInit {
   onFileSelect(event, fileControlName) {
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
-      console.log('event', event.target.files);
       if (event.target.files[0].type === 'application/pdf') {
         this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
           file.attachmentTypeStatus = 'Yes';
@@ -87,7 +86,6 @@ export class GeneralEnquireiesComponent implements OnInit {
 
     const data = this.generalEnquiriesForm.value;
 
-    console.log('data', data);
     this.getService.setGeneralEnquiries(data).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;

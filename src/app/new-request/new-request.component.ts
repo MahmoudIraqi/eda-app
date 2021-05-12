@@ -127,7 +127,6 @@ export class NewRequestComponent implements OnInit {
       this.isLoading = false;
     }, error => this.handleError(error));
     this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
-      console.log('res_ getCompanyProfileLookUp', res)
       this.formData.applicantList = res;
       this.formData.licenseHolderList = res;
       this.isLoading = false;

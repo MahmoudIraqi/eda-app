@@ -20,6 +20,7 @@ import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
+import {Router} from '@angular/router';
 
 
 export interface LookupState {
@@ -292,14 +293,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
+              private router: Router,
               private getService: FormService) {
     this.getFormAsStarting('');
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
-    console.log('this.formData', this.formData);
-
 
     if (this.successSubmission) {
       this.resetForms();
@@ -600,13 +600,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     let cardImageBase64;
     let resForSetAttachment;
     let attachmentValue;
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
-      y.fileName = event.target.value.split(/(\\|\/)/g).pop();
-      attachmentValue = y.fileValue;
-    });
-
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf') {
+        this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
+          y.fileName = event.target.value.split(/(\\|\/)/g).pop();
+          attachmentValue = y.fileValue;
+        });
+
         this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
           file.attachmentTypeStatus = 'Yes';
         });
@@ -620,10 +620,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           } else {
             this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
           }
-
-          console.log('resForSetAttachment', resForSetAttachment);
-
-
         };
 
         // this.regProductForAllRequestedType.get(fileControlName).setValue(file);
@@ -816,7 +812,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getFormAsStarting(data) {
     if (data) {
-      debugger;
       this.isDraft = data.isDraft === 1;
       data.shortName ? data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
@@ -890,7 +885,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
 
-      console.log('data', data);
+      data.productAttachments ? data.productAttachments.map(file => {
+        this.attachmentFields.filter(fileID => fileID.id === file.attachmentName).map(y => {
+          y.fileName = file.attachmentFileName;
+          y.fileValue = file.Id;
+        });
+      }) : null;
 
       this.regProductForAllRequestedType.patchValue({
         ...data
@@ -1110,6 +1110,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
   }
 
+  downloadFile(FileName) {
+    this.getService.getAttachmentFileByID(this.regProductForAllRequestedType.value.id, FileName).subscribe((res: any) => {
+      this.convertFilesToPDF(res.base64Data);
+    });
+  }
+
   convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
     return {
       RequestId: this.regProductForAllRequestedType.value.id ? this.regProductForAllRequestedType.value.id : this.requestId,
@@ -1118,5 +1124,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       base64Data: base64Data,
       ID: fileValue ? fileValue : id
     };
+  }
+
+  convertFilesToPDF(base64Data) {
+    let obj = document.createElement('object');
+    obj.style.width = '100%';
+    obj.style.height = '842pt';
+    obj.type = 'application/pdf';
+    obj.data = 'data:application/pdf;base64,' + base64Data;
+
+    var link = document.createElement('a');
+    link.innerHTML = 'Download PDF file';
+    link.download = 'file.pdf';
+    link.href = 'data:application/octet-stream;base64,' + base64Data;
+
+    document.location.href = link.href;
   }
 }
