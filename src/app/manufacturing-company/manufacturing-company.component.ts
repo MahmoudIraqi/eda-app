@@ -15,7 +15,6 @@ import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formData = {
-    manufacturingCompanyList: [],
     manufacturingCountryList: [],
   };
   manufacturingCompanyForm: FormGroup;
@@ -24,7 +23,6 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
-  filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
@@ -100,7 +98,8 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
       name: 'Attachment',
       fileName: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: ''
     },
   ];
 
@@ -110,12 +109,6 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   ngOnInit(): void {
-    this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-      this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.manufacturingCompanyForm.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
-      this.isLoading = false;
-    }, error => this.handleError(error));
-
     this.getService.getCountryLookUp().subscribe((res: any) => {
       this.formData.manufacturingCountryList = res;
       this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.manufacturingCompanyForm.get('manufacturingCountry'), this.formData.manufacturingCountryList);
@@ -126,7 +119,6 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
     this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
   }
 
@@ -139,14 +131,26 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   onFileSelect(event, fileControlName) {
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
+      if (event.target.files[0].type === 'application/pdf') {
+        this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+          file.attachmentTypeStatus = 'Yes';
+        });
+        const file = event.target.files[0];
+        const reader = new FileReader();
 
-      reader.readAsDataURL(file);
-      reader.onload = (res: any) => {
-        this.manufacturingCompanyForm.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
-      };
-      // this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
+        reader.readAsDataURL(file);
+        reader.onload = (res: any) => {
+          this.manufacturingCompanyForm.get(fileControlName).setValue({
+            fileName: file.name,
+            AttachName: 'manuFactureAttach',
+            base64Data: res.target.result
+          });
+        };
+      } else {
+        this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+          file.attachmentTypeStatus = 'No';
+        });
+      }
     }
   }
 
@@ -179,9 +183,8 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
 
   onSubmit() {
     const data = this.convertAllNamingToId(this.manufacturingCompanyForm.value);
-    this.isLoading = true;
 
-    console.log('data', data);
+    this.isLoading = true;
     this.getService.setManufacturingCompany(data).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;
@@ -196,7 +199,6 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   convertAllNamingToId(data) {
-    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
     this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
 
     return data;

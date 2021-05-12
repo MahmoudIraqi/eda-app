@@ -597,9 +597,10 @@ export class FormService {
     const options = {headers};
 
     const data = {
+      id: 0,
       NAME: event.manufacturingCompany,
       COUNTRY_ID: event.manufacturingCountry,
-      attachment: event.attachment
+      manuFactureAttach: event.attachment
     };
 
     const JSONData = JSON.stringify(data);
@@ -624,9 +625,11 @@ export class FormService {
       recieptNumber: event.receiptNumber,
       TITLE: event.title,
       DESCRIPTION: event.description,
+      generalInqueryFile: event.attachment
     };
 
     const JSONData = JSON.stringify(data);
+    console.log('JSON', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}product/PostInquery`, JSONData, options)
       .pipe(map((res: any) => {
