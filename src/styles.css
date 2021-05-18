@@ -507,6 +507,12 @@ body {
   margin-left: auto;
 }
 
+.mat-placeholder-required.mat-form-field-required-marker {
+  font-size: 18px;
+  color: #f00;
+  font-weight: bold;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {

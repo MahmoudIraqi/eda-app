@@ -42,6 +42,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() selectedIsExport;
   @Input() successSubmission;
   @Input() editData;
+  @Input() editFromWhere;
   @Input() getAllLookupsStatus;
   @Input() legacyStatus;
   @Input() reRegistrationStatus;
@@ -639,6 +640,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   addPackagingRows() {
     this.editDetailedRowStatus = false;
     this.equalTheNewPackagingTable('add');
+    console.log('this.regProductForAllRequestedType.get().value__FromAdd', this.regProductForAllRequestedType.get('packagingTable').value);
     this.PackagingRows().push(this.fb.group({
       volumesID: this.fb.control(''),
       volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
@@ -690,10 +692,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   equalTheNewPackagingTable(fromWhere) {
+    this.packagingListTable.tableBody = [];
     if (fromWhere !== 'form') {
+      console.log('this.regProductForAllRequestedType.get().value', this.regProductForAllRequestedType.get('packagingTable').value);
       this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
 
-      if (fromWhere === 'cancel') {
+      if (fromWhere === 'cancel' || fromWhere === 'edit') {
         this.packagingListTable.tableBody.pop();
       }
 
@@ -813,27 +817,29 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
-      data.shortName ? data.shortName.map((X, i) => {
-        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
-          this.addShortName();
-        }
-      }) : data.shortName = [];
-      data.detailsTable ? data.detailsTable.map((x, i) => {
-        x.ingrediantDetails.map((y, index) => {
-          if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
-            this.addIngrediantDetailsRows(i);
+      if (this.editFromWhere) {
+        data.shortName ? data.shortName.map((X, i) => {
+          if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+            this.addShortName();
           }
-        });
+        }) : data.shortName = [];
+        data.detailsTable ? data.detailsTable.map((x, i) => {
+          x.ingrediantDetails.map((y, index) => {
+            if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
+              this.addIngrediantDetailsRows(i);
+            }
+          });
 
-        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
-          this.addDetailsRows();
-        }
-      }) : data.detailsTable = [];
-      data.packagingTable ? data.packagingTable.map((x, i) => {
-        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
-          this.addPackagingRows();
-        }
-      }) : data.packagingTable = [];
+          if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
+            this.addDetailsRows();
+          }
+        }) : data.detailsTable = [];
+        data.packagingTable ? data.packagingTable.map((x, i) => {
+          if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
+            this.addPackagingRows();
+          }
+        }) : data.packagingTable = [];
+      }
 
       this.packagingListTable.tableBody = [];
       data.packagingTable ? data.packagingTable.map((x, i) => {
@@ -900,7 +906,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         id: 0,
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
-        shortName: this.fb.array([this.fb.control('', [this.selectedRequestedType !== 6 && this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 ? Validators.required : null, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')])]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
@@ -1102,8 +1108,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.getService.setAttachmentFile(dataForRequest).subscribe((res: any) => {
       this.attachmentFields.filter(x => x.id === FileID).map(y => {
+        console.log('y', y);
         y.fileValue = res.ID;
         this.regProductForAllRequestedType.get(FileID).setValue(res.ID);
+
+        console.log('123', this.regProductForAllRequestedType.value);
       });
 
       return res;
@@ -1139,5 +1148,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     link.href = 'data:application/octet-stream;base64,' + base64Data;
 
     document.location.href = link.href;
+  }
+
+  showData() {
+    console.log('12341234', this.regProductForAllRequestedType);
   }
 }

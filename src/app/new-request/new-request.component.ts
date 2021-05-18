@@ -63,6 +63,7 @@ export class NewRequestComponent implements OnInit {
   trackTypeVariable;
   typeOfNotificationVariable;
   fromAttachment;
+  editFormIPStatus: boolean = false;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute,
               private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -86,6 +87,7 @@ export class NewRequestComponent implements OnInit {
       this.isLoading = false;
     }, error => this.handleError(error));
     this.getService.getRequestTypeLookUp().subscribe((res: any) => {
+      console.log('res', res);
       this.formData.requestType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
@@ -149,6 +151,7 @@ export class NewRequestComponent implements OnInit {
         this.selectedTrackType = res.Tracktype;
         this.selectedIsExport = res.isExport;
         this.updatingProductData = res;
+        this.editFormIPStatus = true;
       }, error => this.handleError(error));
     }
 
@@ -188,6 +191,7 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
         this.updatingProductData = res;
+        this.editFormIPStatus = false;
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
@@ -264,6 +268,7 @@ export class NewRequestComponent implements OnInit {
     this.selectedFormType = '';
     this.selectedRequestedType = '';
     this.selectedIsExport = '';
+    this.estimatedValue = '';
   }
 
   handleError(error) {
