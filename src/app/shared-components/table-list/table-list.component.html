@@ -741,12 +741,6 @@
                                 <i class="fa fa-sort"></i>
                               </span>
                                   </th>
-                                  <th>
-                                    Volumes
-                                    <span (click)="sortBy(sortStatus, request)">
-                                <i class="fa fa-sort"></i>
-                              </span>
-                                  </th>
                                 </tr>
                                 <tr *ngFor="let requestDetails of request.detailsTable; let index = index">
                                   <td colspan="5">
@@ -760,7 +754,6 @@
                                                 <td>{{requestDetails.fragrance}}</td>
                                                 <td>{{requestDetails.flavor}}</td>
                                                 <td>{{requestDetails.barCode}}</td>
-                                                <td>{{requestDetails.volumes}}</td>
                                               </tr>
                                             </table>
                                           </mat-panel-title>
@@ -782,22 +775,6 @@
                                             <div class="col-12 col-sm-6 col-md-4">
                                               <label class="label">BarCode :</label>
                                               <span>{{requestDetails.barCode}}</span>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-4">
-                                              <label class="label">Volumes :</label>
-                                              <span>{{requestDetails.volumes}}</span>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-4">
-                                              <label class="label">Unit of Measure :</label>
-                                              <span>{{requestDetails.unitOfMeasure}}</span>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-4">
-                                              <label class="label">Type of Packaging :</label>
-                                              <span>{{requestDetails.typeOfPackaging}}</span>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-4">
-                                              <label class="label">Packaging Description :</label>
-                                              <span>{{requestDetails.packagingDescription}}</span>
                                             </div>
                                             <div class="col-12 mt-4"
                                                  *ngIf="requestDetails.ingrediantDetails.length > 0">

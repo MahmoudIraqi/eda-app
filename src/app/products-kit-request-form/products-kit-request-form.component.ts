@@ -697,10 +697,27 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       }) : data.ProductsForKit = [];
 
       this.allProductsInKit.tableBody = [];
-      data.ProductsForKit ? data.ProductsForKit.map((x, i) => {
-        if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
-          this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x];
-        }
+
+      data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
+        product.productStatus = '';
+        product.NotificationNo = '';
+        this.formData.manufacturingCompanyList.filter(item => item.ID === product.productDetails.manufacturingCompany).map(x => product.productDetails.manufacturingCompany = x.NAME);
+        this.formData.manufacturingCountryList.filter(item => item.ID === product.productDetails.manufacturingCountry).map(x => product.productDetails.manufacturingCountry = x.NAME);
+        this.formData.applicantList.filter(option => option.ID === product.productDetails.applicant).map(x => product.productDetails.applicant = x.NAME);
+        this.formData.licenseHolderList.filter(option => option.ID === product.productDetails.licenseHolder).map(x => product.productDetails.licenseHolder = x.NAME);
+        this.formData.licenseHolderCountryList.filter(option => option.ID === product.productDetails.countryOfLicenseHolder).map(x => product.productDetails.countryOfLicenseHolder = x.NAME);
+        this.formData.storagePlaceList.filter(option => option.ID === product.productDetails.storagePlace).map(x => product.productDetails.storagePlace = x.NAME);
+        this.formData.physicalStateList.filter(option => option.ID === product.productDetails.physicalState).map(x => product.productDetails.physicalState = x.NAME);
+        this.formData.purposeOfUseList.filter(option => option.ID === product.productDetails.purposeOfUse).map(x => product.productDetails.purposeOfUse = x.NAME);
+
+        product.productDetails.detailsTable ? product.productDetails.detailsTable.map(x => {
+          x.ingrediantDetails.map(y => {
+            this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+            this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+          });
+        }) : null;
+
+        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, product.productDetails];
       }) : null;
 
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
