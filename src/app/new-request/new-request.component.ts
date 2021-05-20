@@ -142,6 +142,20 @@ export class NewRequestComponent implements OnInit {
       this.isLoading = false;
     }, error => this.handleError(error));
 
+
+    const pathInEditMode = this.route.snapshot.routeConfig.path.split('/')[0];
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      const variableGroup = pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
+      res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
+
+
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {
       this.isLoading = true;
@@ -152,17 +166,10 @@ export class NewRequestComponent implements OnInit {
         this.selectedIsExport = res.isExport;
         this.updatingProductData = res;
         this.editFormIPStatus = true;
+
+        this.getPricing('draftRequest');
       }, error => this.handleError(error));
     }
-
-    this.inputService.getInput$().pipe(
-      filter(x => x.type === 'variablesPrices'),
-      distinctUntilChanged()
-    ).subscribe(res => {
-      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path).map(variableList => {
-        this.variablesPricingList = variableList;
-      });
-    });
   }
 
   getFormType(event) {
@@ -278,9 +285,13 @@ export class NewRequestComponent implements OnInit {
   }
 
   getPricing(fromWhere) {
+    debugger;
     if (fromWhere === 'trackType') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
     } else if (fromWhere === 'typeOfNotification') {
+      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+    } else if (fromWhere === 'draftRequest') {
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
       this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
     }
 
@@ -310,5 +321,9 @@ export class NewRequestComponent implements OnInit {
         this.isLoading = false;
       }, error => this.handleError(error));
     }
+  }
+
+  showAlertMessager(messageStatus) {
+    messageStatus ? this.handleError({message: 'please complete the required values which marked with *'}) : null;
   }
 }

@@ -43,6 +43,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Output() selectedTrackTypeForKit = new EventEmitter();
   @Output() selectedRegisteredTypeForKit = new EventEmitter();
   @Output() selectedRegisteredProductTypeForKit = new EventEmitter();
+  @Output() errorMessage = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -672,7 +673,11 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   onSubmit() {
     const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
 
-    this.submitDataOutput.emit(data);
+    if (this.regHairColorantProductForAllRequestedType.valid) {
+      this.submitDataOutput.emit(data);
+    } else {
+      this.errorMessage.emit('true');
+    }
   }
 
   getFormAsStarting(data) {

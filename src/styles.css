@@ -452,6 +452,7 @@ body {
   position: fixed;
   bottom: 5em;
   left: calc((100% - 50%) / 2);
+  z-index: 1000;
 }
 
 .filterContanier .inputBesideSelect .mat-form-field-infix {

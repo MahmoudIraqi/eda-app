@@ -450,7 +450,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12">
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus">
             <mat-form-field class="example-full-width inputBesideSelect">
               <div *ngIf="!legacyStatus && productComments && productComments.receiptNumber" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptNumber}}"
@@ -460,7 +460,7 @@
               </div>
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
-                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.receiptNumber ? true : false"
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : isDraft ? false : legacyStatus ? false : reRegistrationStatus ? false : productFlags && !productFlags.receiptNumber ? true : false"
                      placeholder="Receipt Number" required>
               <div
                 *ngIf="regProductForAllRequestedType.get('receiptNumber').invalid && (regProductForAllRequestedType.get('receiptNumber').dirty || regProductForAllRequestedType.get('receiptNumber').touched)"
@@ -476,7 +476,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12">
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus">
             <mat-form-field class="example-full-width inputBesideSelect">
               <div *ngIf="!legacyStatus && productComments && productComments.receiptValue" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptValue}}"
@@ -487,7 +487,7 @@
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
                      (change)="getDecimalValue(regProductForAllRequestedType.get('receiptValue').value)"
-                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.receiptValue ? true : false"
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : isDraft ? false : legacyStatus ? false : reRegistrationStatus ? false : productFlags && !productFlags.receiptValue ? true :  false"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required>
               <div
@@ -640,7 +640,7 @@
                               *ngIf="editPackagingRowStatus"
                               class="btn btn-primary ml-auto"
                               (click)="editDataPackagingsRows('edit')"
-                              [disabled]="PackagingRows().status === 'INVALID'">
+                              [disabled]="PackagingRows().controls[i].status === 'INVALID'">
                         Edit Details Row
                       </button>
                       <button type="button"
@@ -971,8 +971,7 @@
         </button>
         <button
           type="submit"
-          class="btn btn-primary btn-sm"
-          [disabled]="!regProductForAllRequestedType.valid"> <!--  -->
+          class="btn btn-primary btn-sm"> <!--  -->
           <span *ngIf="!kitProductStatus && !reRegistrationStatus">Submit</span>
           <span *ngIf="kitProductStatus">Apply Product</span>
           <span *ngIf="reRegistrationStatus">Re-Notification Product</span>

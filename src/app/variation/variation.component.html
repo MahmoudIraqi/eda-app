@@ -1,7 +1,9 @@
 <div class="whiteContainer reregistrationContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="productNotificationNumber ? 'Edit Request for '+ (whichVariation === 'tell_do_variation'? 'Tell & Do variation' : 'Do & Tell Variation') : 'Create Request for '+ (whichVariation === 'tell_do-variation'? 'Tell & Do variation' : 'Do & Tell Variation')" [bigTitle]="true"></app-title>
+      <app-title
+        [title]="productNotificationNumber ? 'Edit Request for '+ (whichVariation === 'tell_do_variation'? 'Tell & Do variation' : 'Do & Tell Variation') : 'Create Request for '+ (whichVariation === 'tell_do_variation'? 'Tell & Do variation' : 'Do & Tell Variation')"
+        [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
       <div class="formTable">
@@ -58,6 +60,7 @@
               [variationFields]="variationFields"
               (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">
@@ -68,6 +71,7 @@
               [variationFields]="variationFields"
               (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-products-kit-request-form>
           </div>
           <div class="col-12 mt-5"
@@ -79,6 +83,7 @@
               [variationFields]="variationFields"
               (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-products-hair-colour-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
@@ -89,6 +94,7 @@
               [variationFields]="variationFields"
               (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-products-kit-hair-colour-request-form>
           </div>
         </div>
@@ -101,8 +107,9 @@
   <strong>Thank You</strong> <br> {{alertNotification.msg}}
 </alert>
 
-<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

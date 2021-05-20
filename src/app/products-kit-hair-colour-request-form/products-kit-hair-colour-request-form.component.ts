@@ -38,6 +38,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   @Input() lookupsData;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
+  @Output() errorMessage = new EventEmitter();
 
   formData;
   selectedKitProductsStatus;
@@ -284,7 +285,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     tableBody: []
   };
   allProductsInKit = {
-    tableHeader: ['Group Name', 'Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
+    tableHeader: ['Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
     tableBody: []
   };
   editDetailedRowStatus = false;
@@ -1339,7 +1340,11 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
 
-    this.submitDataOutput.emit(data);
+    if (this.regColourKitForAllRequestedType.valid) {
+      this.submitDataOutput.emit(data);
+    } else {
+      this.errorMessage.emit('true');
+    }
   }
 
   get ShortName(): FormArray {
@@ -1527,7 +1532,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
         receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-        groupName: this.fb.control('', Validators.required),
         ProductsForKit: this.fb.array([this.fb.group({
           productStatus: this.fb.control(''),
           NotificationNo: this.fb.control(''),
@@ -1574,8 +1578,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         if (res) {
           if (res.canUse) {
             const objectData = {
-              ...res,
-              groupName: this.regColourKitForAllRequestedType.get('groupName').value
+              ...res
             };
 
             this.ProductGroupsRows().value[index].productDetails = res;
@@ -1591,7 +1594,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
             this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
             this.addProductsGroupRows();
           } else {
-            this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+            this.handleError(res.canuseMsg);
           }
         }
 

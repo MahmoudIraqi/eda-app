@@ -40,8 +40,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Input() variationFieldsStatus;
   @Input() variationFields;
   @Input() lookupsData;
+  @Input() companyProfile;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
+  @Output() errorMessage = new EventEmitter();
 
   formData;
   selectedKitProductsStatus;
@@ -155,7 +157,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       enable: true
     },
     {
-      id: 'artWorkForTheKit',
+      id: 'artWork',
       name: 'Art Work For The Kit',
       fileName: '',
       required: true,
@@ -280,7 +282,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   status;
   allProductsInKit = {
-    tableHeader: ['Group Name', 'Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
+    tableHeader: ['Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
     tableBody: []
   };
   editDetailedRowStatus = false;
@@ -319,6 +321,151 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     if (this.editData) {
       this.getFormAsStarting(this.editData);
     }
+
+    this.attachmentFieldsForKits = [
+      {
+        id: 'freeSale',
+        name: 'Free Sale',
+        fileName: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true
+      },
+      {
+        id: 'GMP',
+        name: 'GMP',
+        fileName: '',
+        required: false,
+        enable: true
+      },
+      {
+        id: 'CoA',
+        name: 'CoA',
+        fileName: '',
+        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
+        enable: true
+      },
+      {
+        id: 'artWork',
+        name: 'Art Work For The Kit',
+        fileName: '',
+        required: true,
+        enable: true
+      },
+      {
+        id: 'leaflet',
+        name: 'leaflet',
+        fileName: '',
+        required: false,
+        enable: true
+      },
+      {
+        id: 'reference',
+        name: 'reference',
+        fileName: '',
+        required: false,
+        enable: true
+      },
+      {
+        id: 'methodOfAnalysis',
+        name: 'Method of Analysis',
+        fileName: '',
+        required: false,
+        enable: true
+      },
+      {
+        id: 'specificationsOfFinishedProduct',
+        name: 'Specifications of Finished Product',
+        fileName: '',
+        required: true,
+        enable: true
+      },
+      {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        required: true,
+        enable: true
+      },
+      {
+        id: 'authorizationLetter',
+        name: 'Authorization Letter',
+        fileName: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true
+      },
+      {
+        id: 'manufacturingContract',
+        name: 'Manufacturing Contract',
+        fileName: '',
+        required: false,
+        enable: true
+      },
+      {
+        id: 'storageContract',
+        name: 'Storage Contract',
+        fileName: '',
+        required: false,
+        enable: true
+      },
+      {
+        id: 'others',
+        name: 'others',
+        fileName: '',
+        required: false,
+        enable: true
+      },
+      {
+        id: 'otherFees',
+        name: 'otherFees',
+        fileName: '',
+        required: true,
+        enable: true
+      },
+      {
+        id: 'factoryLicense',
+        name: 'Factory license',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'manufacturingAssignment',
+        name: 'Manufacturing Assignment',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'commercialRecord',
+        name: 'Commercial Record',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'stabilityStudy',
+        name: 'Stability study',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'shelfLifeAttachment',
+        name: 'Shelf life',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      },
+      {
+        id: 'letterOfVariationFromLicenseHolder',
+        name: 'letter of variation from license holder',
+        fileName: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false
+      }
+    ];
+
+    this.setApplicant(this.companyProfile);
 
     this.getDisabledValues();
   }
@@ -404,6 +551,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
+    console.log('data', data);
+
     this.saveDataOutput.emit(data);
   }
 
@@ -411,7 +560,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
-    this.submitDataOutput.emit(data);
+    if (this.regKitForAllRequestedType.valid) {
+      this.submitDataOutput.emit(data);
+    } else {
+      this.errorMessage.emit('true');
+    }
   }
 
   get ShortName(): FormArray {
@@ -530,15 +683,28 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   getFormAsStarting(data) {
     if (data) {
-
+      console.log('data_before', data);
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();
         }
       });
 
+      data.ProductsForKit ? data.ProductsForKit.map((x, i) => {
+        if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
+          this.addProductsGroupRows();
+        }
+      }) : data.ProductsForKit = [];
+
+      this.allProductsInKit.tableBody = [];
+      data.ProductsForKit ? data.ProductsForKit.map((x, i) => {
+        if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
+          this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x];
+        }
+      }) : null;
+
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
-      this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+      this.formData.manufacturingCountryList.filter(item => item.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
@@ -560,8 +726,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
 
+      console.log('data', data);
+      console.log('regKitForAllRequestedType', this.regKitForAllRequestedType.value);
+
       this.regKitForAllRequestedType.patchValue({
-        ...data,
+        ...data
       });
 
       // let control = <FormArray> this.regKitForAllRequestedType.controls.ProductsForKit;
@@ -577,7 +746,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
         shortName: this.fb.array([this.fb.control('', [this.selectedRequestedType !== 6 && this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 ? Validators.required : null, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')])]),
-        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
         licenseHolder: this.fb.control('', Validators.required),
@@ -588,17 +757,16 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
         receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-        groupName: this.fb.control('', Validators.required),
         ProductsForKit: this.fb.array([this.fb.group({
           productStatus: this.fb.control(''),
           NotificationNo: this.fb.control(''),
           productDetails: this.fb.group({})
         })]),
-        deletedProductIdLists: this.fb.array([]),
+        deletedProductIdLists: this.fb.control(null),
         freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
-        artWorkForTheKit: this.fb.control('', Validators.required),
+        artWork: this.fb.control('', Validators.required),
         leaflet: this.fb.control(''),
         reference: this.fb.control(''),
         methodOfAnalysis: this.fb.control(''),
@@ -636,8 +804,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         if (res) {
           if (res.canUse) {
             const objectData = {
-              ...res,
-              groupName: this.regKitForAllRequestedType.get('groupName').value
+              ...res
             };
 
             this.ProductGroupsRows().value[index].productDetails = res;
@@ -654,7 +821,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
             this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
             this.addProductsGroupRows();
           } else {
-            this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+            this.handleError(res.canuseMsg);
           }
         }
 
@@ -688,7 +855,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     const lastRowInArray = this.ProductGroupsRows().value.length - 1;
     const data = {
-      groupName: this.regKitForAllRequestedType.get('groupName').value,
       typeOfMarketing: this.selectedRegisteredProductTypeForProduct,
       typeOfRegistration: this.selectedRequestedType,
       trackType: this.selectedTrackType,
@@ -747,6 +913,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
 
     return data;
+  }
+
+  setApplicant(companyProfileID) {
+    this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regKitForAllRequestedType.patchValue({
+      applicant: x.NAME
+    }));
   }
 
   // @ts-ignore

@@ -133,8 +133,7 @@
                   <div class="d-flex">
                     <button
                       type="submit"
-                      class="btn btn-primary btn-sm ml-auto btnSubmit"
-                      [disabled]="!generalEnquiriesForm.valid">
+                      class="btn btn-primary btn-sm ml-auto btnSubmit">
                       <span>Submit</span>
                     </button>
                   </div>
@@ -154,7 +153,7 @@
 
 <alert type="danger" class="AlertForAllRequests" dismissible="true" (onClosed)="onClosedErrorAlert()"
        *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

@@ -653,14 +653,13 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="7" *ngIf="whichTable === 'productsKitList'">
+            <td colspan="6" *ngIf="whichTable === 'productsKitList'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td>{{request.groupName}}</td>
                           <td>{{request.NotificationNo}}</td>
                           <td>{{request.productEnglishName}}</td>
                           <td>{{request.manufacturingCompany}}</td>
@@ -677,10 +676,6 @@
                   </mat-expansion-panel-header>
                   <div class="detailsContainer pt-4">
                     <div class="row">
-                      <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Group Name :</label>
-                        <span>{{request.groupName}}</span>
-                      </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Product Notification Number :</label>
                         <span>{{request.NotificationNo}}</span>

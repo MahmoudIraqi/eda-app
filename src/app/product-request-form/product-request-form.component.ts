@@ -63,6 +63,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Output() manufacturingSearchText = new EventEmitter();
   @Output() companyProfileSearchText = new EventEmitter();
   @Output() ingrediantSearchText = new EventEmitter();
+  @Output() errorMessage = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -759,7 +760,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (fromWhere !== 'form') {
       this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
 
-      this.detailsListTable.tableBody.pop();
+      if (fromWhere === 'cancel' || fromWhere === 'edit') {
+        this.detailsListTable.tableBody.pop();
+      }
     }
   }
 
@@ -811,7 +814,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   onSubmit() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    this.submitDataOutput.emit(data);
+    if (this.regProductForAllRequestedType.valid) {
+      this.submitDataOutput.emit(data);
+    } else {
+      this.errorMessage.emit('true');
+    }
   }
 
   getFormAsStarting(data) {
@@ -920,8 +927,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         purposeOfUseTxt: this.fb.control(''),
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
         shelfLife: this.fb.control(0),
-        receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+        receiptNumber: this.fb.control('', this.legacyStatus ? null :Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
+        receiptValue: this.fb.control('', [this.legacyStatus ? null :Validators.required, this.legacyStatus ? null : Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
         packagingTable: this.fb.array([this.fb.group({
           volumesID: this.fb.control(''),
           volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),

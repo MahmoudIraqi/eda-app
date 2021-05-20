@@ -38,8 +38,10 @@
             <app-product-request-form
               [editData]="this.productData"
               [lookupsData]="formData"
+              [companyProfile]="companyProfileId"
               [reRegistrationStatus]="true"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">
@@ -48,6 +50,7 @@
               [lookupsData]="formData"
               [reRegistrationStatus]="true"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-products-kit-request-form>
           </div>
           <div class="col-12 mt-5"
@@ -57,6 +60,7 @@
               [lookupsData]="formData"
               [reRegistrationStatus]="true"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-products-hair-colour-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
@@ -65,6 +69,7 @@
               [lookupsData]="formData"
               [reRegistrationStatus]="true"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
             ></app-products-kit-hair-colour-request-form>
           </div>
         </div>
@@ -79,7 +84,7 @@
 
 <alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
        *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

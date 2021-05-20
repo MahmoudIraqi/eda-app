@@ -34,6 +34,7 @@ export class GeneralEnquireiesComponent implements OnInit {
       attachmentTypeStatus: ''
     },
   ];
+  errorMessage: boolean = false;
 
   constructor(private getService: FormService,
               private fb: FormBuilder,
@@ -86,13 +87,17 @@ export class GeneralEnquireiesComponent implements OnInit {
 
     const data = this.generalEnquiriesForm.value;
 
-    this.getService.setGeneralEnquiries(data).subscribe((res: any) => {
-      this.isLoading = false;
-      this.alertNotificationStatus = true;
-      this.alertNotification = this.alertForSubmitRequest();
-      this.resetForms();
-      this.onClosed();
-    }, error => this.handleError(error));
+    if (this.generalEnquiriesForm.valid) {
+      this.getService.setGeneralEnquiries(data).subscribe((res: any) => {
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.resetForms();
+        this.onClosed();
+      }, error => this.handleError(error));
+    } else {
+      this.handleError('please complete the required values which marked with *');
+    }
   }
 
   getDecimalValue(value) {

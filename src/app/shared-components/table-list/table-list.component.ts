@@ -272,7 +272,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
-    debugger
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
       this.router.navigate([`/new-request/tell_do_variation/${Number(request.NotificationNo)}`]);

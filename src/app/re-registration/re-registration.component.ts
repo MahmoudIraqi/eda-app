@@ -142,7 +142,7 @@ export class ReRegistrationComponent implements OnInit {
         this.productData = res;
         this.isLoading = false;
       } else {
-        this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+        this.handleError(res.canuseMsg);
       }
     }, error => this.handleError(error));
   }
@@ -223,5 +223,9 @@ export class ReRegistrationComponent implements OnInit {
         this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
       }) : null;
     }
+  }
+
+  showAlertMessager(messageStatus) {
+    messageStatus ? this.handleError('please complete the required values which marked with *') : null;
   }
 }

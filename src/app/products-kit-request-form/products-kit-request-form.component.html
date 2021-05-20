@@ -307,35 +307,11 @@
           </div>
           <div class="col-12">
             <div class="row">
-              <div class="col-6">
-                <mat-form-field appearance="fill">
-                  <mat-label>Group Name</mat-label>
-                  <input type="text" class="form-control" matInput
-                         formControlName="groupName"
-                         placeholder="" required>
-                  <div
-                    *ngIf="regKitForAllRequestedType.get('groupName').invalid && (regKitForAllRequestedType.get('groupName').dirty || regKitForAllRequestedType.get('groupName').touched)"
-                    class="alert alert-danger">
-                    <div
-                      *ngIf="regKitForAllRequestedType.get('groupName').errors.required">
-                      this field is required
-                    </div>
-                  </div>
-                </mat-form-field>
-              </div>
               <div class="col-12 p-0">
                 <div formArrayName="ProductsForKit" class="detailsTable">
                   <div class="col-12">
                     <div *ngFor="let row of ProductGroupsRows().controls; let i=index" [formGroupName]="i">
                       <div class="getProductArea" *ngIf="ProductGroupsRows().controls.length -1 === i">
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="col-12">
-                              <app-title [title]="'Add Product For ' + regKitForAllRequestedType.get('groupName').value"
-                                         [smallTitle]="true"></app-title>
-                            </div>
-                          </div>
-                        </div>
                         <div class="row p-0 mt-4">
                           <div class="col-6 col-sm-6">
                             <mat-form-field appearance="fill">
@@ -379,6 +355,7 @@
                                   [selectedTrackType]="selectedTrackType"
                                   [lookupsData]="lookupsData"
                                   [reRegistrationStatus]="reRegistrationStatus"
+                                  [companyProfile]="companyProfile"
                                   [kitProductStatus]="true"
                                   (selectedRegisteredProductTypeForKit)="getProductTypeFromNewProductInKit($event)"
                                   (submitDataOutput)="getDataForNewProduct($event)"
@@ -474,8 +451,7 @@
         </button>
         <button
           type="submit"
-          class="btn btn-primary btn-sm"
-          [disabled]="!regKitForAllRequestedType.valid">
+          class="btn btn-primary btn-sm">
           <span *ngIf="!reRegistrationStatus">Submit</span>
           <span *ngIf="reRegistrationStatus">Re-Notification Product</span>
         </button>
@@ -485,7 +461,7 @@
 </form>
 
 <alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

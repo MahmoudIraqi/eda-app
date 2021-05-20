@@ -136,7 +136,7 @@ export class LegacyComponent implements OnInit {
         this.productData = res;
         this.isLoading = false;
       } else {
-        this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+        this.handleError(res.canuseMsg);
       }
     }, error => this.handleError(error));
   }

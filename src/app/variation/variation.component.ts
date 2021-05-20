@@ -155,7 +155,7 @@ export class VariationComponent implements OnInit {
         this.isLoading = false;
         this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
       } else {
-        this.handleError('Can not do any process for this product. Please contact Egyptian Drug Authority');
+        this.handleError(res.canuseMsg);
       }
     }, error => this.handleError(error));
   }
@@ -260,5 +260,9 @@ export class VariationComponent implements OnInit {
     } else {
       this.estimatedValue = '';
     }
+  }
+
+  showAlertMessager(messageStatus) {
+    messageStatus ? this.handleError('please complete the required values which marked with *') : null;
   }
 }
