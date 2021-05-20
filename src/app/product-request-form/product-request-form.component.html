@@ -909,10 +909,10 @@
           <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields">
             <div class="form-group" *ngIf="field.enable">
               <div *ngIf="!legacyStatus && productComments && productComments[field.id]" class="InfoIconContainer">
-                <span class="infoIcon" tooltip="{{productComments[field.id]}}"
-                      placement="top">
-                  <i class="fas fa-info-circle"></i>
-                </span>
+                                <span class="infoIcon" tooltip="{{productComments[field.id]}}"
+                                      placement="top">
+                                  <i class="fas fa-info-circle"></i>
+                                </span>
               </div>
               <label>
                 {{field.name}}
@@ -922,6 +922,7 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
+                       (blur)="onFileSelect($event, field.id)"
                        [required]="field.required">
                 <div
                   *ngIf="regProductForAllRequestedType.get(field.id).invalid && (regProductForAllRequestedType.get(field.id).dirty || regProductForAllRequestedType.get(field.id).touched)"
@@ -940,6 +941,7 @@
                 <button type="button" class="custom-file-download-Button" (click)="downloadFile(field.id)"
                         [disabled]="!regProductForAllRequestedType.value.id">Download
                 </button>
+                <app-loader-component [forWhat]="'attachmentFields'" [loadingStatus]="field.loadingStatus"></app-loader-component>
               </div>
             </div>
           </div>

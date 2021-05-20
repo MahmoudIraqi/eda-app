@@ -514,6 +514,11 @@ body {
   font-weight: bold;
 }
 
+.loadingContainerForAttachment .mat-progress-spinner svg {
+  width: 25px !important;
+  height: 25px !important;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {

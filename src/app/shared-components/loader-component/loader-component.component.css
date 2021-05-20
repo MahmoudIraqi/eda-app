@@ -16,6 +16,20 @@
   margin-top: 45vh;
 }
 
+.loadingContainerForAttachment {
+  position: absolute;
+  top: 5px;
+  right: 160px;
+  z-index: 1000;
+  pointer-events: fill !important;
+}
+
+.loadingContainerForAttachment .mat-progress-spinner {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+
 :host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
   stroke: #c28a30;
 }

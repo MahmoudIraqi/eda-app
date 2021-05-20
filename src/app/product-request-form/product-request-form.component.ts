@@ -85,7 +85,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'GMP',
@@ -94,7 +95,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'CoA',
@@ -103,7 +105,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'artWork',
@@ -112,7 +115,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: !this.kitProductStatus ? true : false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'leaflet',
@@ -121,7 +125,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'reference',
@@ -130,7 +135,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'methodOfAnalysis',
@@ -139,7 +145,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'specificationsOfFinishedProduct',
@@ -148,7 +155,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: true,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'receipt',
@@ -157,7 +165,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: true,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'authorizationLetter',
@@ -166,7 +175,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingContract',
@@ -175,7 +185,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'storageContract',
@@ -184,7 +195,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'others',
@@ -193,7 +205,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'otherFees',
@@ -202,7 +215,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: true,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'factoryLicense',
@@ -211,7 +225,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingAssignment',
@@ -220,7 +235,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'commercialRecord',
@@ -229,7 +245,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'stabilityStudy',
@@ -238,7 +255,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'shelfLifeAttachment',
@@ -247,7 +265,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: true,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'letterOfVariationFromLicenseHolder',
@@ -256,7 +275,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileValue: '',
       required: false,
       enable: this.variationFieldsStatus ? true : false,
-      attachmentTypeStatus: ''
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     }
   ];
   editIndex;
@@ -315,7 +335,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'GMP',
@@ -324,7 +345,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'CoA',
@@ -333,7 +355,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'artWork',
@@ -342,7 +365,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: !this.kitProductStatus ? true : false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'leaflet',
@@ -351,7 +375,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'reference',
@@ -360,7 +385,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'methodOfAnalysis',
@@ -369,7 +395,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'specificationsOfFinishedProduct',
@@ -378,7 +405,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: true,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'receipt',
@@ -387,7 +415,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: true,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'authorizationLetter',
@@ -396,7 +425,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'manufacturingContract',
@@ -405,7 +435,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'storageContract',
@@ -414,7 +445,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'others',
@@ -423,7 +455,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'otherFees',
@@ -432,7 +465,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: true,
         enable: true,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'factoryLicense',
@@ -441,7 +475,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'manufacturingAssignment',
@@ -450,7 +485,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'commercialRecord',
@@ -459,7 +495,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'stabilityStudy',
@@ -468,7 +505,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'shelfLifeAttachment',
@@ -477,7 +515,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'letterOfVariationFromLicenseHolder',
@@ -486,7 +525,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileValue: '',
         required: false,
         enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: ''
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       }
     ];
 
@@ -602,33 +642,45 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     let cardImageBase64;
     let resForSetAttachment;
     let attachmentValue;
-    if (event.target.files.length > 0) {
-      if (event.target.files[0].type === 'application/pdf') {
-        this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
-          y.fileName = event.target.value.split(/(\\|\/)/g).pop();
-          attachmentValue = y.fileValue;
-        });
+    console.log('event.target.files', event.target.files[0]);
+    console.log('this.attachmentFields.filter(x => x.loadingStatus === true).length', this.attachmentFields.filter(x => x.loadingStatus === true).length);
 
-        this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
-          file.attachmentTypeStatus = 'Yes';
-        });
-        const file = event.target.files[0];
-        const reader = new FileReader();
+    this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
+      console.log('y', y);
+    });
 
-        reader.readAsDataURL(file);
-        reader.onload = (res: any) => {
-          if (!this.regProductForAllRequestedType.value.id) {
-            this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
-          } else {
-            this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
-          }
-        };
+    if (this.attachmentFields.filter(x => x.loadingStatus === true).length === 0) {
+      if (event.target.files.length > 0) {
+        if (event.target.files[0].type === 'application/pdf') {
+          console.log('this.attachmentFields.filter(x => x.loadingStatus === true).length', this.attachmentFields.filter(x => x.loadingStatus === true).length);
 
-        // this.regProductForAllRequestedType.get(fileControlName).setValue(file);
-      } else {
-        this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
-          file.attachmentTypeStatus = 'No';
-        });
+          this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
+            y.fileName = event.target.value.split(/(\\|\/)/g).pop();
+            attachmentValue = y.fileValue;
+          });
+
+          this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'Yes';
+          });
+          const file = event.target.files[0];
+          const reader = new FileReader();
+
+          reader.readAsDataURL(file);
+          reader.onload = (res: any) => {
+            if (!this.regProductForAllRequestedType.value.id) {
+
+              this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+            } else {
+              this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+            }
+          };
+
+        }// this.regProductForAllRequestedType.get(fileControlName).setValue(file);
+        else {
+          this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'No';
+          });
+        }
       }
     }
   }
@@ -801,6 +853,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
     const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
     this.getService.createProductRequest(allDataForSave).subscribe((res: any) => {
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
@@ -927,8 +984,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         purposeOfUseTxt: this.fb.control(''),
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
         shelfLife: this.fb.control(0),
-        receiptNumber: this.fb.control('', this.legacyStatus ? null :Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-        receiptValue: this.fb.control('', [this.legacyStatus ? null :Validators.required, this.legacyStatus ? null : Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+        receiptNumber: this.fb.control('', this.legacyStatus ? null : Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
+        receiptValue: this.fb.control('', [this.legacyStatus ? null : Validators.required, this.legacyStatus ? null : Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
         packagingTable: this.fb.array([this.fb.group({
           volumesID: this.fb.control(''),
           volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
@@ -1113,13 +1170,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
     const dataForRequest = this.convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue);
 
+    this.attachmentFields.filter(x => x.id === FileID).map(y => {
+      y.loadingStatus = true;
+    });
+
     this.getService.setAttachmentFile(dataForRequest).subscribe((res: any) => {
       this.attachmentFields.filter(x => x.id === FileID).map(y => {
-        console.log('y', y);
         y.fileValue = res.ID;
+        y.loadingStatus = false;
         this.regProductForAllRequestedType.get(FileID).setValue(res.ID);
-
-        console.log('123', this.regProductForAllRequestedType.value);
       });
 
       return res;
