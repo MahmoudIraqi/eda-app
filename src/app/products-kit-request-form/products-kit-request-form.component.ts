@@ -36,6 +36,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
+  @Input() editFromWhere;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
@@ -548,10 +549,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   saveData() {
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
-
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
-
-    console.log('data', data);
 
     this.saveDataOutput.emit(data);
   }
@@ -658,7 +656,70 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.ProductGroupsRows().push(this.fb.group({
       productStatus: this.fb.control(''),
       NotificationNo: this.fb.control(''),
-      productDetails: this.fb.group({})
+      productDetails: this.fb.group({
+        productArabicName: this.fb.control(''),
+        productEnglishName: this.fb.control(''),
+        shortName: this.fb.array([this.fb.control('')]),
+        manufacturingCompany: this.fb.control(null),
+        manufacturingCountry: this.fb.control(''),
+        applicant: this.fb.control(''),
+        licenseHolder: this.fb.control(''),
+        licenseHolderTxt: this.fb.control(''),
+        countryOfLicenseHolder: this.fb.control(''),
+        tradeMark: this.fb.control(''),
+        physicalState: this.fb.control(''),
+        physicalStateTxt: this.fb.control(''),
+        purposeOfUse: this.fb.control(''),
+        purposeOfUseTxt: this.fb.control(''),
+        storagePlace: this.fb.control(''),
+        shelfLife: this.fb.control(0),
+        receiptNumber: this.fb.control(''),
+        receiptValue: this.fb.control(''),
+        packagingTable: this.fb.array([this.fb.group({
+          volumesID: this.fb.control(''),
+          volumes: this.fb.control(''),
+          unitOfMeasure: this.fb.control(''),
+          typeOfPackaging: this.fb.control(''),
+          packagingDescription: this.fb.control(''),
+        })]),
+        detailsTable: this.fb.array([this.fb.group({
+          DetailsID: this.fb.control(''),
+          PRODUCT_ID: this.fb.control(''),
+          colour: this.fb.control(''),
+          fragrance: this.fb.control(''),
+          flavor: this.fb.control(''),
+          barCode: this.fb.control(''),
+          ingrediantDetails: this.fb.array([this.fb.group({
+            Ingredient_ID: this.fb.control(''),
+            ingrediant: this.fb.control(''),
+            concentrations: this.fb.control(''),
+            function: this.fb.control(''),
+          })])
+        })]),
+        deletedIngredientsIds: this.fb.control(null),
+        deletedProductDetailsIds: this.fb.control(null),
+        deletedpacklstIds: this.fb.control(null),
+        freeSale: this.fb.control(''),
+        GMP: this.fb.control(''),
+        CoA: this.fb.control(''),
+        artWork: this.fb.control(''),
+        leaflet: this.fb.control(''),
+        reference: this.fb.control(''),
+        methodOfAnalysis: this.fb.control(''),
+        specificationsOfFinishedProduct: this.fb.control(''),
+        receipt: this.fb.control(''),
+        authorizationLetter: this.fb.control(''),
+        manufacturingContract: this.fb.control(''),
+        storageContract: this.fb.control(''),
+        factoryLicense: this.fb.control(''),
+        manufacturingAssignment: this.fb.control(''),
+        commercialRecord: this.fb.control(''),
+        stabilityStudy: this.fb.control(''),
+        shelfLifeAttachment: this.fb.control(''),
+        letterOfVariationFromLicenseHolder: this.fb.control(''),
+        others: this.fb.control(''),
+        otherFees: this.fb.control(''),
+      })
     }));
   }
 
@@ -683,24 +744,27 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   getFormAsStarting(data) {
     if (data) {
+      debugger;
       console.log('data_before', data);
-      data.shortName.map((X, i) => {
-        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
-          this.addShortName();
-        }
-      });
+      console.log(' this.regKitForAllRequestedType.value', this.regKitForAllRequestedType.value);
+      if (this.editFromWhere) {
+        data.shortName.map((X, i) => {
+          if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+            this.addShortName();
+          }
+        });
 
-      data.ProductsForKit ? data.ProductsForKit.map((x, i) => {
-        if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
-          this.addProductsGroupRows();
-        }
-      }) : data.ProductsForKit = [];
+        data.ProductsForKit ? data.ProductsForKit.map((x, i) => {
+          if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
+            this.addProductsGroupRows();
+          }
+        }) : data.ProductsForKit = [];
+      }
 
       this.allProductsInKit.tableBody = [];
-
+      console.log('data', data.ProductsForKit);
       data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
         product.productStatus = '';
-        product.NotificationNo = '';
         this.formData.manufacturingCompanyList.filter(item => item.ID === product.productDetails.manufacturingCompany).map(x => product.productDetails.manufacturingCompany = x.NAME);
         this.formData.manufacturingCountryList.filter(item => item.ID === product.productDetails.manufacturingCountry).map(x => product.productDetails.manufacturingCountry = x.NAME);
         this.formData.applicantList.filter(option => option.ID === product.productDetails.applicant).map(x => product.productDetails.applicant = x.NAME);
@@ -744,11 +808,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.productComments = data.productComments;
 
       console.log('data', data);
-      console.log('regKitForAllRequestedType', this.regKitForAllRequestedType.value);
 
       this.regKitForAllRequestedType.patchValue({
         ...data
       });
+
+      this.editFromWhere ? this.addProductsGroupRows() : null;
+      console.log('regKitForAllRequestedType', this.regKitForAllRequestedType.value);
 
       // let control = <FormArray> this.regKitForAllRequestedType.controls.ProductsForKit;
       // data.ProductsForKit.map(x => {
@@ -761,23 +827,86 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     } else {
       this.regKitForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
-        shortName: this.fb.array([this.fb.control('', [this.selectedRequestedType !== 6 && this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 ? Validators.required : null, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')])]),
-        manufacturingCompany: this.fb.control(null, Validators.required),
-        manufacturingCountry: this.fb.control('', Validators.required),
-        applicant: this.fb.control('', Validators.required),
-        licenseHolder: this.fb.control('', Validators.required),
+        productEnglishName: this.fb.control(''),
+        shortName: this.fb.array([this.fb.control('')]),
+        manufacturingCompany: this.fb.control(null),
+        manufacturingCountry: this.fb.control(''),
+        applicant: this.fb.control(''),
+        licenseHolder: this.fb.control(''),
         licenseHolderTxt: this.fb.control(''),
-        countryOfLicenseHolder: this.fb.control('', Validators.required),
+        countryOfLicenseHolder: this.fb.control(''),
         tradeMark: this.fb.control(''),
         shelfLife: this.fb.control(0),
-        storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-        receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+        storagePlace: this.fb.control(''),
+        receiptNumber: this.fb.control(''),
+        receiptValue: this.fb.control(''),
         ProductsForKit: this.fb.array([this.fb.group({
           productStatus: this.fb.control(''),
           NotificationNo: this.fb.control(''),
-          productDetails: this.fb.group({})
+          productDetails: this.fb.group({
+            productArabicName: this.fb.control(''),
+            productEnglishName: this.fb.control(''),
+            shortName: this.fb.array([this.fb.control('')]),
+            manufacturingCompany: this.fb.control(null),
+            manufacturingCountry: this.fb.control(''),
+            applicant: this.fb.control(''),
+            licenseHolder: this.fb.control(''),
+            licenseHolderTxt: this.fb.control(''),
+            countryOfLicenseHolder: this.fb.control(''),
+            tradeMark: this.fb.control(''),
+            physicalState: this.fb.control(''),
+            physicalStateTxt: this.fb.control(''),
+            purposeOfUse: this.fb.control(''),
+            purposeOfUseTxt: this.fb.control(''),
+            storagePlace: this.fb.control(''),
+            shelfLife: this.fb.control(0),
+            receiptNumber: this.fb.control(''),
+            receiptValue: this.fb.control(''),
+            packagingTable: this.fb.array([this.fb.group({
+              volumesID: this.fb.control(''),
+              volumes: this.fb.control(''),
+              unitOfMeasure: this.fb.control(''),
+              typeOfPackaging: this.fb.control(''),
+              packagingDescription: this.fb.control(''),
+            })]),
+            detailsTable: this.fb.array([this.fb.group({
+              DetailsID: this.fb.control(''),
+              PRODUCT_ID: this.fb.control(''),
+              colour: this.fb.control(''),
+              fragrance: this.fb.control(''),
+              flavor: this.fb.control(''),
+              barCode: this.fb.control(''),
+              ingrediantDetails: this.fb.array([this.fb.group({
+                Ingredient_ID: this.fb.control(''),
+                ingrediant: this.fb.control(''),
+                concentrations: this.fb.control(''),
+                function: this.fb.control(''),
+              })])
+            })]),
+            deletedIngredientsIds: this.fb.control(null),
+            deletedProductDetailsIds: this.fb.control(null),
+            deletedpacklstIds: this.fb.control(null),
+            freeSale: this.fb.control(''),
+            GMP: this.fb.control(''),
+            CoA: this.fb.control(''),
+            artWork: this.fb.control(''),
+            leaflet: this.fb.control(''),
+            reference: this.fb.control(''),
+            methodOfAnalysis: this.fb.control(''),
+            specificationsOfFinishedProduct: this.fb.control(''),
+            receipt: this.fb.control(''),
+            authorizationLetter: this.fb.control(''),
+            manufacturingContract: this.fb.control(''),
+            storageContract: this.fb.control(''),
+            factoryLicense: this.fb.control(''),
+            manufacturingAssignment: this.fb.control(''),
+            commercialRecord: this.fb.control(''),
+            stabilityStudy: this.fb.control(''),
+            shelfLifeAttachment: this.fb.control(''),
+            letterOfVariationFromLicenseHolder: this.fb.control(''),
+            others: this.fb.control(''),
+            otherFees: this.fb.control(''),
+          })
         })]),
         deletedProductIdLists: this.fb.control(null),
         freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
@@ -831,7 +960,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
               const value = objectData[keyLowerCase];
 
               this.lookupsData[key].filter(y => y.ID === value).map(x => {
-                objectData[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+                objectData[keyLowerCase] = x.NAME;
               });
             });
 
@@ -844,6 +973,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
         this.isLoading = false;
       }, error => this.handleError(error));
+
+      console.log('this.regKitForAllRequestedType.value.ProductsForKit', this.regKitForAllRequestedType.value.ProductsForKit);
     } else if (status === 'new') {
       this.newProductObject = data;
       const keyOfLookup = Object.keys(this.lookupsData);
@@ -852,11 +983,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         const value = data[keyLowerCase];
 
         this.lookupsData[key].filter(y => y.ID === value).map(x => {
-          data[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+          data[keyLowerCase] = x.NAME;
         });
       });
       this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
 
+      console.log('this.regKitForAllRequestedType.value.ProductsForKit', this.regKitForAllRequestedType.value.ProductsForKit);
       this.addProductsGroupRows();
     }
   }

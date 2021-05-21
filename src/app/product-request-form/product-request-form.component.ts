@@ -871,6 +871,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   onSubmit() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
+    console.log('data_onSubmit_Product', data);
+
     if (this.regProductForAllRequestedType.valid) {
       this.submitDataOutput.emit(data);
     } else {
@@ -970,7 +972,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         id: 0,
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
