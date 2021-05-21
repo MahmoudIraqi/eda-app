@@ -744,9 +744,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   getFormAsStarting(data) {
     if (data) {
-      debugger;
-      console.log('data_before', data);
-      console.log(' this.regKitForAllRequestedType.value', this.regKitForAllRequestedType.value);
+
       if (this.editFromWhere) {
         data.shortName.map((X, i) => {
           if (data.shortName.length > 1 && i < data.shortName.length - 1) {
@@ -762,7 +760,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       }
 
       this.allProductsInKit.tableBody = [];
-      console.log('data', data.ProductsForKit);
       data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
         product.productStatus = '';
         this.formData.manufacturingCompanyList.filter(item => item.ID === product.productDetails.manufacturingCompany).map(x => product.productDetails.manufacturingCompany = x.NAME);
@@ -807,23 +804,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
 
-      console.log('data', data);
-
       this.regKitForAllRequestedType.patchValue({
         ...data
       });
 
       this.editFromWhere ? this.addProductsGroupRows() : null;
-      console.log('regKitForAllRequestedType', this.regKitForAllRequestedType.value);
-
-      // let control = <FormArray> this.regKitForAllRequestedType.controls.ProductsForKit;
-      // data.ProductsForKit.map(x => {
-      //   control.push(this.fb.group(x));
-      // });
-      //
-      // this.addProductsGroupRows();
-
-
     } else {
       this.regKitForAllRequestedType = this.fb.group({
         productArabicName: this.fb.control(''),
@@ -974,7 +959,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         this.isLoading = false;
       }, error => this.handleError(error));
 
-      console.log('this.regKitForAllRequestedType.value.ProductsForKit', this.regKitForAllRequestedType.value.ProductsForKit);
     } else if (status === 'new') {
       this.newProductObject = data;
       const keyOfLookup = Object.keys(this.lookupsData);
@@ -988,7 +972,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       });
       this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
 
-      console.log('this.regKitForAllRequestedType.value.ProductsForKit', this.regKitForAllRequestedType.value.ProductsForKit);
       this.addProductsGroupRows();
     }
   }

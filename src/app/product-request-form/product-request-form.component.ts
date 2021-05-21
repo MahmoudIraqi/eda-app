@@ -642,17 +642,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     let cardImageBase64;
     let resForSetAttachment;
     let attachmentValue;
-    console.log('event.target.files', event.target.files[0]);
-    console.log('this.attachmentFields.filter(x => x.loadingStatus === true).length', this.attachmentFields.filter(x => x.loadingStatus === true).length);
-
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
-      console.log('y', y);
-    });
 
     if (this.attachmentFields.filter(x => x.loadingStatus === true).length === 0) {
       if (event.target.files.length > 0) {
         if (event.target.files[0].type === 'application/pdf') {
-          console.log('this.attachmentFields.filter(x => x.loadingStatus === true).length', this.attachmentFields.filter(x => x.loadingStatus === true).length);
 
           this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
             y.fileName = event.target.value.split(/(\\|\/)/g).pop();
@@ -693,7 +686,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   addPackagingRows() {
     this.editDetailedRowStatus = false;
     this.equalTheNewPackagingTable('add');
-    console.log('this.regProductForAllRequestedType.get().value__FromAdd', this.regProductForAllRequestedType.get('packagingTable').value);
     this.PackagingRows().push(this.fb.group({
       volumesID: this.fb.control(''),
       volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
@@ -747,7 +739,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   equalTheNewPackagingTable(fromWhere) {
     this.packagingListTable.tableBody = [];
     if (fromWhere !== 'form') {
-      console.log('this.regProductForAllRequestedType.get().value', this.regProductForAllRequestedType.get('packagingTable').value);
       this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
 
       if (fromWhere === 'cancel' || fromWhere === 'edit') {
@@ -870,8 +861,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   onSubmit() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
-
-    console.log('data_onSubmit_Product', data);
 
     if (this.regProductForAllRequestedType.valid) {
       this.submitDataOutput.emit(data);
@@ -1216,9 +1205,5 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     link.href = 'data:application/octet-stream;base64,' + base64Data;
 
     document.location.href = link.href;
-  }
-
-  showData() {
-    console.log('12341234', this.regProductForAllRequestedType);
   }
 }

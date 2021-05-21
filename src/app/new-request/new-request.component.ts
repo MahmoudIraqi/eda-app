@@ -87,7 +87,6 @@ export class NewRequestComponent implements OnInit {
       this.isLoading = false;
     }, error => this.handleError(error));
     this.getService.getRequestTypeLookUp().subscribe((res: any) => {
-      console.log('res', res);
       this.formData.requestType = res;
       this.isLoading = false;
     }, error => this.handleError(error));
@@ -226,8 +225,6 @@ export class NewRequestComponent implements OnInit {
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
       const id = Number(this.productId ? this.productId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
       const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
-
-      console.log('event_onSubmit_Product', newEvent);
 
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
