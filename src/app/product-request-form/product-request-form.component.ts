@@ -958,12 +958,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       });
 
       data.productAttachments.map((x, i) => {
-        console.log('x', x);
-        console.log('this.regProductForAllRequestedType.get(`${x.attachmentName}`)', this.regProductForAllRequestedType.get(`${x.attachmentName}`));
-        this.regProductForAllRequestedType.get(`${x.attachmentName}`).patchValue(x);
+        this.regProductForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
       });
-
-      console.log('this.regProductForAllRequestedType.value', this.regProductForAllRequestedType.value);
     } else {
       this.regProductForAllRequestedType = this.fb.group({
         id: 0,
