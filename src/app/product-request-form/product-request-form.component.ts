@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
   QueryList,
-  SimpleChanges,
+  SimpleChanges, TemplateRef,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -21,6 +21,7 @@ import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
 import {Router} from '@angular/router';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 
 export interface LookupState {
@@ -68,6 +69,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
+  @ViewChild('template') modalTemplate: TemplateRef<any>;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   isDraft: boolean = false;
   detailsListTable = {
@@ -285,6 +287,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   editPackagingIndex;
   editPackagingRowStatus = false;
   regProductForAllRequestedType: FormGroup;
+  regPackagingForProduct: FormGroup;
   subscription: Subscription;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
@@ -313,12 +316,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   filteredOptionsForTypeOfPackaging: Observable<LookupState[]>;
   filteredOptionsForIngradiant: Observable<LookupState[]>;
   filteredOptionsForFunction: Observable<LookupState[]>;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-lg packagingModal',
+  };
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
               private router: Router,
+              private modalService: BsModalService,
               private getService: FormService) {
     this.getFormAsStarting('');
+    this.getPackagingFormAsStarting('');
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -546,6 +557,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.filteredOptionsForPhysicalState = this.filterLookupsFunction('physicalState', this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
     this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction('purposeOfUse', this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+
     this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
@@ -613,11 +627,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getLookupForFormArray() {
-    this.PackagingRows().controls.map((x) => {
-      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', x.get('unitOfMeasure'), this.formData.unitOfMeasureList);
-      this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', x.get('typeOfPackaging'), this.formData.typeOfPackagingList);
-    });
-
     this.DetailsRows().value.map((x, i) => {
       x.ingrediantDetails.map((item, index) => {
         this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
@@ -681,35 +690,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
-  // Functions for Details tabls
-  PackagingRows(): FormArray {
-    return this.regProductForAllRequestedType.get('packagingTable') as FormArray;
-  }
-
-  addPackagingRows() {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewPackagingTable('add');
-    this.PackagingRows().push(this.fb.group({
-      volumesID: this.fb.control(''),
-      volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-      unitOfMeasure: this.fb.control('', Validators.required),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
-    }));
-  }
-
   removePackagingRows(i) {
-    this.PackagingRows().removeAt(i);
+    this.regProductForAllRequestedType.get('packagingTable').value.splice(i, 1);
 
-    this.regProductForAllRequestedType.get('packagingTable').value.map(x => {
-      this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
-      this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-    });
     this.packagingListTable.tableBody = [];
     this.regProductForAllRequestedType.get('packagingTable').value.map((x, i) => {
-      if (this.regProductForAllRequestedType.get('packagingTable').value.length > 1 && i < this.regProductForAllRequestedType.get('packagingTable').value.length - 1) {
-        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
-      }
+      this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
     });
   }
 
@@ -718,37 +704,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.regProductForAllRequestedType.get('deletedpacklstIds').patchValue(event);
   }
 
-  cancelThePackagingRows(index, event) {
-    this.deletedPackagingList.push(event.value.volumesID);
-    this.regProductForAllRequestedType.get('deletedpacklstIds').patchValue(this.deletedPackagingList);
-    this.PackagingRows().removeAt(index);
-
-    this.equalTheNewPackagingTable('cancel');
-  }
-
-  editDataPackagingsRows(fromWhere) {
-    this.editPackagingRowStatus = false;
-    this.equalTheNewPackagingTable(fromWhere);
-  }
-
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
+    const editRowData = this.regProductForAllRequestedType.get('packagingTable').value[event];
 
-    this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
-    this.packagingListTable.tableBody.splice(event, 1);
-  }
+    this.regPackagingForProduct.patchValue({
+      ...editRowData
+    });
 
-  equalTheNewPackagingTable(fromWhere) {
-    this.packagingListTable.tableBody = [];
-    if (fromWhere !== 'form') {
-      this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
-
-      if (fromWhere === 'cancel' || fromWhere === 'edit') {
-        this.packagingListTable.tableBody.pop();
-      }
-
-    }
+    this.openModal(this.modalTemplate);
   }
 
   DetailsRows(): FormArray {
@@ -872,6 +837,26 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
+  onSubmitForPackagingForm() {
+    if (this.regPackagingForProduct.valid) {
+      if (!this.editPackagingIndex) {
+        this.regProductForAllRequestedType.value.packagingTable.push({...this.regPackagingForProduct.value});
+      } else {
+        this.regProductForAllRequestedType.get('packagingTable').value[this.editPackagingIndex] = this.regPackagingForProduct.value;
+        this.editPackagingRowStatus = false;
+        this.editPackagingIndex = '';
+      }
+
+      this.modalRef.hide();
+
+      this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
+
+      this.getPackagingFormAsStarting('');
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
@@ -892,18 +877,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             this.addDetailsRows();
           }
         }) : data.detailsTable = [];
-        data.packagingTable ? data.packagingTable.map((x, i) => {
-          if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
-            this.addPackagingRows();
-          }
-        }) : data.packagingTable = [];
+        // data.packagingTable ? data.packagingTable.map((x, i) => {
+        //   if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
+        //     this.addPackagingRows();
+        //   }
+        // }) : data.packagingTable = [];
       }
 
       this.packagingListTable.tableBody = [];
       data.packagingTable ? data.packagingTable.map((x, i) => {
-        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
-          this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
-        }
+        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
       }) : null;
 
       this.detailsListTable.tableBody = [];
@@ -984,13 +967,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         shelfLife: this.fb.control(0),
         receiptNumber: this.fb.control('', this.legacyStatus ? null : Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
         receiptValue: this.fb.control('', [this.legacyStatus ? null : Validators.required, this.legacyStatus ? null : Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-        packagingTable: this.fb.array([this.fb.group({
-          volumesID: this.fb.control(''),
-          volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-          unitOfMeasure: this.fb.control('', Validators.required),
-          typeOfPackaging: this.fb.control('', Validators.required),
-          packagingDescription: this.fb.control(''),
-        })]),
+        packagingTable: this.fb.control([]),
         detailsTable: this.fb.array([this.fb.group({
           DetailsID: this.fb.control(''),
           PRODUCT_ID: this.fb.control(''),
@@ -1028,6 +1005,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
         otherFees: this.fb.control('', Validators.required),
+      });
+    }
+  }
+
+  getPackagingFormAsStarting(data) {
+    if (data) {
+
+    } else {
+      this.regPackagingForProduct = this.fb.group({
+        volumesID: this.fb.control(''),
+        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+        unitOfMeasure: this.fb.control('', Validators.required),
+        typeOfPackaging: this.fb.control('', Validators.required),
+        packagingDescription: this.fb.control(''),
       });
     }
   }
@@ -1070,14 +1061,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterInsideList(lookup, value, list): LookupState[] {
-    // if (lookup === 'manufacturingCompany') {
-    //   this.manufacturingSearchText.emit(value);
-    // } else if (lookup === 'licenseHolder') {
-    //   this.companyProfileSearchText.emit(value);
-    // } else if (lookup === 'ingrediant') {
-    //   this.ingrediantSearchText.emit(value);
-    // }
-
     let filterValue;
     if (value) {
       filterValue = value.toLowerCase() ? value.toLowerCase() : '';
@@ -1136,13 +1119,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.subscription.unsubscribe();
     }
 
-    list.subscribe(y => {
-      if (y.length === 0) {
-        this.PackagingRows().controls.map((x) => {
-          if (x['controls'][field].dirty) {
-            x['controls'][field].setValue(null);
-          }
-        });
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.regPackagingForProduct.controls[field].dirty) {
+          this.regPackagingForProduct.controls[field].setValue(null);
+        }
       }
     });
   }
@@ -1213,5 +1194,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     link.href = 'data:application/octet-stream;base64,' + base64Data;
 
     document.location.href = link.href;
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closePackagingModal() {
+    this.modalRef.hide();
+    this.getPackagingFormAsStarting('');
+    this.editPackagingRowStatus = false;
   }
 }
