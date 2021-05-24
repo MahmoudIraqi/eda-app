@@ -546,7 +546,7 @@
             </div>
           </div>
           <div class="col-12">
-            <div class="hintForEmptyObject" *ngIf="packagingListTable.tableBody.length === 0">
+            <div class="hintForEmptyObject" *ngIf="detailsListTable.tableBody.length === 0">
               <h5>** Please add detail data</h5>
             </div>
             <div class="RequestingTable">
@@ -574,16 +574,16 @@
               </div>
               <label>
                 {{field.name}}
-                <span *ngIf="field.required">*</span>
+                <span class="requiredStar"  *ngIf="field.required">*</span>
               </label>
               <div class="custom-file fileUpload mr-3" id="customFile">
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
                        [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags[field.id] ? true : false"
-                [required]="field.required">
+                       [required]="field.required ? 'required' : ''">
                 <div
-                  *ngIf="regProductForAllRequestedType.get(field.id).invalid && (regProductForAllRequestedType.get(field.id).dirty || regProductForAllRequestedType.get(field.id).touched)"
+                  *ngIf="regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus"
                   class="alert alert-danger">
                   <div
                     *ngIf="regProductForAllRequestedType.get(field.id).errors.required">

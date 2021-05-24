@@ -307,6 +307,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   requestId;
   deletedPackagingList = [];
   deletedDetailedList = [];
+  attachmentRequiredStatus: boolean = false;
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -547,6 +548,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     ];
 
+    console.log('this.editData', this.editData);
+
     this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
@@ -674,6 +677,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
+            console.log('this.regProductForAllRequestedType.value', this.regProductForAllRequestedType.value);
             if (!this.regProductForAllRequestedType.value.id) {
 
               this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
@@ -803,6 +807,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmit() {
+    this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
@@ -970,6 +975,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         others: this.fb.control(''),
         otherFees: this.fb.control('', Validators.required),
       });
+
+      console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType);
     }
   }
 

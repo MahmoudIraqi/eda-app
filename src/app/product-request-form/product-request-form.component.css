@@ -48,7 +48,11 @@ input:active, input:focus {
   color: #ff0000;
   background: none;
   border: none;
-  font-size: 11px;
+  font-size: 13px;
+}
+
+.custom-file .alert-danger{
+  top: -25px;
 }
 
 .alert-danger.RelativeAlert {

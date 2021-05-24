@@ -508,7 +508,7 @@ body {
   margin-left: auto;
 }
 
-.mat-placeholder-required.mat-form-field-required-marker {
+.mat-placeholder-required.mat-form-field-required-marker, .requiredStar {
   font-size: 18px;
   color: #f00;
   font-weight: bold;

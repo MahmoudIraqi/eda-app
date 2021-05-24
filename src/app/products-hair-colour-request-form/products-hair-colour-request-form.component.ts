@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
   QueryList,
-  SimpleChanges,
+  SimpleChanges, TemplateRef,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -19,6 +19,10 @@ import {Observable, Subscription} from 'rxjs';
 import {LookupState} from '../product-request-form/product-request-form.component';
 import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {Router} from '@angular/router';
+import {FormService} from '../services/form.service';
+import {convertToSpecialObject} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-products-hair-colour-request-form',
@@ -29,26 +33,41 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Input() selectedRequestedType;
   @Input() selectedFormType;
   @Input() selectedTrackType;
+  @Input() selectedIsExport;
   @Input() successSubmission;
-  @Input() lookupsData;
   @Input() editData;
+  @Input() editFromWhere;
+  @Input() getAllLookupsStatus;
   @Input() legacyStatus;
-  @Input() companyProfile;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
-  @Input() kitHairProductStatus;
+  @Input() lookupsData;
+  @Input() manufacturingCompanyList;
+  @Input() companyProfile;
+  @Input() kitProductStatus;
+  @Input() saveFromAttachment;
+  @Input() saveResponseDataForRegisterProductID;
   @Output() saveDataOutput = new EventEmitter();
+  @Output() saveDataOutputForAttachment = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   @Output() selectedTrackTypeForKit = new EventEmitter();
   @Output() selectedRegisteredTypeForKit = new EventEmitter();
   @Output() selectedRegisteredProductTypeForKit = new EventEmitter();
+  @Output() manufacturingSearchText = new EventEmitter();
+  @Output() companyProfileSearchText = new EventEmitter();
+  @Output() ingrediantSearchText = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
+  @Output() isLoadingStatus = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
+  @ViewChild('packagingModal') modalTemplate: TemplateRef<any>;
+  @ViewChild('detailedModal') modalDetailedTemplate: TemplateRef<any>;
+  @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  isDraft: boolean = false;
   detailsListTable = {
-    tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Volumes', 'Actions'],
+    tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Actions'],
     tableBody: []
   };
   packagingListTable = {
@@ -60,141 +79,201 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       id: 'freeSale',
       name: 'Free Sale',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'GMP',
       name: 'GMP',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'CoA',
       name: 'CoA',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'artWork',
       name: 'Art Work',
       fileName: '',
-      required: !this.kitHairProductStatus ? true : false,
-      enable: true
+      fileValue: '',
+      required: !this.kitProductStatus ? true : false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'leaflet',
       name: 'leaflet',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'reference',
       name: 'reference',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'methodOfAnalysis',
       name: 'Method of Analysis',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'receipt',
       name: 'receipt',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingContract',
       name: 'Manufacturing Contract',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'storageContract',
       name: 'Storage Contract',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'others',
       name: 'others',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'factoryLicense',
       name: 'Factory license',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingAssignment',
       name: 'Manufacturing Assignment',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'commercialRecord',
       name: 'Commercial Record',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'stabilityStudy',
       name: 'Stability study',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'shelfLifeAttachment',
       name: 'Shelf life',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'letterOfVariationFromLicenseHolder',
       name: 'letter of variation from license holder',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     }
   ];
   editIndex;
@@ -202,14 +281,25 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   editPackagingIndex;
   editPackagingRowStatus = false;
   regHairColorantProductForAllRequestedType: FormGroup;
+  regPackagingForProduct: FormGroup;
+  regDetailedForProduct: FormGroup;
+  subscription: Subscription;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
   requestedProductTypeForNewProductInKit;
+  isloading: boolean = false;
+  rangeInput;
+  activeTabIndex;
   enableEditableFields = [];
+  testModel;
+  myChangedGroup;
   disabledSaveButton: boolean = false;
   productFlags;
   productComments;
+  requestId;
+  deletedPackagingList = [];
+  deletedDetailedList = [];
 
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
@@ -223,167 +313,234 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   filteredOptionsForTypeOfPackaging: Observable<LookupState[]>;
   filteredOptionsForIngradiant: Observable<LookupState[]>;
   filteredOptionsForFunction: Observable<LookupState[]>;
-
-  deletedPackagingList = [];
-
-  subscription: Subscription;
-  @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
-  isDraft: boolean = false;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-xl packagingModal',
+  };
+  attachmentRequiredStatus: boolean = false;
 
   constructor(private fb: FormBuilder,
-              private number: DecimalPipe) {
+              private number: DecimalPipe,
+              private router: Router,
+              private modalService: BsModalService,
+              private getService: FormService) {
     this.getFormAsStarting('');
+    this.getPackagingFormAsStarting('');
+    this.getDetailedFormAsStarting('');
   }
 
-  ngOnChanges() {
-    this.formData = this.lookupsData;
+  ngOnChanges(changes: SimpleChanges) {
+    this.formData = {...this.lookupsData};
+    this.getFormAsStarting('');
+
+    if (this.successSubmission) {
+      this.resetForms();
+    }
 
     this.attachmentFields = [
       {
         id: 'freeSale',
         name: 'Free Sale',
         fileName: '',
+        fileValue: '',
         required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'GMP',
         name: 'GMP',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'CoA',
         name: 'CoA',
         fileName: '',
+        fileValue: '',
         required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'artWork',
         name: 'Art Work',
         fileName: '',
-        required: !this.kitHairProductStatus ? true : false,
-        enable: true
+        fileValue: '',
+        required: !this.kitProductStatus ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'leaflet',
         name: 'leaflet',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'reference',
         name: 'reference',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'methodOfAnalysis',
         name: 'Method of Analysis',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'specificationsOfFinishedProduct',
         name: 'Specifications of Finished Product',
         fileName: '',
+        fileValue: '',
         required: true,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'receipt',
         name: 'receipt',
         fileName: '',
+        fileValue: '',
         required: true,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'authorizationLetter',
         name: 'Authorization Letter',
         fileName: '',
+        fileValue: '',
         required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'manufacturingContract',
         name: 'Manufacturing Contract',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'storageContract',
         name: 'Storage Contract',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'others',
         name: 'others',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'otherFees',
         name: 'otherFees',
         fileName: '',
+        fileValue: '',
         required: true,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'factoryLicense',
         name: 'Factory license',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'manufacturingAssignment',
         name: 'Manufacturing Assignment',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'commercialRecord',
         name: 'Commercial Record',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'stabilityStudy',
         name: 'Stability study',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'shelfLifeAttachment',
         name: 'Shelf life',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'letterOfVariationFromLicenseHolder',
         name: 'letter of variation from license holder',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       }
     ];
-
-    if (this.successSubmission) {
-      this.resetForms();
-    }
 
     this.getFormAsStarting(this.editData);
 
@@ -393,14 +550,17 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   ngOnInit(): void {
-    this.filteredOptionsForProductColor = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('productColor'), this.formData.productColorList);
-    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
-    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
-    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
-    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
-    this.filteredOptionsForPhysicalState = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
-    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
-    this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regHairColorantProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+    this.filteredOptionsForProductColor = this.filterLookupsFunction('productColor', this.regHairColorantProductForAllRequestedType.get('productColor'), this.formData.productColorList);
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regHairColorantProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regHairColorantProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction('licenseHolder', this.regHairColorantProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
+    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction('countryOfLicenseHolder', this.regHairColorantProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
+    this.filteredOptionsForPhysicalState = this.filterLookupsFunction('physicalState', this.regHairColorantProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
+    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction('purposeOfUse', this.regHairColorantProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
+    this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regHairColorantProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+
     this.getLookupForFormArray();
 
     this.regHairColorantProductForAllRequestedType.valueChanges.subscribe(x => {
@@ -469,24 +629,16 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   getLookupForFormArray() {
-    this.PackagingRows().controls.map((x) => {
-      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(x.get('unitOfMeasure'), this.formData.unitOfMeasureList);
-      this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction(x.get('typeOfPackaging'), this.formData.typeOfPackagingList);
-    });
-
-    this.DetailsRows().value.map((x, i) => {
-      x.ingrediantDetails.map((item, index) => {
-        this.filteredOptionsForIngradiant = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
-        this.filteredOptionsForFunction = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
-      });
+    this.IngrediantDetailsRows().controls.map((x) => {
+      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
+      this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList);
     });
   }
 
   // Functions for Tabs
   nextToNextTab() {
-    let activeTabIndex;
-    this.formTabs.tabs.filter(x => x.active).map(y => activeTabIndex = this.formTabs.tabs.indexOf(y));
-    activeTabIndex + 1 <= this.formTabs.tabs.length - 1 ? this.formTabs.tabs[activeTabIndex + 1].active = true : null;
+    this.formTabs.tabs.filter(x => x.active).map(y => this.activeTabIndex = this.formTabs.tabs.indexOf(y));
+    this.activeTabIndex + 1 <= this.formTabs.tabs.length - 1 ? this.formTabs.tabs[this.activeTabIndex + 1].active = true : null;
   }
 
   backToNextTab() {
@@ -497,48 +649,53 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   // Function for File
   onFileSelect(event, fileControlName) {
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
+    let cardImageBase64;
+    let resForSetAttachment;
+    let attachmentValue;
 
-      reader.readAsDataURL(file);
-      reader.onload = (res: any) => {
-        this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
-      };
-      // this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
+    if (this.attachmentFields.filter(x => x.loadingStatus === true).length === 0) {
+      if (event.target.files.length > 0) {
+        if (event.target.files[0].type === 'application/pdf') {
+
+          this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
+            y.fileName = event.target.value.split(/(\\|\/)/g).pop();
+            attachmentValue = y.fileValue;
+          });
+
+          this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'Yes';
+            this.isLoadingStatus.emit(true);
+          });
+          const file = event.target.files[0];
+          const reader = new FileReader();
+
+          reader.readAsDataURL(file);
+          reader.onload = (res: any) => {
+            if (!this.regHairColorantProductForAllRequestedType.value.id) {
+
+              this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+            } else {
+              this.setAttachmentFileFunction(this.regHairColorantProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+            }
+          };
+
+        }// this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
+        else {
+          this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'No';
+            this.isLoadingStatus.emit(false);
+          });
+        }
+      }
     }
   }
 
-  // Functions for Details tabls
-  PackagingRows(): FormArray {
-    return this.regHairColorantProductForAllRequestedType.get('packagingTable') as FormArray;
-  }
-
-  addPackagingRows() {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewPackagingTable('add');
-    this.PackagingRows().push(this.fb.group({
-      volumesID: this.fb.control(''),
-      volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-      unitOfMeasure: this.fb.control('', Validators.required),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
-    }));
-  }
-
   removePackagingRows(i) {
-    this.PackagingRows().removeAt(i);
+    this.regHairColorantProductForAllRequestedType.get('packagingTable').value.splice(i, 1);
 
-    this.regHairColorantProductForAllRequestedType.get('packagingTable').value.map(x => {
-      this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
-      this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-    });
     this.packagingListTable.tableBody = [];
     this.regHairColorantProductForAllRequestedType.get('packagingTable').value.map((x, i) => {
-      if (this.regHairColorantProductForAllRequestedType.get('packagingTable').value.length > 1 && i < this.regHairColorantProductForAllRequestedType.get('packagingTable').value.length - 1) {
-        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
-      }
+      this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
     });
   }
 
@@ -547,104 +704,57 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.regHairColorantProductForAllRequestedType.get('deletedpacklstIds').patchValue(event);
   }
 
-  cancelThePackagingRows(index, event) {
-    this.deletedPackagingList.push(event.value.volumesID);
-    this.regHairColorantProductForAllRequestedType.get('deletedpacklstIds').patchValue(this.deletedPackagingList);
-    this.PackagingRows().removeAt(index);
-
-    this.equalTheNewPackagingTable('cancel');
-  }
-
-  editDataPackagingsRows(fromWhere) {
-    this.editPackagingRowStatus = false;
-    this.equalTheNewPackagingTable(fromWhere);
-  }
-
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
+    const editRowData = this.regHairColorantProductForAllRequestedType.get('packagingTable').value[event];
 
-    this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
-    this.packagingListTable.tableBody.splice(event, 1);
+    this.regPackagingForProduct.patchValue({
+      ...editRowData
+    });
+
+    this.openModal(this.modalTemplate);
   }
 
-  equalTheNewPackagingTable(fromWhere) {
-    if (fromWhere !== 'form') {
-      this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
+  removeDetailedRows(i) {
+    this.regHairColorantProductForAllRequestedType.get('detailsTable').value.splice(i, 1);
 
-      if (fromWhere === 'cancel') {
-        this.packagingListTable.tableBody.pop();
-      }
-
-    }
+    this.detailsListTable.tableBody = [];
+    this.regHairColorantProductForAllRequestedType.get('detailsTable').value.map((x, i) => {
+      this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+    });
   }
 
-  DetailsRows(): FormArray {
-    return this.regHairColorantProductForAllRequestedType.get('detailsTable') as FormArray;
-  }
-
-  addDetailsRows() {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable('add');
-    this.DetailsRows().push(this.fb.group({
-      DetailsID: this.fb.control(''),
-      PRODUCT_ID: this.fb.control(''),
-      colour: this.fb.control(''),
-      fragrance: this.fb.control(''),
-      flavor: this.fb.control(''),
-      barCode: this.fb.control(''),
-      ingrediantDetails: this.fb.array([this.fb.group({
-        Ingredient_ID: this.fb.control(''),
-        ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-        function: this.fb.control('', Validators.required),
-      })])
-    }));
-    this.getLookupForFormArray();
-  }
-
-  cancelTheDetailsRows(index) {
-    this.DetailsRows().removeAt(index);
-    this.detailsListTable.tableBody.pop();
-  }
-
-  editDataDetailsRows(fromWhere) {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable(fromWhere);
-  }
-
-  removeDetailsRows(i) {
-    this.DetailsRows().removeAt(i);
-    this.equalTheNewDetailsTable('remove');
-  }
-
-  deletedDetailsIdsList(event) {
+  deletedDetailedIdsList(event) {
+    this.deletedDetailedList = event;
     this.regHairColorantProductForAllRequestedType.get('deletedProductDetailsIds').patchValue(event);
   }
 
-  editTheDetailsRow(event) {
+  editTheDetailedRows(event) {
     this.editDetailedRowStatus = true;
     this.editIndex = event;
+    const editRowData = this.regHairColorantProductForAllRequestedType.get('detailsTable').value[event];
 
-    this.detailsListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('detailsTable').value;
-    this.detailsListTable.tableBody.splice(event, 1);
-  }
+    editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
+      if (i >= 1) {
+        this.addIngrediantDetailsRows();
+      }
+    }) : null;
 
-  equalTheNewDetailsTable(fromWhere) {
-    if (fromWhere !== 'form') {
-      this.detailsListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('detailsTable').value;
+    this.regDetailedForProduct.patchValue({
+      ...editRowData
+    });
 
-      this.detailsListTable.tableBody.pop();
-    }
+    this.openModal(this.modalDetailedTemplate);
   }
 
   //functions for IngrediantDetailsRows
-  IngrediantDetailsRows(index): FormArray {
-    return this.DetailsRows().at(index).get('ingrediantDetails') as FormArray;
+  IngrediantDetailsRows(): FormArray {
+    return this.regDetailedForProduct.get('ingrediantDetails') as FormArray;
   }
 
-  addIngrediantDetailsRows(index) {
-    this.IngrediantDetailsRows(index).push(this.fb.group({
+  addIngrediantDetailsRows() {
+    this.IngrediantDetailsRows().push(this.fb.group({
       Ingredient_ID: this.fb.control(''),
       ingrediant: this.fb.control('', Validators.required),
       concentrations: this.fb.control('', Validators.required),
@@ -652,29 +762,76 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     }));
   }
 
-  removeIngrediantDetailsRows(fromWhere, event) {
-    if (this.IngrediantDetailsRows(event.i).length > 1) {
-      this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
-    }
-
-    this.equalTheNewDetailsTable(fromWhere);
-  }
-
-  deletedIngrediantIdsList(event) {
-    this.regHairColorantProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
-  }
-
   saveData() {
     const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
-
     this.saveDataOutput.emit(data);
   }
 
+  saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+    this.getService.createProductRequest(allDataForSave).subscribe((res: any) => {
+      this.saveDataOutputForAttachment.emit(res.id);
+      this.regHairColorantProductForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
   onSubmit() {
+    this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
 
-    if (this.regHairColorantProductForAllRequestedType.valid) {
+    if (this.regHairColorantProductForAllRequestedType.valid && this.regHairColorantProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regHairColorantProductForAllRequestedType.get('detailsTable').value.length > 0) {
       this.submitDataOutput.emit(data);
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
+  onSubmitForPackagingForm() {
+    if (this.regPackagingForProduct.valid) {
+      if (!this.editPackagingIndex && this.editPackagingIndex !== 0) {
+        this.regHairColorantProductForAllRequestedType.value.packagingTable.push({...this.regPackagingForProduct.value});
+      } else {
+        this.regHairColorantProductForAllRequestedType.get('packagingTable').value[this.editPackagingIndex] = this.regPackagingForProduct.value;
+        this.editPackagingRowStatus = false;
+        this.editPackagingIndex = '';
+      }
+
+      this.modalRef.hide();
+
+      this.packagingListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('packagingTable').value;
+
+      this.getPackagingFormAsStarting('');
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
+  onSubmitForDetailedForm() {
+    if (this.regDetailedForProduct.valid) {
+      if (!this.editIndex && this.editIndex !== 0) {
+        this.regHairColorantProductForAllRequestedType.value.detailsTable.push({...this.regDetailedForProduct.value});
+      } else {
+        this.regHairColorantProductForAllRequestedType.get('detailsTable').value[this.editIndex] = this.regDetailedForProduct.value;
+        this.editDetailedRowStatus = false;
+        this.editIndex = '';
+      }
+
+      this.modalRef.hide();
+
+      this.detailsListTable.tableBody = this.regHairColorantProductForAllRequestedType.get('detailsTable').value;
+
+      this.getDetailedFormAsStarting('');
     } else {
       this.errorMessage.emit('true');
     }
@@ -683,62 +840,44 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
-
-      data.shortName.map((X, i) => {
-        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
-          this.addShortName();
-        }
-      });
-      data.detailsTable.map((x, i) => {
-        x.ingrediantDetails.map((y, index) => {
-          if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
-            this.addIngrediantDetailsRows(i);
+      if (this.editFromWhere) {
+        data.shortName ? data.shortName.map((X, i) => {
+          if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+            this.addShortName();
           }
-        });
-
-        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
-          this.addDetailsRows();
-        }
-      });
-      data.packagingTable.map((x, i) => {
-        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
-          this.addPackagingRows();
-        }
-      });
+        }) : data.shortName = [];
+      }
 
       this.packagingListTable.tableBody = [];
-      data.packagingTable.map((x, i) => {
-        if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
-          this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
-        }
-      });
+      data.packagingTable ? data.packagingTable.map((x, i) => {
+        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+      }) : null;
 
       this.detailsListTable.tableBody = [];
-      data.detailsTable.map((x, i) => {
-        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
-          this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
-        }
-      });
+      data.detailsTable ? data.detailsTable.map((x, i) => {
+        this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+      }) : null;
 
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+      this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
       this.formData.physicalStateList.filter(option => option.ID === data.physicalState).map(x => data.physicalState = x.NAME);
       this.formData.purposeOfUseList.filter(option => option.ID === data.purposeOfUse).map(x => data.purposeOfUse = x.NAME);
       this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
       this.formData.unitOfMeasureList.filter(option => option.ID === data.unitOfMeasure).map(x => data.unitOfMeasure = x.NAME);
-      data.packagingTable.map(x => {
+      data.packagingTable ? data.packagingTable.map(x => {
         this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
         this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-      });
-      data.detailsTable.map(x => {
+      }) : null;
+      data.detailsTable ? data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
           this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
           this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
         });
-      });
+      }) : null;
 
       this.regHairColorantProductForAllRequestedType.valueChanges.subscribe(x => {
         for (let i = 0; i < Object.values(x).length; i++) {
@@ -756,11 +895,23 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
 
+      data.productAttachments ? data.productAttachments.map(file => {
+        this.attachmentFields.filter(fileID => fileID.id === file.attachmentName).map(y => {
+          y.fileName = file.attachmentFileName;
+          y.fileValue = file.Id;
+        });
+      }) : null;
+
       this.regHairColorantProductForAllRequestedType.patchValue({
         ...data
       });
+
+      data.productAttachments.map((x, i) => {
+        this.regHairColorantProductForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
+      });
     } else {
       this.regHairColorantProductForAllRequestedType = this.fb.group({
+        id: 0,
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
         shortName: this.fb.array([this.fb.control('', [this.selectedRequestedType !== 6 && this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 ? Validators.required : null, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')])]),
@@ -780,27 +931,8 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
         receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
         receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-        packagingTable: this.fb.array([this.fb.group({
-          volumesID: this.fb.control(''),
-          volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-          unitOfMeasure: this.fb.control('', Validators.required),
-          typeOfPackaging: this.fb.control('', Validators.required),
-          packagingDescription: this.fb.control(''),
-        })]),
-        detailsTable: this.fb.array([this.fb.group({
-          DetailsID: this.fb.control(''),
-          PRODUCT_ID: this.fb.control(''),
-          colour: this.fb.control(''),
-          fragrance: this.fb.control(''),
-          flavor: this.fb.control(''),
-          barCode: this.fb.control(''),
-          ingrediantDetails: this.fb.array([this.fb.group({
-            Ingredient_ID: this.fb.control(''),
-            ingrediant: this.fb.control('', Validators.required),
-            concentrations: this.fb.control('', Validators.required),
-            function: this.fb.control('', Validators.required),
-          })])
-        })]),
+        packagingTable: this.fb.control([]),
+        detailsTable: this.fb.control([]),
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
@@ -828,8 +960,42 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     }
   }
 
-  getDecimalValue(value) {
+  getPackagingFormAsStarting(data) {
+    if (data) {
 
+    } else {
+      this.regPackagingForProduct = this.fb.group({
+        volumesID: this.fb.control(''),
+        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+        unitOfMeasure: this.fb.control('', Validators.required),
+        typeOfPackaging: this.fb.control('', Validators.required),
+        packagingDescription: this.fb.control(''),
+      });
+    }
+  }
+
+  getDetailedFormAsStarting(data) {
+    if (data) {
+
+    } else {
+      this.regDetailedForProduct = this.fb.group({
+        DetailsID: this.fb.control(''),
+        PRODUCT_ID: this.fb.control(''),
+        colour: this.fb.control(''),
+        fragrance: this.fb.control(''),
+        flavor: this.fb.control(''),
+        barCode: this.fb.control(''),
+        ingrediantDetails: this.fb.array([this.fb.group({
+          Ingredient_ID: this.fb.control(''),
+          ingrediant: this.fb.control('', Validators.required),
+          concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+          function: this.fb.control('', Validators.required),
+        })])
+      });
+    }
+  }
+
+  getDecimalValue(value) {
     this.regHairColorantProductForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regHairColorantProductForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
@@ -856,20 +1022,20 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     }
   }
 
-  filterLookupsFunction(formControlValue, list) {
+  filterLookupsFunction(whichLookup, formControlValue, list) {
     if (formControlValue) {
       return formControlValue.valueChanges
         .pipe(
           startWith(''),
-          map(state => state ? this.filterInsideList(state, list) : list.slice())
+          map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
         );
     }
   }
 
-  filterInsideList(value, list): LookupState[] {
+  filterInsideList(lookup, value, list): LookupState[] {
     let filterValue;
     if (value) {
-      filterValue = value.toLowerCase();
+      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
     }
 
     return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
@@ -888,7 +1054,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
     data.packagingTable.map(x => {
       this.formData.unitOfMeasureList.filter(option => option.NAME === x.unitOfMeasure).map(item => x.unitOfMeasure = item.ID);
-      this.formData.functionList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
+      this.formData.typeOfPackagingList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
     });
 
     data.detailsTable.map(x => {
@@ -926,32 +1092,94 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       this.subscription.unsubscribe();
     }
 
-    list.subscribe(y => {
-      if (y.length === 0) {
-        this.PackagingRows().controls.map((x) => {
-          if (x['controls'][field].dirty) {
-            x['controls'][field].setValue(null);
-          }
-        });
+    list ? list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.regPackagingForProduct.controls[field].dirty) {
+          this.regPackagingForProduct.controls[field].setValue(null);
+        }
       }
-    });
+    }) : null;
   }
 
   private _subscribeToClosingActionsForDetailsFormArray(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
-
-    list.subscribe(y => {
+    list ? list.subscribe(y => {
       if (y.length === 0) {
-        this.DetailsRows().controls.map((x) => {
-          x['controls'].ingrediantDetails.controls.map((item, index) => {
-            if (item.controls[field].dirty) {
-              item.controls[field].setValue(null);
-            }
-          });
+        this.IngrediantDetailsRows().controls.map((x) => {
+          if (x['controls'][field].dirty) {
+            x['controls'][field].setValue(null);
+          }
         });
       }
+    }) : null;
+  }
+
+  setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
+    const dataForRequest = this.convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue);
+
+    this.attachmentFields.filter(x => x.id === FileID).map(y => {
+      y.loadingStatus = true;
     });
+
+    this.getService.setAttachmentFile(dataForRequest).subscribe((res: any) => {
+      this.attachmentFields.filter(x => x.id === FileID).map(y => {
+        y.fileValue = res.ID;
+        y.loadingStatus = false;
+        this.isLoadingStatus.emit(false);
+        this.regHairColorantProductForAllRequestedType.get(FileID).setValue(res.ID);
+      });
+
+      return res;
+    });
+  }
+
+  downloadFile(FileName) {
+    this.getService.getAttachmentFileByID(this.regHairColorantProductForAllRequestedType.value.id, FileName).subscribe((res: any) => {
+      this.convertFilesToPDF(res.base64Data, FileName);
+    });
+  }
+
+  convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
+    return {
+      RequestId: this.regHairColorantProductForAllRequestedType.value.id ? this.regHairColorantProductForAllRequestedType.value.id : this.requestId,
+      AttachmentName: FileID,
+      AttachmentFileName: FileName,
+      base64Data: base64Data,
+      ID: fileValue ? fileValue : id
+    };
+  }
+
+  convertFilesToPDF(base64Data, fileName) {
+    let obj = document.createElement('object');
+    obj.style.width = '100%';
+    obj.style.height = '842pt';
+    obj.type = 'application/pdf';
+    obj.data = 'data:application/pdf;base64,' + base64Data;
+
+    var link = document.createElement('a');
+    link.innerHTML = 'Download PDF file';
+    link.download = `${fileName}`;
+    link.className = 'pdfLink';
+    link.href = 'data:application/pdf;base64,' + base64Data;
+
+    link.click();
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closePackagingModal() {
+    this.modalRef.hide();
+    this.getPackagingFormAsStarting('');
+    this.editPackagingRowStatus = false;
+  }
+
+  closeDetailedForm() {
+    this.modalRef.hide();
+    this.getDetailedFormAsStarting('');
+    this.editDetailedRowStatus = false;
   }
 }
