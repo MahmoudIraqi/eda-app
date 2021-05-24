@@ -338,6 +338,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
+    this.getFormAsStarting('');
 
     if (this.successSubmission) {
       this.resetForms();
@@ -743,9 +744,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     }) : null;
 
-    console.log('editRowData', editRowData);
-    console.log('this.regDetailedForProduct', this.regDetailedForProduct);
-
     this.regDetailedForProduct.patchValue({
       ...editRowData
     });
@@ -798,7 +796,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType.patchValue({
         id: res.id
       });
-      console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType.value);
+
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
     });
@@ -807,7 +805,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   onSubmit() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    console.log('data', data);
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
       this.submitDataOutput.emit(data);
     } else {
@@ -846,8 +843,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
 
       this.modalRef.hide();
-
-      console.log('this.regProductForAllRequestedType.get(detailsTable).value', this.regProductForAllRequestedType.get('detailsTable').value);
 
       this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
 

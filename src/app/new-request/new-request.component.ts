@@ -196,7 +196,7 @@ export class NewRequestComponent implements OnInit {
   saveData(event) {
     this.isLoading = true;
 
-    if (this.selectedFormType === 1 || this.selectedFormType === 3) {
+    if (this.selectedFormType === 1 || this.selectedFormType === 3 || this.selectedFormType === 5) {
       const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
       const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
@@ -253,11 +253,29 @@ export class NewRequestComponent implements OnInit {
         this.onClosed();
       }, error => this.handleError(error));
 
+    } else if (this.selectedFormType === 5) {
+      const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const newEvent = convertToSpecialObject('submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+
+      this.getService.createProductRequest(newEvent).subscribe((res: any) => {
+        this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
+        this.updatingProductData = res;
+        this.editFormIPStatus = false;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.emptyTheTopField();
+        this.onClosed();
+      }, error => this.handleError(error));
     }
   }
 
   alertForSaveRequest() {
     return {msg: 'You had a successful saving'};
+  }
+
+  alertSaveRequestForKit() {
+    return {msg: 'You can apply this product in kit with request id'};
   }
 
   alertForSubmitRequest() {
