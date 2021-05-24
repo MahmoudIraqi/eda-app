@@ -64,6 +64,7 @@ export class NewRequestComponent implements OnInit {
   typeOfNotificationVariable;
   fromAttachment;
   editFormIPStatus: boolean = false;
+  getDraftProductData: boolean = false;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute,
               private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -79,69 +80,6 @@ export class NewRequestComponent implements OnInit {
       this.companyProfileId = res.payload;
     });
 
-    this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
-      this.formData.formType = res;
-      if (res) {
-        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
-      }
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getRequestTypeLookUp().subscribe((res: any) => {
-      this.formData.requestType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.formData.licenseHolderCountryList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getFunctionLookUp().subscribe((res: any) => {
-      this.formData.functionList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-      this.formData.typeOfPackagingList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-      this.formData.physicalStateList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-      this.formData.unitOfMeasureList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-      this.formData.purposeOfUseList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductColorLookUp().subscribe((res: any) => {
-      this.formData.productColorList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
-      this.formData.ingrediantList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
-      this.formData.applicantList = res;
-      this.formData.licenseHolderList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
-      this.formData.storagePlaceList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-      this.formData.trackType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-
-
     const pathInEditMode = this.route.snapshot.routeConfig.path.split('/')[0];
 
     this.inputService.getInput$().pipe(
@@ -156,19 +94,87 @@ export class NewRequestComponent implements OnInit {
 
 
     this.productId = this.route.snapshot.paramMap.get('id');
-    if (this.productId) {
-      this.isLoading = true;
-      this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
-        this.selectedFormType = res.typeOfMarketing;
-        this.selectedRequestedType = res.typeOfRegistration;
-        this.selectedTrackType = res.Tracktype;
-        this.selectedIsExport = res.isExport;
-        this.updatingProductData = res;
-        this.editFormIPStatus = true;
+    this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
+      this.formData.formType = res;
+      if (res) {
+        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+      }
+    }, error => this.handleError(error), () => {
+      this.getService.getRequestTypeLookUp().subscribe((res: any) => {
+        this.formData.requestType = res;
+      }, error => this.handleError(error), () => {
+        this.getService.getCountryLookUp().subscribe((res: any) => {
+          this.formData.manufacturingCountryList = res;
+          this.formData.licenseHolderCountryList = res;
+        }, error => this.handleError(error), () => {
+          this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
+            this.formData.manufacturingCompanyList = res;
+          }, error => this.handleError(error), () => {
+            this.getService.getFunctionLookUp().subscribe((res: any) => {
+              this.formData.functionList = res;
+            }, error => this.handleError(error), () => {
+              this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+                this.formData.typeOfPackagingList = res;
+              }, error => this.handleError(error), () => {
+                this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+                  this.formData.physicalStateList = res;
+                }, error => this.handleError(error), () => {
+                  this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+                    this.formData.unitOfMeasureList = res;
+                  }, error => this.handleError(error), () => {
+                    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+                      this.formData.purposeOfUseList = res;
+                    }, error => this.handleError(error), () => {
+                      this.getService.getProductColorLookUp().subscribe((res: any) => {
+                        this.formData.productColorList = res;
+                      }, error => this.handleError(error), () => {
+                        this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
+                          this.formData.ingrediantList = res;
+                        }, error => this.handleError(error), () => {
+                          this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
+                            this.formData.applicantList = res;
+                            this.formData.licenseHolderList = res;
+                          }, error => this.handleError(error), () => {
+                            this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+                              this.formData.storagePlaceList = res;
+                            }, error => this.handleError(error), () => {
+                              this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+                                this.formData.trackType = res;
+                              }, error => this.handleError(error), () => {
+                                this.getDraftProductData = false;
+                                this.isLoading = false;
 
-        this.getPricing('draftRequest');
-      }, error => this.handleError(error));
-    }
+                                this.productId = this.route.snapshot.paramMap.get('id');
+                                if (this.productId) {
+                                  this.isLoading = true;
+                                  if (!this.getDraftProductData) {
+                                    this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+                                      this.selectedFormType = res.typeOfMarketing;
+                                      this.selectedRequestedType = res.typeOfRegistration;
+                                      this.selectedTrackType = res.Tracktype;
+                                      this.selectedIsExport = res.isExport;
+                                      this.updatingProductData = res;
+                                      this.editFormIPStatus = true;
+                                      this.isLoading = false;
+
+                                      this.getPricing('draftRequest');
+                                    }, error => this.handleError(error));
+                                  }
+                                }
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
   }
 
   getFormType(event) {

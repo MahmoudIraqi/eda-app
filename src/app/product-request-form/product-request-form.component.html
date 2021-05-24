@@ -1,6 +1,7 @@
 <form class="mt-2" name="form" class="example-form" method="post"
       [formGroup]="regProductForAllRequestedType"
-      (ngSubmit)="onSubmit()" novalidate xmlns="http://www.w3.org/1999/html">
+      (ngSubmit)="onSubmit()" novalidate xmlns="http://www.w3.org/1999/html"
+      autocomplete="off">
   <tabset class="tabs" type="pills" #formTabs>
     <tab heading="Products fields">
       <div class="mt-5">
@@ -941,7 +942,8 @@
                 <button type="button" class="custom-file-download-Button" (click)="downloadFile(field.id)"
                         [disabled]="!regProductForAllRequestedType.value.id">Download
                 </button>
-                <app-loader-component [forWhat]="'attachmentFields'" [loadingStatus]="field.loadingStatus"></app-loader-component>
+                <app-loader-component [forWhat]="'attachmentFields'"
+                                      [loadingStatus]="field.loadingStatus"></app-loader-component>
               </div>
             </div>
           </div>
