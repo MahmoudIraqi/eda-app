@@ -518,7 +518,8 @@
                   <app-title [smallTitle]="true" [title]="'Packaging Area'"></app-title>
                 </div>
                 <div class="col-12 col-sm-2 ml-auto">
-                  <button type="button" class="btn btn-primary" (click)="openModal(template)">
+                  <button type="button" class="btn btn-primary"
+                          [disabled]="productFlags && !productFlags.packagingTable" (click)="openModal(template)">
                     Add new packaging
                   </button>
                 </div>
@@ -529,9 +530,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="packagingListTable"
                               [whichTable]="'newRequestForPackaging'"
-                              (removePackagingRowOutput)="removePackagingRows($event)"
-                              (removePackagingRowIDs)="deletedPackagingIdsList($event)"
-                              (editPackagingRowIDs)="editThePackagingRows($event)"></app-table-list>
+                              (removePackagingRowOutput)="productFlags && productFlags.packagingTable ? removePackagingRows($event): null"
+                              (removePackagingRowIDs)="productFlags && productFlags.packagingTable ? deletedPackagingIdsList($event) : null"
+                              (editPackagingRowIDs)="productFlags && productFlags.packagingTable ? editThePackagingRows($event): null"></app-table-list>
             </div>
           </div>
         </div>
@@ -773,10 +774,10 @@
           <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields">
             <div class="form-group" *ngIf="field.enable">
               <div *ngIf="!legacyStatus && productComments && productComments[field.id]" class="InfoIconContainer">
-                                <span class="infoIcon" tooltip="{{productComments[field.id]}}"
-                                      placement="top">
-                                  <i class="fas fa-info-circle"></i>
-                                </span>
+                <span class="infoIcon" tooltip="{{productComments[field.id]}}"
+                      placement="top">
+                  <i class="fas fa-info-circle"></i>
+                </span>
               </div>
               <label>
                 {{field.name}}
@@ -786,6 +787,7 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
+                       [disabled]="!legacyStatus && productFlags && !productFlags[field.id]"
                        [required]="field.required">
                 <div
                   *ngIf="regProductForAllRequestedType.get(field.id).invalid && (regProductForAllRequestedType.get(field.id).dirty || regProductForAllRequestedType.get(field.id).touched)"
@@ -861,9 +863,9 @@
       <div class="row mt-5">
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.volumes"
+            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
                  class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.volumes}}"
+                                  <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                         placement="top">
                                     <i class="fas fa-info-circle"></i>
                                   </span>
@@ -871,7 +873,7 @@
             <mat-label>Volumes</mat-label>
             <input type="text" class="form-control" matInput formControlName="volumes"
                    placeholder="" required
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('volumes') : true : isDraft ? false : legacyStatus ? false :productFlags && !productFlags.volumes ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('volumes') : true : isDraft ? false : legacyStatus ? false :productFlags && !productFlags.packagingTable ? true : false">
             <div
               *ngIf="regPackagingForProduct.get('volumes').invalid && (regPackagingForProduct.get('volumes').dirty || regPackagingForProduct.get('volumes').touched)"
               class="alert alert-danger">
@@ -888,9 +890,9 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.unitOfMeasure"
+            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
                  class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.unitOfMeasure}}"
+                                  <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                         placement="top">
                                     <i class="fas fa-info-circle"></i>
                                   </span>
@@ -902,7 +904,7 @@
                    aria-label="Unit of measure"
                    matInput
                    formControlName="unitOfMeasure"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.unitOfMeasure ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="unitOfMeasureList" required>
             <mat-autocomplete #unitOfMeasureList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
@@ -922,9 +924,9 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field appearance="fill">
-            <div *ngIf="!legacyStatus && productComments && productComments.typeOfPackaging"
+            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
                  class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.typeOfPackaging}}"
+                                  <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                         placement="top">
                                     <i class="fas fa-info-circle"></i>
                                   </span>
@@ -936,7 +938,7 @@
                    aria-label="Type of Packaging"
                    matInput
                    formControlName="typeOfPackaging"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.typeOfPackaging ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="typeOfPackagingList" required>
             <mat-autocomplete #typeOfPackagingList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
@@ -956,16 +958,16 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.packagingDescription"
+            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
                  class="InfoIconContainer">
-                                      <span class="infoIcon" tooltip="{{productComments.packagingDescription}}"
+                                      <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                             placement="top">
                                         <i class="fas fa-info-circle"></i>
                                       </span>
             </div>
             <mat-label>Packaging Description</mat-label>
             <textarea matInput formControlName="packagingDescription"
-                      [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingDescription ? true : false"
+                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
                       placeholder="Ex. It makes me feel..."></textarea>
           </mat-form-field>
         </div>

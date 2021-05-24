@@ -129,7 +129,7 @@
                      aria-label="Applicant"
                      matInput
                      formControlName="applicant"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('applicant') : true : false"
+                     [readonly]="true"
                      [matAutocomplete]="applicantList" required>
               <mat-autocomplete #applicantList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForApplicant | async"
@@ -460,7 +460,8 @@
   </div>
 </form>
 
-<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
   <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 

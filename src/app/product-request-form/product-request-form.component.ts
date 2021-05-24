@@ -839,7 +839,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   onSubmitForPackagingForm() {
     if (this.regPackagingForProduct.valid) {
-      if (!this.editPackagingIndex) {
+      if (!this.editPackagingIndex && this.editPackagingIndex !== 0) {
         this.regProductForAllRequestedType.value.packagingTable.push({...this.regPackagingForProduct.value});
       } else {
         this.regProductForAllRequestedType.get('packagingTable').value[this.editPackagingIndex] = this.regPackagingForProduct.value;
