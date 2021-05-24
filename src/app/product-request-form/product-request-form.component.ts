@@ -64,6 +64,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Output() companyProfileSearchText = new EventEmitter();
   @Output() ingrediantSearchText = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
+  @Output() isLoadingStatus = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -654,6 +655,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
           this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
             file.attachmentTypeStatus = 'Yes';
+            this.isLoadingStatus.emit(true);
           });
           const file = event.target.files[0];
           const reader = new FileReader();
@@ -672,6 +674,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         else {
           this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
             file.attachmentTypeStatus = 'No';
+            this.isLoadingStatus.emit(false);
           });
         }
       }
@@ -1173,6 +1176,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.attachmentFields.filter(x => x.id === FileID).map(y => {
         y.fileValue = res.ID;
         y.loadingStatus = false;
+        this.isLoadingStatus.emit(false);
         this.regProductForAllRequestedType.get(FileID).setValue(res.ID);
       });
 

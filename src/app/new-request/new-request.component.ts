@@ -331,4 +331,12 @@ export class NewRequestComponent implements OnInit {
   showAlertMessager(messageStatus) {
     messageStatus ? this.handleError({message: 'please complete the required values which marked with *'}) : null;
   }
+
+  enableLoadingForAttachment(event) {
+    if (event) {
+      this.isLoading = true;
+    } else {
+      this.isLoading = false;
+    }
+  }
 }
