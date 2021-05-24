@@ -64,7 +64,7 @@ export class InspectionComponent implements OnInit {
     this.productId = this.route.snapshot.paramMap.get('id');
     if (this.productId) {
       this.isLoading = true;
-      this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+      this.getService.getProductWithProductIDList(Number(this.productId), '').subscribe((res: any) => {
       }, error => this.handleError(error));
     }
   }

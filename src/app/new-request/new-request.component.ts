@@ -148,7 +148,7 @@ export class NewRequestComponent implements OnInit {
                                 if (this.productId) {
                                   this.isLoading = true;
                                   if (!this.getDraftProductData) {
-                                    this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+                                    this.getService.getProductWithProductIDList(Number(this.productId), '').subscribe((res: any) => {
                                       this.selectedFormType = res.typeOfMarketing;
                                       this.selectedRequestedType = res.typeOfRegistration;
                                       this.selectedTrackType = res.Tracktype;

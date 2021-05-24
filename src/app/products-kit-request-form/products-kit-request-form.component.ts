@@ -928,10 +928,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   applyProduct(data, status, index) {
+    debugger;
     if (status === 'registered') {
-
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
+      this.getServices.getProductWithNotificationNumberList(Number(data.value.NotificationNo), 'kit').subscribe((res: any) => {
         if (res) {
           if (res.canUse) {
             const objectData = {
@@ -960,19 +960,35 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       }, error => this.handleError(error));
 
     } else if (status === 'new') {
-      this.newProductObject = data;
-      const keyOfLookup = Object.keys(this.lookupsData);
-      keyOfLookup.map(key => {
-        const keyLowerCase = key.replace('List', '');
-        const value = data[keyLowerCase];
+      this.isLoading = true;
+      this.getServices.getProductWithProductIDList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
+        if (res) {
+          // if (res.canUse) {
+          //
+          // } else {
+          //   this.handleError(res.canuseMsg);
+          // }
+          const objectData = {
+            ...res
+          };
 
-        this.lookupsData[key].filter(y => y.ID === value).map(x => {
-          data[keyLowerCase] = x.NAME;
-        });
-      });
-      this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
+          this.ProductGroupsRows().value[index].productDetails = res;
+          const keyOfLookup = Object.keys(this.lookupsData);
+          keyOfLookup.map(key => {
+            const keyLowerCase = key.replace('List', '');
+            const value = objectData[keyLowerCase];
 
-      this.addProductsGroupRows();
+            this.lookupsData[key].filter(y => y.ID === value).map(x => {
+              objectData[keyLowerCase] = x.NAME;
+            });
+          });
+
+          this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
+          this.addProductsGroupRows();
+        }
+
+        this.isLoading = false;
+      }, error => this.handleError(error));
     }
   }
 

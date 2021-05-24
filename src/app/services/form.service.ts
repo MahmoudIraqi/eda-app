@@ -485,7 +485,7 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getProductWithProductIDList(productID) {
+  getProductWithProductIDList(productID, typeParameter) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
