@@ -15,13 +15,13 @@ input:active, input:focus {
   box-shadow: none;
 }
 
-form > .row > div:nth-child(n + 4) {
-  margin-top: 2em;
-}
+/*form > .row > div:nth-child(n + 4) {*/
+/*  margin-top: 2em;*/
+/*}*/
 
-tab-pane .row > div:nth-child(n + 4) {
-  margin-top: 2em;
-}
+/*tab-pane .row > div:nth-child(n + 4) {*/
+/*  margin-top: 2em;*/
+/*}*/
 
 .form-group {
   position: relative;
@@ -283,6 +283,14 @@ input[type=file] {
   color: #c28a30 !important;
 }
 
+.hintForEmptyObject h5 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #f00;
+  text-decoration: underline;
+  margin-top: 1em;
+}
+
 /* ---------------------------------- addDetailsRequestContainer ----------------------------- */
 
 .addDetailsRequestContainer {
@@ -296,13 +304,12 @@ input[type=file] {
   background: #fff;
   border-radius: 10px 0 10px 10px;
   padding: 1em;
-  margin-top: 2em;
 }
 
 .ingrediantDetailsContainer .rowContainer {
   border-radius: 10px 0 10px 10px;
   border: 0.5px solid #c28a30;
-  padding: 1em;
+  padding: 0em 1em;
 }
 
 .addDetailsRequestContainer .col-3:nth-child(n+4) {

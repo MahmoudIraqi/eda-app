@@ -531,6 +531,10 @@ body {
   z-index: 100 !important;
 }
 
+.btnForModal {
+  min-width: 260px !important;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {

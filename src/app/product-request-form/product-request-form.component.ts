@@ -69,7 +69,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
-  @ViewChild('template') modalTemplate: TemplateRef<any>;
+  @ViewChild('packagingModal') modalTemplate: TemplateRef<any>;
+  @ViewChild('detailedModal') modalDetailedTemplate: TemplateRef<any>;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   isDraft: boolean = false;
   detailsListTable = {
@@ -288,6 +289,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   editPackagingRowStatus = false;
   regProductForAllRequestedType: FormGroup;
   regPackagingForProduct: FormGroup;
+  regDetailedForProduct: FormGroup;
   subscription: Subscription;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
@@ -304,6 +306,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   productComments;
   requestId;
   deletedPackagingList = [];
+  deletedDetailedList = [];
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -320,7 +323,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   modalOptions: ModalOptions = {
     backdrop: 'static',
     keyboard: false,
-    class: 'modal-lg packagingModal',
+    class: 'modal-xl packagingModal',
   };
 
   constructor(private fb: FormBuilder,
@@ -330,6 +333,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
               private getService: FormService) {
     this.getFormAsStarting('');
     this.getPackagingFormAsStarting('');
+    this.getDetailedFormAsStarting('');
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -627,11 +631,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getLookupForFormArray() {
-    this.DetailsRows().value.map((x, i) => {
-      x.ingrediantDetails.map((item, index) => {
-        this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
-        this.filteredOptionsForFunction = this.filterLookupsFunction('function', this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
-      });
+    this.IngrediantDetailsRows().controls.map((x) => {
+      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
+      this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList);
     });
   }
 
@@ -716,93 +718,67 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.openModal(this.modalTemplate);
   }
 
-  DetailsRows(): FormArray {
-    return this.regProductForAllRequestedType.get('detailsTable') as FormArray;
+  removeDetailedRows(i) {
+    this.regProductForAllRequestedType.get('detailsTable').value.splice(i, 1);
+
+    this.detailsListTable.tableBody = [];
+    this.regProductForAllRequestedType.get('detailsTable').value.map((x, i) => {
+      this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+    });
   }
 
-  addDetailsRows() {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable('add');
-    this.DetailsRows().push(this.fb.group({
-      DetailsID: this.fb.control(''),
-      PRODUCT_ID: this.fb.control(''),
-      colour: this.fb.control(''),
-      fragrance: this.fb.control(''),
-      flavor: this.fb.control(''),
-      barCode: this.fb.control(''),
-      ingrediantDetails: this.fb.array([this.fb.group({
-        Ingredient_ID: this.fb.control(''),
-        ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-        function: this.fb.control('', Validators.required),
-      })])
-    }));
-    this.getLookupForFormArray();
-  }
-
-  cancelTheDetailsRows(index) {
-    this.DetailsRows().removeAt(index);
-    this.detailsListTable.tableBody.pop();
-  }
-
-  editDataDetailsRows(fromWhere) {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable(fromWhere);
-  }
-
-  removeDetailsRows(i) {
-    this.DetailsRows().removeAt(i);
-    this.equalTheNewDetailsTable('remove');
-  }
-
-  deletedDetailsIdsList(event) {
+  deletedDetailedIdsList(event) {
+    this.deletedDetailedList = event;
     this.regProductForAllRequestedType.get('deletedProductDetailsIds').patchValue(event);
   }
 
-  editTheDetailsRow(event) {
+  editTheDetailedRows(event) {
     this.editDetailedRowStatus = true;
     this.editIndex = event;
+    const editRowData = this.regProductForAllRequestedType.get('detailsTable').value[event];
 
-    this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
-    this.detailsListTable.tableBody.splice(event, 1);
-  }
-
-  equalTheNewDetailsTable(fromWhere) {
-    if (fromWhere !== 'form') {
-      this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
-
-      if (fromWhere === 'cancel' || fromWhere === 'edit') {
-        this.detailsListTable.tableBody.pop();
+    editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
+      if (i >= 1) {
+        this.addIngrediantDetailsRows();
       }
-    }
+    }) : null;
+
+    console.log('editRowData', editRowData);
+    console.log('this.regDetailedForProduct', this.regDetailedForProduct);
+
+    this.regDetailedForProduct.patchValue({
+      ...editRowData
+    });
+
+    this.openModal(this.modalDetailedTemplate);
   }
 
   //functions for IngrediantDetailsRows
-  IngrediantDetailsRows(index): FormArray {
-    return this.DetailsRows().at(index).get('ingrediantDetails') as FormArray;
+  IngrediantDetailsRows(): FormArray {
+    return this.regDetailedForProduct.get('ingrediantDetails') as FormArray;
   }
 
-  addIngrediantDetailsRows(index) {
-    this.IngrediantDetailsRows(index).push(this.fb.group({
+  addIngrediantDetailsRows() {
+    this.IngrediantDetailsRows().push(this.fb.group({
       Ingredient_ID: this.fb.control(''),
       ingrediant: this.fb.control('', Validators.required),
       concentrations: this.fb.control('', Validators.required),
       function: this.fb.control('', Validators.required)
     }));
-    this.getLookupForFormArray();
   }
 
-  removeIngrediantDetailsRows(fromWhere, event) {
-    if (this.IngrediantDetailsRows(event.i).length > 1) {
-      this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
-    }
-
-    this.equalTheNewDetailsTable(fromWhere);
-  }
-
-  deletedIngrediantIdsList(event) {
-    this.regProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
-  }
+  //
+  // removeIngrediantDetailsRows(fromWhere, event) {
+  //   if (this.IngrediantDetailsRows(event.i).length > 1) {
+  //     this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
+  //   }
+  //
+  //   this.equalTheNewDetailsTable(fromWhere);
+  // }
+  //
+  // deletedIngrediantIdsList(event) {
+  //   this.regProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
+  // }
 
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
@@ -822,6 +798,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType.patchValue({
         id: res.id
       });
+      console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType.value);
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
     });
@@ -830,7 +807,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   onSubmit() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    if (this.regProductForAllRequestedType.valid) {
+    console.log('data', data);
+    if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
       this.submitDataOutput.emit(data);
     } else {
       this.errorMessage.emit('true');
@@ -857,6 +835,28 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
+  onSubmitForDetailedForm() {
+    if (this.regDetailedForProduct.valid) {
+      if (!this.editIndex && this.editIndex !== 0) {
+        this.regProductForAllRequestedType.value.detailsTable.push({...this.regDetailedForProduct.value});
+      } else {
+        this.regProductForAllRequestedType.get('detailsTable').value[this.editIndex] = this.regDetailedForProduct.value;
+        this.editDetailedRowStatus = false;
+        this.editIndex = '';
+      }
+
+      this.modalRef.hide();
+
+      console.log('this.regProductForAllRequestedType.get(detailsTable).value', this.regProductForAllRequestedType.get('detailsTable').value);
+
+      this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+
+      this.getDetailedFormAsStarting('');
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
@@ -866,22 +866,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             this.addShortName();
           }
         }) : data.shortName = [];
-        data.detailsTable ? data.detailsTable.map((x, i) => {
-          x.ingrediantDetails.map((y, index) => {
-            if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
-              this.addIngrediantDetailsRows(i);
-            }
-          });
-
-          if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
-            this.addDetailsRows();
-          }
-        }) : data.detailsTable = [];
-        // data.packagingTable ? data.packagingTable.map((x, i) => {
-        //   if (data.packagingTable.length > 1 && i < data.packagingTable.length - 1) {
-        //     this.addPackagingRows();
-        //   }
-        // }) : data.packagingTable = [];
       }
 
       this.packagingListTable.tableBody = [];
@@ -891,9 +875,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.detailsListTable.tableBody = [];
       data.detailsTable ? data.detailsTable.map((x, i) => {
-        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
-          this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
-        }
+        this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
       }) : null;
 
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
@@ -968,20 +950,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         receiptNumber: this.fb.control('', this.legacyStatus ? null : Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
         receiptValue: this.fb.control('', [this.legacyStatus ? null : Validators.required, this.legacyStatus ? null : Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
         packagingTable: this.fb.control([]),
-        detailsTable: this.fb.array([this.fb.group({
-          DetailsID: this.fb.control(''),
-          PRODUCT_ID: this.fb.control(''),
-          colour: this.fb.control(''),
-          fragrance: this.fb.control(''),
-          flavor: this.fb.control(''),
-          barCode: this.fb.control(''),
-          ingrediantDetails: this.fb.array([this.fb.group({
-            Ingredient_ID: this.fb.control(''),
-            ingrediant: this.fb.control('', Validators.required),
-            concentrations: this.fb.control('', Validators.required),
-            function: this.fb.control('', Validators.required),
-          })])
-        })]),
+        detailsTable: this.fb.control([]),
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
@@ -1019,6 +988,27 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         unitOfMeasure: this.fb.control('', Validators.required),
         typeOfPackaging: this.fb.control('', Validators.required),
         packagingDescription: this.fb.control(''),
+      });
+    }
+  }
+
+  getDetailedFormAsStarting(data) {
+    if (data) {
+
+    } else {
+      this.regDetailedForProduct = this.fb.group({
+        DetailsID: this.fb.control(''),
+        PRODUCT_ID: this.fb.control(''),
+        colour: this.fb.control(''),
+        fragrance: this.fb.control(''),
+        flavor: this.fb.control(''),
+        barCode: this.fb.control(''),
+        ingrediantDetails: this.fb.array([this.fb.group({
+          Ingredient_ID: this.fb.control(''),
+          ingrediant: this.fb.control('', Validators.required),
+          concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+          function: this.fb.control('', Validators.required),
+        })])
       });
     }
   }
@@ -1119,31 +1109,28 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.subscription.unsubscribe();
     }
 
-    list.subscribe(x => {
+    list ? list.subscribe(x => {
       if (x.length === 0) {
         if (this.regPackagingForProduct.controls[field].dirty) {
           this.regPackagingForProduct.controls[field].setValue(null);
         }
       }
-    });
+    }) : null;
   }
 
   private _subscribeToClosingActionsForDetailsFormArray(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
-
-    list.subscribe(y => {
+    list ? list.subscribe(y => {
       if (y.length === 0) {
-        this.DetailsRows().controls.map((x) => {
-          x['controls'].ingrediantDetails.controls.map((item, index) => {
-            if (item.controls[field].dirty) {
-              item.controls[field].setValue(null);
-            }
-          });
+        this.IngrediantDetailsRows().controls.map((x) => {
+          if (x['controls'][field].dirty) {
+            x['controls'][field].setValue(null);
+          }
         });
       }
-    });
+    }) : null;
   }
 
   setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
@@ -1167,7 +1154,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   downloadFile(FileName) {
     this.getService.getAttachmentFileByID(this.regProductForAllRequestedType.value.id, FileName).subscribe((res: any) => {
-      this.convertFilesToPDF(res.base64Data);
+      this.convertFilesToPDF(res.base64Data, FileName);
     });
   }
 
@@ -1181,7 +1168,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     };
   }
 
-  convertFilesToPDF(base64Data) {
+  convertFilesToPDF(base64Data, fileName) {
     let obj = document.createElement('object');
     obj.style.width = '100%';
     obj.style.height = '842pt';
@@ -1190,10 +1177,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     var link = document.createElement('a');
     link.innerHTML = 'Download PDF file';
-    link.download = 'file.pdf';
-    link.href = 'data:application/octet-stream;base64,' + base64Data;
+    link.download = `${fileName}`;
+    link.className = 'pdfLink';
+    link.href = 'data:application/pdf;base64,' + base64Data;
 
-    document.location.href = link.href;
+    link.click();
   }
 
   openModal(template: TemplateRef<any>) {
@@ -1204,5 +1192,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.modalRef.hide();
     this.getPackagingFormAsStarting('');
     this.editPackagingRowStatus = false;
+  }
+
+  closeDetailedForm() {
+    this.modalRef.hide();
+    this.getDetailedFormAsStarting('');
+    this.editDetailedRowStatus = false;
   }
 }

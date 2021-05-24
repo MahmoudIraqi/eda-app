@@ -515,12 +515,12 @@
                           <td>{{request.flavor}}</td>
                           <td>{{request.barCode}}</td>
                           <td>
-                      <span class="mr-2" (click)="editDetailedRowFunction(i)">
-                        <i class="fa fa-edit"></i>
-                      </span>
+                            <span class="mr-2" (click)="editDetailedRowFunction(i)">
+                              <i class="fa fa-edit"></i>
+                            </span>
                             <span (click)="removeDetailsRowFunction(i,request.PRODUCT_ID)">
-                        <i class="fa fa-trash"></i>
-                      </span>
+                              <i class="fa fa-trash"></i>
+                            </span>
                           </td>
                         </tr>
                       </table>
@@ -571,12 +571,9 @@
                             <i class="fa fa-sort"></i>
                           </span>
                                   </th>
-                                  <th>
-                                    Actions
-                                  </th>
                                 </tr>
                                 <tr *ngFor="let requestDetails of request.ingrediantDetails; let index = index">
-                                  <td colspan="4">
+                                  <td colspan="3">
                                     <mat-accordion>
                                       <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle
                                                            disabled="true">
@@ -587,9 +584,6 @@
                                                 <td>{{requestDetails.ingrediant}}</td>
                                                 <td>{{requestDetails.concentrations}}</td>
                                                 <td>{{requestDetails.function}}</td>
-                                                <td><span
-                                                  (click)="removeIngrediantDetailsRowFunction(index, i, '', requestDetails.Ingredient_ID)"><i
-                                                  class="fa fa-trash"></i></span></td>
                                               </tr>
                                             </table>
                                           </mat-panel-title>

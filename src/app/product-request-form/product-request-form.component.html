@@ -515,11 +515,12 @@
             <div class="d-flex flex-column">
               <div class="row">
                 <div class="col-12 col-sm-10">
-                  <app-title [smallTitle]="true" [title]="'Packaging Area'"></app-title>
+                  <app-title [smallTitle]="true" [title]="'Packaging data'"></app-title>
                 </div>
                 <div class="col-12 col-sm-2 ml-auto">
-                  <button type="button" class="btn btn-primary"
-                          [disabled]="productFlags && !productFlags.packagingTable" (click)="openModal(template)">
+                  <button type="button" class="btn btn-primary btnForModal"
+                          [disabled]="!isDraft && productFlags && productFlags.packagingTable"
+                          (click)="openModal(packagingModal)">
                     Add new packaging
                   </button>
                 </div>
@@ -527,241 +528,47 @@
             </div>
           </div>
           <div class="col-12">
+            <div class="hintForEmptyObject" *ngIf="packagingListTable.tableBody.length === 0">
+              <h5>** Please add packaging data</h5>
+            </div>
             <div class="RequestingTable">
               <app-table-list [data]="packagingListTable"
                               [whichTable]="'newRequestForPackaging'"
-                              (removePackagingRowOutput)="productFlags && productFlags.packagingTable ? removePackagingRows($event): null"
-                              (removePackagingRowIDs)="productFlags && productFlags.packagingTable ? deletedPackagingIdsList($event) : null"
-                              (editPackagingRowIDs)="productFlags && productFlags.packagingTable ? editThePackagingRows($event): null"></app-table-list>
+                              (removePackagingRowOutput)="isDraft || !productFlags || (productFlags && productFlags.packagingTable) ? removePackagingRows($event): null"
+                              (removePackagingRowIDs)="isDraft || !productFlags || (productFlags && productFlags.packagingTable)  ? deletedPackagingIdsList($event) : null"
+                              (editPackagingRowIDs)="isDraft || !productFlags || (productFlags && productFlags.packagingTable)  ? editThePackagingRows($event): null"></app-table-list>
             </div>
           </div>
         </div>
-        <div formArrayName="detailsTable" class="detailsTable mt-4">
+      </div>
+      <div class="mt-5">
+        <div class="row">
           <div class="col-12">
-            <app-title [smallTitle]="true" [title]="'Details Form'"></app-title>
-          </div>
-          <div class="addDetailsRequestContainer">
-            <div *ngFor="let row of DetailsRows().controls; let i=index" [formGroupName]="i">
-              <div class="row"
-                   *ngIf="(editDetailedRowStatus && editIndex === i ) || (!editDetailedRowStatus && (DetailsRows().controls.length === 0 || DetailsRows().controls.length -1 === i))">
-                <div class="col-12 col-sm-6 col-lg-3 mb-3 ">
-                  <mat-form-field class="example-full-width">
-                    <div *ngIf="!legacyStatus && productComments && productComments.colour" class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments.colour}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-                    </div>
-                    <mat-label>Colour</mat-label>
-                    <input type="text" class="form-control" matInput formControlName="colour"
-                           placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('colour') : true : isDraft ? false : legacyStatus ? false :productFlags && !productFlags.colour ? true : false">
-                  </mat-form-field>
+            <div class="d-flex flex-column">
+              <div class="row">
+                <div class="col-12 col-sm-10">
+                  <app-title [smallTitle]="true" [title]="'Details data'"></app-title>
                 </div>
-                <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                  <mat-form-field class="example-full-width">
-                    <div *ngIf="!legacyStatus && productComments && productComments.fragrance"
-                         class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments.fragrance}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-                    </div>
-                    <mat-label>Fragrance</mat-label>
-                    <input type="text" class="form-control" matInput
-                           formControlName="fragrance"
-                           placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.fragrance ? true : false">
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                  <mat-form-field class="example-full-width">
-                    <div *ngIf="!legacyStatus && productComments && productComments.flavor" class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments && productComments.flavor}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-                    </div>
-                    <mat-label>Flavor</mat-label>
-                    <input type="text" class="form-control" matInput formControlName="flavor"
-                           placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.flavor ? true : false">
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                  <mat-form-field class="example-full-width">
-                    <div *ngIf="!legacyStatus && productComments && productComments.barCode" class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments.barCode}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-                    </div>
-                    <mat-label>BarCode</mat-label>
-                    <input type="text" class="form-control" matInput formControlName="barCode"
-                           placeholder=""
-                           [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.barCode ? true : false">
-                  </mat-form-field>
-                </div>
-                <div class="col-12 mt-2">
-                  <div class="ingrediantDetailsContainer">
-                    <div class="row" formArrayName="ingrediantDetails">
-                      <div class="col-12 d-flex">
-                        <button type="button" class="btn btn-primary ml-auto"
-                                (click)="addIngrediantDetailsRows(i)">
-                          Add Ingrediant Details Row
-                        </button>
-                      </div>
-                      <div class="col-12 mt-5"
-                           *ngFor="let row of IngrediantDetailsRows(i).controls; let index=index"
-                           [formGroupName]="index">
-                        <div class="rowContainer">
-                          <div class="row">
-                            <div class="col-12 col-sm-6 col-lg-3">
-                              <mat-form-field appearance="fill" class="example-full-width inputBesideSelect">
-                                <div *ngIf="!legacyStatus && productComments && productComments.ingrediant"
-                                     class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.ingrediant}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-                                </div>
-                                <mat-label>Ingrediant</mat-label>
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Ingrediant"
-                                       aria-label="Ingrediant"
-                                       matInput
-                                       formControlName="ingrediant"
-                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.ingrediant ? true : false"
-                                       [matAutocomplete]="autoIngrediant" required>
-                                <mat-autocomplete #autoIngrediant="matAutocomplete">
-                                  <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
-                                              [value]="option.NAME">
-                                    {{option.NAME}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                                <div
-                                  *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
-                                  class="alert alert-danger">
-                                  <div
-                                    *ngIf="row.get('ingrediant').errors.required">
-                                    this field is required
-                                  </div>
-                                </div>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 conSpace">
-                              <mat-form-field class="example-full-width inputBesideSelect">
-                                <div *ngIf="!legacyStatus && productComments && productComments.concentrations"
-                                     class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.concentrations}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-                                </div>
-                                <mat-label>Concentrations</mat-label>
-                                <input type="text" class="form-control" matInput
-                                       formControlName="concentrations"
-                                       placeholder="concentrations" required
-                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.concentrations ? true : false">
-                                <div
-                                  *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
-                                  class="alert alert-danger">
-                                  <div
-                                    *ngIf="row.get('concentrations').errors.required">
-                                    this field is required
-                                  </div>
-                                </div>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3">
-                              <mat-form-field appearance="fill" class="example-full-width inputBesideSelect">
-                                <div *ngIf="!legacyStatus && productComments && productComments.function"
-                                     class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.function}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-                                </div>
-                                <mat-label>Function</mat-label>
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Function"
-                                       aria-label="Function"
-                                       matInput
-                                       formControlName="function"
-                                       required
-                                       [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.function ? true : false"
-                                       [matAutocomplete]="autoFunction">
-                                <mat-autocomplete #autoFunction="matAutocomplete">
-                                  <mat-option *ngFor="let option of filteredOptionsForFunction | async"
-                                              [value]="option.NAME">
-                                    {{option.NAME}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                                <div
-                                  *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
-                                  class="alert alert-danger">
-                                  <div
-                                    *ngIf="row.get('function').errors.required">
-                                    this field is required
-                                  </div>
-                                </div>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 d-flex">
-                              <button type="button" class=" btn btn-primary btn-sm ml-auto mt-3"
-                                      [disabled]="IngrediantDetailsRows(i).controls.length < 2"
-                                      (click)="removeIngrediantDetailsRows('form',{i: i,childIndex: index})">
-                                Delete Row
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 mt-3 d-flex">
-                  <button type="button"
-                          *ngIf="!editDetailedRowStatus"
-                          class="btn btn-primary ml-auto"
-                          (click)="addDetailsRows()"
-                          [disabled]="DetailsRows().status === 'INVALID'">
-                    Add Details Row
-                  </button>
-                  <button type="button"
-                          *ngIf="editDetailedRowStatus"
-                          class="btn btn-primary ml-auto"
-                          (click)="editDataDetailsRows('edit')"
-                          [disabled]="DetailsRows().status === 'INVALID'">
-                    Edit Details Row
-                  </button>
-                  <button type="button"
-                          *ngIf="!editDetailedRowStatus && DetailsRows().controls.length > 1"
-                          class="btn btn-primary ml-2"
-                          (click)="cancelTheDetailsRows((DetailsRows().controls.length-1))">
-                    Cancel Details Row
+                <div class="col-12 col-sm-2 ml-auto">
+                  <button type="button" class="btn btn-primary btnForModal"
+                          [disabled]="!isDraft && productFlags && !productFlags.detailsTable"
+                          (click)="openModal(detailedModal)">
+                    Add new detail
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="detailsListTable.tableBody.length > 0 && DetailsRows().controls.length > 1">
-            <div class="col-12">
-              <app-title [title]="'Details Table'" [smallTitle]="true"></app-title>
+          <div class="col-12">
+            <div class="hintForEmptyObject" *ngIf="packagingListTable.tableBody.length === 0">
+              <h5>** Please add detail data</h5>
             </div>
-            <div class="col-12 mt-5">
-              <div class="RequestingTable">
-                <app-table-list [data]="detailsListTable"
-                                [whichTable]="'newRequestForDetails'"
-                                (removeDetailsRowOutput)="removeDetailsRows($event)"
-                                (removeDetailsRowIDs)="deletedDetailsIdsList($event)"
-                                (removeIngrediantDetailsRowOutput)="removeIngrediantDetailsRows('remove',$event)"
-                                (removeIngrediantDetailsIDs)="deletedIngrediantIdsList($event)"
-                                (editDetailedRowOutput)="editTheDetailsRow($event)"
-                ></app-table-list>
-              </div>
+            <div class="RequestingTable">
+              <app-table-list [data]="detailsListTable"
+                              [whichTable]="'newRequestForDetails'"
+                              (removeDetailsRowOutput)="isDraft || !productFlags || (productFlags && productFlags.detailsTable) ? removeDetailedRows($event): null"
+                              (removeDetailsRowIDs)="isDraft || !productFlags || (productFlags && productFlags.detailsTable) ? deletedDetailedIdsList($event) : null"
+                              (editDetailedRowOutput)="isDraft || !productFlags || (productFlags && productFlags.detailsTable) ? editTheDetailedRows($event): null"></app-table-list>
             </div>
           </div>
         </div>
@@ -787,8 +594,8 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
-                       [disabled]="!legacyStatus && productFlags && !productFlags[field.id]"
-                       [required]="field.required">
+                       [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags[field.id] ? true : false"
+                [required]="field.required">
                 <div
                   *ngIf="regProductForAllRequestedType.get(field.id).invalid && (regProductForAllRequestedType.get(field.id).dirty || regProductForAllRequestedType.get(field.id).touched)"
                   class="alert alert-danger">
@@ -848,7 +655,7 @@
 </form>
 
 
-<ng-template #template>
+<ng-template #packagingModal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Packaging Form</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="closePackagingModal()">
@@ -860,7 +667,7 @@
           [formGroup]="regPackagingForProduct"
           (ngSubmit)="onSubmitForPackagingForm()" novalidate xmlns="http://www.w3.org/1999/html"
           autocomplete="off">
-      <div class="row mt-5">
+      <div class="row">
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field class="example-full-width">
             <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
@@ -979,6 +786,208 @@
             class="btn btn-primary btn-sm">
             <span *ngIf="!this.editPackagingRowStatus">Add packaging</span>
             <span *ngIf="this.editPackagingRowStatus">Edit packaging</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<ng-template #detailedModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Detail Form</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeDetailedForm()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="mt-2" name="detailedForm" class="example-form" method="post"
+          [formGroup]="regDetailedForProduct"
+          (ngSubmit)="onSubmitForDetailedForm()" novalidate xmlns="http://www.w3.org/1999/html"
+          autocomplete="off">
+      <div class="row mt-5">
+        <div class="col-12 col-sm-6 col-lg-3 mb-3 ">
+          <mat-form-field class="example-full-width">
+            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+                          <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
+                                placement="top">
+                            <i class="fas fa-info-circle"></i>
+                          </span>
+            </div>
+            <mat-label>Colour</mat-label>
+            <input type="text" class="form-control" matInput formControlName="colour"
+                   placeholder=""
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('colour') : true : isDraft ? false : legacyStatus ? false :productFlags && !productFlags.detailsTable ? true : false">
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+          <mat-form-field class="example-full-width">
+            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+                          <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
+                                placement="top">
+                            <i class="fas fa-info-circle"></i>
+                          </span>
+            </div>
+            <mat-label>Fragrance</mat-label>
+            <input type="text" class="form-control" matInput
+                   formControlName="fragrance"
+                   placeholder=""
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+          <mat-form-field class="example-full-width">
+            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+                          <span class="infoIcon" tooltip="{{productComments && productComments.detailsTable}}"
+                                placement="top">
+                            <i class="fas fa-info-circle"></i>
+                          </span>
+            </div>
+            <mat-label>Flavor</mat-label>
+            <input type="text" class="form-control" matInput formControlName="flavor"
+                   placeholder=""
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+          <mat-form-field class="example-full-width">
+            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+                          <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
+                                placement="top">
+                            <i class="fas fa-info-circle"></i>
+                          </span>
+            </div>
+            <mat-label>BarCode</mat-label>
+            <input type="text" class="form-control" matInput formControlName="barCode"
+                   placeholder=""
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+          </mat-form-field>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="ingrediantDetailsContainer">
+            <div class="row" formArrayName="ingrediantDetails">
+              <div class="col-12 d-flex">
+                <button type="button" class="btn btn-primary ml-auto"
+                        (click)="addIngrediantDetailsRows()">
+                  Add ingredient
+                </button>
+              </div>
+              <div class="col-12 mt-1" *ngFor="let row of IngrediantDetailsRows().controls; let index=index"
+                   [formGroupName]="index">
+                <div class="rowContainer">
+                  <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <mat-form-field appearance="fill">
+                        <div *ngIf="!legacyStatus && productComments && productComments.detailsTable"
+                             class="InfoIconContainer">
+                                  <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
+                                        placement="top">
+                                    <i class="fas fa-info-circle"></i>
+                                  </span>
+                        </div>
+                        <mat-label>Ingrediant</mat-label>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Ingrediant"
+                               aria-label="Ingrediant"
+                               matInput
+                               formControlName="ingrediant"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [matAutocomplete]="autoIngrediant"
+                               required>
+                        <mat-autocomplete #autoIngrediant="matAutocomplete">
+                          <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
+                                      [value]="option.NAME">
+                            {{option.NAME}}
+                          </mat-option>
+                        </mat-autocomplete>
+                        <div
+                          *ngIf="row.get('ingrediant').invalid && (row.get('ingrediant').dirty || row.get('ingrediant').touched)"
+                          class="alert alert-danger">
+                          <div
+                            *ngIf="row.get('ingrediant').errors.required">
+                            this field is required
+                          </div>
+                        </div>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 conSpace">
+                      <mat-form-field class="example-full-width inputBesideSelect">
+                        <div *ngIf="!legacyStatus && productComments && productComments.detailsTable"
+                             class="InfoIconContainer">
+                                  <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
+                                        placement="top">
+                                    <i class="fas fa-info-circle"></i>
+                                  </span>
+                        </div>
+                        <mat-label>Concentrations</mat-label>
+                        <input type="text" class="form-control" matInput
+                               formControlName="concentrations"
+                               placeholder="concentrations" required
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+                        <div
+                          *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
+                          class="alert alert-danger">
+                          <div
+                            *ngIf="row.get('concentrations').errors.required">
+                            this field is required
+                          </div>
+                        </div>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <mat-form-field appearance="fill">
+                        <div *ngIf="!legacyStatus && productComments && productComments.detailsTable"
+                             class="InfoIconContainer">
+                                  <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
+                                        placement="top">
+                                    <i class="fas fa-info-circle"></i>
+                                  </span>
+                        </div>
+                        <mat-label>Function</mat-label>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Function"
+                               aria-label="Function"
+                               matInput
+                               formControlName="function"
+                               required
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [matAutocomplete]="autoFunction">
+                        <mat-autocomplete #autoFunction="matAutocomplete">
+                          <mat-option *ngFor="let option of filteredOptionsForFunction | async"
+                                      [value]="option.NAME">
+                            {{option.NAME}}
+                          </mat-option>
+                        </mat-autocomplete>
+                        <div
+                          *ngIf="row.get('function').invalid && (row.get('function').dirty || row.get('function').touched)"
+                          class="alert alert-danger">
+                          <div
+                            *ngIf="row.get('function').errors.required">
+                            this field is required
+                          </div>
+                        </div>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 d-flex">
+                      <button type="button" class=" btn btn-primary btn-sm ml-auto mt-4 mb-4">
+                        Delete ingredient
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row buttonContainer btm-out">
+        <div class="col-12 d-flex flex-column flex-md-row mt-3">
+          <button
+            type="submit"
+            class="btn btn-primary btn-sm">
+            <span *ngIf="!this.editDetailedRowStatus">Add Detail</span>
+            <span *ngIf="this.editDetailedRowStatus">Edit Detail</span>
           </button>
         </div>
       </div>
