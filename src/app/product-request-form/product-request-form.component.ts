@@ -548,8 +548,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     ];
 
-    console.log('this.editData', this.editData);
-
     this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
@@ -1200,5 +1198,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.modalRef.hide();
     this.getDetailedFormAsStarting('');
     this.editDetailedRowStatus = false;
+  }
+
+  checkValue(formControl, list, form) {
+    if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
+      form.get(formControl).setValue(null);
+    }
   }
 }

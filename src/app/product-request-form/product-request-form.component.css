@@ -51,8 +51,18 @@ input:active, input:focus {
   font-size: 13px;
 }
 
-.custom-file .alert-danger{
+.custom-file .alert-danger {
   top: -25px;
+  width: 350px;
+  text-align: right;
+}
+
+.custom-file.required .custom-file-label {
+  border: 1.5px solid #ff0000 !important;
+}
+
+.custom-file.required .custom-file-download-Button {
+  border-color: #ff0000 !important;
 }
 
 .alert-danger.RelativeAlert {

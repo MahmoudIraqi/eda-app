@@ -74,6 +74,7 @@
                      placeholder="Manufacturing Company"
                      aria-label="Manufacturing Company"
                      matInput
+                     (blur)="checkValue('manufacturingCompany', formData.manufacturingCompanyList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : false"
                      formControlName="manufacturingCompany"
                      [matAutocomplete]="manufacturingCompanyList" required>
@@ -102,6 +103,7 @@
                      aria-label="Manufacturing Country"
                      matInput
                      formControlName="manufacturingCountry"
+                     (blur)="checkValue('manufacturingCountry', formData.manufacturingCountryList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : false"
                      [matAutocomplete]="manufacturingCountryList" required>
               <mat-autocomplete #manufacturingCountryList="matAutocomplete">
@@ -156,6 +158,7 @@
                      aria-label="License Holder"
                      matInput
                      formControlName="licenseHolder"
+                     (blur)="checkValue('licenseHolder', formData.licenseHolderList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : false"
                      [matAutocomplete]="licenseHolderList" required>
               <mat-autocomplete #licenseHolderList="matAutocomplete">
@@ -200,6 +203,7 @@
                      aria-label="Country of License Holder"
                      matInput
                      formControlName="countryOfLicenseHolder"
+                     (blur)="checkValue('countryOfLicenseHolder', formData.licenseHolderCountryList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : false"
                      [matAutocomplete]="licenseHolderCountryList" required>
               <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
@@ -235,6 +239,7 @@
                      aria-label="Storage Place"
                      matInput
                      formControlName="storagePlace"
+                     (blur)="checkValue('physicalState', formData.physicalStateList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : false"
                      [matAutocomplete]="storagePlaceList"
                      [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
@@ -396,35 +401,45 @@
     </tab>
     <tab heading="Attachments" class="Attachments">
       <div class="mt-5">
-        <div class="row">
-          <div class="col-12">
-            <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="row mt-3">
-            <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFieldsForKits">
-              <div class="form-group" *ngIf="field.enable">
-                <label>
-                  {{field.name}}
-                  <span *ngIf="field.required">*</span>
-                </label>
-                <div class="custom-file fileUpload mr-3">
-                  <input type="file" class="custom-file-input"
-                         aria-describedby="fileHelp"
-                         (change)="onFileSelect($event, field.id)">
-                  <div
-                    *ngIf="regKitForAllRequestedType.get(field.id).invalid && (regKitForAllRequestedType.get(field.id).dirty || regKitForAllRequestedType.get(field.id).touched)"
-                    class="alert alert-danger">
-                    <div
-                      *ngIf="regKitForAllRequestedType.get(field.id).errors.required">
+        <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
+        <div class="row mt-3">
+          <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFieldsForKits">
+            <div class="form-group" *ngIf="field.enable">
+              <div *ngIf="!legacyStatus && productComments && productComments[field.id]" class="InfoIconContainer">
+                <span class="infoIcon" tooltip="{{productComments[field.id]}}"
+                      placement="top">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </div>
+              <label>
+                {{field.name}}
+                <span class="requiredStar" *ngIf="field.required">*</span>
+              </label>
+              <div class="custom-file fileUpload mr-3" id="customFile"
+                   [ngClass]="{'required': (regKitForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'}">
+                <input type="file" class="custom-file-input" [id]="field.id"
+                       aria-describedby="fileHelp"
+                       (change)="onFileSelect($event, field.id)"
+                       [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags[field.id] ? true : false"
+                       [required]="field.required ? 'required' : ''">
+                <div class="d-flex alert alert-danger"
+                     *ngIf="(regKitForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
+                  <div *ngIf="field.attachmentTypeStatus === 'No'">
+                    this file must be as PDF
+                  </div>
+                  <div class="ml-auto"
+                       *ngIf="regKitForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus">
+                    <div *ngIf="regKitForAllRequestedType.get(field.id).errors.required">
                       this field is required
                     </div>
                   </div>
-                  <label class="custom-file-label">
-                    {{regKitForAllRequestedType.get(field.id).value ? regKitForAllRequestedType.get(field.id).value.name : 'Choose file'}}
-                  </label>
                 </div>
+                <label class="custom-file-label" [for]="field.id">
+                  {{field.fileName ? field.fileName : 'Choose file'}}
+                </label>
+                <button type="button" class="custom-file-download-Button" (click)="downloadFile(field.id)"
+                        [disabled]="!regKitForAllRequestedType.value.id">Download
+                </button>
               </div>
             </div>
           </div>

@@ -104,6 +104,7 @@
                      aria-label="Manufacturing Company"
                      matInput
                      formControlName="manufacturingCompany"
+                     (blur)="checkValue('manufacturingCompany', formData.manufacturingCompanyList, regProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.manufacturingCompany ? true : false"
                      [matAutocomplete]="manufacturingCompanyList" required>
               <mat-autocomplete #manufacturingCompanyList="matAutocomplete">
@@ -138,6 +139,7 @@
                      aria-label="Manufacturing Country"
                      matInput
                      formControlName="manufacturingCountry"
+                     (blur)="checkValue('manufacturingCountry', formData.manufacturingCountryList, regProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
                      [matAutocomplete]="manufacturingCountryList" required>
               <mat-autocomplete #manufacturingCountryList="matAutocomplete">
@@ -191,6 +193,7 @@
                      aria-label="License Holder"
                      matInput
                      formControlName="licenseHolder"
+                     (blur)="checkValue('licenseHolder', formData.licenseHolderList, regProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.licenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderList" required>
               <mat-autocomplete #licenseHolderList="matAutocomplete">
@@ -241,6 +244,7 @@
                      aria-label="Country of License Holder"
                      matInput
                      formControlName="countryOfLicenseHolder"
+                     (blur)="checkValue('countryOfLicenseHolder', formData.licenseHolderCountryList, regProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.countryOfLicenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderCountryList" required>
               <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
@@ -288,6 +292,7 @@
                      aria-label="Physical State"
                      matInput
                      formControlName="physicalState"
+                     (blur)="checkValue('physicalState', formData.physicalStateList, regProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalState') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.physicalState ? true : false"
                      [matAutocomplete]="physicalStateList" required>
               <mat-autocomplete #physicalStateList="matAutocomplete">
@@ -337,6 +342,7 @@
                      aria-label="Purpose of use"
                      matInput
                      formControlName="purposeOfUse"
+                     (blur)="checkValue('purposeOfUse', formData.purposeOfUseList, regProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUse') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.purposeOfUse ? true : false"
                      [matAutocomplete]="purposeOfUseList" required>
               <mat-autocomplete #purposeOfUseList="matAutocomplete">
@@ -386,6 +392,7 @@
                      aria-label="Storage Place"
                      matInput
                      formControlName="storagePlace"
+                     (blur)="checkValue('storagePlace', formData.storagePlaceList, regProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.storagePlace ? true : false"
                      [matAutocomplete]="storagePlaceList"
                      [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
@@ -574,24 +581,26 @@
               </div>
               <label>
                 {{field.name}}
-                <span class="requiredStar"  *ngIf="field.required">*</span>
+                <span class="requiredStar" *ngIf="field.required">*</span>
               </label>
-              <div class="custom-file fileUpload mr-3" id="customFile">
+              <div class="custom-file fileUpload mr-3" id="customFile"
+                   [ngClass]="{'required': (regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'}">
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
                        [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags[field.id] ? true : false"
                        [required]="field.required ? 'required' : ''">
-                <div
-                  *ngIf="regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus"
-                  class="alert alert-danger">
-                  <div
-                    *ngIf="regProductForAllRequestedType.get(field.id).errors.required">
-                    this field is required
+                <div class="d-flex alert alert-danger"
+                     *ngIf="(regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
+                  <div *ngIf="field.attachmentTypeStatus === 'No'">
+                    this file must be as PDF
                   </div>
-                </div>
-                <div *ngIf="field.attachmentTypeStatus === 'No'" class="alert alert-danger">
-                  this file must be as PDF
+                  <div class="ml-auto"
+                       *ngIf="regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus">
+                    <div *ngIf="regProductForAllRequestedType.get(field.id).errors.required">
+                      this field is required
+                    </div>
+                  </div>
                 </div>
                 <label class="custom-file-label" [for]="field.id">
                   {{field.fileName ? field.fileName : 'Choose file'}}
@@ -697,6 +706,7 @@
                    aria-label="Unit of measure"
                    matInput
                    formControlName="unitOfMeasure"
+                   (blur)="checkValue('unitOfMeasure', formData.unitOfMeasureList, regPackagingForProduct)"
                    [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="unitOfMeasureList" required>
             <mat-autocomplete #unitOfMeasureList="matAutocomplete">
@@ -731,6 +741,7 @@
                    aria-label="Type of Packaging"
                    matInput
                    formControlName="typeOfPackaging"
+                   (blur)="checkValue('typeOfPackaging', formData.typeOfPackagingList, regPackagingForProduct)"
                    [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="typeOfPackagingList" required>
             <mat-autocomplete #typeOfPackagingList="matAutocomplete">
@@ -877,6 +888,7 @@
                                aria-label="Ingrediant"
                                matInput
                                formControlName="ingrediant"
+                               (blur)="checkValue('ingrediant', formData.ingrediantList, IngrediantDetailsRows().controls[index])"
                                [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoIngrediant"
                                required>
@@ -937,6 +949,7 @@
                                matInput
                                formControlName="function"
                                required
+                               (blur)="checkValue('function', formData.functionList, IngrediantDetailsRows().controls[index])"
                                [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoFunction">
                         <mat-autocomplete #autoFunction="matAutocomplete">

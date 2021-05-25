@@ -18,6 +18,7 @@ import {FormService} from '../services/form.service';
 import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {convertToSpecialObject} from '../../utils/formDataFunction';
 
 export interface LookupState {
   ID: number;
@@ -33,10 +34,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() selectedIsExport;
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
   @Input() editFromWhere;
+  @Input() legacyStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
@@ -44,7 +47,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Input() companyProfile;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
+  @Output() saveDataOutputForAttachment = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
+  @Output() isLoadingStatus = new EventEmitter();
 
   formData;
   selectedKitProductsStatus;
@@ -140,141 +145,201 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       id: 'freeSale',
       name: 'Free Sale',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'GMP',
       name: 'GMP',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'CoA',
       name: 'CoA',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'artWork',
       name: 'Art Work For The Kit',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'leaflet',
       name: 'leaflet',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'reference',
       name: 'reference',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'methodOfAnalysis',
       name: 'Method of Analysis',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'receipt',
       name: 'receipt',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingContract',
       name: 'Manufacturing Contract',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'storageContract',
       name: 'Storage Contract',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'others',
       name: 'others',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'factoryLicense',
       name: 'Factory license',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingAssignment',
       name: 'Manufacturing Assignment',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'commercialRecord',
       name: 'Commercial Record',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'stabilityStudy',
       name: 'Stability study',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'shelfLifeAttachment',
       name: 'Shelf life',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'letterOfVariationFromLicenseHolder',
       name: 'letter of variation from license holder',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     }
   ];
   removeShortNameFieldStatus = false;
@@ -305,6 +370,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   productFlags;
   productComments;
+  requestId;
+  attachmentRequiredStatus: boolean = false;
+  isDraft: boolean = false;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -328,141 +396,201 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         id: 'freeSale',
         name: 'Free Sale',
         fileName: '',
+        fileValue: '',
         required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'GMP',
         name: 'GMP',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'CoA',
         name: 'CoA',
         fileName: '',
+        fileValue: '',
         required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'artWork',
         name: 'Art Work For The Kit',
         fileName: '',
+        fileValue: '',
         required: true,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'leaflet',
         name: 'leaflet',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'reference',
         name: 'reference',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'methodOfAnalysis',
         name: 'Method of Analysis',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'specificationsOfFinishedProduct',
         name: 'Specifications of Finished Product',
         fileName: '',
+        fileValue: '',
         required: true,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'receipt',
         name: 'receipt',
         fileName: '',
+        fileValue: '',
         required: true,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'authorizationLetter',
         name: 'Authorization Letter',
         fileName: '',
+        fileValue: '',
         required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'manufacturingContract',
         name: 'Manufacturing Contract',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'storageContract',
         name: 'Storage Contract',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'others',
         name: 'others',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'otherFees',
         name: 'otherFees',
         fileName: '',
+        fileValue: '',
         required: true,
-        enable: true
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'factoryLicense',
         name: 'Factory license',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'manufacturingAssignment',
         name: 'Manufacturing Assignment',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'commercialRecord',
         name: 'Commercial Record',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'stabilityStudy',
         name: 'Stability study',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'shelfLifeAttachment',
         name: 'Shelf life',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       },
       {
         id: 'letterOfVariationFromLicenseHolder',
         name: 'letter of variation from license holder',
         fileName: '',
+        fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
       }
     ];
 
@@ -509,10 +637,45 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   onFileSelect(event, fileControlName) {
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.regKitForAllRequestedType.get(fileControlName).setValue(file);
+    let cardImageBase64;
+    let resForSetAttachment;
+    let attachmentValue;
+
+    if (this.attachmentFieldsForKits.filter(x => x.loadingStatus === true).length === 0) {
+      if (event.target.files.length > 0) {
+        if (event.target.files[0].type === 'application/pdf') {
+
+          this.attachmentFieldsForKits.filter(x => x.id === fileControlName).map(y => {
+            y.fileName = event.target.value.split(/(\\|\/)/g).pop();
+            attachmentValue = y.fileValue;
+          });
+
+          this.attachmentFieldsForKits.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'Yes';
+            this.isLoadingStatus.emit(true);
+          });
+          const file = event.target.files[0];
+          const reader = new FileReader();
+
+          reader.readAsDataURL(file);
+          reader.onload = (res: any) => {
+            console.log('this.regKitForAllRequestedType.value', this.regKitForAllRequestedType.value);
+            if (!this.regKitForAllRequestedType.value.id) {
+
+              this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+            } else {
+              this.setAttachmentFileFunction(this.regKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+            }
+          };
+
+        }// this.regKitForAllRequestedType.get(fileControlName).setValue(file);
+        else {
+          this.attachmentFieldsForKits.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'No';
+            this.isLoadingStatus.emit(false);
+          });
+        }
+      }
     }
   }
 
@@ -555,6 +718,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   onSubmit() {
+    this.attachmentRequiredStatus = true;
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
@@ -563,6 +727,76 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     } else {
       this.errorMessage.emit('true');
     }
+  }
+
+  saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFieldsForKits.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+    this.getServices.createProductRequest(allDataForSave).subscribe((res: any) => {
+      this.saveDataOutputForAttachment.emit(res.id);
+      this.regKitForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
+    const dataForRequest = this.convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue);
+
+    this.attachmentFieldsForKits.filter(x => x.id === FileID).map(y => {
+      y.loadingStatus = true;
+    });
+
+    this.getServices.setAttachmentFile(dataForRequest).subscribe((res: any) => {
+      this.attachmentFieldsForKits.filter(x => x.id === FileID).map(y => {
+        y.fileValue = res.ID;
+        y.loadingStatus = false;
+        this.isLoadingStatus.emit(false);
+        this.regKitForAllRequestedType.get(FileID).setValue(res.ID);
+      });
+
+      return res;
+    });
+  }
+
+  convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
+    return {
+      RequestId: this.regKitForAllRequestedType.value.id ? this.regKitForAllRequestedType.value.id : this.requestId,
+      AttachmentName: FileID,
+      AttachmentFileName: FileName,
+      base64Data: base64Data,
+      ID: fileValue ? fileValue : id
+    };
+  }
+
+  downloadFile(FileName) {
+    this.getServices.getAttachmentFileByID(this.regKitForAllRequestedType.value.id, FileName).subscribe((res: any) => {
+      this.convertFilesToPDF(res.base64Data, FileName);
+    });
+  }
+
+  convertFilesToPDF(base64Data, fileName) {
+    let obj = document.createElement('object');
+    obj.style.width = '100%';
+    obj.style.height = '842pt';
+    obj.type = 'application/pdf';
+    obj.data = 'data:application/pdf;base64,' + base64Data;
+
+    var link = document.createElement('a');
+    link.innerHTML = 'Download PDF file';
+    link.download = `${fileName}`;
+    link.className = 'pdfLink';
+    link.href = 'data:application/pdf;base64,' + base64Data;
+
+    link.click();
   }
 
   get ShortName(): FormArray {
@@ -744,7 +978,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   getFormAsStarting(data) {
     if (data) {
-
+      this.isDraft = data.isDraft === 1;
       if (this.editFromWhere) {
         data.shortName.map((X, i) => {
           if (data.shortName.length > 1 && i < data.shortName.length - 1) {
@@ -1094,5 +1328,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         }
       }
     });
+  }
+
+  checkValue(formControl, list, form) {
+    if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
+      form.get(formControl).setValue(null);
+    }
   }
 }

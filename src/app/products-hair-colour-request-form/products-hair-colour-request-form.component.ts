@@ -1182,4 +1182,10 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.getDetailedFormAsStarting('');
     this.editDetailedRowStatus = false;
   }
+
+  checkValue(formControl, list, form) {
+    if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
+      form.get(formControl).setValue(null);
+    }
+  }
 }
