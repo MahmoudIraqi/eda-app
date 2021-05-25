@@ -44,6 +44,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
+                          [disabled]="editData && editData.isDraft === 0 && productFlags && !productFlags.shortName"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -53,11 +54,22 @@
                 </div>
                 <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
                   <mat-form-field class="example-full-width">
+                    <div *ngIf="!legacyStatus && productComments && productComments.shortName"
+                         class="InfoIconContainer">
+                      <span class="infoIcon" tooltip="{{productComments['shortName']}}"
+                            placement="top">
+                        <i class="fas fa-info-circle"></i>
+                      </span>
+                    </div>
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
-                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : false">
-                    <button type="button" (click)="removeShortName(i)" class="close">Remove</button>
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.shortName ? true : false">
+                    <button type="button"
+                            [disabled]="editData && editData.isDraft === 0 && productFlags && !productFlags.shortName"
+                            (click)="removeShortName(i)"
+                            class="close">Remove
+                    </button>
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
                       this field must be in English
                     </div>

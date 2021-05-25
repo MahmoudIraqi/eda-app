@@ -56,6 +56,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() saveFromAttachment;
   @Input() saveResponseDataForRegisterProductID;
   @Output() saveDataOutput = new EventEmitter();
+  @Output() saveTrackDataOutput = new EventEmitter();
   @Output() saveDataOutputForAttachment = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   @Output() selectedTrackTypeForKit = new EventEmitter();
@@ -783,6 +784,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
     this.saveDataOutput.emit(data);
+  }
+
+  saveTrackProductData() {
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    this.saveTrackDataOutput.emit(data);
   }
 
   saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {

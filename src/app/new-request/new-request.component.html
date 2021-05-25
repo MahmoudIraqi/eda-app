@@ -10,7 +10,8 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Type Of Notification</mat-label>
-              <mat-select (selectionChange)="getFormType($event)" [(ngModel)]="this.selectedFormType" required [disabled]="productId">
+              <mat-select (selectionChange)="getFormType($event)" [(ngModel)]="this.selectedFormType" required
+                          [disabled]="productId">
                 <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
                   {{option.NAME}}
                 </mat-option>
@@ -47,7 +48,8 @@
                 <mat-form-field appearance="fill">
                   <mat-label>Track Type</mat-label>
                   <mat-select (selectionChange)="getTrackType($event); getPricing('trackType');"
-                              [(ngModel)]="this.selectedTrackType" required>
+                              [(ngModel)]="this.selectedTrackType" required
+                              [disabled]="productId && updatingProductData && updatingProductData.isDraft === 0">
                     <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>
@@ -79,6 +81,7 @@
               [getAllLookupsStatus]="getAllLookupsStatus"
               [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
               (saveDataOutputForAttachment)="getRequestId($event)"
               (submitDataOutput)="onSubmit($event)"
               (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"

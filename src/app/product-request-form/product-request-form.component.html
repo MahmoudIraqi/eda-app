@@ -59,6 +59,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
+                          [disabled]="editData && editData.isDraft === 0 && productFlags && !productFlags.shortName"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -79,7 +80,11 @@
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.shortName ? true : false">
-                    <button type="button" (click)="removeShortName(i)" class="close">Remove</button>
+                    <button type="button"
+                            [disabled]="editData && editData.isDraft === 0 && productFlags && !productFlags.shortName"
+                            (click)="removeShortName(i)"
+                            class="close">Remove
+                    </button>
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
                       this field must be in English
                     </div>
@@ -512,7 +517,7 @@
                 </div>
                 <div class="col-12 col-sm-2 ml-auto">
                   <button type="button" class="btn btn-primary btnForModal"
-                          [disabled]="!isDraft && productFlags && productFlags.packagingTable"
+                          [disabled]="!isDraft && productFlags && !productFlags.packagingTable"
                           (click)="openModal(packagingModal)">
                     Add new packaging
                   </button>
@@ -970,7 +975,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3 d-flex">
                       <button type="button" class=" btn btn-primary btn-sm ml-auto mt-4 mb-4"
-                      (click)="removeIngrediantDetailsRows(index); deletedIngrediantIdsList(row)">
+                              (click)="removeIngrediantDetailsRows(index); deletedIngrediantIdsList(row)">
                         Delete ingredient
                       </button>
                     </div>
