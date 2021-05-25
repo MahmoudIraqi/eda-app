@@ -462,7 +462,8 @@
                     </span>
                   </div>
                   <input type="text" class="form-control" matInput
-                         [value]="regHairColorantProductForAllRequestedType.get('shelfLife').value" formControlName="shelfLife"
+                         [value]="regHairColorantProductForAllRequestedType.get('shelfLife').value"
+                         formControlName="shelfLife"
                          [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.shelfLife ? true : false"
                          (change)="setShelfValue($event)">
                   <span class="labelForRange">Months</span>
@@ -995,7 +996,8 @@
                       </mat-form-field>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3 d-flex">
-                      <button type="button" class=" btn btn-primary btn-sm ml-auto mt-4 mb-4">
+                      <button type="button" class=" btn btn-primary btn-sm ml-auto mt-4 mb-4"
+                              (click)="removeIngrediantDetailsRows(index); deletedIngrediantIdsList(row)">
                         Delete ingredient
                       </button>
                     </div>

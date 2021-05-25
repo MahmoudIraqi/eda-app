@@ -304,10 +304,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   disabledSaveButton: boolean = false;
   productFlags;
   productComments;
-  requestId;
   deletedPackagingList = [];
   deletedDetailedList = [];
+  deletedIdsListForIngrediant = [];
   attachmentRequiredStatus: boolean = false;
+  requestId;
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -767,18 +768,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }));
   }
 
-  //
-  // removeIngrediantDetailsRows(fromWhere, event) {
-  //   if (this.IngrediantDetailsRows(event.i).length > 1) {
-  //     this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
-  //   }
-  //
-  //   this.equalTheNewDetailsTable(fromWhere);
-  // }
-  //
-  // deletedIngrediantIdsList(event) {
-  //   this.regProductForAllRequestedType.get('deletedIngredientsIds').patchValue(event);
-  // }
+  removeIngrediantDetailsRows(index) {
+    this.IngrediantDetailsRows().removeAt(index);
+    if (this.IngrediantDetailsRows().length === 0) {
+      this.addIngrediantDetailsRows();
+    }
+  }
+
+  deletedIngrediantIdsList(row) {
+    this.deletedIdsListForIngrediant.push(row.value.Ingredient_ID);
+    this.regProductForAllRequestedType.get('deletedIngredientsIds').patchValue(this.deletedIdsListForIngrediant);
+  }
 
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);

@@ -300,6 +300,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   requestId;
   deletedPackagingList = [];
   deletedDetailedList = [];
+  deletedIdsListForIngrediant = [];
 
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
@@ -760,6 +761,18 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       concentrations: this.fb.control('', Validators.required),
       function: this.fb.control('', Validators.required)
     }));
+  }
+
+  removeIngrediantDetailsRows(index) {
+    this.IngrediantDetailsRows().removeAt(index);
+    if (this.IngrediantDetailsRows().length === 0) {
+      this.addIngrediantDetailsRows();
+    }
+  }
+
+  deletedIngrediantIdsList(row) {
+    this.deletedIdsListForIngrediant.push(row.value.Ingredient_ID);
+    this.regHairColorantProductForAllRequestedType.get('deletedIngredientsIds').patchValue(this.deletedIdsListForIngrediant);
   }
 
   saveData() {
