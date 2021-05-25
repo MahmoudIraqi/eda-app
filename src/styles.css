@@ -535,6 +535,17 @@ body {
   min-width: 260px !important;
 }
 
+.modal-header{
+  background: rgba(28, 39, 65, 1);
+}
+
+.modal-header h4, .modal-header .close{
+  color: #c28a30;
+  margin-bottom: 0;
+  font-size: 19px;
+  font-weight: bolder;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {
