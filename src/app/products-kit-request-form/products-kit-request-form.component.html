@@ -367,18 +367,43 @@
                                *ngIf="row.get('productStatus').value === 'New'">
                             <div class="row">
                               <div class="col-6">
-                                <mat-form-field class="example-full-width">
-                                  <mat-label>Product ID</mat-label>
-                                  <input type="text" class="form-control" matInput
-                                         formControlName="NotificationNo"
-                                         [readonly]="reRegistrationStatus ? true: false"
-                                         placeholder="">
+                                <!--                                <mat-form-field class="example-full-width">-->
+                                <!--                                  <div *ngIf="!legacyStatus && productComments && productComments.manufacturingCompany"-->
+                                <!--                                       class="InfoIconContainer">-->
+                                <!--                <span class="infoIcon" tooltip="{{productComments.manufacturingCompany}}"-->
+                                <!--                      placement="top">-->
+                                <!--                  <i class="fas fa-info-circle"></i>-->
+                                <!--                </span>-->
+                                <!--                                  </div>-->
+                                <!--                                  <mat-label>Product Id</mat-label>-->
+                                <!--                                  <input type="text"-->
+                                <!--                                         class="form-control"-->
+                                <!--                                         placeholder="Product Id"-->
+                                <!--                                         aria-label="Product Id"-->
+                                <!--                                         matInput-->
+                                <!--                                         formControlName="productID"-->
+                                <!--                                         (blur)="checkValue('productID', lookupForProductIds, ProductGroupsRows().controls[i])"-->
+                                <!--                                         [matAutocomplete]="lookupForProductIdsList" required>-->
+                                <!--                                  <mat-autocomplete #lookupForProductIdsList="matAutocomplete">-->
+                                <!--                                    <mat-option *ngFor="let option of filteredOptionsForProductIds | async"-->
+                                <!--                                                [value]="option.NAME">-->
+                                <!--                                      {{option.NAME}}-->
+                                <!--                                    </mat-option>-->
+                                <!--                                  </mat-autocomplete>-->
+                                <!--                                </mat-form-field>-->
+                                <mat-form-field appearance="fill">
+                                  <mat-label>Products List</mat-label>
+                                  <mat-select formControlName="productID" required>
+                                    <mat-option *ngFor="let option of lookupForProductIds" [value]="option.ID">
+                                      {{option.NAME}}
+                                    </mat-option>
+                                  </mat-select>
                                 </mat-form-field>
                               </div>
                               <div class="col-6 d-flex">
                                 <button type="button"
                                         class="btn btn-primary ml-auto mt-sm-3"
-                                        [disabled]="!row.get('NotificationNo').value"
+                                        [disabled]="!row.get('productID').value"
                                         (click)="applyProduct(row, 'new', i)">
                                   Apply Product
                                 </button>
@@ -397,9 +422,7 @@
                       <div class="RequestingTable">
                         <app-table-list [data]="allProductsInKit"
                                         [whichTable]="'productsKitList'"
-                                        (removeDetailsRowOutput)="removeDetailsRows($event)"
-                                        (editDetailedRowOutput)="editTheDetailsRow($event)"
-                                        (removeProductFromKit)="removeProductsGroupRows($event)"
+                                        (removeProductFromKit)="removeProductsGroupRows($event); deletedProductsIdsList($event)"
                         ></app-table-list>
                       </div>
                     </div>

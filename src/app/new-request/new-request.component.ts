@@ -36,6 +36,7 @@ export class NewRequestComponent implements OnInit {
     storagePlaceList: [],
     trackType: []
   };
+  productsKitIds = [];
   manufacturingCompanyList = [];
   selectedFormType;
   selectedRequestedType;
@@ -61,6 +62,8 @@ export class NewRequestComponent implements OnInit {
   companyProfileId: any;
   variablesPricingList: any;
   trackTypeVariable;
+  trackTypeVariableForKitLookups;
+  typeOfNotificationVariableForKitLookups;
   typeOfNotificationVariable;
   fromAttachment;
   editFormIPStatus: boolean = false;
@@ -158,6 +161,7 @@ export class NewRequestComponent implements OnInit {
                                       this.isLoading = false;
 
                                       this.getPricing('draftRequest');
+                                      this.getProductsKitLookups('draftRequest');
                                     }, error => this.handleError(error));
                                   }
                                 }
@@ -324,6 +328,27 @@ export class NewRequestComponent implements OnInit {
       this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
         this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
       }) : null;
+    }
+  }
+
+  getProductsKitLookups(fromWhere) {
+    if (fromWhere === 'trackType') {
+      this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      console.log('trackTypeVariable', this.trackTypeVariableForKitLookups);
+    } else if (fromWhere === 'selectedFormType') {
+      this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
+      console.log('selectedFormTypeVariable', this.typeOfNotificationVariableForKitLookups);
+    } else if (fromWhere === 'draftRequest') {
+      this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
+    }
+
+    if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined) {
+      this.getService.getProductsKitIdLookupsRequest(this.typeOfNotificationVariableForKitLookups, this.trackTypeVariableForKitLookups).subscribe((res) => {
+        this.productsKitIds = res;
+      }, error => {
+        this.handleError(error);
+      });
     }
   }
 

@@ -44,6 +44,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Input() variationFieldsStatus;
   @Input() variationFields;
   @Input() lookupsData;
+  @Input() lookupForProductIds;
   @Input() companyProfile;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
@@ -366,6 +367,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
   filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
   filteredOptionsForStoragePlace: Observable<LookupState[]>;
+  // filteredOptionsForProductIds: Observable<LookupState[]>;
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   productFlags;
@@ -373,6 +375,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   requestId;
   attachmentRequiredStatus: boolean = false;
   isDraft: boolean = false;
+  deletedProductIdLists = [];
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -628,6 +631,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
     this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
     this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
+    // this._subscribeToClosingActionsForKitProducts('productID', this.filteredOptionsForProductIds);
   }
 
   ngOnDestroy() {
@@ -730,6 +734,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
+    this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
     const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
 
@@ -823,63 +828,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }
   }
 
-  DetailsRows(index): FormArray {
-    return this.ProductGroupsRows().at(index).get('detailsTable') as FormArray;
-  }
-
-  addDetailsRows(index) {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable(index);
-    this.DetailsRows(index).push(this.fb.group({
-      colour: this.fb.control(''),
-      fragrance: this.fb.control(''),
-      flavor: this.fb.control(''),
-      barCode: this.fb.control(''),
-      volumes: this.fb.control('', Validators.required),
-      unitOfMeasure: this.fb.control('', Validators.required),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
-      ingrediantDetails: this.fb.array([this.fb.group({
-        ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', Validators.required),
-        function: this.fb.control('', Validators.required),
-      })])
-    }));
-  }
-
-  editDataDetailsRows(index) {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable(index);
-  }
-
-  removeDetailsRows(event) {
-    this.DetailsRows(event.rowIndex).removeAt(event.i);
-
-    this.equalTheNewDetailsTable(event.rowIndex);
-  }
-
-  IngrediantDetailsRows(index, i): FormArray {
-    return this.DetailsRows(i).at(index).get('ingrediantDetails') as FormArray;
-  }
-
-  addIngrediantDetailsRows(rowIndex, index) {
-    this.IngrediantDetailsRows(rowIndex, index).push(this.fb.group({
-      ingrediant: this.fb.control('', Validators.required),
-      concentrations: this.fb.control('', Validators.required),
-      function: this.fb.control('', Validators.required)
-    }));
-  }
-
-  removeIngrediantDetailsRows(fromWhere, event) {
-    if (this.IngrediantDetailsRows(event.rowIndex, event.i).length > 1) {
-      this.IngrediantDetailsRows(event.rowIndex, event.i).removeAt(event.childIndex);
-    }
-
-    if (fromWhere !== 'form') {
-      this.equalTheNewDetailsTable(event.rowIndex);
-    }
-  }
-
   ProductGroupsRows(): FormArray {
     return this.regKitForAllRequestedType.get('ProductsForKit') as FormArray;
   }
@@ -890,7 +838,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.ProductGroupsRows().push(this.fb.group({
       productStatus: this.fb.control(''),
       NotificationNo: this.fb.control(''),
+      productID: this.fb.control(''),
       productDetails: this.fb.group({
+        id: 0,
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control(''),
         shortName: this.fb.array([this.fb.control('')]),
@@ -958,26 +908,21 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   removeProductsGroupRows(index) {
-    this.allProductsInKit.tableBody = [];
-
-    let control = <FormArray> this.regKitForAllRequestedType.controls.deletedProductIdLists;
-    if (control.value.filter(x => x === this.ProductGroupsRows().value[index].productDetails.id).length < 1) {
-      control.push(this.fb.control(this.ProductGroupsRows().value[index].productDetails.id));
-    }
-
     this.ProductGroupsRows().removeAt(index);
+    this.allProductsInKit.tableBody.splice(index, 1);
+  }
 
-    this.ProductGroupsRows().value.filter(y => y.productStatus).map(x => {
-      if (this.allProductsInKit.tableBody.length === 0) {
-        this.allProductsInKit.tableBody = [x.productDetails];
-      } else {
-        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
-      }
-    });
+  deletedProductsIdsList(index) {
+    console.log('qwrqwerqwer', this.ProductGroupsRows().controls[index].value);
+    console.log('qwrqwerqwer212121', this.ProductGroupsRows().controls[index].value.productDetails);
+    this.deletedProductIdLists.push(this.ProductGroupsRows().controls[index].value.productDetails.id);
+    this.regKitForAllRequestedType.get('deletedProductIdLists').patchValue(this.deletedProductIdLists);
   }
 
   getFormAsStarting(data) {
     if (data) {
+      console.log('data', data);
+      console.log('editFromWhere', this.editFromWhere);
       this.isDraft = data.isDraft === 1;
       if (this.editFromWhere) {
         data.shortName.map((X, i) => {
@@ -986,7 +931,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           }
         });
 
-        data.ProductsForKit ? data.ProductsForKit.map((x, i) => {
+        data.ProductsForKit.length > 0 ? data.ProductsForKit.map((x, i) => {
           if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
             this.addProductsGroupRows();
           }
@@ -1042,9 +987,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         ...data
       });
 
-      this.editFromWhere ? this.addProductsGroupRows() : null;
+      console.log('regKitForAllRequestedType', this.regKitForAllRequestedType.value);
     } else {
       this.regKitForAllRequestedType = this.fb.group({
+        id: 0,
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control(''),
         shortName: this.fb.array([this.fb.control('')]),
@@ -1062,7 +1008,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         ProductsForKit: this.fb.array([this.fb.group({
           productStatus: this.fb.control(''),
           NotificationNo: this.fb.control(''),
+          productID: this.fb.control(''),
           productDetails: this.fb.group({
+            id: 0,
             productArabicName: this.fb.control(''),
             productEnglishName: this.fb.control(''),
             shortName: this.fb.array([this.fb.control('')]),
@@ -1194,7 +1142,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     } else if (status === 'new') {
       this.isLoading = true;
-      this.getServices.getProductWithProductIDList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
+      console.log('data', data);
+      console.log('status', status);
+      this.getServices.getProductWithProductIDList(data.value.productID, 'kit').subscribe((res: any) => {
         if (res) {
           // if (res.canUse) {
           //
@@ -1205,7 +1155,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
             ...res
           };
 
+          this.ProductGroupsRows().value[index].productID = res.id;
           this.ProductGroupsRows().value[index].productDetails = res;
+
+          console.log('this.regKit', this.regKitForAllRequestedType);
           const keyOfLookup = Object.keys(this.lookupsData);
           keyOfLookup.map(key => {
             const keyLowerCase = key.replace('List', '');
@@ -1329,7 +1282,25 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     });
   }
 
+  private _subscribeToClosingActionsForKitProducts(field, list): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+    list ? list.subscribe(y => {
+      if (y.length === 0) {
+        this.ProductGroupsRows().controls.map((x) => {
+          if (x['controls'][field].dirty) {
+            x['controls'][field].setValue(null);
+          }
+        });
+      }
+    }) : null;
+  }
+
   checkValue(formControl, list, form) {
+    console.log('formControl', formControl);
+    console.log('list', list);
+    console.log('form', form);
     if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
       form.get(formControl).setValue(null);
     }

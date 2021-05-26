@@ -728,6 +728,21 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getProductsKitIdLookupsRequest(formType, trackType) {
+    debugger;
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Products/GetRequestsID?kitType=${formType}&trackType=${trackType}`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 401) {
       this.isLoggedIn = false;
