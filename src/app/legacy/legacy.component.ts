@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {convertToSpecialObjectForLegacy} from '../../utils/formDataFunction';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {InputService} from '../services/input.service';
@@ -46,7 +46,9 @@ export class LegacyComponent implements OnInit {
   successSubmission: boolean = false;
   companyProfileId: any;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute,
+  constructor(private getService: FormService,
+              private router: Router,
+              private route: ActivatedRoute,
               private inputService: InputService) {
   }
 
@@ -173,6 +175,7 @@ export class LegacyComponent implements OnInit {
   }
 
   onSubmit(event) {
+    debugger
     this.isLoading = true;
     const newData = {
       ...this.productData,
@@ -186,6 +189,8 @@ export class LegacyComponent implements OnInit {
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSubmitRequest();
       this.emptyTheTopField();
+
+      this.router.navigate([`/track-request/legacy`]);
       this.onClosed();
     }, error => this.handleError(error));
   }
@@ -219,6 +224,10 @@ export class LegacyComponent implements OnInit {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  showAlertMessager(messageStatus) {
+    messageStatus ? this.handleError('please complete the required values which marked with *') : null;
   }
 
   enableLoadingForAttachment(event) {

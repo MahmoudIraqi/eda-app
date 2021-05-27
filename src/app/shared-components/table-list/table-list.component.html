@@ -251,15 +251,17 @@
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
-                      <table class="table table-sm tableDetailsCont">
-                        <tr>
-                          <td class="hide">{{request.oldNotificationNo}}</td>
-                          <td>{{request.SubmmittionDate | date}}</td>
-                          <td class="hide">{{request.NameEN}}</td>
-                          <td class="hide">{{request.Track_type}}</td>
-                          <td><i (click)="editProduct(request)" class="fa fa-edit"></i></td> <!--  -->
-                        </tr>
-                      </table>
+                      <div class="table-responsive">
+                        <table class="table table-sm tableDetailsCont">
+                          <tr>
+                            <td class="hide">{{request.oldNotificationNo}}</td>
+                            <td>{{request.SubmmittionDate | date}}</td>
+                            <td class="hide">{{request.NameEN}}</td>
+                            <td class="hide">{{request.Track_type}}</td>
+                            <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
+                          </tr>
+                        </table>
+                      </div>
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <div class="detailsContainer pt-4">

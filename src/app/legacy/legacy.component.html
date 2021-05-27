@@ -50,6 +50,7 @@
                   [legacyStatus]="true"
                   (saveDataOutput)="onSave($event)"
                   (submitDataOutput)="onSubmit($event)"
+                  (errorMessage)="showAlertMessager($event)"
                   (isLoadingStatus)="enableLoadingForAttachment($event)"
                 ></app-product-request-form>
               </div>
@@ -60,6 +61,7 @@
                   [editData]="productData"
                   (saveDataOutput)="onSave($event)"
                   (submitDataOutput)="onSubmit($event)"
+                  (errorMessage)="showAlertMessager($event)"
                   (isLoadingStatus)="enableLoadingForAttachment($event)"
                 ></app-products-hair-colour-request-form>
               </div>

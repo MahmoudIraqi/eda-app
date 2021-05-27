@@ -815,6 +815,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
+    debugger;
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
       this.submitDataOutput.emit(data);
     } else {
@@ -962,7 +963,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
         artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
@@ -971,7 +972,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         methodOfAnalysis: this.fb.control(''),
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
         receipt: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
-        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 6 ? Validators.required : null),
         manufacturingContract: this.fb.control('', this.selectedRequestedType === 7 ? Validators.required : null),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
