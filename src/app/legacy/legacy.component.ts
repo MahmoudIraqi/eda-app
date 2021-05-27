@@ -162,9 +162,9 @@ export class LegacyComponent implements OnInit {
       ...this.productData,
       ...event
     };
-    event = convertToSpecialObjectForLegacy('save', newData);
+    const eventObject = convertToSpecialObjectForLegacy('save', newData);
 
-    this.getService.createProductRequest(event).subscribe((res: any) => {
+    this.getService.createProductRequest(eventObject).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
@@ -178,9 +178,9 @@ export class LegacyComponent implements OnInit {
       ...this.productData,
       ...event
     };
-    event = convertToSpecialObjectForLegacy('submit', newData);
+    const eventObject = convertToSpecialObjectForLegacy('submit', newData);
 
-    this.getService.createProductRequest(event).subscribe((res: any) => {
+    this.getService.createProductRequest(eventObject).subscribe((res: any) => {
       this.isLoading = false;
       this.successSubmission = true;
       this.alertNotificationStatus = true;
