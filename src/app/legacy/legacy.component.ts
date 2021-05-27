@@ -33,6 +33,10 @@ export class LegacyComponent implements OnInit {
   };
   NotificationNo;
   productData;
+  selectedFormType;
+  selectedRequestedType;
+  selectedTrackType;
+  selectedIsExport;
   isLoading: boolean = false;
   alertNotification: any;
   alertNotificationStatus: boolean = false;
@@ -55,78 +59,89 @@ export class LegacyComponent implements OnInit {
     ).subscribe(res => {
       this.companyProfileId = res.payload;
     });
-
+    this.productId = this.route.snapshot.paramMap.get('id');
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
       if (res) {
         this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
       }
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getRequestTypeLookUp().subscribe((res: any) => {
-      this.formData.requestType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.formData.licenseHolderCountryList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getFunctionLookUp().subscribe((res: any) => {
-      this.formData.functionList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-      this.formData.typeOfPackagingList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-      this.formData.physicalStateList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-      this.formData.unitOfMeasureList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-      this.formData.purposeOfUseList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductColorLookUp().subscribe((res: any) => {
-      this.formData.productColorList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
-      this.formData.ingrediantList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
-      this.formData.applicantList = res;
-      this.formData.licenseHolderList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
-      this.formData.storagePlaceList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-      this.formData.trackType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
+    }, error => this.handleError(error), () => {
+      this.getService.getRequestTypeLookUp().subscribe((res: any) => {
+        this.formData.requestType = res;
+      }, error => this.handleError(error), () => {
+        this.getService.getCountryLookUp().subscribe((res: any) => {
+          this.formData.manufacturingCountryList = res;
+          this.formData.licenseHolderCountryList = res;
+        }, error => this.handleError(error), () => {
+          this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
+            this.formData.manufacturingCompanyList = res;
+            this.formData.licenseHolderList = res;
+          }, error => this.handleError(error), () => {
+            this.getService.getFunctionLookUp().subscribe((res: any) => {
+              this.formData.functionList = res;
+            }, error => this.handleError(error), () => {
+              this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+                this.formData.typeOfPackagingList = res;
+              }, error => this.handleError(error), () => {
+                this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+                  this.formData.physicalStateList = res;
+                }, error => this.handleError(error), () => {
+                  this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+                    this.formData.unitOfMeasureList = res;
+                  }, error => this.handleError(error), () => {
+                    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+                      this.formData.purposeOfUseList = res;
+                    }, error => this.handleError(error), () => {
+                      this.getService.getProductColorLookUp().subscribe((res: any) => {
+                        this.formData.productColorList = res;
+                      }, error => this.handleError(error), () => {
+                        this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
+                          this.formData.ingrediantList = res;
+                        }, error => this.handleError(error), () => {
+                          this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
+                            this.formData.applicantList = res;
+                          }, error => this.handleError(error), () => {
+                            this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+                              this.formData.storagePlaceList = res;
+                            }, error => this.handleError(error), () => {
+                              this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+                                this.formData.trackType = res;
+                              }, error => this.handleError(error), () => {
+                                this.isLoading = false;
 
-    this.productId = this.route.snapshot.paramMap.get('id');
-    if (this.productId) {
-      this.isLoading = true;
+                                if (this.productId) {
+                                  this.isLoading = true;
 
-      this.getService.getLegacyProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
-        this.productData = res;
-        this.isLoading = false;
-      }, error => this.handleError(error));
-    }
+                                  this.getService.getLegacyProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
+                                    this.selectedFormType = res.typeOfMarketing;
+                                    this.selectedRequestedType = res.typeOfRegistration;
+                                    this.selectedIsExport = res.isExport;
+                                    this.productData = res;
+                                    this.isLoading = false;
+                                  }, error => this.handleError(error));
+                                }
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  }
+
+  getFormType(event) {
+    this.selectedFormType = event.value;
+  }
+
+  getRequestType(event) {
+    this.selectedRequestedType = event.value;
   }
 
   applyProduct(NotificationNo) {
@@ -142,6 +157,7 @@ export class LegacyComponent implements OnInit {
   }
 
   onSave(event) {
+    this.isLoading = true;
     const newData = {
       ...this.productData,
       ...event
@@ -157,7 +173,7 @@ export class LegacyComponent implements OnInit {
   }
 
   onSubmit(event) {
-
+    this.isLoading = true;
     const newData = {
       ...this.productData,
       ...event
@@ -203,5 +219,13 @@ export class LegacyComponent implements OnInit {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  enableLoadingForAttachment(event) {
+    if (event) {
+      this.isLoading = true;
+    } else {
+      this.isLoading = false;
+    }
   }
 }

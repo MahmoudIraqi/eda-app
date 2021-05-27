@@ -83,6 +83,7 @@ export class VariationComponent implements OnInit {
     }, error => this.handleError(error));
     this.getService.getManufacturingCompanyLookUp(1,'').subscribe((res: any) => {
       this.formData.manufacturingCompanyList = res;
+      this.formData.licenseHolderList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
     this.getService.getFunctionLookUp().subscribe((res: any) => {
@@ -115,7 +116,6 @@ export class VariationComponent implements OnInit {
     }, error => this.handleError(error));
     this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
       this.formData.applicantList = res;
-      this.formData.licenseHolderList = res;
       this.isLoading = false;
     }, error => this.handleError(error));
     this.getService.getStoragePlaceLookUp().subscribe((res: any) => {

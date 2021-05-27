@@ -234,7 +234,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/CompanyProfile?pageNo=${page}&pageSize=100&companyprofileid=${companyProfile}&searchName=${filterText}`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/CompanyProfile?pageNo=${page}&pageSize=10000&companyprofileid=${companyProfile}&searchName=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -296,6 +296,7 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
+    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}product/KitNotification`, data, options)
       .pipe(map((res: any) => {
@@ -409,7 +410,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Product/GetLegacyProducts?Type=track&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?pagesize=5000&pageNo=1&type=legacytrack`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -423,7 +424,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Product/GetLegacyProducts?Type=draft&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?pagesize=5000&pageNo=1&type=legacydraft`, options)
       .pipe(map((res: any) => {
           return res;
         }),

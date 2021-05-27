@@ -164,16 +164,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       loadingStatus: false,
     },
     {
-      id: 'receipt',
-      name: 'receipt',
-      fileName: '',
-      fileValue: '',
-      required: true,
-      enable: true,
-      attachmentTypeStatus: '',
-      loadingStatus: false,
-    },
-    {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
@@ -214,12 +204,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       loadingStatus: false,
     },
     {
+      id: 'receipt',
+      name: 'receipt',
+      fileName: '',
+      fileValue: '',
+      required: true,
+      enable: !this.legacyStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
       fileValue: '',
       required: true,
-      enable: true,
+      enable: !this.legacyStatus ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
     },
@@ -429,16 +429,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         loadingStatus: false,
       },
       {
-        id: 'receipt',
-        name: 'receipt',
-        fileName: '',
-        fileValue: '',
-        required: true,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
         id: 'authorizationLetter',
         name: 'Authorization Letter',
         fileName: '',
@@ -479,12 +469,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         loadingStatus: false,
       },
       {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: !this.legacyStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
         id: 'otherFees',
         name: 'otherFees',
         fileName: '',
         fileValue: '',
         required: true,
-        enable: true,
+        enable: !this.legacyStatus ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -550,6 +550,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     ];
 
+    console.log('editData', this.editData);
     this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
@@ -925,6 +926,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         });
       }) : null;
 
+      console.log(' this.regProductForAllRequestedType', this.regProductForAllRequestedType);
+      console.log('data', data);
+
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
@@ -950,9 +954,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         purposeOfUse: this.fb.control('', Validators.required),
         purposeOfUseTxt: this.fb.control(''),
         storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-        shelfLife: this.fb.control(0),
-        receiptNumber: this.fb.control('', this.legacyStatus ? null : Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-        receiptValue: this.fb.control('', [this.legacyStatus ? null : Validators.required, this.legacyStatus ? null : Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
+        shelfLife: this.fb.control(null, Validators.required),
+        receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         deletedIngredientsIds: this.fb.control(null),
@@ -966,7 +970,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         reference: this.fb.control(''),
         methodOfAnalysis: this.fb.control(''),
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-        receipt: this.fb.control('', Validators.required),
+        receipt: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
         authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
         manufacturingContract: this.fb.control('', this.selectedRequestedType === 7 ? Validators.required : null),
         storageContract: this.fb.control(''),
@@ -977,7 +981,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         shelfLifeAttachment: this.fb.control(''),
         letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
-        otherFees: this.fb.control('', Validators.required),
+        otherFees: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
       });
 
       console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType);

@@ -112,6 +112,7 @@ export class NewRequestComponent implements OnInit {
         }, error => this.handleError(error), () => {
           this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
             this.formData.manufacturingCompanyList = res;
+            this.formData.licenseHolderList = res;
           }, error => this.handleError(error), () => {
             this.getService.getFunctionLookUp().subscribe((res: any) => {
               this.formData.functionList = res;
@@ -136,7 +137,6 @@ export class NewRequestComponent implements OnInit {
                         }, error => this.handleError(error), () => {
                           this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
                             this.formData.applicantList = res;
-                            this.formData.licenseHolderList = res;
                           }, error => this.handleError(error), () => {
                             this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
                               this.formData.storagePlaceList = res;
@@ -343,7 +343,7 @@ export class NewRequestComponent implements OnInit {
       this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
     }
 
-    if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined) {
+    if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined && (this.typeOfNotificationVariableForKitLookups === 'REG_KIT' || this.typeOfNotificationVariableForKitLookups === 'REG_HAIR_KIT')) {
       this.getService.getProductsKitIdLookupsRequest(this.typeOfNotificationVariableForKitLookups, this.trackTypeVariableForKitLookups).subscribe((res) => {
         this.productsKitIds = res;
       }, error => {
@@ -356,11 +356,11 @@ export class NewRequestComponent implements OnInit {
     if (whichLookups === 'manufacturingCompany') {
       this.getService.getManufacturingCompanyLookUp(1, value).subscribe((res: any) => {
         this.manufacturingCompanyList = res;
+        this.formData.licenseHolderList = res;
         this.isLoading = false;
       }, error => this.handleError(error));
     } else if (whichLookups === 'companyProfile') {
       this.getService.getCompanyProfileLookUp(1, this.companyProfileId, value).subscribe((res: any) => {
-        this.formData.licenseHolderList = res;
         this.isLoading = false;
       }, error => this.handleError(error));
     } else if (whichLookups === 'ingrediant') {

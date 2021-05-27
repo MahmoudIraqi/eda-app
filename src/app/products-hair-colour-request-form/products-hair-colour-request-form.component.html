@@ -13,7 +13,7 @@
         <div class="row mt-3">
           <div class="col-12 col-sm-6" [ngClass]="{'mt-3': selectedFormType === 2}">
             <mat-form-field class="example-full-width">
-              <div *ngIf="!legacyStatus && productComments && productComments.productArabicName"
+              <div *ngIf="productComments && productComments.productArabicName"
                    class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.productArabicName}}"
                       placement="top">
@@ -23,7 +23,7 @@
               <mat-label>Product Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
                      placeholder="Product Name"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.productArabicName ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
             </mat-form-field>
           </div>
           <div class="col-12 col-sm-6" [ngClass]="{'mt-3': selectedFormType === 2}">
@@ -38,7 +38,7 @@
               <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
                      placeholder="Product Name" required
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.productEnglishName ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('productEnglishName').invalid && (regHairColorantProductForAllRequestedType.get('productEnglishName').dirty || regHairColorantProductForAllRequestedType.get('productEnglishName').touched)"
                 class="alert alert-danger">
@@ -59,7 +59,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="editData && editData.isDraft === 0 && productFlags && !productFlags.shortName"
+                          [disabled]="(editData && editData.isDraft === 0) || (productFlags && !productFlags.shortName ) || selectedRequestedType !== 7 || selectedRequestedType !== 8 || selectedRequestedType !== 9 || legacyStatus"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
                   <mat-form-field class="example-full-width">
-                    <div *ngIf="!legacyStatus && productComments && productComments.shortName"
+                    <div *ngIf="productComments && productComments.shortName"
                          class="InfoIconContainer">
                       <span class="infoIcon" tooltip="{{productComments['shortName']}}"
                             placement="top">
@@ -79,9 +79,9 @@
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
-                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.shortName ? true : false">
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : isDraft ? false : legacyStatus ? true : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
-                            [disabled]="editData && editData.isDraft === 0 && productFlags && !productFlags.shortName"
+                            [disabled]="(editData && editData.isDraft === 0 ) || (productFlags && !productFlags.shortName) || legacyStatus"
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>
@@ -95,7 +95,7 @@
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <div *ngIf="!legacyStatus && productComments && productComments.productColor" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.productColor" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.productColor}}"
                       placement="top">
                   <i class="fas fa-info-circle"></i>
@@ -109,7 +109,7 @@
                      matInput
                      formControlName="productColor"
                      (blur)="checkValue('productColor', formData.productColorList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.productColor ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : isDraft ? false : productFlags && !productFlags.productColor ? true : false"
                      [matAutocomplete]="productColorList" required>
               <mat-autocomplete #productColorList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForProductColor | async"
@@ -121,7 +121,7 @@
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width">
-              <div *ngIf="!legacyStatus && productComments && productComments.manufacturingCompany"
+              <div *ngIf="productComments && productComments.manufacturingCompany"
                    class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.manufacturingCompany}}"
                       placement="top">
@@ -136,7 +136,7 @@
                      matInput
                      formControlName="manufacturingCompany"
                      (blur)="checkValue('manufacturingCompany', formData.manufacturingCompanyList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.manufacturingCompany ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : isDraft ? false : productFlags && !productFlags.manufacturingCompany ? true : false"
                      [matAutocomplete]="manufacturingCompanyList" required>
               <mat-autocomplete #manufacturingCompanyList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForManufacturingCompany | async"
@@ -156,7 +156,7 @@
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <div *ngIf="!legacyStatus && productComments && productComments.manufacturingCountry"
+              <div *ngIf="productComments && productComments.manufacturingCountry"
                    class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.manufacturingCountry}}"
                       placement="top">
@@ -171,7 +171,7 @@
                      matInput
                      formControlName="manufacturingCountry"
                      (blur)="checkValue('manufacturingCountry', formData.manufacturingCountryList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : isDraft ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
                      [matAutocomplete]="manufacturingCountryList" required>
               <mat-autocomplete #manufacturingCountryList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForManufacturingCountry | async"
@@ -211,7 +211,7 @@
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <div *ngIf="!legacyStatus && productComments && productComments.licenseHolder" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.licenseHolder" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.licenseHolder}}"
                       placement="top">
                   <i class="fas fa-info-circle"></i>
@@ -225,7 +225,7 @@
                      matInput
                      formControlName="licenseHolder"
                      (blur)="checkValue('licenseHolder', formData.licenseHolderList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.licenseHolder ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : isDraft ? false : productFlags && !productFlags.licenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderList" required>
               <mat-autocomplete #licenseHolderList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolder | async"
@@ -246,7 +246,7 @@
           <div class="col-lg-4 col-sm-6 col-12"
                *ngIf="regHairColorantProductForAllRequestedType.get('licenseHolder').value === 'Other'">
             <mat-form-field class="example-full-width inputBesideSelect">
-              <div *ngIf="!legacyStatus && productComments && productComments.licenseHolderTxt"
+              <div *ngIf="productComments && productComments.licenseHolderTxt"
                    class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.licenseHolderTxt}}"
                       placement="top">
@@ -256,12 +256,12 @@
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
                      placeholder="Other License Holder"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolderTxt') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.licenseHolderTxt ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolderTxt') : true : isDraft ? false : productFlags && !productFlags.licenseHolderTxt ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <div *ngIf="!legacyStatus && productComments && productComments.countryOfLicenseHolder"
+              <div *ngIf="productComments && productComments.countryOfLicenseHolder"
                    class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.countryOfLicenseHolder}}"
                       placement="top">
@@ -276,7 +276,7 @@
                      matInput
                      formControlName="countryOfLicenseHolder"
                      (blur)="checkValue('countryOfLicenseHolder', formData.licenseHolderCountryList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.countryOfLicenseHolder ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : isDraft ? false : productFlags && !productFlags.countryOfLicenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderCountryList" required>
               <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolderCountry | async"
@@ -296,7 +296,7 @@
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width inputBesideSelect">
-              <div *ngIf="!legacyStatus && productComments && productComments.tradeMark" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.tradeMark" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.tradeMark}}"
                       placement="top">
                   <i class="fas fa-info-circle"></i>
@@ -305,12 +305,12 @@
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.tradeMark ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : isDraft ? false : productFlags && !productFlags.tradeMark ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <div *ngIf="!legacyStatus && productComments && productComments.physicalState" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.physicalState" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.physicalState}}"
                       placement="top">
                   <i class="fas fa-info-circle"></i>
@@ -324,7 +324,7 @@
                      matInput
                      formControlName="physicalState"
                      (blur)="checkValue('physicalState', formData.physicalStateList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalState') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.physicalState ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalState') : true : isDraft ? false : productFlags && !productFlags.physicalState ? true : false"
                      [matAutocomplete]="physicalStateList" required>
               <mat-autocomplete #physicalStateList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForPhysicalState | async"
@@ -345,7 +345,7 @@
           <div class="col-lg-4 col-sm-6 col-12"
                *ngIf="regHairColorantProductForAllRequestedType.get('physicalState').value === 'Other'">
             <mat-form-field class="example-full-width inputBesideSelect">
-              <div *ngIf="!legacyStatus && productComments && productComments.physicalStateTxt"
+              <div *ngIf="productComments && productComments.physicalStateTxt"
                    class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.physicalStateTxt}}"
                       placement="top">
@@ -355,12 +355,12 @@
               <mat-label>Other Physical State</mat-label>
               <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
                      placeholder="Other Physical State"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalStateTxt') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.physicalStateTxt ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalStateTxt') : true : isDraft ? false : productFlags && !productFlags.physicalStateTxt ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width">
-              <div *ngIf="!legacyStatus && productComments && productComments.purposeOfUse" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.purposeOfUse" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.purposeOfUse}}"
                       placement="top">
                   <i class="fas fa-info-circle"></i>
@@ -374,7 +374,7 @@
                      matInput
                      formControlName="purposeOfUse"
                      (blur)="checkValue('purposeOfUse', formData.purposeOfUseList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUse') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.purposeOfUse ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUse') : true : isDraft ? false : productFlags && !productFlags.purposeOfUse ? true : false"
                      [matAutocomplete]="purposeOfUseList" required>
               <mat-autocomplete #purposeOfUseList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForPurposeOfUse | async"
@@ -395,7 +395,7 @@
           <div class="col-lg-4 col-sm-6 col-12"
                *ngIf="regHairColorantProductForAllRequestedType.get('purposeOfUse').value === 'Other'">
             <mat-form-field class="example-full-width inputBesideSelect">
-              <div *ngIf="!legacyStatus && productComments && productComments.purposeOfUseTxt"
+              <div *ngIf="productComments && productComments.purposeOfUseTxt"
                    class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.purposeOfUseTxt}}"
                       placement="top">
@@ -405,12 +405,12 @@
               <mat-label>Other Purpose of use</mat-label>
               <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
                      placeholder="Other Purpose of use"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUseTxt') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.purposeOfUseTxt ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUseTxt') : true : isDraft ? false : productFlags && !productFlags.purposeOfUseTxt ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width">
-              <div *ngIf="!legacyStatus && productComments && productComments.storagePlace" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.storagePlace" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.storagePlace}}"
                       placement="top">
                   <i class="fas fa-info-circle"></i>
@@ -424,7 +424,7 @@
                      matInput
                      formControlName="storagePlace"
                      (blur)="checkValue('storagePlace', formData.storagePlaceList, regHairColorantProductForAllRequestedType)"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.storagePlace ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
                      [matAutocomplete]="storagePlaceList"
                      [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
@@ -447,20 +447,24 @@
             <div class="row">
               <div class="col-12 col-sm-9">
                 <div class="form-group">
-                  <label>Shelf Life</label>
+                  <label>
+                    Shelf Life
+                    <span class="requiredStar">*</span>
+                  </label>
                   <mat-slider
                     class="example-margin mt-3"
-                    [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.shelfLife ? true : false"
+                    [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
                     [max]="60"
                     [min]="0"
                     [step]="1"
+                    required
                     formControlName="shelfLife">
                   </mat-slider>
                 </div>
               </div>
               <div class="col-12 col-sm-3">
                 <mat-form-field class="example-full-width inputBesideSelect">
-                  <div *ngIf="!legacyStatus && productComments && productComments.shelfLife" class="InfoIconContainer">
+                  <div *ngIf="productComments && productComments.shelfLife" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.shelfLife}}"
                           placement="top">
                       <i class="fas fa-info-circle"></i>
@@ -469,16 +473,24 @@
                   <input type="text" class="form-control" matInput
                          [value]="regHairColorantProductForAllRequestedType.get('shelfLife').value"
                          formControlName="shelfLife"
-                         [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.shelfLife ? true : false"
-                         (change)="setShelfValue($event)">
+                         [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
+                         (change)="setShelfValue($event)" required>
                   <span class="labelForRange">Months</span>
+                  <div
+                    *ngIf="regHairColorantProductForAllRequestedType.get('shelfLife').invalid && attachmentRequiredStatus"
+                    class="alert alert-danger">
+                    <div
+                      *ngIf="regHairColorantProductForAllRequestedType.get('shelfLife').errors.required">
+                      this field is required
+                    </div>
+                  </div>
                 </mat-form-field>
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus">
             <mat-form-field class="example-full-width inputBesideSelect">
-              <div *ngIf="!legacyStatus && productComments && productComments.receiptNumber" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.receiptNumber" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptNumber}}"
                           placement="top">
                       <i class="fas fa-info-circle"></i>
@@ -486,7 +498,7 @@
               </div>
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
-                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : isDraft ? false : legacyStatus ? false : reRegistrationStatus ? false : productFlags && !productFlags.receiptNumber ? true : false"
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : isDraft ? false : reRegistrationStatus ? false : productFlags && !productFlags.receiptNumber ? true : false"
                      placeholder="Receipt Number" required>
               <div
                 *ngIf="regHairColorantProductForAllRequestedType.get('receiptNumber').invalid && (regHairColorantProductForAllRequestedType.get('receiptNumber').dirty || regHairColorantProductForAllRequestedType.get('receiptNumber').touched)"
@@ -504,7 +516,7 @@
           </div>
           <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus">
             <mat-form-field class="example-full-width inputBesideSelect">
-              <div *ngIf="!legacyStatus && productComments && productComments.receiptValue" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments.receiptValue" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptValue}}"
                           placement="top">
                       <i class="fas fa-info-circle"></i>
@@ -513,7 +525,7 @@
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
                      (change)="getDecimalValue(regHairColorantProductForAllRequestedType.get('receiptValue').value)"
-                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : isDraft ? false : legacyStatus ? false : reRegistrationStatus ? false : productFlags && !productFlags.receiptValue ? true :  false"
+                     [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : isDraft ? false : reRegistrationStatus ? false : productFlags && !productFlags.receiptValue ? true :  false"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required>
               <div
@@ -605,7 +617,7 @@
         <div class="row mt-3">
           <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields">
             <div class="form-group" *ngIf="field.enable">
-              <div *ngIf="!legacyStatus && productComments && productComments[field.id]" class="InfoIconContainer">
+              <div *ngIf="productComments && productComments[field.id]" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments[field.id]}}"
                       placement="top">
                   <i class="fas fa-info-circle"></i>
@@ -620,7 +632,7 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
-                       [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags[field.id] ? true : false"
+                       [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
                        [required]="field.required ? 'required' : ''">
                 <div class="d-flex alert alert-danger"
                      *ngIf="(regHairColorantProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
@@ -697,7 +709,7 @@
       <div class="row">
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
+            <div *ngIf="productComments && productComments.packagingTable"
                  class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                         placement="top">
@@ -724,7 +736,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
+            <div *ngIf="productComments && productComments.packagingTable"
                  class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                         placement="top">
@@ -739,7 +751,7 @@
                    matInput
                    formControlName="unitOfMeasure"
                    (blur)="checkValue('unitOfMeasure', formData.unitOfMeasureList, regPackagingForProduct)"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="unitOfMeasureList" required>
             <mat-autocomplete #unitOfMeasureList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
@@ -759,7 +771,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field appearance="fill">
-            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
+            <div *ngIf="productComments && productComments.packagingTable"
                  class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                         placement="top">
@@ -774,7 +786,7 @@
                    matInput
                    formControlName="typeOfPackaging"
                    (blur)="checkValue('typeOfPackaging', formData.typeOfPackagingList, regPackagingForProduct)"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="typeOfPackagingList" required>
             <mat-autocomplete #typeOfPackagingList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
@@ -794,7 +806,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.packagingTable"
+            <div *ngIf="productComments && productComments.packagingTable"
                  class="InfoIconContainer">
                                       <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
                                             placement="top">
@@ -803,7 +815,7 @@
             </div>
             <mat-label>Packaging Description</mat-label>
             <textarea matInput formControlName="packagingDescription"
-                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.packagingTable ? true : false"
+                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                       placeholder="Ex. It makes me feel..."></textarea>
           </mat-form-field>
         </div>
@@ -836,7 +848,7 @@
       <div class="row mt-5">
         <div class="col-12 col-sm-6 col-lg-3 mb-3 ">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
                           <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
                                 placement="top">
                             <i class="fas fa-info-circle"></i>
@@ -850,7 +862,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
                           <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
                                 placement="top">
                             <i class="fas fa-info-circle"></i>
@@ -860,12 +872,12 @@
             <input type="text" class="form-control" matInput
                    formControlName="fragrance"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
                           <span class="infoIcon" tooltip="{{productComments && productComments.detailsTable}}"
                                 placement="top">
                             <i class="fas fa-info-circle"></i>
@@ -874,12 +886,12 @@
             <mat-label>Flavor</mat-label>
             <input type="text" class="form-control" matInput formControlName="flavor"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="!legacyStatus && productComments && productComments.detailsTable" class="InfoIconContainer">
+            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
                           <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
                                 placement="top">
                             <i class="fas fa-info-circle"></i>
@@ -888,7 +900,7 @@
             <mat-label>BarCode</mat-label>
             <input type="text" class="form-control" matInput formControlName="barCode"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 mt-2">
@@ -906,7 +918,7 @@
                   <div class="row">
                     <div class="col-12 col-sm-6 col-lg-3">
                       <mat-form-field appearance="fill">
-                        <div *ngIf="!legacyStatus && productComments && productComments.detailsTable"
+                        <div *ngIf="productComments && productComments.detailsTable"
                              class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
                                         placement="top">
@@ -921,7 +933,7 @@
                                matInput
                                formControlName="ingrediant"
                                (blur)="checkValue('ingrediant', formData.ingrediantList, IngrediantDetailsRows().controls[index])"
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoIngrediant"
                                required>
                         <mat-autocomplete #autoIngrediant="matAutocomplete">
@@ -942,7 +954,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3 conSpace">
                       <mat-form-field class="example-full-width inputBesideSelect">
-                        <div *ngIf="!legacyStatus && productComments && productComments.detailsTable"
+                        <div *ngIf="productComments && productComments.detailsTable"
                              class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
                                         placement="top">
@@ -953,7 +965,7 @@
                         <input type="text" class="form-control" matInput
                                formControlName="concentrations"
                                placeholder="concentrations" required
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false">
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
                         <div
                           *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                           class="alert alert-danger">
@@ -966,7 +978,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3">
                       <mat-form-field appearance="fill">
-                        <div *ngIf="!legacyStatus && productComments && productComments.detailsTable"
+                        <div *ngIf="productComments && productComments.detailsTable"
                              class="InfoIconContainer">
                                   <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
                                         placement="top">
@@ -982,7 +994,7 @@
                                formControlName="function"
                                required
                                (blur)="checkValue('function', formData.functionList, IngrediantDetailsRows().controls[index])"
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : isDraft ? false : legacyStatus ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoFunction">
                         <mat-autocomplete #autoFunction="matAutocomplete">
                           <mat-option *ngFor="let option of filteredOptionsForFunction | async"
