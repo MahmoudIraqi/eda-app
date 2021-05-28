@@ -204,7 +204,7 @@
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td class="hide">{{request.OLD_NOTIFICATION_NUMBER}}</td>
+                          <td class="hide">{{request.oldNotificationNo}}</td>
                           <td>{{request.SubmmittionDate | date}}</td>
                           <td class="hide">{{request.NameEN}}</td>
                           <td class="hide">{{request.NameAR}}</td>
@@ -219,7 +219,7 @@
                     <div class="row">
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Old Notification Number :</label>
-                        <span>{{request.OLD_NOTIFICATION_NUMBER}}</span>
+                        <span>{{request.oldNotificationNo}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Submission date :</label>
@@ -1117,6 +1117,402 @@
                       </div>
                     </div>
                   </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+          </tr>
+        </table>
+
+        <!-- table For Empty Data -->
+        <table class="table table-sm table-ordered" *ngIf="data && data.tableBody.length === 0">
+          <tr class="headerRow" *ngIf="whichTable === 'draft'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'trackRequest'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'trackLegacyRequest'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'draftLegacyRequest'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'trackGeneralEnquiries'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'track'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 0 || i === 2 || i === 3 || i === 5}">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'approved'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 1 || i === 3 }">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'legacyOldProduct'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 1 || i === 3 }">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow" *ngIf="whichTable === 'rejected'">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'hide': i === 1 || i === 3 }">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'newRequestForPackaging' || whichTable === 'newRequestForDetails' || whichTable === 'productsKitList'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+          <i class="fa fa-sort"></i>
+        </span>
+            </th>
+          </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'manufacturing'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'notificationList'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'batchTable'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'newIngrediantTable'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
+          <tr class="headerRow"
+              *ngIf="whichTable === 'newProductForInvoice'">
+            <th *ngFor="let request of data.tableHeader; let i = index">
+              {{request}}
+              <span (click)="sortBy(sortStatus, request)">
+                <i class="fa fa-sort"></i>
+              </span>
+            </th>
+          </tr>
+          <tr class="text-center">
+            <td colspan="7" *ngIf="whichTable === 'trackRequest'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="7"> {{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="7" *ngIf="whichTable === 'trackLegacyRequest'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="7">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="5" *ngIf="whichTable === 'draftLegacyRequest'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="6" *ngIf="whichTable === 'track'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="5" *ngIf="whichTable === 'trackGeneralEnquiries'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="7" *ngIf="whichTable === 'draft'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="7">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="7" *ngIf="whichTable === 'approved'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="7">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="6" *ngIf="whichTable === 'legacyOldProduct'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="5" *ngIf="whichTable === 'rejected'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="5" *ngIf="whichTable === 'newRequestForDetails'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="4" *ngIf="whichTable === 'newRequestForPackaging'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="4">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="6" *ngIf="whichTable === 'productsKitList'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="2" *ngIf="whichTable === 'manufacturing'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="2">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="6" *ngIf="whichTable === 'notificationList'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="5" *ngIf="whichTable === 'batchTable'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="4" *ngIf="whichTable === 'newIngrediantTable'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="4">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="4" *ngIf="whichTable === 'newProductForInvoice'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="4">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
                 </mat-expansion-panel>
               </mat-accordion>
             </td>

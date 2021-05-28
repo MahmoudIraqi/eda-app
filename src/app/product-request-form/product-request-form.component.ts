@@ -572,6 +572,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
+      debugger;
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -815,7 +816,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    debugger;
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
       this.submitDataOutput.emit(data);
     } else {
@@ -866,13 +866,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
-      if (this.editFromWhere) {
-        data.shortName ? data.shortName.map((X, i) => {
-          if (data.shortName.length > 1 && i < data.shortName.length - 1) {
-            this.addShortName();
-          }
-        }) : data.shortName = [];
-      }
+
+      data.shortName ? data.shortName.map((X, i) => {
+        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+          this.addShortName();
+        }
+      }) : data.shortName = [];
 
       this.packagingListTable.tableBody = [];
       data.packagingTable ? data.packagingTable.map((x, i) => {

@@ -69,11 +69,13 @@ export class TableListComponent implements OnInit, OnChanges {
   deletedIdsListForPackaging = [];
   deletedIdsListForDetailsRow = [];
   deletedIdsListForIngrediant = [];
+  noDataStatment = 'There is no data ...';
 
   constructor(private router: Router, private route: ActivatedRoute, private inputService: InputService) {
   }
 
   ngOnChanges() {
+    console.log('data_OnChange', this.data);
     if (this.data) {
       if (this.data.tableBody.length > 0) {
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
@@ -112,6 +114,7 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log('data', this.data);
   }
 
   setStep(index: number) {

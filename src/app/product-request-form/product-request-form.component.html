@@ -59,7 +59,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="(editData && editData.isDraft === 0) || (productFlags && !productFlags.shortName ) || selectedRequestedType !== 7 || selectedRequestedType !== 8 || selectedRequestedType !== 9 || legacyStatus"
+                          [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 6) || legacyStatus  || (productFlags && !productFlags.shortName)"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -79,9 +79,9 @@
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
-                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? productFlags && !productFlags.shortName ? true : false : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
-                            [disabled]="(editData && editData.isDraft === 0 ) || (productFlags && !productFlags.shortName) || legacyStatus"
+                            [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 6) || legacyStatus  || (productFlags && !productFlags.shortName)"
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>
@@ -525,23 +525,25 @@
           <div class="col-12">
             <div class="d-flex flex-column">
               <div class="row">
-                <div class="col-12 col-sm-10">
+                <div class="col-12 col-sm-8">
                   <app-title [smallTitle]="true" [title]="'Packaging data'"></app-title>
                 </div>
-                <div class="col-12 col-sm-2 ml-auto">
-                  <button type="button" class="btn btn-primary btnForModal"
-                          [disabled]="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable)"
-                          (click)="openModal(packagingModal)">
-                    Add new packaging
-                  </button>
+                <div class="col-12 col-sm-4 ml-auto">
+                  <div class="d-flex align-items-center">
+                    <div class="hintForEmptyObject" *ngIf="packagingListTable.tableBody.length === 0 && attachmentRequiredStatus">
+                      <h5>** Please add packaging data</h5>
+                    </div>
+                    <button type="button" class="btn btn-primary btnForModal ml-auto"
+                            [disabled]="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable)"
+                            (click)="openModal(packagingModal)">
+                      Add new packaging
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-12">
-            <div class="hintForEmptyObject" *ngIf="packagingListTable.tableBody.length === 0">
-              <h5>** Please add packaging data</h5>
-            </div>
             <div class="RequestingTable">
               <app-table-list [data]="packagingListTable"
                               [whichTable]="'newRequestForPackaging'"
@@ -557,23 +559,25 @@
           <div class="col-12">
             <div class="d-flex flex-column">
               <div class="row">
-                <div class="col-12 col-sm-10">
+                <div class="col-12 col-sm-8">
                   <app-title [smallTitle]="true" [title]="'Details data'"></app-title>
                 </div>
-                <div class="col-12 col-sm-2 ml-auto">
-                  <button type="button" class="btn btn-primary btnForModal"
+                <div class="col-12 col-sm-4 ml-auto">
+                  <div class="d-flex align-items-center">
+                  <div class="hintForEmptyObject" *ngIf="detailsListTable.tableBody.length === 0 && attachmentRequiredStatus">
+                    <h5>** Please add detail data</h5>
+                  </div>
+                  <button type="button" class="btn btn-primary btnForModal ml-auto"
                           [disabled]="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable)"
                           (click)="openModal(detailedModal)">
                     Add new detail
                   </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-12">
-            <div class="hintForEmptyObject" *ngIf="detailsListTable.tableBody.length === 0">
-              <h5>** Please add detail data</h5>
-            </div>
             <div class="RequestingTable">
               <app-table-list [data]="detailsListTable"
                               [whichTable]="'newRequestForDetails'"
