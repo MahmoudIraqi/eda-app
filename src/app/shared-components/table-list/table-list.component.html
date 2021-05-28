@@ -434,11 +434,11 @@
                       <table class="table table-sm tableDetailsCont">
                         <tr>
                           <td>{{request.NotificationNo}}</td>
-                          <td class="hide">{{request.SubmmittionDate | date}}</td>
+                          <td class="hide">{{request.notificationdate | date}}</td>
                           <td>{{request.NameEN}}</td>
                           <td class="hide">{{request.NameAR}}</td>
-                          <td>{{request.actionStatus}} <strong>{{request.ID}}</strong></td>
-                          <td (click)="editProduct(request.ID)"><i class="fa fa-edit"></i></td>
+                          <td>{{request.colorFlag ? 'Yes' : ''}}</td>
+                          <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
                           <td (click)="addBatch(request.NotificationNo)"><i class="fas fa-cart-plus"></i></td>
                         </tr>
                       </table>

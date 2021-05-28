@@ -426,7 +426,7 @@
                      (blur)="checkValue('storagePlace', formData.storagePlaceList, regHairColorantProductForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
                      [matAutocomplete]="storagePlaceList"
-                     [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
+                     [required]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
                             [value]="option.NAME">
@@ -561,7 +561,7 @@
                       <h5>** Please add packaging data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                             (click)="openModal(packagingModal)">
                       Add new packaging
                     </button>
@@ -574,9 +574,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="packagingListTable"
                               [whichTable]="'newRequestForPackaging'"
-                              (removePackagingRowOutput)="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus ? removePackagingRows($event): null"
-                              (removePackagingRowIDs)="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus  ? deletedPackagingIdsList($event) : null"
-                              (editPackagingRowIDs)="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus  ? editThePackagingRows($event): null"></app-table-list>
+                              (removePackagingRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : null : legacyStatus? productFlags && !productFlags.packagingTable ? null : removePackagingRows($event) : isDraft ? removePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : removePackagingRows($event)"
+                              (removePackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : null : legacyStatus? productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event) : isDraft ? deletedPackagingIdsList($event) : productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event)"
+                              (editPackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : null : legacyStatus? productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event) : isDraft ? editThePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event)"></app-table-list>
             </div>
           </div>
         </div>
@@ -596,7 +596,7 @@
                       <h5>** Please add detail data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                             (click)="openModal(detailedModal)">
                       Add new detail
                     </button>
@@ -609,9 +609,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="detailsListTable"
                               [whichTable]="'newRequestForDetails'"
-                              (removeDetailsRowOutput)="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus ? removeDetailedRows($event): null"
-                              (removeDetailsRowIDs)="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus ? deletedDetailedIdsList($event) : null"
-                              (editDetailedRowOutput)="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus ? editTheDetailedRows($event): null"></app-table-list>
+                              (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : null : legacyStatus? productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event)"
+                              (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : null : legacyStatus? productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event)"
+                              (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : null : legacyStatus? productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event)"></app-table-list>
             </div>
           </div>
         </div>

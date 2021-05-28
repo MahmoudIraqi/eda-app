@@ -83,15 +83,6 @@
               (isLoadingStatus)="enableLoadingForAttachment($event)"
             ></app-product-request-form>
           </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">
-            <app-products-kit-request-form
-              [editData]="this.productData"
-              [lookupsData]="formData"
-              [reRegistrationStatus]="true"
-              (submitDataOutput)="onSubmit($event)"
-              (errorMessage)="showAlertMessager($event)"
-            ></app-products-kit-request-form>
-          </div>
           <div class="col-12 mt-5"
                *ngIf="productData && productData.typeOfMarketing === 3">
             <app-products-hair-colour-request-form
@@ -100,16 +91,8 @@
               [reRegistrationStatus]="true"
               (submitDataOutput)="onSubmit($event)"
               (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
             ></app-products-hair-colour-request-form>
-          </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
-            <app-products-kit-hair-colour-request-form
-              [editData]="this.productData"
-              [lookupsData]="formData"
-              [reRegistrationStatus]="true"
-              (submitDataOutput)="onSubmit($event)"
-              (errorMessage)="showAlertMessager($event)"
-            ></app-products-kit-hair-colour-request-form>
           </div>
         </div>
       </div>

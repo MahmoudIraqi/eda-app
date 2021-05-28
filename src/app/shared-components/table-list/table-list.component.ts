@@ -274,7 +274,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
-    debugger;
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
       this.router.navigate([`/new-request/tell_do_variation/${Number(request.NotificationNo)}`]);
@@ -287,6 +286,10 @@ export class TableListComponent implements OnInit, OnChanges {
     } else if (editFrom === 'legacy') {
       this.router.navigate([`/legacy-form/${Number(request.OLD_PRODUCT_ID)}`]);
     }
+
+    // else if (editFrom === 'approved-product') {
+    //   this.router.navigate([`/new-request/registration/${Number(request.ID)}`]);
+    // }
   }
 
   pageChanged(event: PageChangedEvent): void {
