@@ -287,7 +287,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="6" *ngIf="whichTable === 'track'">
+            <td colspan="5" *ngIf="whichTable === 'track'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
                                      (opened)="setStep(i)" hideToggle>
@@ -295,12 +295,11 @@
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td class="hide">{{request.ID}}</td>
+                          <td class="hide">{{request.NotificationNo}}</td>
                           <td>{{request.SubmmittionDate | date}}</td>
                           <td class="hide">{{request.NameEN}}</td>
                           <td class="hide">{{request.NameAR}}</td>
                           <td>{{request.Status}}</td>
-                          <td class="hide">{{request.Track_type}}</td>
                         </tr>
                       </table>
                     </mat-panel-title>
@@ -308,8 +307,8 @@
                   <div class="detailsContainer pt-4">
                     <div class="row">
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Request id :</label>
-                        <span>{{request.ID}}</span>
+                        <label class="label">Notification Number :</label>
+                        <span>{{request.NotificationNo}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Submission date :</label>
@@ -326,10 +325,6 @@
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label ">Status :</label>
                         <span>{{request.Status}}</span>
-                      </div>
-                      <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Track Type :</label>
-                        <span>{{request.Track_type}}</span>
                       </div>
                     </div>
                   </div>
@@ -1306,14 +1301,14 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="6" *ngIf="whichTable === 'track'">
+            <td colspan="5" *ngIf="whichTable === 'track'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
                         </tr>
                       </table>
                     </mat-panel-title>

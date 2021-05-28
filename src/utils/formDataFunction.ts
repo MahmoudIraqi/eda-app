@@ -37,7 +37,7 @@ export const convertToSpecialObjectForLegacy = (WhichForm, event) => {
   };
 };
 
-export const convertToSpecialObjectForReNotification = (WhichForm, typeOfMarketing, typeOfRegistration, isExport, trackType, id, notificationNumber, event) => {
+export const convertToSpecialObjectForReNotification = (WhichForm, typeOfMarketing, typeOfRegistration, isExport, trackType, id, NotificationNo, event) => {
   return {
     isDraft: WhichForm === 'save' || WhichForm === 'submitProductForKit' ? 1 : 0,
     typeOfMarketing,
@@ -46,7 +46,7 @@ export const convertToSpecialObjectForReNotification = (WhichForm, typeOfMarketi
     trackType,
     ...event,
     id,
-    notificationNumber,
+    NotificationNo,
     isCompleted: WhichForm === 'submitProductForKit' && typeOfMarketing === 5 ? true : false
   };
 };

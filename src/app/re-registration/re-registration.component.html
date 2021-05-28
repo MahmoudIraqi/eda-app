@@ -80,6 +80,7 @@
               [reRegistrationStatus]="true"
               (submitDataOutput)="onSubmit($event)"
               (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
             ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">

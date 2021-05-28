@@ -243,4 +243,13 @@ export class ReRegistrationComponent implements OnInit {
   showAlertMessager(messageStatus) {
     messageStatus ? this.handleError('please complete the required values which marked with *') : null;
   }
+
+  enableLoadingForAttachment(event) {
+    if (event) {
+      this.isLoading = true;
+    } else {
+      this.isLoading = false;
+    }
+  }
+
 }
