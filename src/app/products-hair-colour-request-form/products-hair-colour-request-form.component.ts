@@ -853,13 +853,11 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
-      if (this.editFromWhere) {
-        data.shortName ? data.shortName.map((X, i) => {
-          if (data.shortName.length > 1 && i < data.shortName.length - 1) {
-            this.addShortName();
-          }
-        }) : data.shortName = [];
-      }
+      data.shortName ? data.shortName.map((X, i) => {
+        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+          this.addShortName();
+        }
+      }) : data.shortName = [];
 
       this.packagingListTable.tableBody = [];
       data.packagingTable ? data.packagingTable.map((x, i) => {
