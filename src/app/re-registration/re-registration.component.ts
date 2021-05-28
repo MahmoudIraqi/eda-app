@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
-import {convertToSpecialObject} from '../../utils/formDataFunction';
+import {convertToSpecialObject, convertToSpecialObjectForReNotification} from '../../utils/formDataFunction';
 import {InputService} from '../services/input.service';
 import {CurrencyPipe} from '@angular/common';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
@@ -42,10 +42,13 @@ export class ReRegistrationComponent implements OnInit {
   estimatedValue;
   selectedTrackType;
   selectedRequestedType;
+  selectedFormType;
+  selectedIsExport;
   variablesPricingList: any;
   trackTypeVariable;
   typeOfNotificationVariable;
   companyProfileId: any;
+  lookupResponse: any;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
@@ -60,67 +63,79 @@ export class ReRegistrationComponent implements OnInit {
       this.companyProfileId = res.payload;
     });
 
-    this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
-      this.formData.formType = res;
-      if (res) {
-        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
-      }
+    const allLookupsRequest = new Promise((resolve, reject) => {
+      this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
+        this.formData.formType = res;
+        if (res) {
+          this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+        }
+
+      });
+      this.getService.getRequestTypeLookUp().subscribe((res: any) => {
+        this.formData.requestType = res;
+
+      });
+      this.getService.getCountryLookUp().subscribe((res: any) => {
+        this.formData.manufacturingCountryList = res;
+        this.formData.licenseHolderCountryList = res;
+
+      });
+      this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
+        this.formData.manufacturingCompanyList = res;
+        this.formData.licenseHolderList = res;
+
+      });
+      this.getService.getFunctionLookUp().subscribe((res: any) => {
+        this.formData.functionList = res;
+
+      });
+      this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+        this.formData.typeOfPackagingList = res;
+
+      });
+      this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+        this.formData.physicalStateList = res;
+
+      });
+      this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+        this.formData.unitOfMeasureList = res;
+
+      });
+      this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+        this.formData.purposeOfUseList = res;
+
+      });
+      this.getService.getProductColorLookUp().subscribe((res: any) => {
+        this.formData.productColorList = res;
+
+      });
+      this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
+        this.formData.ingrediantList = res;
+
+      });
+      this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
+        this.formData.applicantList = res;
+
+      });
+      this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+        this.formData.storagePlaceList = res;
+
+      });
+      this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+        this.formData.trackType = res;
+      });
+
+      resolve(true);
+
+    });
+
+    Promise.all([allLookupsRequest]).then((value) => {
+      console.log('value', value);
+      this.lookupResponse = value[0];
       this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getRequestTypeLookUp().subscribe((res: any) => {
-      this.formData.requestType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.formData.licenseHolderCountryList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp(1,'').subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-      this.formData.licenseHolderList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getFunctionLookUp().subscribe((res: any) => {
-      this.formData.functionList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-      this.formData.typeOfPackagingList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-      this.formData.physicalStateList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-      this.formData.unitOfMeasureList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-      this.formData.purposeOfUseList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductColorLookUp().subscribe((res: any) => {
-      this.formData.productColorList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
-      this.formData.ingrediantList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
-      this.formData.applicantList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
-      this.formData.storagePlaceList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-      this.formData.trackType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
+    });
+
+    // console.log('lookupsResponse', lookupsResponse);
 
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'variablesPrices'),
@@ -134,10 +149,20 @@ export class ReRegistrationComponent implements OnInit {
 
   applyProduct(NotificationNo) {
     this.isLoading = true;
+
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'renotification').subscribe((res: any) => {
       if (res.canUse) {
-        this.selectedTrackType = res.Tracktype;
+        res.receiptValue = '';
+        res.receiptNumber = '';
+        res.receipt = '';
+        let indexOfReceiptAttachment;
+        res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
+        res.productAttachments.splice(indexOfReceiptAttachment, 1);
+
+        this.selectedFormType = res.typeOfMarketing;
         this.selectedRequestedType = res.typeOfRegistration;
+        this.selectedIsExport = res.isExport;
+        this.selectedTrackType = res.Tracktype;
         this.getPricing();
         this.productData = res;
         this.isLoading = false;
@@ -149,16 +174,11 @@ export class ReRegistrationComponent implements OnInit {
 
   onSubmit(event) {
     this.isLoading = true;
-    if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
-      const data = {
-        ...this.productData,
-        receiptNumber: event.receiptNumber,
-        receiptValue: event.receiptValue,
-        otherFees: event.otherFees,
-        receipt: event.receipt
-      };
 
-      this.getService.setReRegistrationProduct(data).subscribe((res: any) => {
+    if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
+      const newEvent = convertToSpecialObjectForReNotification('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
+
+      this.getService.setReRegistrationProduct(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
@@ -166,15 +186,9 @@ export class ReRegistrationComponent implements OnInit {
         this.onClosed();
       }, error => this.handleError(error));
     } else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
-      const data = {
-        ...this.productData,
-        receiptNumber: event.receiptNumber,
-        receiptValue: event.receiptValue,
-        otherFees: event.otherFees,
-        receipt: event.receipt
-      };
+      const newEvent = convertToSpecialObjectForReNotification('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
 
-      this.getService.setReRegistrationKitProduct(data).subscribe((res: any) => {
+      this.getService.setReRegistrationKitProduct(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
@@ -198,6 +212,7 @@ export class ReRegistrationComponent implements OnInit {
   emptyTheTopField() {
     this.productData = '';
     this.NotificationNo = '';
+    this.estimatedValue = '';
   }
 
   handleError(message) {

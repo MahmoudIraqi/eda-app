@@ -553,6 +553,7 @@ export class FormService {
     const options = {headers};
 
     event = JSON.stringify(event);
+    console.log('event', event);
 
     return this.http.post(`${this.apiBaseUrl}product/ReNotification`, event, options)
       .pipe(map((res: any) => {
