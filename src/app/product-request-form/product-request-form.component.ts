@@ -23,7 +23,6 @@ import {FormService} from '../services/form.service';
 import {Router} from '@angular/router';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
-
 export interface LookupState {
   ID: number;
   NAME: string;
@@ -679,7 +678,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
-            console.log('this.regProductForAllRequestedType.value', this.regProductForAllRequestedType.value);
             if (!this.regProductForAllRequestedType.value.id) {
 
               this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
@@ -940,7 +938,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType = this.fb.group({
         id: 0,
         productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
+        productEnglishName: this.fb.control('', Validators.required),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
@@ -983,8 +981,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         others: this.fb.control(''),
         otherFees: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
       });
-
-      console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType);
     }
   }
 

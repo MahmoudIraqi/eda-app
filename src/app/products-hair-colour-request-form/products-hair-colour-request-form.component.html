@@ -556,11 +556,12 @@
                 </div>
                 <div class="col-12 col-sm-4 ml-auto">
                   <div class="d-flex align-items-center">
-                    <div class="hintForEmptyObject" *ngIf="packagingListTable.tableBody.length === 0 && attachmentRequiredStatus">
+                    <div class="hintForEmptyObject"
+                         *ngIf="packagingListTable.tableBody.length === 0 && attachmentRequiredStatus">
                       <h5>** Please add packaging data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable)"
+                            [disabled]="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus"
                             (click)="openModal(packagingModal)">
                       Add new packaging
                     </button>
@@ -573,9 +574,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="packagingListTable"
                               [whichTable]="'newRequestForPackaging'"
-                              (removePackagingRowOutput)="isDraft || !productFlags || (productFlags && productFlags.packagingTable) ? removePackagingRows($event): null"
-                              (removePackagingRowIDs)="isDraft || !productFlags || (productFlags && productFlags.packagingTable)  ? deletedPackagingIdsList($event) : null"
-                              (editPackagingRowIDs)="isDraft || !productFlags || (productFlags && productFlags.packagingTable)  ? editThePackagingRows($event): null"></app-table-list>
+                              (removePackagingRowOutput)="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus ? removePackagingRows($event): null"
+                              (removePackagingRowIDs)="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus  ? deletedPackagingIdsList($event) : null"
+                              (editPackagingRowIDs)="(!legacyStatus && productFlags && !productFlags.packagingTable && !isDraft) || (legacyStatus && productFlags && !productFlags.packagingTable) || reRegistrationStatus  ? editThePackagingRows($event): null"></app-table-list>
             </div>
           </div>
         </div>
@@ -590,11 +591,12 @@
                 </div>
                 <div class="col-12 col-sm-4 ml-auto">
                   <div class="d-flex align-items-center">
-                    <div class="hintForEmptyObject" *ngIf="detailsListTable.tableBody.length === 0 && attachmentRequiredStatus">
+                    <div class="hintForEmptyObject"
+                         *ngIf="detailsListTable.tableBody.length === 0 && attachmentRequiredStatus">
                       <h5>** Please add detail data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable)"
+                            [disabled]="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus"
                             (click)="openModal(detailedModal)">
                       Add new detail
                     </button>
@@ -607,9 +609,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="detailsListTable"
                               [whichTable]="'newRequestForDetails'"
-                              (removeDetailsRowOutput)="isDraft || !productFlags || (productFlags && productFlags.detailsTable) ? removeDetailedRows($event): null"
-                              (removeDetailsRowIDs)="isDraft || !productFlags || (productFlags && productFlags.detailsTable) ? deletedDetailedIdsList($event) : null"
-                              (editDetailedRowOutput)="isDraft || !productFlags || (productFlags && productFlags.detailsTable) ? editTheDetailedRows($event): null"></app-table-list>
+                              (removeDetailsRowOutput)="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus ? removeDetailedRows($event): null"
+                              (removeDetailsRowIDs)="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus ? deletedDetailedIdsList($event) : null"
+                              (editDetailedRowOutput)="(!legacyStatus && productFlags && !productFlags.detailsTable && !isDraft) || (legacyStatus && productFlags && !productFlags.detailsTable) || reRegistrationStatus ? editTheDetailedRows($event): null"></app-table-list>
             </div>
           </div>
         </div>
@@ -636,7 +638,7 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
-                       [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
+                       [disabled]="reRegistrationStatus ? field.id === 'receipt'? false : true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
                        [required]="field.required ? 'required' : ''">
                 <div class="d-flex alert alert-danger"
                      *ngIf="(regHairColorantProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
