@@ -1244,6 +1244,14 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }));
   }
 
+  setShelfValue(event) {
+    if (Number(event.target.value) > 60) {
+      this.regKitForAllRequestedType.get('shelfLife').patchValue(60);
+    } else {
+      this.regKitForAllRequestedType.get('shelfLife').patchValue(Number(event.target.value));
+    }
+  }
+
   // @ts-ignore
   handleError(message) {
     this.alertErrorNotificationStatus = true;

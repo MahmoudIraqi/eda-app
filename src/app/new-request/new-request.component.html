@@ -138,12 +138,17 @@
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
               [editData]="updatingProductData"
               [lookupsData]="formData"
+              [lookupForProductIds]="productsKitIds"
+              [companyProfile]="companyProfileId"
+              [editFromWhere]="editFormIPStatus"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
               (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
             ></app-products-kit-hair-colour-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 5 && selectedRequestedType && selectedTrackType">
