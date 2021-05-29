@@ -200,7 +200,7 @@ export class NewRequestComponent implements OnInit {
   saveData(event) {
     this.isLoading = true;
 
-    if (this.selectedFormType === 1 || this.selectedFormType === 3 || this.selectedFormType === 5) {
+    if (this.selectedFormType === 1 || this.selectedFormType === 3 || this.selectedFormType === 5 || this.selectedFormType === 6) {
       const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
       const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
@@ -232,7 +232,7 @@ export class NewRequestComponent implements OnInit {
   onSubmit(event) {
     this.isLoading = true;
     this.successSubmission = false;
-    if (this.selectedFormType === 1 || this.selectedFormType === 3) {
+    if (this.selectedFormType === 1 || this.selectedFormType === 3 || this.selectedFormType === 5 || this.selectedFormType === 6) {
       const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
       const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 

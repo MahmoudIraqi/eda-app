@@ -59,7 +59,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 6) || legacyStatus  || (productFlags && !productFlags.shortName)"
+                          [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -81,7 +81,7 @@
                            placeholder="Short Name"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
-                            [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 6) || legacyStatus  || (productFlags && !productFlags.shortName)"
+                            [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>
@@ -574,9 +574,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="packagingListTable"
                               [whichTable]="'newRequestForPackaging'"
-                              (removePackagingRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : null : legacyStatus? productFlags && !productFlags.packagingTable ? null : removePackagingRows($event) : isDraft ? removePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : removePackagingRows($event)"
-                              (removePackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : null : legacyStatus? productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event) : isDraft ? deletedPackagingIdsList($event) : productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event)"
-                              (editPackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : null : legacyStatus? productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event) : isDraft ? editThePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event)"></app-table-list>
+                              (removePackagingRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? removePackagingRows($event) : null : null :legacyStatus?   productFlags && !productFlags.packagingTable ?  null : removePackagingRows($event) : isDraft ? removePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : removePackagingRows($event)"
+                              (removePackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? deletedPackagingIdsList($event) : null : null :legacyStatus?   productFlags && !productFlags.packagingTable ?  null : deletedPackagingIdsList($event) : isDraft ? deletedPackagingIdsList($event) : productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event)"
+                              (editPackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? editThePackagingRows($event) : null : null :legacyStatus?   productFlags && !productFlags.packagingTable ?  null : editThePackagingRows($event) : isDraft ? editThePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event)"></app-table-list>
             </div>
           </div>
         </div>
@@ -609,9 +609,10 @@
             <div class="RequestingTable">
               <app-table-list [data]="detailsListTable"
                               [whichTable]="'newRequestForDetails'"
-                              (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : null : legacyStatus? productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event)"
-                              (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : null : legacyStatus? productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event)"
-                              (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : null : legacyStatus? productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event)"></app-table-list>
+                              (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? removeDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.packagingTable ? null : removeDetailedRows($event)"
+                              (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? deletedDetailedIdsList($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.packagingTable ? null : deletedDetailedIdsList($event)"
+                              (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? editTheDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.packagingTable ? null : editTheDetailedRows($event)"></app-table-list>
+
             </div>
           </div>
         </div>
@@ -725,7 +726,7 @@
             <mat-label>Volumes</mat-label>
             <input type="text" class="form-control" matInput formControlName="volumes"
                    placeholder="" required
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('volumes') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false">
             <div
               *ngIf="regPackagingForProduct.get('volumes').invalid && (regPackagingForProduct.get('volumes').dirty || regPackagingForProduct.get('volumes').touched)"
               class="alert alert-danger">
@@ -757,7 +758,7 @@
                    matInput
                    formControlName="unitOfMeasure"
                    (blur)="checkValue('unitOfMeasure', formData.unitOfMeasureList, regPackagingForProduct)"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="unitOfMeasureList" required>
             <mat-autocomplete #unitOfMeasureList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
@@ -792,7 +793,7 @@
                    matInput
                    formControlName="typeOfPackaging"
                    (blur)="checkValue('typeOfPackaging', formData.typeOfPackagingList, regPackagingForProduct)"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="typeOfPackagingList" required>
             <mat-autocomplete #typeOfPackagingList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
@@ -821,7 +822,7 @@
             </div>
             <mat-label>Packaging Description</mat-label>
             <textarea matInput formControlName="packagingDescription"
-                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                       placeholder="Ex. It makes me feel..."></textarea>
           </mat-form-field>
         </div>
@@ -863,7 +864,7 @@
             <mat-label>Colour</mat-label>
             <input type="text" class="form-control" matInput formControlName="colour"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('colour') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -878,7 +879,7 @@
             <input type="text" class="form-control" matInput
                    formControlName="fragrance"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -892,7 +893,7 @@
             <mat-label>Flavor</mat-label>
             <input type="text" class="form-control" matInput formControlName="flavor"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -906,7 +907,7 @@
             <mat-label>BarCode</mat-label>
             <input type="text" class="form-control" matInput formControlName="barCode"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 mt-2">
@@ -939,7 +940,7 @@
                                matInput
                                formControlName="ingrediant"
                                (blur)="checkValue('ingrediant', formData.ingrediantList, IngrediantDetailsRows().controls[index])"
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoIngrediant"
                                required>
                         <mat-autocomplete #autoIngrediant="matAutocomplete">
@@ -971,7 +972,7 @@
                         <input type="text" class="form-control" matInput
                                formControlName="concentrations"
                                placeholder="concentrations" required
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
                         <div
                           *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                           class="alert alert-danger">
@@ -1000,7 +1001,7 @@
                                formControlName="function"
                                required
                                (blur)="checkValue('function', formData.functionList, IngrediantDetailsRows().controls[index])"
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoFunction">
                         <mat-autocomplete #autoFunction="matAutocomplete">
                           <mat-option *ngFor="let option of filteredOptionsForFunction | async"
