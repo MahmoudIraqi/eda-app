@@ -69,93 +69,158 @@ export class VariationComponent implements OnInit {
       this.companyProfileId = res.payload;
     });
 
-    const allLookupsRequest = new Promise((resolve, reject) => {
-      this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
-        this.formData.formType = res;
-        if (res) {
-          this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
-        }
+    // const allLookupsRequest = new Promise((resolve, reject) => {
+    //   this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
+    //     this.formData.formType = res;
+    //     if (res) {
+    //       this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+    //     }
+    //
+    //   });
+    //   this.getService.getRequestTypeLookUp().subscribe((res: any) => {
+    //     this.formData.requestType = res;
+    //
+    //   });
+    //   this.getService.getCountryLookUp().subscribe((res: any) => {
+    //     this.formData.manufacturingCountryList = res;
+    //     this.formData.licenseHolderCountryList = res;
+    //
+    //   });
+    //   this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
+    //     this.formData.manufacturingCompanyList = res;
+    //     this.formData.licenseHolderList = res;
+    //
+    //   });
+    //   this.getService.getFunctionLookUp().subscribe((res: any) => {
+    //     this.formData.functionList = res;
+    //
+    //   });
+    //   this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+    //     this.formData.typeOfPackagingList = res;
+    //
+    //   });
+    //   this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+    //     this.formData.physicalStateList = res;
+    //
+    //   });
+    //   this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+    //     this.formData.unitOfMeasureList = res;
+    //
+    //   });
+    //   this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+    //     this.formData.purposeOfUseList = res;
+    //
+    //   });
+    //   this.getService.getProductColorLookUp().subscribe((res: any) => {
+    //     this.formData.productColorList = res;
+    //
+    //   });
+    //   this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
+    //     this.formData.ingrediantList = res;
+    //
+    //   });
+    //   this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
+    //     this.formData.applicantList = res;
+    //
+    //   });
+    //   this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+    //     this.formData.storagePlaceList = res;
+    //
+    //   });
+    //   this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+    //     this.formData.trackType = res;
+    //   });
+    //
+    //   resolve(true);
+    //
+    // });
+    //
+    // Promise.all([allLookupsRequest]).then((value) => {
+    //   this.lookupResponse = value[0];
+    //   this.isLoading = false;
+    //
+    //   if (this.lookupResponse) {
+    //
+    //   }
+    // });
 
-      });
+    this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
+      this.formData.formType = res;
+      if (res) {
+        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+      }
+    }, error => this.handleError(error), () => {
       this.getService.getRequestTypeLookUp().subscribe((res: any) => {
         this.formData.requestType = res;
+      }, error => this.handleError(error), () => {
+        this.getService.getCountryLookUp().subscribe((res: any) => {
+          this.formData.manufacturingCountryList = res;
+          this.formData.licenseHolderCountryList = res;
+        }, error => this.handleError(error), () => {
+          this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
+            this.formData.manufacturingCompanyList = res;
+            this.formData.licenseHolderList = res;
+          }, error => this.handleError(error), () => {
+            this.getService.getFunctionLookUp().subscribe((res: any) => {
+              this.formData.functionList = res;
+            }, error => this.handleError(error), () => {
+              this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+                this.formData.typeOfPackagingList = res;
+              }, error => this.handleError(error), () => {
+                this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+                  this.formData.physicalStateList = res;
+                }, error => this.handleError(error), () => {
+                  this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+                    this.formData.unitOfMeasureList = res;
+                  }, error => this.handleError(error), () => {
+                    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+                      this.formData.purposeOfUseList = res;
+                    }, error => this.handleError(error), () => {
+                      this.getService.getProductColorLookUp().subscribe((res: any) => {
+                        this.formData.productColorList = res;
+                      }, error => this.handleError(error), () => {
+                        this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
+                          this.formData.ingrediantList = res;
+                        }, error => this.handleError(error), () => {
+                          this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
+                            this.formData.applicantList = res;
+                          }, error => this.handleError(error), () => {
+                            this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+                              this.formData.storagePlaceList = res;
+                            }, error => this.handleError(error), () => {
+                              this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+                                this.formData.trackType = res;
+                              }, error => this.handleError(error), () => {
+                                this.isLoading = false;
 
+                                this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
+                                if (this.productNotificationNumber) {
+                                  this.isLoading = true;
+                                  this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
+                                    this.NotificationNo = res.NotificationNo;
+                                    this.selectedFormType = res.typeOfMarketing;
+                                    this.selectedRequestedType = res.typeOfRegistration;
+                                    this.selectedIsExport = res.isExport;
+                                    this.selectedTrackType = res.Tracktype;
+                                    this.productData = res;
+                                    this.typeOfRegistrationForProduct = res.typeOfRegistration;
+                                    this.isLoading = false;
+                                    this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
+                                  }, error => this.handleError(error));
+                                }
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
       });
-      this.getService.getCountryLookUp().subscribe((res: any) => {
-        this.formData.manufacturingCountryList = res;
-        this.formData.licenseHolderCountryList = res;
-
-      });
-      this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
-        this.formData.manufacturingCompanyList = res;
-        this.formData.licenseHolderList = res;
-
-      });
-      this.getService.getFunctionLookUp().subscribe((res: any) => {
-        this.formData.functionList = res;
-
-      });
-      this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-        this.formData.typeOfPackagingList = res;
-
-      });
-      this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-        this.formData.physicalStateList = res;
-
-      });
-      this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-        this.formData.unitOfMeasureList = res;
-
-      });
-      this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-        this.formData.purposeOfUseList = res;
-
-      });
-      this.getService.getProductColorLookUp().subscribe((res: any) => {
-        this.formData.productColorList = res;
-
-      });
-      this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
-        this.formData.ingrediantList = res;
-
-      });
-      this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
-        this.formData.applicantList = res;
-
-      });
-      this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
-        this.formData.storagePlaceList = res;
-
-      });
-      this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-        this.formData.trackType = res;
-      });
-
-      resolve(true);
-
-    });
-
-    Promise.all([allLookupsRequest]).then((value) => {
-      this.lookupResponse = value[0];
-      this.isLoading = false;
-
-      if (this.lookupResponse) {
-        this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
-        if (this.productNotificationNumber) {
-          this.isLoading = true;
-          this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
-            this.NotificationNo = res.NotificationNo;
-            this.selectedFormType = res.typeOfMarketing;
-            this.selectedRequestedType = res.typeOfRegistration;
-            this.selectedIsExport = res.isExport;
-            this.selectedTrackType = res.Tracktype;
-            this.productData = res;
-            this.typeOfRegistrationForProduct = res.typeOfRegistration;
-            this.isLoading = false;
-            this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
-          }, error => this.handleError(error));
-        }
-      }
     });
 
     this.whichVariation = this.route.snapshot.routeConfig.path;
