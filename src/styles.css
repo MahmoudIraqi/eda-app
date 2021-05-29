@@ -305,15 +305,15 @@ body {
 }
 
 .TrackTable .table th:nth-child(3), .TrackTable .table td:nth-child(3) {
-  width: 22.5%;
+  width: 20%;
 }
 
 .TrackTable .table th:nth-child(4), .TrackTable .table td:nth-child(4) {
-  width: 22.5%;
+  width: 20%;
 }
 
 .TrackTable .table th:nth-child(5), .TrackTable .table td:nth-child(5) {
-  width: 15%;
+  width: 10%;
 }
 
 .TrackTable .table th:nth-child(6), .TrackTable .table td:nth-child(6) {
@@ -321,6 +321,10 @@ body {
 }
 
 .TrackTable .table th:nth-child(7), .TrackTable .table td:nth-child(7) {
+  width: 10%;
+}
+
+.TrackTable .table th:nth-child(8), .TrackTable .table td:nth-child(8) {
   width: 10%;
 }
 
@@ -334,15 +338,15 @@ body {
 }
 
 .DraftTable .table th:nth-child(3), .DraftTable .table td:nth-child(3) {
-  width: 25%;
+  width: 20%;
 }
 
 .DraftTable .table th:nth-child(4), .DraftTable .table td:nth-child(4) {
-  width: 25%;
+  width: 20%;
 }
 
 .DraftTable .table th:nth-child(5), .DraftTable .table td:nth-child(5) {
-  width: 10%;
+  width: 20%;
 }
 
 .DraftTable .table th:nth-child(6), .DraftTable .table td:nth-child(6) {

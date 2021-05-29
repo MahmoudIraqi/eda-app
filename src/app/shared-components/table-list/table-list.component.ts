@@ -33,7 +33,7 @@ export class TableListComponent implements OnInit, OnChanges {
   keyForFilter;
   keyWordsForFilter;
   staticFilterKey = {
-    'Request id': 'ID',
+    'Request Number': 'ID',
     'Submission date': 'SubmmittionDate',
     'Product English name': 'NameEN',
     'Product Arabic name': 'NameAR',
@@ -43,6 +43,7 @@ export class TableListComponent implements OnInit, OnChanges {
     'Batch Number': 'batchNumber',
     'Production Date': 'productionDate',
     'Expiration Date': 'expirationDate',
+    'Type of notification': 'productTypeName',
   };
   sortStatus = false;
   alertNotificationStatus: boolean = false;
@@ -274,11 +275,12 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
+    console.log('request', request);
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
-      this.router.navigate([`/new-request/tell_do_variation/${Number(request.NotificationNo)}`]);
+      this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}`]);
     } else if (editFrom === 'tell_do_variation') {
-      this.router.navigate([`/new-request/do_tell_variation/${Number(request.NotificationNo)}`]);
+      this.router.navigate([`/new-request/do_tell_variation/${request.NotificationNo}`]);
     } else if (editFrom === 'registration') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}`]);
     } else if (editFrom === 'legacy-products') {

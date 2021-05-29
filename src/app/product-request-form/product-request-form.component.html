@@ -699,7 +699,7 @@
             <mat-label>Volumes</mat-label>
             <input type="text" class="form-control" matInput formControlName="volumes"
                    placeholder="" required
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('volumes') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false">
             <div
               *ngIf="regPackagingForProduct.get('volumes').invalid && (regPackagingForProduct.get('volumes').dirty || regPackagingForProduct.get('volumes').touched)"
               class="alert alert-danger">
@@ -731,7 +731,7 @@
                    matInput
                    formControlName="unitOfMeasure"
                    (blur)="checkValue('unitOfMeasure', formData.unitOfMeasureList, regPackagingForProduct)"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('unitOfMeasure') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="unitOfMeasureList" required>
             <mat-autocomplete #unitOfMeasureList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
@@ -766,7 +766,7 @@
                    matInput
                    formControlName="typeOfPackaging"
                    (blur)="checkValue('typeOfPackaging', formData.typeOfPackagingList, regPackagingForProduct)"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('typeOfPackaging') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="typeOfPackagingList" required>
             <mat-autocomplete #typeOfPackagingList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
@@ -795,7 +795,7 @@
             </div>
             <mat-label>Packaging Description</mat-label>
             <textarea matInput formControlName="packagingDescription"
-                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingDescription') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                       placeholder="Ex. It makes me feel..."></textarea>
           </mat-form-field>
         </div>
@@ -837,7 +837,7 @@
             <mat-label>Colour</mat-label>
             <input type="text" class="form-control" matInput formControlName="colour"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('colour') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -852,7 +852,7 @@
             <input type="text" class="form-control" matInput
                    formControlName="fragrance"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('fragrance') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -866,7 +866,7 @@
             <mat-label>Flavor</mat-label>
             <input type="text" class="form-control" matInput formControlName="flavor"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('flavor') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -880,7 +880,7 @@
             <mat-label>BarCode</mat-label>
             <input type="text" class="form-control" matInput formControlName="barCode"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('barCode') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 mt-2">
@@ -913,7 +913,7 @@
                                matInput
                                formControlName="ingrediant"
                                (blur)="checkValue('ingrediant', formData.ingrediantList, IngrediantDetailsRows().controls[index])"
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('ingrediant') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoIngrediant"
                                required>
                         <mat-autocomplete #autoIngrediant="matAutocomplete">
@@ -945,7 +945,7 @@
                         <input type="text" class="form-control" matInput
                                formControlName="concentrations"
                                placeholder="concentrations" required
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('concentrations') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
                         <div
                           *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                           class="alert alert-danger">
@@ -974,7 +974,7 @@
                                formControlName="function"
                                required
                                (blur)="checkValue('function', formData.functionList, IngrediantDetailsRows().controls[index])"
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('function') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoFunction">
                         <mat-autocomplete #autoFunction="matAutocomplete">
                           <mat-option *ngFor="let option of filteredOptionsForFunction | async"

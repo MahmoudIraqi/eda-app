@@ -47,10 +47,14 @@ export class VariationComponent implements OnInit {
   estimatedValue;
   selectedTrackType;
   selectedRequestedType;
+  selectedFormType;
+  selectedIsExport;
   variablesPricingList: any;
   trackTypeVariable;
   typeOfNotificationVariable;
   companyProfileId: any;
+  lookupResponse: any;
+  variationID;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
@@ -65,75 +69,96 @@ export class VariationComponent implements OnInit {
       this.companyProfileId = res.payload;
     });
 
-    this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
-      this.formData.formType = res;
-      if (res) {
-        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+    const allLookupsRequest = new Promise((resolve, reject) => {
+      this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
+        this.formData.formType = res;
+        if (res) {
+          this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+        }
+
+      });
+      this.getService.getRequestTypeLookUp().subscribe((res: any) => {
+        this.formData.requestType = res;
+
+      });
+      this.getService.getCountryLookUp().subscribe((res: any) => {
+        this.formData.manufacturingCountryList = res;
+        this.formData.licenseHolderCountryList = res;
+
+      });
+      this.getService.getManufacturingCompanyLookUp(1, '').subscribe((res: any) => {
+        this.formData.manufacturingCompanyList = res;
+        this.formData.licenseHolderList = res;
+
+      });
+      this.getService.getFunctionLookUp().subscribe((res: any) => {
+        this.formData.functionList = res;
+
+      });
+      this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
+        this.formData.typeOfPackagingList = res;
+
+      });
+      this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
+        this.formData.physicalStateList = res;
+
+      });
+      this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+        this.formData.unitOfMeasureList = res;
+
+      });
+      this.getService.getUsePurposeLookUp().subscribe((res: any) => {
+        this.formData.purposeOfUseList = res;
+
+      });
+      this.getService.getProductColorLookUp().subscribe((res: any) => {
+        this.formData.productColorList = res;
+
+      });
+      this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
+        this.formData.ingrediantList = res;
+
+      });
+      this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
+        this.formData.applicantList = res;
+
+      });
+      this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
+        this.formData.storagePlaceList = res;
+
+      });
+      this.getService.getTrackTypeLookUp().subscribe((res: any) => {
+        this.formData.trackType = res;
+      });
+
+      resolve(true);
+
+    });
+
+    Promise.all([allLookupsRequest]).then((value) => {
+      this.lookupResponse = value[0];
+      this.isLoading = false;
+
+      if (this.lookupResponse) {
+        this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
+        if (this.productNotificationNumber) {
+          this.isLoading = true;
+          this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
+            this.NotificationNo = res.NotificationNo;
+            this.selectedFormType = res.typeOfMarketing;
+            this.selectedRequestedType = res.typeOfRegistration;
+            this.selectedIsExport = res.isExport;
+            this.selectedTrackType = res.Tracktype;
+            this.productData = res;
+            this.typeOfRegistrationForProduct = res.typeOfRegistration;
+            this.isLoading = false;
+            this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
+          }, error => this.handleError(error));
+        }
       }
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getRequestTypeLookUp().subscribe((res: any) => {
-      this.formData.requestType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.formData.licenseHolderCountryList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp(1,'').subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-      this.formData.licenseHolderList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getFunctionLookUp().subscribe((res: any) => {
-      this.formData.functionList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-      this.formData.typeOfPackagingList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-      this.formData.physicalStateList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-      this.formData.unitOfMeasureList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-      this.formData.purposeOfUseList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductColorLookUp().subscribe((res: any) => {
-      this.formData.productColorList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
-      this.formData.ingrediantList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
-      this.formData.applicantList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
-      this.formData.storagePlaceList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-      this.formData.trackType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
+    });
 
     this.whichVariation = this.route.snapshot.routeConfig.path;
-
-    this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
-    if (this.productNotificationNumber) {
-      this.NotificationNo = this.productNotificationNumber;
-      this.applyProduct(this.NotificationNo);
-    }
 
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'variablesPrices'),
@@ -149,6 +174,9 @@ export class VariationComponent implements OnInit {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
       if (res.canUse) {
+        this.selectedFormType = res.typeOfMarketing;
+        this.selectedRequestedType = res.typeOfRegistration;
+        this.selectedIsExport = res.isExport;
         this.selectedTrackType = res.Tracktype;
         this.productData = res;
         this.typeOfRegistrationForProduct = res.typeOfRegistration;
@@ -165,13 +193,16 @@ export class VariationComponent implements OnInit {
     const data = {
       ...this.productData,
       ...event,
-      isDraft: 1
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
 
     this.getService.setVariationProduct(data).subscribe((res: any) => {
+      console.log('res', res);
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
+      this.onClosed();
     }, error => this.handleError(error));
   }
 
@@ -264,5 +295,13 @@ export class VariationComponent implements OnInit {
 
   showAlertMessager(messageStatus) {
     messageStatus ? this.handleError('please complete the required values which marked with *') : null;
+  }
+
+  enableLoadingForAttachment(event) {
+    if (event) {
+      this.isLoading = true;
+    } else {
+      this.isLoading = false;
+    }
   }
 }

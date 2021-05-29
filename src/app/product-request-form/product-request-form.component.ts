@@ -48,6 +48,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
+  @Input() whichVariation;
   @Input() lookupsData;
   @Input() manufacturingCompanyList;
   @Input() companyProfile;
@@ -65,6 +66,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Output() companyProfileSearchText = new EventEmitter();
   @Output() ingrediantSearchText = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
+  @Output() errorMessageForAttachment = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
@@ -678,11 +680,18 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
-            if (!this.regProductForAllRequestedType.value.id) {
-
-              this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+            if (this.variationFieldsStatus) {
+              if (!this.editData.isVariationSaved) {
+                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             } else {
-              this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              if (!this.regProductForAllRequestedType.value.id) {
+                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             }
           };
 
@@ -800,7 +809,38 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
 
     this.getService.createProductRequest(allDataForSave).subscribe((res: any) => {
+      console.log('res', res);
       this.saveDataOutputForAttachment.emit(res.id);
+      this.regProductForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  saveProductForAttachmentVariation(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+
+    const newObject = {
+      ...this.editData,
+      ...allDataForSave,
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
+    };
+
+    console.log('newObject', newObject);
+
+
+    this.getService.setVariationProduct(newObject).subscribe((res: any) => {
+      console.log('res', res);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
       });
@@ -1155,7 +1195,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       });
 
       return res;
-    });
+    }, error => this.handleError(error)); //
   }
 
   downloadFile(FileName) {
@@ -1210,5 +1250,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
       form.get(formControl).setValue(null);
     }
+  }
+
+  handleError(error) {
+    this.errorMessageForAttachment.emit(error);
   }
 }

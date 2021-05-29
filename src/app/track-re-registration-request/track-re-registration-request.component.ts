@@ -22,7 +22,7 @@ export class TrackReRegistrationRequestComponent implements OnInit {
     this.getService.getTrackReRegistrationRequestsList().subscribe((res: any) => {
       console.log('res', res);
       this.trackReRegistrationListRequests = {
-        tableHeader: ['Notification Number', 'Submission date', 'Product English name', 'Product Arabic name', 'Status'],
+        tableHeader: ['Notification Number', 'Submission date', 'Type of notification', 'Product English name', 'Product Arabic name', 'Status'],
         tableBody: res
       };
       this.isLoading = false;
