@@ -311,6 +311,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   deletedIdsListForIngrediant = [];
   attachmentRequiredStatus: boolean = false;
   requestId;
+  objectForListOfVariationGroup: any;
 
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
@@ -792,7 +793,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
-    this.saveDataOutput.emit(data);
+
+    const newObjectForData = {
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+    this.saveDataOutput.emit(newObjectForData);
   }
 
   saveTrackProductData() {
@@ -833,7 +839,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...this.editData,
       ...allDataForSave,
       isDraft: 1,
-      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3,
+      ...this.objectForListOfVariationGroup
     };
 
     console.log('newObject', newObject);
@@ -853,9 +860,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   onSubmit() {
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
-
+    const newObjectForData = {
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
-      this.submitDataOutput.emit(data);
+      this.submitDataOutput.emit(newObjectForData);
     } else {
       this.errorMessage.emit('true');
     }
@@ -1078,10 +1088,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getDisabledValues() {
+    let variaionGroupCodeList = [];
+    let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
+        variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        this.objectForListOfVariationGroup = {
+          variationGroups: variaionGroupCodeList,
+          variationFields: variaionGroupFieldsCodeList,
+        };
       });
     }
   }
