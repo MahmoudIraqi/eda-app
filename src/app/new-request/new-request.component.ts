@@ -206,7 +206,7 @@ export class NewRequestComponent implements OnInit {
 
       const newEventObject = {
         ...newEvent,
-        isDraft: this.updatingProductData && this.updatingProductData.isDraft && this.updatingProductData.isDraft === 0 ? this.updatingProductData.isDraft : 1
+        isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
       };
 
       this.getService.createProductRequest(newEventObject).subscribe((res: any) => {
@@ -224,7 +224,7 @@ export class NewRequestComponent implements OnInit {
 
       const newEventObject = {
         ...newEvent,
-        isDraft: this.updatingProductData && this.updatingProductData.isDraft && this.updatingProductData.isDraft === 0 ? this.updatingProductData.isDraft : 1
+        isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
       };
 
       this.getService.createProductKitRequest(newEventObject).subscribe((res: any) => {
