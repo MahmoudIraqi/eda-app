@@ -251,7 +251,7 @@
                      aria-label="Storage Place"
                      matInput
                      formControlName="storagePlace"
-                     (blur)="checkValue('physicalState', formData.physicalStateList, regKitForAllRequestedType)"
+                     (blur)="checkValue('storagePlace', formData.storagePlaceList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : false"
                      [matAutocomplete]="storagePlaceList"
                      [required]="selectedRequestedType !== 1 && selectedRequestedType !== 2 && selectedRequestedType !== 5 && selectedRequestedType !== 6 ? true : false">
@@ -367,30 +367,6 @@
                                *ngIf="row.get('productStatus').value === 'New'">
                             <div class="row">
                               <div class="col-6">
-                                <!--                                <mat-form-field class="example-full-width">-->
-                                <!--                                  <div *ngIf="!legacyStatus && productComments && productComments.manufacturingCompany"-->
-                                <!--                                       class="InfoIconContainer">-->
-                                <!--                <span class="infoIcon" tooltip="{{productComments.manufacturingCompany}}"-->
-                                <!--                      placement="top">-->
-                                <!--                  <i class="fas fa-info-circle"></i>-->
-                                <!--                </span>-->
-                                <!--                                  </div>-->
-                                <!--                                  <mat-label>Product Id</mat-label>-->
-                                <!--                                  <input type="text"-->
-                                <!--                                         class="form-control"-->
-                                <!--                                         placeholder="Product Id"-->
-                                <!--                                         aria-label="Product Id"-->
-                                <!--                                         matInput-->
-                                <!--                                         formControlName="productID"-->
-                                <!--                                         (blur)="checkValue('productID', lookupForProductIds, ProductGroupsRows().controls[i])"-->
-                                <!--                                         [matAutocomplete]="lookupForProductIdsList" required>-->
-                                <!--                                  <mat-autocomplete #lookupForProductIdsList="matAutocomplete">-->
-                                <!--                                    <mat-option *ngFor="let option of filteredOptionsForProductIds | async"-->
-                                <!--                                                [value]="option.NAME">-->
-                                <!--                                      {{option.NAME}}-->
-                                <!--                                    </mat-option>-->
-                                <!--                                  </mat-autocomplete>-->
-                                <!--                                </mat-form-field>-->
                                 <mat-form-field appearance="fill">
                                   <mat-label>Products List</mat-label>
                                   <mat-select formControlName="productID" required>
@@ -422,7 +398,7 @@
                       <div class="RequestingTable">
                         <app-table-list [data]="allProductsInKit"
                                         [whichTable]="'productsKitList'"
-                                        (removeProductFromKit)="removeProductsGroupRows($event); deletedProductsIdsList($event)"
+                                        (removeProductFromKit)="deletedProductsIdsList($event); removeProductsGroupRows($event);"
                         ></app-table-list>
                       </div>
                     </div>

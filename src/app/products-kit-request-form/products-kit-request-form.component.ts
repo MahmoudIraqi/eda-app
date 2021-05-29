@@ -913,8 +913,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   deletedProductsIdsList(index) {
-    console.log('qwrqwerqwer', this.ProductGroupsRows().controls[index].value);
-    console.log('qwrqwerqwer212121', this.ProductGroupsRows().controls[index].value.productDetails);
     this.deletedProductIdLists.push(this.ProductGroupsRows().controls[index].value.productDetails.id);
     this.regKitForAllRequestedType.get('deletedProductIdLists').patchValue(this.deletedProductIdLists);
   }
