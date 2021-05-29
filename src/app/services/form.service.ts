@@ -494,7 +494,7 @@ export class FormService {
 
     return this.http.get(`${this.apiBaseUrl}Product/GetProductByProductID?ID=${productID}`, options)
       .pipe(map((res: any) => {
-          debugger;
+
           return res;
         }),
         catchError(this.handleError));
@@ -509,7 +509,7 @@ export class FormService {
 
     return this.http.get(`${this.apiBaseUrl}Product/GetProductLegacyByProductID?ID=${productID}`, options)
       .pipe(map((res: any) => {
-          debugger;
+
           return res;
         }),
         catchError(this.handleError));
@@ -583,7 +583,6 @@ export class FormService {
     const options = {headers};
 
     event = JSON.stringify(event);
-    console.log('event', event);
 
     return this.http.post(`${this.apiBaseUrl}product/VariationRequest`, event, options)
       .pipe(map((res: any) => {
@@ -730,7 +729,7 @@ export class FormService {
   }
 
   getProductsKitIdLookupsRequest(formType, trackType) {
-    debugger;
+
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token

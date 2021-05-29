@@ -725,8 +725,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
 
-    console.log('this.regColourKitForAllRequestedType', this.regColourKitForAllRequestedType);
-
     if (this.regColourKitForAllRequestedType.valid) {
       this.submitDataOutput.emit(data);
     } else {
@@ -951,7 +949,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
         }) : null;
         product.productDetails.detailsTable ? product.productDetails.detailsTable.map(x => {
-          debugger;
+
           x.ingrediantDetails.map(y => {
             this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
             this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
@@ -992,8 +990,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       data.productAttachments.map((x, i) => {
         this.regColourKitForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
       });
-
-      console.log('this.regColourKitForAllRequestedType', this.regColourKitForAllRequestedType.value);
     } else {
       this.regColourKitForAllRequestedType = this.fb.group({
         id: 0,

@@ -204,7 +204,12 @@ export class NewRequestComponent implements OnInit {
       const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
       const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductRequest(newEvent).subscribe((res: any) => {
+      const newEventObject = {
+        ...newEvent,
+        isDraft: this.updatingProductData && this.updatingProductData.isDraft && this.updatingProductData.isDraft === 0 ? this.updatingProductData.isDraft : 1
+      };
+
+      this.getService.createProductRequest(newEventObject).subscribe((res: any) => {
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
         this.updatingProductData = res;
         this.editFormIPStatus = false;
@@ -217,7 +222,12 @@ export class NewRequestComponent implements OnInit {
       const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
       const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
+      const newEventObject = {
+        ...newEvent,
+        isDraft: this.updatingProductData && this.updatingProductData.isDraft && this.updatingProductData.isDraft === 0 ? this.updatingProductData.isDraft : 1
+      };
+
+      this.getService.createProductKitRequest(newEventObject).subscribe((res: any) => {
         this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
         this.updatingProductData = res;
         this.editFormIPStatus = false;

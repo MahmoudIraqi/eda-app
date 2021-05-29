@@ -17,14 +17,14 @@ export const formDataClass = (req?: any, FormParam?: FormGroup) => {
 
 export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistration, isExport, trackType, id, event) => {
   return {
-    isDraft: WhichForm === 'save' || WhichForm === 'submitProductForKit' ? 1 : 0,
     typeOfMarketing,
     typeOfRegistration,
     isExport: isExport ? 1 : 0,
     trackType,
     ...event,
     id,
-    isCompleted: WhichForm === 'submitProductForKit' && typeOfMarketing === 5 ? true : false
+    isCompleted: WhichForm === 'submitProductForKit' && typeOfMarketing === 5 ? true : false,
+    isDraft: WhichForm === 'save' || WhichForm === 'submitProductForKit' ? 1 : 0,
   };
 };
 

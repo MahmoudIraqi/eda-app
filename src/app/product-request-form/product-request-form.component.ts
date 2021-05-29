@@ -573,7 +573,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
-      debugger;
+
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -793,16 +793,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    console.log('editData', this.editData);
-    console.log('data', data);
-
     const newObjectForData = {
       ...this.editData,
       ...data,
       ...this.objectForListOfVariationGroup
     };
-
-    console.log('newObjectForData', newObjectForData);
 
     this.saveDataOutput.emit(newObjectForData);
   }
@@ -863,6 +858,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   onSubmit() {
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+
     const newObjectForData = {
       ...this.editData,
       ...data,

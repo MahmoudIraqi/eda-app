@@ -263,7 +263,6 @@ export class VariationComponent implements OnInit {
     };
 
     this.getService.setVariationProduct(data).subscribe((res: any) => {
-      console.log('res', res);
       this.productData = res;
       this.isLoading = false;
       this.alertNotificationStatus = true;
@@ -274,7 +273,6 @@ export class VariationComponent implements OnInit {
 
   onSubmit(event) {
     this.isLoading = true;
-    console.log('event', event);
 
     const data = {
       ...event,
