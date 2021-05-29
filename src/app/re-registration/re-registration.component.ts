@@ -130,7 +130,6 @@ export class ReRegistrationComponent implements OnInit {
     // });
     //
     // Promise.all([allLookupsRequest]).then((value) => {
-    //   console.log('value', value);
     //   this.lookupResponse = value[0];
     //   this.isLoading = false;
     // });

@@ -552,7 +552,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     ];
 
-    console.log('editData', this.editData);
     this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
@@ -682,7 +681,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
             if (this.variationFieldsStatus) {
-              if (!this.editData.isVariationSaved) {
+              if (this.editData.isVariationSaved === false) {
                 this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
@@ -794,10 +793,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
+    console.log('editData', this.editData);
+    console.log('data', data);
+
     const newObjectForData = {
+      ...this.editData,
       ...data,
       ...this.objectForListOfVariationGroup
     };
+
+    console.log('newObjectForData', newObjectForData);
+
     this.saveDataOutput.emit(newObjectForData);
   }
 
@@ -815,7 +821,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
 
     this.getService.createProductRequest(allDataForSave).subscribe((res: any) => {
-      console.log('res', res);
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
@@ -843,11 +848,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...this.objectForListOfVariationGroup
     };
 
-    console.log('newObject', newObject);
-
 
     this.getService.setVariationProduct(newObject).subscribe((res: any) => {
-      console.log('res', res);
+      this.editData = res;
       this.regProductForAllRequestedType.patchValue({
         id: res.id
       });
@@ -861,6 +864,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
     const newObjectForData = {
+      ...this.editData,
       ...data,
       ...this.objectForListOfVariationGroup
     };
@@ -973,9 +977,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           y.fileValue = file.Id;
         });
       }) : null;
-
-      console.log(' this.regProductForAllRequestedType', this.regProductForAllRequestedType);
-      console.log('data', data);
 
       this.regProductForAllRequestedType.patchValue({
         ...data

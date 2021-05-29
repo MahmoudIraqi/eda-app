@@ -144,6 +144,17 @@ export class VariationComponent implements OnInit {
     //   }
     // });
 
+    this.whichVariation = this.route.snapshot.routeConfig.path.split('/')[0];
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path.split('/')[0]).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
+
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
       if (res) {
@@ -222,17 +233,6 @@ export class VariationComponent implements OnInit {
         });
       });
     });
-
-    this.whichVariation = this.route.snapshot.routeConfig.path;
-
-    this.inputService.getInput$().pipe(
-      filter(x => x.type === 'variablesPrices'),
-      distinctUntilChanged()
-    ).subscribe(res => {
-      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path).map(variableList => {
-        this.variablesPricingList = variableList;
-      });
-    });
   }
 
   applyProduct(NotificationNo) {
@@ -255,8 +255,8 @@ export class VariationComponent implements OnInit {
 
   onSave(event) {
     this.isLoading = true;
+
     const data = {
-      ...this.productData,
       ...event,
       isDraft: 1,
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
@@ -264,6 +264,7 @@ export class VariationComponent implements OnInit {
 
     this.getService.setVariationProduct(data).subscribe((res: any) => {
       console.log('res', res);
+      this.productData = res;
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
@@ -273,8 +274,9 @@ export class VariationComponent implements OnInit {
 
   onSubmit(event) {
     this.isLoading = true;
+    console.log('event', event);
+
     const data = {
-      ...this.productData,
       ...event,
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
@@ -294,6 +296,14 @@ export class VariationComponent implements OnInit {
     this.getService.getVariationRequiredFields(typeOfRegistration, whichVariation).subscribe((res: any) => {
       this.variationGroupList = res;
       this.isLoading = false;
+
+      this.productData.variationGroups ? this.productData.variationGroups.map(x => {
+        this.variationGroupList.filter(group => group.Code === x).map(groupObject => {
+          this.variationFields = [...this.variationFields, groupObject];
+          this.typeOfVariationForProduct = this.variationFields;
+          this.getPricing();
+        });
+      }) : null;
     }, error => this.handleError(error));
   }
 
@@ -321,6 +331,7 @@ export class VariationComponent implements OnInit {
     this.NotificationNo = '';
     this.typeOfVariationForProduct = '';
     this.variationGroupList = [];
+    this.estimatedValue = '';
   }
 
   handleError(message) {

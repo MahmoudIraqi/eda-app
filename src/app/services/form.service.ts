@@ -278,7 +278,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}product/Notification`, data, options)
       .pipe(map((res: any) => {
@@ -296,7 +295,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}product/KitNotification`, data, options)
       .pipe(map((res: any) => {
@@ -553,7 +551,6 @@ export class FormService {
     const options = {headers};
 
     event = JSON.stringify(event);
-    console.log('event', event);
 
     return this.http.post(`${this.apiBaseUrl}product/ReNotification`, event, options)
       .pipe(map((res: any) => {
@@ -682,7 +679,6 @@ export class FormService {
     const options = {headers};
 
     const JSONData = JSON.stringify(event);
-    console.log('JSONData', JSONData);
 
     return this.http.post(`${this.apiBaseUrl}product/UploadAttachment`, JSONData, options)
       .pipe(map((res: any) => {
@@ -714,7 +710,6 @@ export class FormService {
 
     return this.http.get(`${this.apiBaseUrl}Lookups/variationgroups?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
       .pipe(map((res: any) => {
-          console.log('res_variationgroups', JSON.stringify(res));
           return res;
         }),
         catchError(this.handleError));

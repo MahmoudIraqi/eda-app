@@ -663,7 +663,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
-            console.log('this.regKitForAllRequestedType.value', this.regKitForAllRequestedType.value);
             if (!this.regKitForAllRequestedType.value.id) {
 
               this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
@@ -919,8 +918,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   getFormAsStarting(data) {
     if (data) {
-      console.log('data', data);
-      console.log('editFromWhere', this.editFromWhere);
       this.isDraft = data.isDraft === 1;
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
@@ -983,8 +980,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.regKitForAllRequestedType.patchValue({
         ...data
       });
-
-      console.log('regKitForAllRequestedType', this.regKitForAllRequestedType.value);
     } else {
       this.regKitForAllRequestedType = this.fb.group({
         id: 0,
@@ -1139,8 +1134,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     } else if (status === 'new') {
       this.isLoading = true;
-      console.log('data', data);
-      console.log('status', status);
       this.getServices.getProductWithProductIDList(data.value.productID, 'kit').subscribe((res: any) => {
         if (res) {
           // if (res.canUse) {
@@ -1155,7 +1148,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           this.ProductGroupsRows().value[index].productID = res.id;
           this.ProductGroupsRows().value[index].productDetails = res;
 
-          console.log('this.regKit', this.regKitForAllRequestedType);
           const keyOfLookup = Object.keys(this.lookupsData);
           keyOfLookup.map(key => {
             const keyLowerCase = key.replace('List', '');
@@ -1295,9 +1287,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   checkValue(formControl, list, form) {
-    console.log('formControl', formControl);
-    console.log('list', list);
-    console.log('form', form);
     if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
       form.get(formControl).setValue(null);
     }

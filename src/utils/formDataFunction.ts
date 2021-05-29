@@ -29,8 +29,6 @@ export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistr
 };
 
 export const convertToSpecialObjectForLegacy = (WhichForm, event) => {
-  console.log('WhichForm', WhichForm);
-  console.log('event', event);
   return {
     ...event,
     isDraft: WhichForm === 'save' ? 1 : 0

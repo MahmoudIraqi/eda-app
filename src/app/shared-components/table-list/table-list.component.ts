@@ -76,7 +76,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('data_OnChange', this.data);
     if (this.data) {
       if (this.data.tableBody.length > 0) {
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
@@ -115,7 +114,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('data', this.data);
   }
 
   setStep(index: number) {
@@ -275,12 +273,12 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
-    console.log('request', request);
+    debugger;
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
       this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}`]);
-    } else if (editFrom === 'tell_do_variation') {
-      this.router.navigate([`/new-request/do_tell_variation/${request.NotificationNo}`]);
+    } else if (editFrom === 'do_tell_variation') {
+      this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}`]);
     } else if (editFrom === 'registration') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}`]);
     } else if (editFrom === 'legacy-products') {

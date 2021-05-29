@@ -334,10 +334,8 @@ export class NewRequestComponent implements OnInit {
   getProductsKitLookups(fromWhere) {
     if (fromWhere === 'trackType') {
       this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
-      console.log('trackTypeVariable', this.trackTypeVariableForKitLookups);
     } else if (fromWhere === 'selectedFormType') {
       this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
-      console.log('selectedFormTypeVariable', this.typeOfNotificationVariableForKitLookups);
     } else if (fromWhere === 'draftRequest') {
       this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
       this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
