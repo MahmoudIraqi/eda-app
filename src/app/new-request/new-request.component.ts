@@ -4,7 +4,7 @@ import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormService} from '../services/form.service';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {InputService} from '../services/input.service';
 import {CurrencyPipe} from '@angular/common';
@@ -69,7 +69,7 @@ export class NewRequestComponent implements OnInit {
   editFormIPStatus: boolean = false;
   getDraftProductData: boolean = false;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute,
+  constructor(private getService: FormService, private readonly route: ActivatedRoute, private router: Router,
               private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
@@ -314,6 +314,8 @@ export class NewRequestComponent implements OnInit {
     this.selectedRequestedType = '';
     this.selectedIsExport = '';
     this.estimatedValue = '';
+
+    this.router.navigate([`/new-request/registration`]);
   }
 
   handleError(error) {
