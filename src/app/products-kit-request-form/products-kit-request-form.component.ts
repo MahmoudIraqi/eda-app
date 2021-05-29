@@ -922,13 +922,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       console.log('data', data);
       console.log('editFromWhere', this.editFromWhere);
       this.isDraft = data.isDraft === 1;
+      data.shortName.map((X, i) => {
+        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+          this.addShortName();
+        }
+      });
       if (this.editFromWhere) {
-        data.shortName.map((X, i) => {
-          if (data.shortName.length > 1 && i < data.shortName.length - 1) {
-            this.addShortName();
-          }
-        });
-
         data.ProductsForKit.length > 0 ? data.ProductsForKit.map((x, i) => {
           if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
             this.addProductsGroupRows();
@@ -1000,7 +999,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         countryOfLicenseHolder: this.fb.control('', Validators.required),
         tradeMark: this.fb.control(''),
         shelfLife: this.fb.control(null, Validators.required),
-        storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
+        storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
         receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         ProductsForKit: this.fb.array([this.fb.group({
@@ -1074,7 +1073,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           })
         })]),
         deletedProductIdLists: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control('', Validators.required),
@@ -1082,8 +1081,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         reference: this.fb.control(''),
         methodOfAnalysis: this.fb.control(''),
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-        receipt: this.fb.control('', Validators.required),
-        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        receipt: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         manufacturingContract: this.fb.control('', this.selectedRequestedType === 8 ? Validators.required : null),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
