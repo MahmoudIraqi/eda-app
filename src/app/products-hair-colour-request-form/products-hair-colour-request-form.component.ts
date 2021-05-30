@@ -30,6 +30,7 @@ import {convertToSpecialObject} from '../../utils/formDataFunction';
   styleUrls: ['./products-hair-colour-request-form.component.css']
 })
 export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+
   @Input() selectedRequestedType;
   @Input() selectedFormType;
   @Input() selectedTrackType;
@@ -42,6 +43,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
+  @Input() whichVariation;
   @Input() lookupsData;
   @Input() manufacturingCompanyList;
   @Input() companyProfile;
@@ -49,6 +51,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Input() saveFromAttachment;
   @Input() saveResponseDataForRegisterProductID;
   @Output() saveDataOutput = new EventEmitter();
+  @Output() saveTrackDataOutput = new EventEmitter();
   @Output() saveDataOutputForAttachment = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   @Output() selectedTrackTypeForKit = new EventEmitter();
@@ -58,7 +61,9 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   @Output() companyProfileSearchText = new EventEmitter();
   @Output() ingrediantSearchText = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
+  @Output() errorMessageForAttachment = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
+  @Output() errorForAttachemntRequest = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -76,7 +81,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   };
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaledoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -297,10 +302,12 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   disabledSaveButton: boolean = false;
   productFlags;
   productComments;
-  requestId;
   deletedPackagingList = [];
   deletedDetailedList = [];
   deletedIdsListForIngrediant = [];
+  attachmentRequiredStatus: boolean = false;
+  requestId;
+  objectForListOfVariationGroup: any;
 
   filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
@@ -320,7 +327,6 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     keyboard: false,
     class: 'modal-xl packagingModal',
   };
-  attachmentRequiredStatus: boolean = false;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -342,7 +348,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
     this.attachmentFields = [
       {
-        id: 'freeSale',
+        id: 'freeSaledoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
@@ -565,6 +571,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.getLookupForFormArray();
 
     this.regHairColorantProductForAllRequestedType.valueChanges.subscribe(x => {
+
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -672,11 +679,18 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
-            if (!this.regHairColorantProductForAllRequestedType.value.id) {
-
-              this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+            if (this.variationFieldsStatus) {
+              if (this.editData.isVariationSaved === false) {
+                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regHairColorantProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             } else {
-              this.setAttachmentFileFunction(this.regHairColorantProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              if (!this.regHairColorantProductForAllRequestedType.value.id) {
+                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regHairColorantProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             }
           };
 
@@ -777,7 +791,19 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
   saveData() {
     const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
-    this.saveDataOutput.emit(data);
+
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
+    this.saveDataOutput.emit(newObjectForData);
+  }
+
+  saveTrackProductData() {
+    const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
+    this.saveTrackDataOutput.emit(data);
   }
 
   saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
@@ -789,7 +815,37 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     });
 
     this.getService.createProductRequest(allDataForSave).subscribe((res: any) => {
+      this.editData = res;
       this.saveDataOutputForAttachment.emit(res.id);
+      this.regHairColorantProductForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  saveProductForAttachmentVariation(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+
+    const newObject = {
+      ...this.editData,
+      ...allDataForSave,
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3,
+      ...this.objectForListOfVariationGroup
+    };
+
+
+    this.getService.setVariationProduct(newObject).subscribe((res: any) => {
+      this.editData = res;
       this.regHairColorantProductForAllRequestedType.patchValue({
         id: res.id
       });
@@ -803,8 +859,13 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regHairColorantProductForAllRequestedType.value);
 
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
     if (this.regHairColorantProductForAllRequestedType.valid && this.regHairColorantProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regHairColorantProductForAllRequestedType.get('detailsTable').value.length > 0) {
-      this.submitDataOutput.emit(data);
+      this.submitDataOutput.emit(newObjectForData);
     } else {
       this.errorMessage.emit('true');
     }
@@ -853,6 +914,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
+
       data.shortName ? data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();
@@ -947,7 +1009,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaledoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
         artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
@@ -1025,10 +1087,20 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   }
 
   getDisabledValues() {
+    let variaionGroupCodeList = [];
+    let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
+        variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        this.objectForListOfVariationGroup = {
+          variationGroups: variaionGroupCodeList,
+          variationFields: variaionGroupFieldsCodeList,
+        };
       });
     }
   }
@@ -1143,7 +1215,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
       });
 
       return res;
-    });
+    }, error => this.errorForAttachemntRequest.emit(error));
   }
 
   downloadFile(FileName) {
@@ -1198,5 +1270,9 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
     if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
       form.get(formControl).setValue(null);
     }
+  }
+
+  handleError(error) {
+    this.errorMessageForAttachment.emit(error);
   }
 }

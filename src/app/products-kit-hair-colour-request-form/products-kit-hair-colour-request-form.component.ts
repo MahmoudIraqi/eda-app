@@ -28,13 +28,13 @@ import {convertToSpecialObject} from '../../utils/formDataFunction';
 })
 export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-
   @Input() selectedRequestedType;
   @Input() selectedFormType;
   @Input() selectedIsExport;
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
+  @Input() whichVariation;
   @Input() editFromWhere;
   @Input() legacyStatus;
   @Input() reRegistrationStatus;
@@ -48,13 +48,14 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   @Output() saveDataOutputForAttachment = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
+  @Output() errorForAttachemntRequest = new EventEmitter();
 
   formData;
   selectedKitProductsStatus;
   regColourKitForAllRequestedType: FormGroup;
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaledoc',
       name: 'Free Sale',
       fileName: '',
       required: false
@@ -140,7 +141,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   ];
   attachmentFieldsForKits = [
     {
-      id: 'freeSale',
+      id: 'freeSaledoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -374,6 +375,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   attachmentRequiredStatus: boolean = false;
   isDraft: boolean = false;
   deletedProductIdLists = [];
+  objectForListOfVariationGroup: any;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -394,7 +396,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
     this.attachmentFieldsForKits = [
       {
-        id: 'freeSale',
+        id: 'freeSaledoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
@@ -663,11 +665,18 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
-            if (!this.regColourKitForAllRequestedType.value.id) {
-
-              this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+            if (this.variationFieldsStatus) {
+              if (this.editData.isVariationSaved === false) {
+                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regColourKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             } else {
-              this.setAttachmentFileFunction(this.regColourKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              if (!this.regColourKitForAllRequestedType.value.id) {
+                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regColourKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             }
           };
 
@@ -717,7 +726,13 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
 
-    this.saveDataOutput.emit(data);
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
+    this.saveDataOutput.emit(newObjectForData);
   }
 
   onSubmit() {
@@ -725,8 +740,14 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
 
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
     if (this.regColourKitForAllRequestedType.valid) {
-      this.submitDataOutput.emit(data);
+      this.submitDataOutput.emit(newObjectForData);
     } else {
       this.errorMessage.emit('true');
     }
@@ -741,8 +762,39 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       y.loadingStatus = true;
     });
 
-    this.getServices.createProductRequest(allDataForSave).subscribe((res: any) => {
+    this.getServices.createProductKitRequest(allDataForSave).subscribe((res: any) => {
+      this.editData = res;
       this.saveDataOutputForAttachment.emit(res.id);
+      this.regColourKitForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  saveProductForAttachmentVariation(fileId, fileName, id, base64Data, fileValue) {
+    this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFieldsForKits.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+
+    const newObject = {
+      ...this.editData,
+      ...allDataForSave,
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3,
+      ...this.objectForListOfVariationGroup
+    };
+
+
+    this.getServices.setVariationProduct(newObject).subscribe((res: any) => {
+      this.editData = res;
       this.regColourKitForAllRequestedType.patchValue({
         id: res.id
       });
@@ -768,7 +820,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       });
 
       return res;
-    });
+    }, error => this.errorForAttachemntRequest.emit(error));
   }
 
   convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
@@ -882,7 +934,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control(''),
+        freeSaledoc: this.fb.control(''),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control(''),
@@ -949,7 +1001,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
         }) : null;
         product.productDetails.detailsTable ? product.productDetails.detailsTable.map(x => {
-
           x.ingrediantDetails.map(y => {
             this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
             this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
@@ -1056,7 +1107,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
             deletedIngredientsIds: this.fb.control(null),
             deletedProductDetailsIds: this.fb.control(null),
             deletedpacklstIds: this.fb.control(null),
-            freeSale: this.fb.control(''),
+            freeSaledoc: this.fb.control(''),
             GMP: this.fb.control(''),
             CoA: this.fb.control(''),
             artWork: this.fb.control(''),
@@ -1079,7 +1130,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           })
         })]),
         deletedProductIdLists: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaledoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control('', Validators.required),
@@ -1115,7 +1166,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   applyProduct(data, status, index) {
     if (status === 'registered') {
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
+      this.getServices.getProductWithNotificationNumberList(Number(data.value.NotificationNo), 'kit').subscribe((res: any) => {
         if (res) {
           if (res.canUse) {
             const objectData = {
@@ -1229,10 +1280,20 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   getDisabledValues() {
+    let variaionGroupCodeList = [];
+    let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
+        variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        this.objectForListOfVariationGroup = {
+          variationGroups: variaionGroupCodeList,
+          variationFields: variaionGroupFieldsCodeList,
+        };
       });
     }
   }
@@ -1281,18 +1342,18 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     return data;
   }
 
+  setApplicant(companyProfileID) {
+    this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regColourKitForAllRequestedType.patchValue({
+      applicant: x.NAME
+    }));
+  }
+
   setShelfValue(event) {
     if (Number(event.target.value) > 60) {
       this.regColourKitForAllRequestedType.get('shelfLife').patchValue(60);
     } else {
       this.regColourKitForAllRequestedType.get('shelfLife').patchValue(Number(event.target.value));
     }
-  }
-
-  setApplicant(companyProfileID) {
-    this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regColourKitForAllRequestedType.patchValue({
-      applicant: x.NAME
-    }));
   }
 
   // @ts-ignore

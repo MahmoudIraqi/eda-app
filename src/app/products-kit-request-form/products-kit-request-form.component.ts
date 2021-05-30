@@ -32,12 +32,14 @@ export interface LookupState {
 })
 export class ProductsKitRequestFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
+
   @Input() selectedRequestedType;
   @Input() selectedFormType;
   @Input() selectedIsExport;
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
+  @Input() whichVariation;
   @Input() editFromWhere;
   @Input() legacyStatus;
   @Input() reRegistrationStatus;
@@ -51,13 +53,14 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Output() saveDataOutputForAttachment = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
+  @Output() errorForAttachemntRequest = new EventEmitter();
 
   formData;
   selectedKitProductsStatus;
   regKitForAllRequestedType: FormGroup;
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaledoc',
       name: 'Free Sale',
       fileName: '',
       required: false
@@ -143,7 +146,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   ];
   attachmentFieldsForKits = [
     {
-      id: 'freeSale',
+      id: 'freeSaledoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -376,6 +379,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   attachmentRequiredStatus: boolean = false;
   isDraft: boolean = false;
   deletedProductIdLists = [];
+  objectForListOfVariationGroup: any;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -396,7 +400,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     this.attachmentFieldsForKits = [
       {
-        id: 'freeSale',
+        id: 'freeSaledoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
@@ -663,11 +667,18 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
           reader.readAsDataURL(file);
           reader.onload = (res: any) => {
-            if (!this.regKitForAllRequestedType.value.id) {
-
-              this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+            if (this.variationFieldsStatus) {
+              if (this.editData.isVariationSaved === false) {
+                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             } else {
-              this.setAttachmentFileFunction(this.regKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              if (!this.regKitForAllRequestedType.value.id) {
+                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
             }
           };
 
@@ -717,7 +728,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
-    this.saveDataOutput.emit(data);
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
+    this.saveDataOutput.emit(newObjectForData);
   }
 
   onSubmit() {
@@ -725,8 +742,14 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
     if (this.regKitForAllRequestedType.valid) {
-      this.submitDataOutput.emit(data);
+      this.submitDataOutput.emit(newObjectForData);
     } else {
       this.errorMessage.emit('true');
     }
@@ -741,8 +764,39 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       y.loadingStatus = true;
     });
 
-    this.getServices.createProductRequest(allDataForSave).subscribe((res: any) => {
+    this.getServices.createProductKitRequest(allDataForSave).subscribe((res: any) => {
+      this.editData = res;
       this.saveDataOutputForAttachment.emit(res.id);
+      this.regKitForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  saveProductForAttachmentVariation(fileId, fileName, id, base64Data, fileValue) {
+    this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFieldsForKits.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+
+    const newObject = {
+      ...this.editData,
+      ...allDataForSave,
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3,
+      ...this.objectForListOfVariationGroup
+    };
+
+
+    this.getServices.setVariationProduct(newObject).subscribe((res: any) => {
+      this.editData = res;
       this.regKitForAllRequestedType.patchValue({
         id: res.id
       });
@@ -768,7 +822,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       });
 
       return res;
-    });
+    }, error => this.errorForAttachemntRequest.emit(error));
   }
 
   convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
@@ -882,7 +936,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control(''),
+        freeSaledoc: this.fb.control(''),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control(''),
@@ -944,6 +998,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         this.formData.physicalStateList.filter(option => option.ID === product.productDetails.physicalState).map(x => product.productDetails.physicalState = x.NAME);
         this.formData.purposeOfUseList.filter(option => option.ID === product.productDetails.purposeOfUse).map(x => product.productDetails.purposeOfUse = x.NAME);
 
+        product.productDetails.packagingTable ? product.productDetails.packagingTable.map(x => {
+          this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+          this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+        }) : null;
         product.productDetails.detailsTable ? product.productDetails.detailsTable.map(x => {
           x.ingrediantDetails.map(y => {
             this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
@@ -979,6 +1037,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       this.regKitForAllRequestedType.patchValue({
         ...data
+      });
+
+      data.productAttachments.map((x, i) => {
+        this.regKitForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
       });
     } else {
       this.regKitForAllRequestedType = this.fb.group({
@@ -1045,7 +1107,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
             deletedIngredientsIds: this.fb.control(null),
             deletedProductDetailsIds: this.fb.control(null),
             deletedpacklstIds: this.fb.control(null),
-            freeSale: this.fb.control(''),
+            freeSaledoc: this.fb.control(''),
             GMP: this.fb.control(''),
             CoA: this.fb.control(''),
             artWork: this.fb.control(''),
@@ -1068,7 +1130,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           })
         })]),
         deletedProductIdLists: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaledoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control('', Validators.required),
@@ -1112,15 +1174,25 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
             };
 
             this.ProductGroupsRows().value[index].productDetails = res;
-            const keyOfLookup = Object.keys(this.lookupsData);
-            keyOfLookup.map(key => {
-              const keyLowerCase = key.replace('List', '');
-              const value = objectData[keyLowerCase];
+            this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
+            this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
+            this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
+            this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
+            this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
+            this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
+            this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
+            this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
 
-              this.lookupsData[key].filter(y => y.ID === value).map(x => {
-                objectData[keyLowerCase] = x.NAME;
+            objectData.packagingTable ? objectData.packagingTable.map(x => {
+              this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+              this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+            }) : null;
+            objectData.detailsTable ? objectData.detailsTable.map(x => {
+              x.ingrediantDetails.map(y => {
+                this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+                this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
               });
-            });
+            }) : null;
 
             this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
             this.addProductsGroupRows();
@@ -1148,15 +1220,25 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           this.ProductGroupsRows().value[index].productID = res.id;
           this.ProductGroupsRows().value[index].productDetails = res;
 
-          const keyOfLookup = Object.keys(this.lookupsData);
-          keyOfLookup.map(key => {
-            const keyLowerCase = key.replace('List', '');
-            const value = objectData[keyLowerCase];
+          this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
+          this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
+          this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
+          this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
+          this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
+          this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
+          this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
+          this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
 
-            this.lookupsData[key].filter(y => y.ID === value).map(x => {
-              objectData[keyLowerCase] = x.NAME;
+          objectData.packagingTable ? objectData.packagingTable.map(x => {
+            this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+            this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+          }) : null;
+          objectData.detailsTable ? objectData.detailsTable.map(x => {
+            x.ingrediantDetails.map(y => {
+              this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+              this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
             });
-          });
+          }) : null;
 
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
@@ -1198,10 +1280,20 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   getDisabledValues() {
+    let variaionGroupCodeList = [];
+    let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
+        variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        this.objectForListOfVariationGroup = {
+          variationGroups: variaionGroupCodeList,
+          variationFields: variaionGroupFieldsCodeList,
+        };
       });
     }
   }
@@ -1234,6 +1326,17 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
     this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
     this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+
+    data.packagingTable ? data.packagingTable.map(x => {
+      this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+      this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+    }) : null;
+    data.detailsTable ? data.detailsTable.map(x => {
+      x.ingrediantDetails.map(y => {
+        this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+        this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+      });
+    }) : null;
 
     return data;
   }

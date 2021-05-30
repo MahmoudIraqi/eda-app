@@ -68,6 +68,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Output() errorMessage = new EventEmitter();
   @Output() errorMessageForAttachment = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
+  @Output() errorForAttachemntRequest = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -85,7 +86,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   };
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaledoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -351,7 +352,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.attachmentFields = [
       {
-        id: 'freeSale',
+        id: 'freeSaledoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
@@ -816,6 +817,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
 
     this.getService.createProductRequest(allDataForSave).subscribe((res: any) => {
+      this.editData = res;
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
@@ -1007,7 +1009,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaledoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
         artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
