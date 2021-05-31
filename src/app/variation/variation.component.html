@@ -91,7 +91,8 @@
               </div>
             </div>
           </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 1 ">
+          <div class="col-12 mt-5"
+               *ngIf="productData && ( productData.typeOfMarketing === 1 || productData.typeOfMarketing === 3)">
             <app-product-request-form
               [editData]="this.productData"
               [lookupsData]="formData"
@@ -105,7 +106,8 @@
               (isLoadingStatus)="enableLoadingForAttachment($event)"
             ></app-product-request-form>
           </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">
+          <div class="col-12 mt-5"
+               *ngIf="productData && ( productData.typeOfMarketing === 2 || productData.typeOfMarketing === 4)">
             <app-products-kit-request-form
               [editData]="this.productData"
               [lookupsData]="formData"
@@ -116,31 +118,6 @@
               (submitDataOutput)="onSubmit($event)"
               (errorMessage)="showAlertMessager($event)"
             ></app-products-kit-request-form>
-          </div>
-          <div class="col-12 mt-5"
-               *ngIf="productData && productData.typeOfMarketing === 3">
-            <app-products-hair-colour-request-form
-              [editData]="this.productData"
-              [lookupsData]="formData"
-              [variationFieldsStatus]="true"
-              [variationFields]="variationFields"
-              [whichVariation]="whichVariation"
-              (saveDataOutput)="onSave($event)"
-              (submitDataOutput)="onSubmit($event)"
-              (errorMessage)="showAlertMessager($event)"
-            ></app-products-hair-colour-request-form>
-          </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
-            <app-products-kit-hair-colour-request-form
-              [editData]="this.productData"
-              [lookupsData]="formData"
-              [variationFieldsStatus]="true"
-              [variationFields]="variationFields"
-              [whichVariation]="whichVariation"
-              (saveDataOutput)="onSave($event)"
-              (submitDataOutput)="onSubmit($event)"
-              (errorMessage)="showAlertMessager($event)"
-            ></app-products-kit-hair-colour-request-form>
           </div>
         </div>
       </div>
