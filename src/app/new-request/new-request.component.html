@@ -115,7 +115,7 @@
             ></app-products-kit-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 3 && selectedRequestedType && selectedTrackType">
-            <app-products-hair-colour-request-form
+            <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
@@ -129,6 +129,7 @@
               [getAllLookupsStatus]="getAllLookupsStatus"
               [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
               (saveDataOutputForAttachment)="getRequestId($event)"
               (submitDataOutput)="onSubmit($event)"
               (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
@@ -137,7 +138,7 @@
               (errorMessage)="showAlertMessager($event)"
               (isLoadingStatus)="enableLoadingForAttachment($event)"
               (errorForAttachemntRequest)="handleError($event)"
-            ></app-products-hair-colour-request-form>
+            ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType && selectedTrackType">
             <app-products-kit-hair-colour-request-form
@@ -184,7 +185,7 @@
             ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 6 && selectedRequestedType && selectedTrackType">
-            <app-products-hair-colour-request-form
+            <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
@@ -206,7 +207,7 @@
               (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
               (errorMessage)="showAlertMessager($event)"
               (isLoadingStatus)="enableLoadingForAttachment($event)"
-            ></app-products-hair-colour-request-form>
+            ></app-product-request-form>
           </div>
         </div>
       </div>

@@ -314,6 +314,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   requestId;
   objectForListOfVariationGroup: any;
 
+  filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
@@ -561,6 +562,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   ngOnInit(): void {
+    this.filteredOptionsForProductColor = this.filterLookupsFunction('productColor', this.regProductForAllRequestedType.get('productColor'), this.formData.productColorList);
     this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
     this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
     this.filteredOptionsForLicenseHolder = this.filterLookupsFunction('licenseHolder', this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
@@ -589,6 +591,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   ngAfterViewInit() {
+    this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
     this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
     this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
     this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
@@ -985,6 +988,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       });
     } else {
       this.regProductForAllRequestedType = this.fb.group({
+        productColor: this.fb.control(''),
         id: 0,
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', Validators.required),
@@ -1125,6 +1129,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   convertAllNamingToId(data) {
+    this.formData.productColorList.filter(option => option.NAME === data.productColor).map(x => data.productColor = x.ID);
     this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
     this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
     this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);

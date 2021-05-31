@@ -93,6 +93,32 @@
               </div>
             </div>
           </div>
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="selectedFormType === 3">
+            <mat-form-field appearance="fill">
+              <div *ngIf="productComments && productComments.productColor" class="InfoIconContainer">
+                <span class="infoIcon" tooltip="{{productComments.productColor}}"
+                      placement="top">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </div>
+              <mat-label>Product Color</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Product Color"
+                     aria-label="Product Color"
+                     matInput
+                     formControlName="productColor"
+                     (blur)="checkValue('productColor', formData.productColorList, regProductForAllRequestedType)"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : legacyStatus? productFlags && !productFlags.productColor ? true : false : isDraft ? false : productFlags && !productFlags.productColor ? true : false"
+                     [matAutocomplete]="productColorList" required>
+              <mat-autocomplete #productColorList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForProductColor | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field class="example-full-width">
               <div *ngIf="productComments && productComments.manufacturingCompany"
