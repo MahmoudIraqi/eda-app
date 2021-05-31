@@ -141,7 +141,7 @@
             ></app-product-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType && selectedTrackType">
-            <app-products-kit-hair-colour-request-form
+            <app-products-kit-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
@@ -156,8 +156,9 @@
               (submitDataOutput)="onSubmit($event)"
               (errorMessage)="showAlertMessager($event)"
               (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
               (saveDataOutputForAttachment)="getRequestId($event)"
-            ></app-products-kit-hair-colour-request-form>
+            ></app-products-kit-request-form>
           </div>
           <div class="col-12 mt-5" *ngIf="selectedFormType === 5 && selectedRequestedType && selectedTrackType">
             <app-product-request-form
