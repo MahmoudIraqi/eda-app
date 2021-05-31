@@ -364,6 +364,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   isLoading: boolean = false;
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
+  filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
   filteredOptionsForApplicant: Observable<LookupState[]>;
@@ -607,6 +608,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   ngOnInit(): void {
+    this.filteredOptionsForProductColor = this.filterLookupsFunction(this.regKitForAllRequestedType.get('productColor'), this.formData.productColorList);
     this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regKitForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
     this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regKitForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
     this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regKitForAllRequestedType.get('applicant'), this.formData.applicantList);
@@ -629,6 +631,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   ngAfterViewInit() {
+    this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
     this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
     this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
     this._subscribeToClosingActions('applicant', this.filteredOptionsForApplicant);
@@ -989,6 +992,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.allProductsInKit.tableBody = [];
       data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
         product.productStatus = '';
+        this.formData.productColorList.filter(item => item.ID === product.productDetails.productColor).map(x => product.productDetails.productColor = x.NAME);
         this.formData.manufacturingCompanyList.filter(item => item.ID === product.productDetails.manufacturingCompany).map(x => product.productDetails.manufacturingCompany = x.NAME);
         this.formData.manufacturingCountryList.filter(item => item.ID === product.productDetails.manufacturingCountry).map(x => product.productDetails.manufacturingCountry = x.NAME);
         this.formData.applicantList.filter(option => option.ID === product.productDetails.applicant).map(x => product.productDetails.applicant = x.NAME);
@@ -1012,6 +1016,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, product.productDetails];
       }) : null;
 
+      this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(item => item.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
@@ -1044,6 +1049,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       });
     } else {
       this.regKitForAllRequestedType = this.fb.group({
+        productColor: this.fb.control(''),
         id: 0,
         productArabicName: this.fb.control(''),
         productEnglishName: this.fb.control('', Validators.required),
@@ -1064,6 +1070,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           NotificationNo: this.fb.control(''),
           productID: this.fb.control(''),
           productDetails: this.fb.group({
+            productColor: this.fb.control(''),
             id: 0,
             productArabicName: this.fb.control(''),
             productEnglishName: this.fb.control(''),
@@ -1174,6 +1181,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
             };
 
             this.ProductGroupsRows().value[index].productDetails = res;
+            this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
             this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
             this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
             this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
@@ -1220,6 +1228,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           this.ProductGroupsRows().value[index].productID = res.id;
           this.ProductGroupsRows().value[index].productDetails = res;
 
+          this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
           this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
           this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
           this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
@@ -1318,6 +1327,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   convertAllNamingToId(data) {
+    this.formData.productColorList.filter(option => option.NAME === data.productColor).map(x => data.productColor = x.ID);
     this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
     this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
     this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);

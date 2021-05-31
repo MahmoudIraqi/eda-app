@@ -1174,6 +1174,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
             };
 
             this.ProductGroupsRows().value[index].productDetails = res;
+            this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
             this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
             this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
             this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
