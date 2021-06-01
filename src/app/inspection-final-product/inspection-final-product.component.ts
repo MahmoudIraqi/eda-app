@@ -169,7 +169,7 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
   getFormAsStarting(data) {
     this.inspectFinalProductRequest = this.fb.group({
       notificationNo: this.fb.control('', Validators.required),
-      productArabicName: this.fb.control(''),
+      productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
       productEnglishName: this.fb.control('', [Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
       typeOfNotification: this.fb.control(''),
       batchNo: this.fb.control('', Validators.required),

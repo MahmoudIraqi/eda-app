@@ -386,7 +386,7 @@ export class TestCustomReleaseComponent implements OnInit {
     this.InvoiceProductsRows().push(this.fb.group({
       productId: this.fb.control(''),
       notificationNumber: this.fb.control(''),
-      productArabicName: this.fb.control(''),
+      productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
       productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
       manufacturingCompany: this.fb.control(''),
       manufacturingCountry: this.fb.control(''),
@@ -533,7 +533,7 @@ export class TestCustomReleaseComponent implements OnInit {
         receiptValue: this.fb.control('', Validators.required),
         productsInInvoice: this.fb.array([this.fb.group({
           notificationNumber: this.fb.control('', this.selectedFormType === 0 ? Validators.required : null),
-          productArabicName: this.fb.control(''),
+          productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
           productEnglishName: this.fb.control('', this.selectedFormType === 1 ? Validators.required : null),
           rowMaterialName: this.fb.control('', this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4 || this.selectedFormType === 5 ? Validators.required : null),
           packingItemName: this.fb.control('', this.selectedFormType === 6 || this.selectedFormType === 7 || this.selectedFormType === 8 ? Validators.required : null),

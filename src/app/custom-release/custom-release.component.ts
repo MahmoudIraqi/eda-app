@@ -338,7 +338,7 @@ export class CustomReleaseComponent implements OnInit {
     this.InvoiceProductsRows().push(this.fb.group({
       productId: this.fb.control(''),
       notificationNumber: this.fb.control(''),
-      productArabicName: this.fb.control(''),
+      productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
       productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
       manufacturingCompany: this.fb.control(''),
       manufacturingCountry: this.fb.control(''),
@@ -486,7 +486,7 @@ export class CustomReleaseComponent implements OnInit {
         productsInInvoice: this.fb.array([this.fb.group({
           productId: this.fb.control(''),
           notificationNumber: this.fb.control(''),
-          productArabicName: this.fb.control(''),
+          productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
           productEnglishName: this.fb.control(''),
           manufacturingCompany: this.fb.control(''),
           manufacturingCountry: this.fb.control(''),

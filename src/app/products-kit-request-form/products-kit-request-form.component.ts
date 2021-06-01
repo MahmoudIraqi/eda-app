@@ -250,7 +250,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       name: 'Manufacturing Contract',
       fileName: '',
       fileValue: '',
-      required: false,
+      required: this.selectedRequestedType === 8 ? true : false,
       enable: true,
       attachmentTypeStatus: '',
       loadingStatus: false,
@@ -505,7 +505,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         name: 'Manufacturing Contract',
         fileName: '',
         fileValue: '',
-        required: false,
+        required: this.selectedRequestedType === 8 ? true : false,
         enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
@@ -1047,11 +1047,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       data.productAttachments.map((x, i) => {
         this.regKitForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
       });
+
+      data.receiptValue === 0 ? this.regKitForAllRequestedType.get('receiptValue').patchValue('') : null;
     } else {
       this.regKitForAllRequestedType = this.fb.group({
         productColor: this.fb.control(''),
         id: 0,
-        productArabicName: this.fb.control(''),
+        productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', Validators.required),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
         manufacturingCompany: this.fb.control(null, Validators.required),

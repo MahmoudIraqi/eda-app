@@ -180,7 +180,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       name: 'Manufacturing Contract',
       fileName: '',
       fileValue: '',
-      required: false,
+      required: this.selectedRequestedType === 8 ? true : false,
       enable: true,
       attachmentTypeStatus: '',
       loadingStatus: false,
@@ -447,7 +447,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         name: 'Manufacturing Contract',
         fileName: '',
         fileValue: '',
-        required: false,
+        required: this.selectedRequestedType === 8 ? true : false,
         enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
@@ -995,11 +995,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       data.productAttachments.map((x, i) => {
         this.regProductForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
       });
+
+      data.receiptValue === 0 ? this.regProductForAllRequestedType.get('receiptValue').patchValue('') : null;
     } else {
       this.regProductForAllRequestedType = this.fb.group({
         productColor: this.fb.control(''),
         id: 0,
-        productArabicName: this.fb.control(''),
+        productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', Validators.required),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
         manufacturingCompany: this.fb.control(null, Validators.required),
@@ -1032,7 +1034,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
         receipt: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
         authorizationLetter: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
-        manufacturingContract: this.fb.control('', this.selectedRequestedType === 7 ? Validators.required : null),
+        manufacturingContract: this.fb.control('', this.selectedRequestedType === 8 ? Validators.required : null),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
         manufacturingAssignment: this.fb.control(''),

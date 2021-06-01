@@ -892,7 +892,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       productID: this.fb.control(''),
       productDetails: this.fb.group({
         id: 0,
-        productArabicName: this.fb.control(''),
+        productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control(''),
         shortName: this.fb.array([this.fb.control('')]),
         manufacturingCompany: this.fb.control(null),
@@ -1044,7 +1044,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     } else {
       this.regColourKitForAllRequestedType = this.fb.group({
         id: 0,
-        productArabicName: this.fb.control(''),
+        productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', Validators.required),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
         productColor: this.fb.control(''),
@@ -1065,7 +1065,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           productID: this.fb.control(''),
           productDetails: this.fb.group({
             id: 0,
-            productArabicName: this.fb.control(''),
+            productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
             productEnglishName: this.fb.control(''),
             shortName: this.fb.array([this.fb.control('')]),
             manufacturingCompany: this.fb.control(null),

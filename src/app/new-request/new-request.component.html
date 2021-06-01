@@ -127,12 +127,13 @@
               [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"
               [editFromWhere]="editFormIPStatus"
+              [kitProductStatus]="true"
               [lookupsData]="formData"
               [manufacturingCompanyList]="manufacturingCompanyList"
               [getAllLookupsStatus]="getAllLookupsStatus"
               [companyProfile]="companyProfileId"
-              [kitProductStatus]="true"
               (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
               (saveDataOutputForAttachment)="getRequestId($event)"
               (submitDataOutput)="onSubmit($event)"
               (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
@@ -140,6 +141,7 @@
               (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
               (errorMessage)="showAlertMessager($event)"
               (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
             ></app-product-request-form>
           </div>
         </div>
