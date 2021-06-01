@@ -395,10 +395,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.resetForms();
     }
 
-    if (this.editData) {
-      this.getFormAsStarting(this.editData);
-    }
-
     this.attachmentFieldsForKits = [
       {
         id: 'freeSale',
@@ -601,6 +597,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         loadingStatus: false,
       }
     ];
+
+    this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
 
@@ -1040,6 +1038,15 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
 
+      data.productAttachments ? data.productAttachments.map(file => {
+        this.attachmentFieldsForKits.filter(fileID => fileID.id === file.attachmentName).map(y => {
+          y.fileName = file.attachmentFileName;
+          y.fileValue = file.Id;
+        });
+      }) : null;
+
+      console.log('attachmentFieldsForKits', this.attachmentFieldsForKits);
+
       this.regKitForAllRequestedType.patchValue({
         ...data
       });
@@ -1175,7 +1182,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   applyProduct(data, status, index) {
     if (status === 'registered') {
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(Number(data.value.NotificationNo), 'kit').subscribe((res: any) => {
+      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
         if (res) {
           if (res.canUse) {
             const objectData = {
