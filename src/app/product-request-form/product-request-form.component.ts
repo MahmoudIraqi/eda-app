@@ -1121,6 +1121,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterLookupsFunction(whichLookup, formControlValue, list) {
+    debugger;
     if (formControlValue) {
       return formControlValue.valueChanges
         .pipe(
@@ -1178,6 +1179,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     list.subscribe(x => {
       if (x.length === 0) {
+
         if (this.regProductForAllRequestedType.controls[field].dirty) {
           this.regProductForAllRequestedType.controls[field].setValue(null);
         }
@@ -1200,12 +1202,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   private _subscribeToClosingActionsForDetailsFormArray(field, list): void {
+    debugger;
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
     list ? list.subscribe(y => {
+      // console.log('y', y);
       if (y.length === 0) {
         this.IngrediantDetailsRows().controls.map((x) => {
+          console.log('x[controls][field].dirty', x['controls'][field].dirty);
           if (x['controls'][field].dirty) {
             x['controls'][field].setValue(null);
           }
@@ -1270,14 +1275,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   closePackagingModal() {
-    this.modalRef.hide();
     this.getPackagingFormAsStarting('');
+    this.modalRef.hide();
     this.editPackagingRowStatus = false;
   }
 
   closeDetailedForm() {
-    this.modalRef.hide();
     this.getDetailedFormAsStarting('');
+    this.modalRef.hide();
     this.editDetailedRowStatus = false;
   }
 
@@ -1329,5 +1334,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       value = '';
     }
     return value;
+  }
+
+  rerenderSubscribtionForClosingActionForPackagingForm() {
+    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+
+    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
+    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
+  }
+
+  rerenderSubscribtionForClosingActionForDetailsForm() {
+    this.getLookupForFormArray();
+
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant);
+    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction);
   }
 }
