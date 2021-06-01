@@ -314,7 +314,10 @@ export class NewRequestComponent implements OnInit {
     this.selectedIsExport = '';
     this.estimatedValue = '';
 
-    this.router.navigate([`/new-request/registration`]);
+    setTimeout(() => {
+      this.router.navigate([`/new-request/registration`]);
+    }, 2000);
+
   }
 
   handleError(error) {
