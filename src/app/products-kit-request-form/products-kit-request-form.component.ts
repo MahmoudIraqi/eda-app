@@ -1327,15 +1327,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   convertAllNamingToId(data) {
-    this.formData.productColorList.filter(option => option.NAME === data.productColor).map(x => data.productColor = x.ID);
-    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
-    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
-    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
-    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
-    this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
-    this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
-    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+    data.productColor = this.checkControllerValueWithList(this.formData.productColorList, 'productColor', data.productColor);
+    data.manufacturingCompany = this.checkControllerValueWithList(this.formData.manufacturingCompanyList, 'manufacturingCompany', data.manufacturingCompany);
+    data.manufacturingCountry = this.checkControllerValueWithList(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
+    data.applicant = this.checkControllerValueWithList(this.formData.applicantList, 'applicant', data.applicant);
+    data.licenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderList, 'licenseHolder', data.licenseHolder);
+    data.countryOfLicenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderCountryList, 'countryOfLicenseHolder', data.countryOfLicenseHolder);
+    data.storagePlace = this.checkControllerValueWithList(this.formData.storagePlaceList, 'storagePlace', data.storagePlace);
 
     data.packagingTable ? data.packagingTable.map(x => {
       this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
@@ -1349,6 +1347,19 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }) : null;
 
     return data;
+  }
+
+  checkControllerValueWithList(list, formControlKey, formControlValue) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.ID;
+      });
+    } else {
+      this.regKitForAllRequestedType.get(formControlKey).patchValue('');
+      value = '';
+    }
+    return value;
   }
 
   setApplicant(companyProfileID) {

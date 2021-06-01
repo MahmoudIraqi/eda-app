@@ -88,7 +88,6 @@
                      aria-label="Product Color"
                      matInput
                      formControlName="productColor"
-                     (blur)="checkValue('productColor', formData.productColorList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : legacyStatus? productFlags && !productFlags.productColor ? true : false : isDraft ? false : productFlags && !productFlags.productColor ? true : false"
                      [matAutocomplete]="productColorList" required>
               <mat-autocomplete #productColorList="matAutocomplete">
@@ -107,7 +106,6 @@
                      placeholder="Manufacturing Company"
                      aria-label="Manufacturing Company"
                      matInput
-                     (blur)="checkValue('manufacturingCompany', formData.manufacturingCompanyList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : legacyStatus? productFlags && !productFlags.manufacturingCompany ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCompany ? true : false"
                      formControlName="manufacturingCompany"
                      [matAutocomplete]="manufacturingCompanyList" required>
@@ -136,7 +134,6 @@
                      aria-label="Manufacturing Country"
                      matInput
                      formControlName="manufacturingCountry"
-                     (blur)="checkValue('manufacturingCountry', formData.manufacturingCountryList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : legacyStatus? productFlags && !productFlags.manufacturingCountry ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
                      [matAutocomplete]="manufacturingCountryList" required>
               <mat-autocomplete #manufacturingCountryList="matAutocomplete">
@@ -191,7 +188,6 @@
                      aria-label="License Holder"
                      matInput
                      formControlName="licenseHolder"
-                     (blur)="checkValue('licenseHolder', formData.licenseHolderList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : legacyStatus? productFlags && !productFlags.licenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.licenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderList" required>
               <mat-autocomplete #licenseHolderList="matAutocomplete">
@@ -236,7 +232,6 @@
                      aria-label="Country of License Holder"
                      matInput
                      formControlName="countryOfLicenseHolder"
-                     (blur)="checkValue('countryOfLicenseHolder', formData.licenseHolderCountryList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : legacyStatus? productFlags && !productFlags.countryOfLicenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.countryOfLicenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderCountryList" required>
               <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
@@ -272,7 +267,6 @@
                      aria-label="Storage Place"
                      matInput
                      formControlName="storagePlace"
-                     (blur)="checkValue('storagePlace', formData.storagePlaceList, regKitForAllRequestedType)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
                      [matAutocomplete]="storagePlaceList"
                      [required]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
