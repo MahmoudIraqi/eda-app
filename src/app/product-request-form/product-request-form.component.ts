@@ -576,7 +576,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
-
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -877,6 +876,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmitForPackagingForm() {
+    const data = this.regPackagingForProduct.value;
+    data.unitOfMeasure = this.checkControllerValueWithListForPackaginArray(this.formData.unitOfMeasureList, 'unitOfMeasure', data.unitOfMeasure);
+    data.typeOfPackaging = this.checkControllerValueWithListForPackaginArray(this.formData.typeOfPackagingList, 'typeOfPackaging', data.typeOfPackaging);
+
     if (this.regPackagingForProduct.valid) {
       if (!this.editPackagingIndex && this.editPackagingIndex !== 0) {
         this.regProductForAllRequestedType.value.packagingTable.push({...this.regPackagingForProduct.value});
@@ -897,6 +900,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmitForDetailedForm() {
+    const data = this.regDetailedForProduct.value;
+    data.ingrediantDetails.map((option, index) => {
+      option.ingrediant = this.checkControllerValueWithListForDetailsArray(this.formData.ingrediantList, 'ingrediant', option.ingrediant, index);
+      option.function = this.checkControllerValueWithListForDetailsArray(this.formData.functionList, 'function', option.function, index);
+    });
+
     if (this.regDetailedForProduct.valid) {
       if (!this.editIndex && this.editIndex !== 0) {
         this.regProductForAllRequestedType.value.detailsTable.push({...this.regDetailedForProduct.value});
@@ -1129,15 +1138,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   convertAllNamingToId(data) {
-    this.formData.productColorList.filter(option => option.NAME === data.productColor).map(x => data.productColor = x.ID);
-    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
-    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
-    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
-    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
-    this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
-    this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
-    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+    data.productColor = this.checkControllerValueWithList(this.formData.productColorList, 'productColor', data.productColor);
+    data.manufacturingCompany = this.checkControllerValueWithList(this.formData.manufacturingCompanyList, 'manufacturingCompany', data.manufacturingCompany);
+    data.manufacturingCountry = this.checkControllerValueWithList(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
+    data.applicant = this.checkControllerValueWithList(this.formData.applicantList, 'applicant', data.applicant);
+    data.licenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderList, 'licenseHolder', data.licenseHolder);
+    data.countryOfLicenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderCountryList, 'countryOfLicenseHolder', data.countryOfLicenseHolder);
+    data.physicalState = this.checkControllerValueWithList(this.formData.physicalStateList, 'physicalState', data.physicalState);
+    data.purposeOfUse = this.checkControllerValueWithList(this.formData.purposeOfUseList, 'purposeOfUse', data.purposeOfUse);
+    data.storagePlace = this.checkControllerValueWithList(this.formData.storagePlaceList, 'storagePlace', data.storagePlace);
 
     data.packagingTable.map(x => {
       this.formData.unitOfMeasureList.filter(option => option.NAME === x.unitOfMeasure).map(item => x.unitOfMeasure = item.ID);
@@ -1271,12 +1280,52 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   checkValue(formControl, list, form) {
-    if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
+    if (list.filter(x => x.NAME.includes(form.get(formControl).value)).length === 0) {
       form.get(formControl).setValue(null);
     }
   }
 
   handleError(error) {
     this.errorMessageForAttachment.emit(error);
+  }
+
+  checkControllerValueWithList(list, formControlKey, formControlValue) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.ID;
+      });
+    } else {
+      this.regProductForAllRequestedType.get(formControlKey).patchValue('');
+      value = '';
+    }
+    return value;
+  }
+
+  checkControllerValueWithListForPackaginArray(list, formControlKey, formControlValue) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.NAME;
+      });
+    } else {
+      this.regPackagingForProduct.get(formControlKey).patchValue('');
+      value = '';
+    }
+    return value;
+  }
+
+  checkControllerValueWithListForDetailsArray(list, formControlKey, formControlValue, ingrediantIndex) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.NAME;
+      });
+    } else {
+      this.IngrediantDetailsRows().controls[ingrediantIndex].get(formControlKey).patchValue('');
+
+      value = '';
+    }
+    return value;
   }
 }
