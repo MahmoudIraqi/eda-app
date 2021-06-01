@@ -768,7 +768,7 @@
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td>{{request.NotificationNo}}</td>
+                          <td>{{request.NotificationNo ? request.NotificationNo : request.id}}</td>
                           <td>{{request.productEnglishName}}</td>
                           <td>{{request.manufacturingCompany}}</td>
                           <td>{{request.manufacturingCountry}}</td>

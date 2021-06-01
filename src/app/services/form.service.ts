@@ -136,7 +136,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/manufactorycompany?pagesize=100&pageNo=${page}&searchname=${filterText}`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/manufactorycompany?pagesize=10000&pageNo=${page}&searchname=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -220,7 +220,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients?pagesize=100&pageNo=${page}&searchname=${filterText}`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients?pagesize=10000&pageNo=${page}&searchname=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

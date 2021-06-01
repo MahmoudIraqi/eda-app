@@ -386,6 +386,10 @@
             <div class="row">
               <div class="col-12 p-0">
                 <div formArrayName="ProductsForKit" class="detailsTable">
+                  <div class="hintForEmptyObject"
+                       *ngIf="allProductsInKit.tableBody.length === 0 && attachmentRequiredStatus">
+                    <h5>** Please add Product in kit</h5>
+                  </div>
                   <div class="col-12">
                     <div *ngFor="let row of ProductGroupsRows().controls; let i=index" [formGroupName]="i">
                       <div class="getProductArea" *ngIf="ProductGroupsRows().controls.length -1 === i">
@@ -455,10 +459,11 @@
                       <app-title [title]="'Kit Products Table'" [smallTitle]="true"></app-title>
                     </div>
                     <div class="col-12 mt-5">
-                      <div class="RequestingTable">
+                      <div class="RequestingTableForKit">
                         <app-table-list [data]="allProductsInKit"
                                         [whichTable]="'productsKitList'"
-                                        (removeProductFromKit)="deletedProductsIdsList($event); removeProductsGroupRows($event);"
+                                        (removeProductFromKit)="editData && editData.isDraft=== 1 ? deletedProductsIdsList($event):null"
+                                        (removeProductFromKit)="editData && editData.isDraft=== 1 ? removeProductsGroupRows($event):null"
                         ></app-table-list>
                       </div>
                     </div>
@@ -495,7 +500,7 @@
                        [required]="field.required ? 'required' : ''">
                 <div class="d-flex alert alert-danger"
                      *ngIf="(regKitForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
-                  <div *ngIf="field.attachmentTypeStatus === 'No'">
+                  <div class="ml-auto" *ngIf="field.attachmentTypeStatus === 'No'">
                     this file must be as PDF
                   </div>
                   <div class="ml-auto"

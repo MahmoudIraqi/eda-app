@@ -440,6 +440,31 @@ body {
   width: 15%;
 }
 
+
+.RequestingTableForKit .table .headerRow th:first-child, .RequestingTableForKit .table td:first-child {
+  width: 15%;
+}
+
+.RequestingTableForKit .table .headerRow th:nth-child(2), .RequestingTableForKit .table td:nth-child(2) {
+  width: 15%;
+}
+
+.RequestingTableForKit .table .headerRow th:nth-child(3), .RequestingTableForKit .table td:nth-child(3) {
+  width: 20%;
+}
+
+.RequestingTableForKit .table .headerRow th:nth-child(4), .RequestingTableForKit .table td:nth-child(4) {
+  width: 20%;
+}
+
+.RequestingTableForKit .table .headerRow th:nth-child(5), .RequestingTableForKit .table td:nth-child(5) {
+  width: 15%;
+}
+
+.RequestingTableForKit .table .headerRow th:nth-child(6), .RequestingTableForKit .table td:nth-child(6) {
+  width: 5%;
+}
+
 .insidePanelHeader {
   border-bottom: 0px !important;
 }
@@ -539,11 +564,11 @@ body {
   min-width: 260px !important;
 }
 
-.modal-header{
+.modal-header {
   background: rgba(28, 39, 65, 1);
 }
 
-.modal-header h4, .modal-header .close{
+.modal-header h4, .modal-header .close {
   color: #c28a30;
   margin-bottom: 0;
   font-size: 19px;

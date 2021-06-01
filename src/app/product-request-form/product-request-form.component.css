@@ -55,6 +55,7 @@ input:active, input:focus {
   top: -25px;
   width: 350px;
   text-align: right;
+  background: #fff;
 }
 
 .custom-file.required .custom-file-label {

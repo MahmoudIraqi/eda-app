@@ -352,7 +352,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   status;
   allProductsInKit = {
-    tableHeader: ['Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
+    tableHeader: ['Notification/Request Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
     tableBody: []
   };
   editDetailedRowStatus = false;
@@ -749,7 +749,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       ...this.objectForListOfVariationGroup
     };
 
-    if (this.regKitForAllRequestedType.valid) {
+    if (this.regKitForAllRequestedType.valid && this.allProductsInKit.tableBody.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
       this.errorMessage.emit('true');
@@ -964,6 +964,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   removeProductsGroupRows(index) {
     this.ProductGroupsRows().removeAt(index);
     this.allProductsInKit.tableBody.splice(index, 1);
+
+    if (this.ProductGroupsRows().value.length === 0) {
+      this.addProductsGroupRows();
+    }
   }
 
   deletedProductsIdsList(index) {
@@ -1056,6 +1060,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       });
 
       data.receiptValue === 0 ? this.regKitForAllRequestedType.get('receiptValue').patchValue('') : null;
+
+      // thi
     } else {
       this.regKitForAllRequestedType = this.fb.group({
         productColor: this.fb.control(''),

@@ -51,6 +51,7 @@ form > .row > div:nth-child(n + 4) {
   top: -25px;
   width: 350px;
   text-align: right;
+  background: #fff;
 }
 
 .custom-file.required .custom-file-label {
@@ -73,6 +74,14 @@ form > .row > div:nth-child(n + 4) {
   border: none;
   text-align: center;
   font-size: 14px;
+}
+
+.hintForEmptyObject h5 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f00;
+  text-decoration: underline;
+  margin-top: 1em;
 }
 
 /*  ------------------------------ Short Name Field Container --------------- */
