@@ -10,6 +10,8 @@ import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 export class DraftRequestComponent implements OnInit {
 
   draftListRequests;
+  alertNotificationStatus: boolean = false;
+  alertNotification: any;
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
@@ -28,13 +30,7 @@ export class DraftRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.getService.getDraftRequestsList().subscribe((res: any) => {
-      this.draftListRequests = {
-        tableHeader: ['Request Number', 'Saved date', 'Type Of License', 'Product English name', 'Product Arabic name', 'Track Type', 'Action'],
-        tableBody: res
-      };
-      this.isLoading = false;
-    }, error => this.handleError(error));
+    this.getDraftProductsList();
   }
 
   handleError(message) {
@@ -56,11 +52,41 @@ export class DraftRequestComponent implements OnInit {
   }
 
   removeProduct() {
-    console.log('this.modalRequestObject', this.modalRequestId);
-
+    this.isLoading = true;
     this.getService.deleteDraftProductRequest(this.modalRequestId).subscribe(res => {
-      console.log('res', res);
+
+      if (res) {
+        this.isLoading = false;
+        this.modalRef.hide();
+
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.onClosed();
+
+        this.getDraftProductsList();
+
+      }
     }, error => this.handleError(error));
+  }
+
+  getDraftProductsList() {
+    this.getService.getDraftRequestsList().subscribe((res: any) => {
+      this.draftListRequests = {
+        tableHeader: ['Request Number', 'Saved date', 'Type Of License', 'Product English name', 'Product Arabic name', 'Track Type', 'Action'],
+        tableBody: res
+      };
+      this.isLoading = false;
+    }, error => this.handleError(error));
+  }
+
+  alertForSubmitRequest() {
+    return {msg: 'You had a successful Delete'};
+  }
+
+  onClosed() {
+    setTimeout(() => {
+      this.alertNotificationStatus = false;
+    }, 2000);
   }
 
 }

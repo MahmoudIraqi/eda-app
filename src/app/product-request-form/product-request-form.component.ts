@@ -1208,7 +1208,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       // console.log('y', y);
       if (y.length === 0) {
         this.IngrediantDetailsRows().controls.map((x) => {
-          console.log('x[controls][field].dirty', x['controls'][field].dirty);
           if (x['controls'][field].dirty) {
             x['controls'][field].setValue(null);
           }

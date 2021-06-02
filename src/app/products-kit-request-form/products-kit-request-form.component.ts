@@ -1049,8 +1049,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         });
       }) : null;
 
-      console.log('attachmentFieldsForKits', this.attachmentFieldsForKits);
-
       this.regKitForAllRequestedType.patchValue({
         ...data
       });
