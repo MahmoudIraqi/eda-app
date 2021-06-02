@@ -743,6 +743,19 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  deleteDraftProductRequest(requestId) {
+    debugger;
+    const headers = new HttpHeaders({
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.delete(`${this.apiBaseUrl}Product/DeleteByRequestId?requestId=${requestId}`, options).pipe(map((res: any) => {
+        return res;
+      }),
+      catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 401) {
       this.isLoggedIn = false;

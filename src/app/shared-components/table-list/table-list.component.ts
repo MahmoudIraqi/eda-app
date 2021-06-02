@@ -64,6 +64,7 @@ export class TableListComponent implements OnInit, OnChanges {
   @Output() seenNotification = new EventEmitter();
   @Output() editProductInInvoicesRows = new EventEmitter();
   @Output() removeProductInInvoicesRows = new EventEmitter();
+  @Output() removeDraftProduct = new EventEmitter();
 
   contentArray = [];
   returnedArray: string[];
@@ -285,11 +286,13 @@ export class TableListComponent implements OnInit, OnChanges {
       this.router.navigate([`/legacy-form/${Number(request.oldProductID)}`]);
     } else if (editFrom === 'legacy') {
       this.router.navigate([`/legacy-form/${Number(request.OLD_PRODUCT_ID)}`]);
+    } else if (editFrom === 'approved-product') {
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}`]);
     }
+  }
 
-    // else if (editFrom === 'approved-product') {
-    //   this.router.navigate([`/new-request/registration/${Number(request.ID)}`]);
-    // }
+  deleteProduct(request) {
+    this.removeDraftProduct.emit(Number(request.ID));
   }
 
   pageChanged(event: PageChangedEvent): void {

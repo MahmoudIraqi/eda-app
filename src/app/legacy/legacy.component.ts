@@ -175,7 +175,6 @@ export class LegacyComponent implements OnInit {
   }
 
   onSubmit(event) {
-    debugger
     this.isLoading = true;
     const newData = {
       ...this.productData,

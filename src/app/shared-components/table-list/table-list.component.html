@@ -407,7 +407,14 @@
                             <td class="hide">{{request.NameEN}}</td>
                             <td class="hide">{{request.NameAR}}</td>
                             <td class="hide">{{request.Track_type}}</td>
-                            <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
+                            <td>
+                              <span (click)="editProduct(request)">
+                                <i class="fa fa-edit"></i>
+                              </span>
+                              <span class="ml-2" (click)="deleteProduct(request)">
+                                <i class="fa fa-trash"></i>
+                              </span>
+                            </td>
                           </tr>
                         </table>
                       </div>

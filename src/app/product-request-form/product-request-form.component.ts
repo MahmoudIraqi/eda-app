@@ -1121,7 +1121,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterLookupsFunction(whichLookup, formControlValue, list) {
-    debugger;
     if (formControlValue) {
       return formControlValue.valueChanges
         .pipe(
@@ -1202,7 +1201,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   private _subscribeToClosingActionsForDetailsFormArray(field, list): void {
-    debugger;
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }

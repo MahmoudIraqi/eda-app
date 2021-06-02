@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormService} from '../services/form.service';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-draft-request',
@@ -12,8 +13,17 @@ export class DraftRequestComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
+  @ViewChild('deleteModal') modalDeletedTemplate: TemplateRef<any>;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-xl packagingModal',
+  };
+  modalRequestId: any;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService,
+              private modalService: BsModalService) {
   }
 
   ngOnInit(): void {
@@ -37,6 +47,20 @@ export class DraftRequestComponent implements OnInit {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  openDeleteModal(event) {
+    this.modalRef = this.modalService.show(this.modalDeletedTemplate, this.modalOptions);
+
+    this.modalRequestId = event;
+  }
+
+  removeProduct() {
+    console.log('this.modalRequestObject', this.modalRequestId);
+
+    this.getService.deleteDraftProductRequest(this.modalRequestId).subscribe(res => {
+      console.log('res', res);
+    }, error => this.handleError(error));
   }
 
 }
