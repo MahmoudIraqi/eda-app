@@ -20,7 +20,7 @@ export class DraftRequestComponent implements OnInit {
     this.isLoading = true;
     this.getService.getDraftRequestsList().subscribe((res: any) => {
       this.draftListRequests = {
-        tableHeader: ['Request Number', 'Saved date', 'Type of notification', 'Product English name', 'Product Arabic name', 'Track Type', 'Action'],
+        tableHeader: ['Request Number', 'Saved date', 'Type Of License', 'Product English name', 'Product Arabic name', 'Track Type', 'Action'],
         tableBody: res
       };
       this.isLoading = false;

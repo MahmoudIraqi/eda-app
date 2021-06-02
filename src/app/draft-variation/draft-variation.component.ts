@@ -24,7 +24,7 @@ export class DraftVariationComponent implements OnInit {
 
     this.getService.getDraftVariationProductsList(this.whichVariation).subscribe((res: any) => {
       this.draftVariationListRequests = {
-        tableHeader: ['Notification No', 'Saved date', 'Type of notification', 'Product English name', 'Product Arabic name', 'Status'],
+        tableHeader: ['Notification No', 'Saved date', 'Type Of License', 'Product English name', 'Product Arabic name', 'Status'],
         tableBody: res
       };
       this.isLoading = false;

@@ -1054,7 +1054,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     } else {
       this.regPackagingForProduct = this.fb.group({
         volumesID: this.fb.control(''),
-        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
         unitOfMeasure: this.fb.control('', Validators.required),
         typeOfPackaging: this.fb.control('', Validators.required),
         packagingDescription: this.fb.control(''),
@@ -1076,7 +1076,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         ingrediantDetails: this.fb.array([this.fb.group({
           Ingredient_ID: this.fb.control(''),
           ingrediant: this.fb.control('', Validators.required),
-          concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+          concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
           function: this.fb.control('', Validators.required),
         })])
       });

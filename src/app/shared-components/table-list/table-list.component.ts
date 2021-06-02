@@ -43,7 +43,7 @@ export class TableListComponent implements OnInit, OnChanges {
     'Batch Number': 'batchNumber',
     'Production Date': 'productionDate',
     'Expiration Date': 'expirationDate',
-    'Type of notification': 'productTypeName',
+    'Type Of License': 'productTypeName',
   };
   sortStatus = false;
   alertNotificationStatus: boolean = false;
