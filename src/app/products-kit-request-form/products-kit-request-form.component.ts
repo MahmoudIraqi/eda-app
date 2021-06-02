@@ -38,6 +38,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Input() selectedIsExport;
   @Input() selectedTrackType;
   @Input() successSubmission;
+  @Input() approvedStatus;
   @Input() editData;
   @Input() whichVariation;
   @Input() editFromWhere;

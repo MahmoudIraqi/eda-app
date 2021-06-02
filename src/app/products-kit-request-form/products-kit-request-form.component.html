@@ -540,13 +540,14 @@
         </button>
         <button type="button"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
-                *ngIf="!reRegistrationStatus"
+                *ngIf="!approvedStatus && !reRegistrationStatus"
                 [disabled]="!disabledSaveButton"
                 (click)="saveData()">
           Save
         </button>
         <button
           type="submit"
+          *ngIf="!approvedStatus"
           class="btn btn-primary btn-sm">
           <span *ngIf="!reRegistrationStatus">Submit</span>
           <span *ngIf="reRegistrationStatus">Re-Notification Product</span>

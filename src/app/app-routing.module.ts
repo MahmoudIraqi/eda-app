@@ -40,7 +40,7 @@ const routes: Routes = [
         path: 'new-request', component: NewRequestContainerComponent,
         children: [
           {path: 'registration', component: NewRequestComponent, data: {animation: 'new-request'}},
-          {path: 'registration/:id', component: NewRequestComponent, data: {animation: 'new-request'}},
+          {path: 'registration/:id/:typeOfProcess', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do_variation', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do_variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},

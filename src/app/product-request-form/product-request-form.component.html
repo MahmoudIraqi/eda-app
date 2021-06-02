@@ -681,7 +681,7 @@
           Next Forward
         </button>
         <button type="button"
-                *ngIf="!reRegistrationStatus"
+                *ngIf="!approvedStatus && !reRegistrationStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
                 [disabled]="!disabledSaveButton || (editData && editData.isCompleted)"
                 (click)="saveData()">
@@ -689,6 +689,7 @@
         </button>
         <button
           type="submit"
+          *ngIf="!approvedStatus"
           class="btn btn-primary btn-sm">
           <span
             *ngIf="!kitProductStatus && !reRegistrationStatus">Submit</span>

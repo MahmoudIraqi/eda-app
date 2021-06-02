@@ -41,6 +41,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() selectedTrackType;
   @Input() selectedIsExport;
   @Input() successSubmission;
+  @Input() approvedStatus;
   @Input() editData;
   @Input() editFromWhere;
   @Input() getAllLookupsStatus;
@@ -559,6 +560,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.setApplicant(this.companyProfile);
 
     this.getDisabledValues();
+
+    console.log('approvedStatus', this.approvedStatus);
   }
 
   ngOnInit(): void {

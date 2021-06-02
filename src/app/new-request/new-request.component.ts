@@ -55,6 +55,7 @@ export class NewRequestComponent implements OnInit {
   saveResponseDataForRegisterColorantProduct;
   saveResponseDataForRegisterColorantKitProduct;
   productId;
+  typeOfProcess;
   updatingProductData: any;
   requestId;
   estimatedValue;
@@ -97,6 +98,7 @@ export class NewRequestComponent implements OnInit {
 
 
     this.productId = this.route.snapshot.paramMap.get('id');
+    this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
     this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
       this.formData.formType = res;
       if (res) {
@@ -148,6 +150,7 @@ export class NewRequestComponent implements OnInit {
                                 this.isLoading = false;
 
                                 this.productId = this.route.snapshot.paramMap.get('id');
+                                this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
                                 if (this.productId) {
                                   this.isLoading = true;
                                   if (!this.getDraftProductData) {
