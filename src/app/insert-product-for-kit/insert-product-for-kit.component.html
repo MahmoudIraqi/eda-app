@@ -1,0 +1,57 @@
+<div class="row p-0 mt-4">
+  <div class="col-6 col-sm-6">
+    <mat-form-field appearance="fill">
+      <mat-label>Product Status</mat-label>
+      <mat-select [(ngModel)]="productStatusField" *ngIf="lookupsData"
+                  [disabled]="disabledStatusForField">
+        <mat-option *ngFor='let type of lookupsData.productStatusList' [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-12 col-sm-6"
+       *ngIf="productStatusField === 'Registered'">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field class="example-full-width">
+          <mat-label>Product Notification Number</mat-label>
+          <input type="text" class="form-control" matInput
+                 [(ngModel)]="notificationNoField"
+                 placeholder="">
+        </mat-form-field>
+      </div>
+      <div class="col-6 d-flex">
+        <button type="button"
+                class="btn btn-primary ml-auto mt-sm-3"
+                [disabled]="!notificationNoField"
+                (click)="applyProduct(productStatusField, notificationNoField)">
+          Apply Product
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6"
+       *ngIf="productStatusField === 'New'">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="fill">
+          <mat-label>Products List</mat-label>
+          <mat-select [(ngModel)]="requestIdField" required>
+            <mat-option *ngFor="let option of lookupForProductIds" [value]="option.ID">
+              {{option.NAME}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-6 d-flex">
+        <button type="button"
+                class="btn btn-primary ml-auto mt-sm-3"
+                [disabled]="!requestIdField"
+                (click)="applyProduct(productStatusField, requestIdField)">
+          Apply Product
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

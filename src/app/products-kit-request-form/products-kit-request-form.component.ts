@@ -380,8 +380,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   requestId;
   attachmentRequiredStatus: boolean = false;
   isDraft: boolean = false;
+  appliedProductStatus: boolean = false;
   deletedProductIdLists = [];
   objectForListOfVariationGroup: any;
+  lookupForProductIdsInputForChildComponents;
+  productStatusField;
+  notificationNoField;
+  requestIdField;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -599,11 +604,15 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       }
     ];
 
-    this.getFormAsStarting(this.editData);
+    if (this.editData) {
+      this.getFormAsStarting(this.editData);
+    }
 
     this.setApplicant(this.companyProfile);
 
     this.getDisabledValues();
+
+    this.lookupForProductIdsInputForChildComponents = this.lookupForProductIds;
   }
 
   ngOnInit(): void {
@@ -616,6 +625,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
 
     this.regKitForAllRequestedType.valueChanges.subscribe(x => {
+      debugger;
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -695,14 +705,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }
   }
 
-  onFileSelectFromDetailsProductForKit(event, fileControlName, index) {
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.ProductGroupsRows().at(index).get(fileControlName).setValue(file);
-    }
-  }
-
   nextToNextTab(whichTabs) {
     let activeTabIndex;
     if (whichTabs === 'FormTabs') {
@@ -727,7 +729,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   saveData() {
-    this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
     const newObjectForData = {
@@ -741,7 +742,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   onSubmit() {
     this.attachmentRequiredStatus = true;
-    this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
 
     const newObjectForData = {
@@ -883,96 +883,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }
   }
 
-  ProductGroupsRows(): FormArray {
-    return this.regKitForAllRequestedType.get('ProductsForKit') as FormArray;
-  }
-
-  addProductsGroupRows() {
-    this.editDetailedRowStatus = false;
-    this.selectedKitProductsStatus = '';
-    this.ProductGroupsRows().push(this.fb.group({
-      productStatus: this.fb.control(''),
-      NotificationNo: this.fb.control(''),
-      productID: this.fb.control(''),
-      productDetails: this.fb.group({
-        id: 0,
-        productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control(''),
-        shortName: this.fb.array([this.fb.control('')]),
-        manufacturingCompany: this.fb.control(null),
-        manufacturingCountry: this.fb.control(''),
-        applicant: this.fb.control(''),
-        licenseHolder: this.fb.control(''),
-        licenseHolderTxt: this.fb.control(''),
-        countryOfLicenseHolder: this.fb.control(''),
-        tradeMark: this.fb.control(''),
-        physicalState: this.fb.control(''),
-        physicalStateTxt: this.fb.control(''),
-        purposeOfUse: this.fb.control(''),
-        purposeOfUseTxt: this.fb.control(''),
-        storagePlace: this.fb.control(''),
-        shelfLife: this.fb.control(0),
-        receiptNumber: this.fb.control(''),
-        receiptValue: this.fb.control(''),
-        packagingTable: this.fb.array([this.fb.group({
-          volumesID: this.fb.control(''),
-          volumes: this.fb.control(''),
-          unitOfMeasure: this.fb.control(''),
-          typeOfPackaging: this.fb.control(''),
-          packagingDescription: this.fb.control(''),
-        })]),
-        detailsTable: this.fb.array([this.fb.group({
-          DetailsID: this.fb.control(''),
-          PRODUCT_ID: this.fb.control(''),
-          colour: this.fb.control(''),
-          fragrance: this.fb.control(''),
-          flavor: this.fb.control(''),
-          barCode: this.fb.control(''),
-          ingrediantDetails: this.fb.array([this.fb.group({
-            Ingredient_ID: this.fb.control(''),
-            ingrediant: this.fb.control(''),
-            concentrations: this.fb.control(''),
-            function: this.fb.control(''),
-          })])
-        })]),
-        deletedIngredientsIds: this.fb.control(null),
-        deletedProductDetailsIds: this.fb.control(null),
-        deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control(''),
-        GMP: this.fb.control(''),
-        CoA: this.fb.control(''),
-        artWork: this.fb.control(''),
-        leaflet: this.fb.control(''),
-        reference: this.fb.control(''),
-        methodOfAnalysis: this.fb.control(''),
-        specificationsOfFinishedProduct: this.fb.control(''),
-        receipt: this.fb.control(''),
-        authorizationLetter: this.fb.control(''),
-        manufacturingContract: this.fb.control(''),
-        storageContract: this.fb.control(''),
-        factoryLicense: this.fb.control(''),
-        manufacturingAssignment: this.fb.control(''),
-        commercialRecord: this.fb.control(''),
-        stabilityStudy: this.fb.control(''),
-        shelfLifeAttachment: this.fb.control(''),
-        letterOfVariationFromLicenseHolder: this.fb.control(''),
-        others: this.fb.control(''),
-        otherFees: this.fb.control(''),
-      })
-    }));
-  }
-
   removeProductsGroupRows(index) {
-    this.ProductGroupsRows().removeAt(index);
+    this.regKitForAllRequestedType.get('ProductsForKit').value.splice(index, 1);
     this.allProductsInKit.tableBody.splice(index, 1);
-
-    if (this.ProductGroupsRows().value.length === 0) {
-      this.addProductsGroupRows();
-    }
   }
 
   deletedProductsIdsList(index) {
-    this.deletedProductIdLists.push(this.ProductGroupsRows().controls[index].value.productDetails.id);
+    this.deletedProductIdLists.push(this.regKitForAllRequestedType.get('ProductsForKit').value[index].productDetails.id);
     this.regKitForAllRequestedType.get('deletedProductIdLists').patchValue(this.deletedProductIdLists);
   }
 
@@ -984,13 +901,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           this.addShortName();
         }
       });
-      if (this.editFromWhere) {
-        data.ProductsForKit.length > 0 ? data.ProductsForKit.map((x, i) => {
-          if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
-            this.addProductsGroupRows();
-          }
-        }) : data.ProductsForKit = [];
-      }
 
       this.allProductsInKit.tableBody = [];
       data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
@@ -1060,6 +970,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       data.receiptValue === 0 ? this.regKitForAllRequestedType.get('receiptValue').patchValue('') : null;
 
+      console.log('567567', this.regKitForAllRequestedType.value);
       // thi
     } else {
       this.regKitForAllRequestedType = this.fb.group({
@@ -1079,77 +990,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
         receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
-        ProductsForKit: this.fb.array([this.fb.group({
-          productStatus: this.fb.control(''),
-          NotificationNo: this.fb.control(''),
-          productID: this.fb.control(''),
-          productDetails: this.fb.group({
-            productColor: this.fb.control(''),
-            id: 0,
-            productArabicName: this.fb.control(''),
-            productEnglishName: this.fb.control(''),
-            shortName: this.fb.array([this.fb.control('')]),
-            manufacturingCompany: this.fb.control(null),
-            manufacturingCountry: this.fb.control(''),
-            applicant: this.fb.control(''),
-            licenseHolder: this.fb.control(''),
-            licenseHolderTxt: this.fb.control(''),
-            countryOfLicenseHolder: this.fb.control(''),
-            tradeMark: this.fb.control(''),
-            physicalState: this.fb.control(''),
-            physicalStateTxt: this.fb.control(''),
-            purposeOfUse: this.fb.control(''),
-            purposeOfUseTxt: this.fb.control(''),
-            storagePlace: this.fb.control(''),
-            shelfLife: this.fb.control(0),
-            receiptNumber: this.fb.control(''),
-            receiptValue: this.fb.control(''),
-            packagingTable: this.fb.array([this.fb.group({
-              volumesID: this.fb.control(''),
-              volumes: this.fb.control(''),
-              unitOfMeasure: this.fb.control(''),
-              typeOfPackaging: this.fb.control(''),
-              packagingDescription: this.fb.control(''),
-            })]),
-            detailsTable: this.fb.array([this.fb.group({
-              DetailsID: this.fb.control(''),
-              PRODUCT_ID: this.fb.control(''),
-              colour: this.fb.control(''),
-              fragrance: this.fb.control(''),
-              flavor: this.fb.control(''),
-              barCode: this.fb.control(''),
-              ingrediantDetails: this.fb.array([this.fb.group({
-                Ingredient_ID: this.fb.control(''),
-                ingrediant: this.fb.control(''),
-                concentrations: this.fb.control(''),
-                function: this.fb.control(''),
-              })])
-            })]),
-            deletedIngredientsIds: this.fb.control(null),
-            deletedProductDetailsIds: this.fb.control(null),
-            deletedpacklstIds: this.fb.control(null),
-            freeSale: this.fb.control(''),
-            GMP: this.fb.control(''),
-            CoA: this.fb.control(''),
-            artWork: this.fb.control(''),
-            leaflet: this.fb.control(''),
-            reference: this.fb.control(''),
-            methodOfAnalysis: this.fb.control(''),
-            specificationsOfFinishedProduct: this.fb.control(''),
-            receipt: this.fb.control(''),
-            authorizationLetter: this.fb.control(''),
-            manufacturingContract: this.fb.control(''),
-            storageContract: this.fb.control(''),
-            factoryLicense: this.fb.control(''),
-            manufacturingAssignment: this.fb.control(''),
-            commercialRecord: this.fb.control(''),
-            stabilityStudy: this.fb.control(''),
-            shelfLifeAttachment: this.fb.control(''),
-            letterOfVariationFromLicenseHolder: this.fb.control(''),
-            others: this.fb.control(''),
-            otherFees: this.fb.control(''),
-          })
-        })]),
+        ProductsForKit: this.fb.control([]),
         deletedProductIdLists: this.fb.control(null),
         freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
@@ -1184,17 +1025,17 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.editIndex = event;
   }
 
-  applyProduct(data, status, index) {
-    if (status === 'registered') {
+  applyProduct(event) {
+    if (event.status === 'Registered') {
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo, 'kit').subscribe((res: any) => {
+      this.appliedProductStatus = false;
+      this.getServices.getProductWithNotificationNumberList(event.notificationNumberOrId, 'kit').subscribe((res: any) => {
         if (res) {
           if (res.canUse) {
             const objectData = {
               ...res
             };
 
-            this.ProductGroupsRows().value[index].productDetails = res;
             this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
             this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
             this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
@@ -1217,79 +1058,87 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
             }) : null;
 
             this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
-            this.addProductsGroupRows();
+
+
+            const resObject = {
+              productStatus: event.status,
+              NotificationNo: event.status === 'Registered' ? event.notificationNumberOrId : '',
+              productID: event.status === 'New' ? event.notificationNumberOrId : '',
+              productDetails: res
+            };
+
+
+            this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
+
+            console.log('21341234', this.regKitForAllRequestedType.get('ProductsForKit').value);
           } else {
             this.handleError(res.canuseMsg);
           }
         }
 
         this.isLoading = false;
+        this.appliedProductStatus = true;
       }, error => this.handleError(error));
 
-    } else if (status === 'new') {
+    } else if (event.status === 'New') {
       this.isLoading = true;
-      this.getServices.getProductWithProductIDList(data.value.productID, 'kit').subscribe((res: any) => {
+      this.appliedProductStatus = false;
+      this.getServices.getProductWithProductIDList(event.notificationNumberOrId, 'kit').subscribe((res: any) => {
         if (res) {
-          // if (res.canUse) {
-          //
-          // } else {
-          //   this.handleError(res.canuseMsg);
-          // }
-          const objectData = {
-            ...res
-          };
+          if (res.canUse) {
+            const objectData = {
+              ...res
+            };
 
-          this.ProductGroupsRows().value[index].productID = res.id;
-          this.ProductGroupsRows().value[index].productDetails = res;
+            this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
+            this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
+            this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
+            this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
+            this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
+            this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
+            this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
+            this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
+            this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
 
-          this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
-          this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
-          this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
-          this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
-          this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
-          this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
-          this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
-          this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
-          this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
+            objectData.packagingTable ? objectData.packagingTable.map(x => {
+              this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+              this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+            }) : null;
+            objectData.detailsTable ? objectData.detailsTable.map(x => {
+              x.ingrediantDetails.map(y => {
+                this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+                this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+              });
+            }) : null;
 
-          objectData.packagingTable ? objectData.packagingTable.map(x => {
-            this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
-            this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-          }) : null;
-          objectData.detailsTable ? objectData.detailsTable.map(x => {
-            x.ingrediantDetails.map(y => {
-              this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
-              this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
-            });
-          }) : null;
+            this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
 
-          this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
-          this.addProductsGroupRows();
+
+            const resObject = {
+              productStatus: event.status,
+              NotificationNo: event.status === 'Registered' ? event.notificationNumberOrId : '',
+              productID: event.status === 'New' ? event.notificationNumberOrId : '',
+              productDetails: res
+            };
+
+
+            this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
+            console.log('21341234', this.regKitForAllRequestedType.get('ProductsForKit').value);
+
+            this.isLoading = false;
+            this.appliedProductStatus = true;
+          } else {
+            this.handleError(res.canuseMsg);
+          }
         }
-
-        this.isLoading = false;
       }, error => this.handleError(error));
     }
+
+    console.log('12341234', this.regKitForAllRequestedType.value);
   }
 
   getProductTypeFromNewProductInKit(event) {
     this.selectedRegisteredProductTypeForProduct = event;
-  }
-
-  getDataForNewProduct(event) {
-    this.ProductGroupsRows().value.filter(x => x.productStatus === 'New').map(y => {
-      y.productDetails = event;
-    });
-
-    const lastRowInArray = this.ProductGroupsRows().value.length - 1;
-    const data = {
-      typeOfMarketing: this.selectedRegisteredProductTypeForProduct,
-      typeOfRegistration: this.selectedRequestedType,
-      trackType: this.selectedTrackType,
-      ...this.ProductGroupsRows().value[lastRowInArray].productDetails
-    };
-
-    this.applyProduct(data, 'new', '');
   }
 
   getDecimalValue(value) {
@@ -1395,6 +1244,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: message};
     this.isLoading = false;
+    this.appliedProductStatus = false;
   }
 
   onClosedErrorAlert() {
@@ -1417,20 +1267,20 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     });
   }
 
-  private _subscribeToClosingActionsForKitProducts(field, list): void {
-    if (this.subscription && !this.subscription.closed) {
-      this.subscription.unsubscribe();
-    }
-    list ? list.subscribe(y => {
-      if (y.length === 0) {
-        this.ProductGroupsRows().controls.map((x) => {
-          if (x['controls'][field].dirty) {
-            x['controls'][field].setValue(null);
-          }
-        });
-      }
-    }) : null;
-  }
+  // private _subscribeToClosingActionsForKitProducts(field, list): void {
+  //   if (this.subscription && !this.subscription.closed) {
+  //     this.subscription.unsubscribe();
+  //   }
+  //   list ? list.subscribe(y => {
+  //     if (y.length === 0) {
+  //       this.ProductGroupsRows().controls.map((x) => {
+  //         if (x['controls'][field].dirty) {
+  //           x['controls'][field].setValue(null);
+  //         }
+  //       });
+  //     }
+  //   }) : null;
+  // }
 
   checkValue(formControl, list, form) {
     if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {

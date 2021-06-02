@@ -492,7 +492,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Product/GetProductByProductID?ID=${productID}`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetProductByProductID?ID=${productID}&type=${typeParameter}`, options)
       .pipe(map((res: any) => {
 
           return res;

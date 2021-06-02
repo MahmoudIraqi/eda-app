@@ -65,6 +65,7 @@ import {LegacyComponent} from './legacy/legacy.component';
 import {LegacyProductsComponent} from './legacy-products/legacy-products.component';
 import {TrackLegacyComponent} from './track-legacy/track-legacy.component';
 import {DraftLegacyComponent} from './draft-legacy/draft-legacy.component';
+import { InsertProductForKitComponent } from './insert-product-for-kit/insert-product-for-kit.component';
 
 
 @NgModule({
@@ -110,6 +111,7 @@ import {DraftLegacyComponent} from './draft-legacy/draft-legacy.component';
     LegacyProductsComponent,
     TrackLegacyComponent,
     DraftLegacyComponent,
+    InsertProductForKitComponent,
   ],
   imports: [
     BrowserModule,
