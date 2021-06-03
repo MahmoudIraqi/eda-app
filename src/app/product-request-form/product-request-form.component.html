@@ -690,14 +690,14 @@
         <button type="button"
                 *ngIf="!approvedStatus && !reRegistrationStatus && !legacyStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
-                [disabled]="!disabledSaveButton || (editData && editData.isCompleted) || !editProcessInTrackedProduct"
+                [disabled]="!disabledSaveButton || (editData && editData.isCompleted) || (trackProductStatus && !editProcessInTrackedProduct)"
                 (click)="saveData()">
           Save
         </button>
         <button
           type="submit"
           *ngIf="!approvedStatus"
-          [disabled]="!editProcessInTrackedProduct"
+          [disabled]="trackProductStatus && !editProcessInTrackedProduct"
           class="btn btn-primary btn-sm">
           <span
             *ngIf="!kitProductStatus && !reRegistrationStatus">Submit</span>

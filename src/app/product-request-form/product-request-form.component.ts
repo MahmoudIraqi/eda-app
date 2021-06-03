@@ -42,6 +42,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() selectedIsExport;
   @Input() successSubmission;
   @Input() approvedStatus;
+  @Input() trackProductStatus;
   @Input() editData;
   @Input() editFromWhere;
   @Input() getAllLookupsStatus;
@@ -361,11 +362,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.setApplicant(this.companyProfile);
 
-    Object.keys(this.editData.productFlags).map(item => {
-      if (this.editData.productFlags[item]) {
-        this.editProcessInTrackedProduct = true;
-      }
-    });
+    if (this.editData && this.editData.productFlags) {
+      Object.keys(this.editData.productFlags).map(item => {
+        if (this.editData.productFlags[item]) {
+          this.editProcessInTrackedProduct = true;
+        }
+      });
+    }
   }
 
   ngOnInit(): void {

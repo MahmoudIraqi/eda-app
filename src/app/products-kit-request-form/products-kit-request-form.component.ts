@@ -39,6 +39,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() approvedStatus;
+  @Input() trackProductStatus;
   @Input() editData;
   @Input() whichVariation;
   @Input() editFromWhere;
@@ -602,21 +603,23 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       }
     ];
 
+    this.getDisabledValues();
+
+    this.lookupForProductIdsInputForChildComponents = this.lookupForProductIds;
+
     if (this.editData) {
       this.getFormAsStarting(this.editData);
     }
 
     this.setApplicant(this.companyProfile);
 
-    this.getDisabledValues();
-
-    this.lookupForProductIdsInputForChildComponents = this.lookupForProductIds;
-
-    Object.keys(this.editData.productFlags).map(item => {
-      if (this.editData.productFlags[item]) {
-        this.editProcessInTrackedProduct = true;
-      }
-    });
+    if (this.editData && this.editData.productFlags) {
+      Object.keys(this.editData.productFlags).map(item => {
+        if (this.editData.productFlags[item]) {
+          this.editProcessInTrackedProduct = true;
+        }
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -630,7 +633,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     this.regKitForAllRequestedType.valueChanges.subscribe(x => {
       for (let i = 0; i < Object.values(x).length; i++) {
-        if (typeof Object.values(x)[i] !== 'object') {
+        if (typeof Object.values(x)[i] !== 'object' && Object.keys(x)[i] !== 'applicant') {
           if (!Object.values(x)[i]) {
             this.disabledSaveButton = false;
           } else {

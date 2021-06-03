@@ -499,18 +499,21 @@
           Next Forward
         </button>
         <button type="button"
+                *ngIf="!approvedStatus && !reRegistrationStatus && !legacyStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
-                *ngIf="!approvedStatus && !reRegistrationStatus"
-                [disabled]="!disabledSaveButton || !editProcessInTrackedProduct"
+                [disabled]="!disabledSaveButton || (trackProductStatus && !editProcessInTrackedProduct)"
                 (click)="saveData()">
           Save
         </button>
         <button
           type="submit"
           *ngIf="!approvedStatus"
-          [disabled]="!editProcessInTrackedProduct"
+          [disabled]="trackProductStatus && !editProcessInTrackedProduct"
           class="btn btn-primary btn-sm">
-          <span *ngIf="!reRegistrationStatus">Submit</span>
+          <span
+            *ngIf="!kitProductStatus && !reRegistrationStatus">Submit</span>
+          <span
+            *ngIf="kitProductStatus">Apply Product</span>
           <span *ngIf="reRegistrationStatus">Re-Notification Product</span>
         </button>
       </div>
