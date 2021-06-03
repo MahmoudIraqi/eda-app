@@ -81,7 +81,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
   };
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -348,7 +348,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
 
     this.attachmentFields = [
       {
-        id: 'freeSale',
+        id: 'freeSaleDoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
@@ -1009,7 +1009,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaleDoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
         artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),

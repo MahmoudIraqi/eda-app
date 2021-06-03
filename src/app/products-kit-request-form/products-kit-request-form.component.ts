@@ -61,7 +61,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   regKitForAllRequestedType: FormGroup;
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
       required: false
@@ -147,7 +147,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   ];
   attachmentFieldsForKits = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -401,7 +401,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     this.attachmentFieldsForKits = [
       {
-        id: 'freeSale',
+        id: 'freeSaleDoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
@@ -993,7 +993,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         ProductsForKit: this.fb.control([]),
         deletedProductIdLists: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaleDoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control('', Validators.required),

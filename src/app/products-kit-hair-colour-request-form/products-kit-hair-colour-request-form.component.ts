@@ -55,7 +55,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   regColourKitForAllRequestedType: FormGroup;
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
       required: false
@@ -141,7 +141,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   ];
   attachmentFieldsForKits = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -396,7 +396,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
     this.attachmentFieldsForKits = [
       {
-        id: 'freeSale',
+        id: 'freeSaleDoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
@@ -934,7 +934,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control(''),
+        freeSaleDoc: this.fb.control(''),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control(''),
@@ -1107,7 +1107,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
             deletedIngredientsIds: this.fb.control(null),
             deletedProductDetailsIds: this.fb.control(null),
             deletedpacklstIds: this.fb.control(null),
-            freeSale: this.fb.control(''),
+            freeSaleDoc: this.fb.control(''),
             GMP: this.fb.control(''),
             CoA: this.fb.control(''),
             artWork: this.fb.control(''),
@@ -1130,7 +1130,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
           })
         })]),
         deletedProductIdLists: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaleDoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control(''),
         artWork: this.fb.control('', Validators.required),

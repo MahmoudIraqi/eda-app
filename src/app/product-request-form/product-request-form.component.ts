@@ -87,7 +87,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   };
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
@@ -831,7 +831,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSale: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaleDoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
         artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
@@ -1169,7 +1169,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   rerenderFileAttachmentList() {
     this.attachmentFields = [
       {
-        id: 'freeSale',
+        id: 'freeSaleDoc',
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
