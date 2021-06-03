@@ -616,9 +616,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="detailsListTable"
                               [whichTable]="'newRequestForDetails'"
-                              (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? removeDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.packagingTable ? null : removeDetailedRows($event)"
-                              (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? deletedDetailedIdsList($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.packagingTable ? null : deletedDetailedIdsList($event)"
-                              (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? editTheDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.packagingTable ? null : editTheDetailedRows($event)"></app-table-list>
+                              (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? removeDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event)"
+                              (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? deletedDetailedIdsList($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event)"
+                              (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? editTheDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event)"></app-table-list>
             </div>
           </div>
         </div>
@@ -690,13 +690,14 @@
         <button type="button"
                 *ngIf="!approvedStatus && !reRegistrationStatus && !legacyStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
-                [disabled]="!disabledSaveButton || (editData && editData.isCompleted)"
+                [disabled]="!disabledSaveButton || (editData && editData.isCompleted) || !editProcessInTrackedProduct"
                 (click)="saveData()">
           Save
         </button>
         <button
           type="submit"
           *ngIf="!approvedStatus"
+          [disabled]="!editProcessInTrackedProduct"
           class="btn btn-primary btn-sm">
           <span
             *ngIf="!kitProductStatus && !reRegistrationStatus">Submit</span>

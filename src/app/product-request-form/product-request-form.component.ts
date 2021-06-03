@@ -333,6 +333,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     keyboard: false,
     class: 'modal-xl packagingModal',
   };
+  editProcessInTrackedProduct: boolean = false;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -359,6 +360,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
+
+    Object.keys(this.editData.productFlags).map(item => {
+      if (this.editData.productFlags[item]) {
+        this.editProcessInTrackedProduct = true;
+      }
+    });
   }
 
   ngOnInit(): void {

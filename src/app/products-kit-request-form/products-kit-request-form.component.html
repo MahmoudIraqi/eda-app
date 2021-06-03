@@ -501,13 +501,14 @@
         <button type="button"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
                 *ngIf="!approvedStatus && !reRegistrationStatus"
-                [disabled]="!disabledSaveButton"
+                [disabled]="!disabledSaveButton || !editProcessInTrackedProduct"
                 (click)="saveData()">
           Save
         </button>
         <button
           type="submit"
           *ngIf="!approvedStatus"
+          [disabled]="!editProcessInTrackedProduct"
           class="btn btn-primary btn-sm">
           <span *ngIf="!reRegistrationStatus">Submit</span>
           <span *ngIf="reRegistrationStatus">Re-Notification Product</span>

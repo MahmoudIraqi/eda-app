@@ -384,9 +384,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   deletedProductIdLists = [];
   objectForListOfVariationGroup: any;
   lookupForProductIdsInputForChildComponents;
-  productStatusField;
-  notificationNoField;
-  requestIdField;
+  editProcessInTrackedProduct: boolean = false;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -613,6 +611,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.getDisabledValues();
 
     this.lookupForProductIdsInputForChildComponents = this.lookupForProductIds;
+
+    Object.keys(this.editData.productFlags).map(item => {
+      if (this.editData.productFlags[item]) {
+        this.editProcessInTrackedProduct = true;
+      }
+    });
   }
 
   ngOnInit(): void {
