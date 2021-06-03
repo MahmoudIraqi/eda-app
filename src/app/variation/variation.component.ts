@@ -215,6 +215,16 @@ export class VariationComponent implements OnInit {
                                     this.selectedTrackType = res.Tracktype;
                                     this.productData = res;
                                     this.typeOfRegistrationForProduct = res.typeOfRegistration;
+
+                                    // if (res.isDraft === 0) {
+                                    //   res.receiptValue = '';
+                                    //   res.receiptNumber = '';
+                                    //   res.receipt = '';
+                                    //   let indexOfReceiptAttachment;
+                                    //   res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
+                                    //   res.productAttachments.splice(indexOfReceiptAttachment, 1);
+                                    // }
+
                                     this.isLoading = false;
                                     this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
                                   }, error => this.handleError(error));
@@ -246,6 +256,14 @@ export class VariationComponent implements OnInit {
         this.productData = res;
         this.typeOfRegistrationForProduct = res.typeOfRegistration;
         this.isLoading = false;
+
+        res.receiptValue = '';
+        res.receiptNumber = '';
+        res.receipt = '';
+        let indexOfReceiptAttachment;
+        res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
+        res.productAttachments.splice(indexOfReceiptAttachment, 1);
+
         this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
       } else {
         this.handleError(res.canuseMsg);

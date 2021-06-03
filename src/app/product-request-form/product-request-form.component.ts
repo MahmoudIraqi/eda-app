@@ -352,216 +352,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.resetForms();
     }
 
-    this.attachmentFields = [
-      {
-        id: 'freeSale',
-        name: 'Free Sale',
-        fileName: '',
-        fileValue: '',
-        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'GMP',
-        name: 'GMP',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'CoA',
-        name: 'CoA',
-        fileName: '',
-        fileValue: '',
-        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'artWork',
-        name: 'Art Work',
-        fileName: '',
-        fileValue: '',
-        required: !this.kitProductStatus ? true : false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'leaflet',
-        name: 'leaflet',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'reference',
-        name: 'reference',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'methodOfAnalysis',
-        name: 'Method of Analysis',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'specificationsOfFinishedProduct',
-        name: 'Specifications of Finished Product',
-        fileName: '',
-        fileValue: '',
-        required: true,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'authorizationLetter',
-        name: 'Authorization Letter',
-        fileName: '',
-        fileValue: '',
-        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'manufacturingContract',
-        name: 'Manufacturing Contract',
-        fileName: '',
-        fileValue: '',
-        required: this.selectedRequestedType === 8 ? true : false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'storageContract',
-        name: 'Storage Contract',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'others',
-        name: 'others',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: true,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'receipt',
-        name: 'receipt',
-        fileName: '',
-        fileValue: '',
-        required: true,
-        enable: !this.legacyStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'otherFees',
-        name: 'otherFees',
-        fileName: '',
-        fileValue: '',
-        required: true,
-        enable: !this.legacyStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'factoryLicense',
-        name: 'Factory license',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'manufacturingAssignment',
-        name: 'Manufacturing Assignment',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'commercialRecord',
-        name: 'Commercial Record',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'stabilityStudy',
-        name: 'Stability study',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'shelfLifeAttachment',
-        name: 'Shelf life',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'letterOfVariationFromLicenseHolder',
-        name: 'letter of variation from license holder',
-        fileName: '',
-        fileValue: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      }
-    ];
+    this.rerenderFileAttachmentList();
+
+    this.getDisabledValues();
 
     this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
-
-    this.getDisabledValues();
-
-    console.log('approvedStatus', this.approvedStatus);
   }
 
   ngOnInit(): void {
@@ -1109,6 +906,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
+      this.rerenderFileAttachmentList();
+
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
 
@@ -1119,6 +918,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           variationGroups: variaionGroupCodeList,
           variationFields: variaionGroupFieldsCodeList,
         };
+      });
+
+      this.enableEditableFields.map(field => {
+
+        this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
+
+        this.attachmentFields.filter(file => file.id === field).length > 0 ?
+          this.attachmentFields.filter(file => file.id === field).map(item => {
+            item.required = true;
+          }) : null;
       });
     }
   }
@@ -1208,7 +1017,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.subscription.unsubscribe();
     }
     list ? list.subscribe(y => {
-      // console.log('y', y);
       if (y.length === 0) {
         this.IngrediantDetailsRows().controls.map((x) => {
           if (x['controls'][field].dirty) {
@@ -1349,5 +1157,210 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant);
     this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction);
+  }
+
+  rerenderFileAttachmentList() {
+    this.attachmentFields = [
+      {
+        id: 'freeSale',
+        name: 'Free Sale',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'GMP',
+        name: 'GMP',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'CoA',
+        name: 'CoA',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'artWork',
+        name: 'Art Work',
+        fileName: '',
+        fileValue: '',
+        required: !this.kitProductStatus ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'leaflet',
+        name: 'leaflet',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'reference',
+        name: 'reference',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'methodOfAnalysis',
+        name: 'Method of Analysis',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'specificationsOfFinishedProduct',
+        name: 'Specifications of Finished Product',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'authorizationLetter',
+        name: 'Authorization Letter',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'manufacturingContract',
+        name: 'Manufacturing Contract',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType === 8 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'storageContract',
+        name: 'Storage Contract',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'others',
+        name: 'others',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: !this.legacyStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'otherFees',
+        name: 'otherFees',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: !this.legacyStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'factoryLicense',
+        name: 'Factory license',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'manufacturingAssignment',
+        name: 'Manufacturing Assignment',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'commercialRecord',
+        name: 'Commercial Record',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'stabilityStudy',
+        name: 'Stability study',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'shelfLifeAttachment',
+        name: 'Shelf life',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'letterOfVariationFromLicenseHolder',
+        name: 'letter of variation from license holder',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      }
+    ];
   }
 }

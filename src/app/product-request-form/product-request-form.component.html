@@ -23,10 +23,15 @@
               <mat-label>Product Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
                      placeholder="Product Name"
+                     [required]="enableEditableFields.includes('productArabicName')? 'required': false"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : legacyStatus? productFlags && !productFlags.productArabicName ? true : false : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
               <div
                 *ngIf="regProductForAllRequestedType.get('productArabicName').invalid && (regProductForAllRequestedType.get('productArabicName').dirty || regProductForAllRequestedType.get('productArabicName').touched)"
                 class="alert alert-danger">
+                <div
+                  *ngIf="regProductForAllRequestedType.get('productArabicName').errors.required">
+                  this field is required
+                </div>
                 <div
                   *ngIf="regProductForAllRequestedType.get('productArabicName').errors.pattern">
                   this field must be in Arabic
@@ -87,6 +92,7 @@
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
+                           [required]="enableEditableFields.includes('shortName')? 'required': false"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
                             [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
@@ -308,6 +314,7 @@
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark"
+                     [required]="enableEditableFields.includes('tradeMark')? 'required': false"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : legacyStatus? productFlags && !productFlags.tradeMark ? true : false : isDraft ? false : productFlags && !productFlags.tradeMark ? true : false">
             </mat-form-field>
           </div>
@@ -426,7 +433,7 @@
                      formControlName="storagePlace"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
                      [matAutocomplete]="storagePlaceList"
-                     [required]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
+                     [required]="enableEditableFields.includes('storagePlace')? 'required': selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
                             [value]="option.NAME">
@@ -681,7 +688,7 @@
           Next Forward
         </button>
         <button type="button"
-                *ngIf="!approvedStatus && !reRegistrationStatus"
+                *ngIf="!approvedStatus && !reRegistrationStatus && !legacyStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
                 [disabled]="!disabledSaveButton || (editData && editData.isCompleted)"
                 (click)="saveData()">

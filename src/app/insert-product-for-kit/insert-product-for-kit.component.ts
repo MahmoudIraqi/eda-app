@@ -27,10 +27,6 @@ export class InsertProductForKitComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-
-    console.log('lookupsData', this.lookupsData);
-    console.log('lookupForProductIds', this.lookupForProductIds);
-
     this.getDisabledValues();
   }
 

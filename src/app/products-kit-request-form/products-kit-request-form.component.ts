@@ -625,7 +625,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
 
     this.regKitForAllRequestedType.valueChanges.subscribe(x => {
-      debugger;
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -969,8 +968,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       });
 
       data.receiptValue === 0 ? this.regKitForAllRequestedType.get('receiptValue').patchValue('') : null;
-
-      console.log('567567', this.regKitForAllRequestedType.value);
       // thi
     } else {
       this.regKitForAllRequestedType = this.fb.group({
@@ -1069,8 +1066,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
 
             this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
-
-            console.log('21341234', this.regKitForAllRequestedType.get('ProductsForKit').value);
           } else {
             this.handleError(res.canuseMsg);
           }
@@ -1123,7 +1118,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
 
             this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
-            console.log('21341234', this.regKitForAllRequestedType.get('ProductsForKit').value);
 
             this.isLoading = false;
             this.appliedProductStatus = true;
@@ -1133,8 +1127,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         }
       }, error => this.handleError(error));
     }
-
-    console.log('12341234', this.regKitForAllRequestedType.value);
   }
 
   getProductTypeFromNewProductInKit(event) {
