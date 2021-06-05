@@ -82,7 +82,6 @@ export class TableListComponent implements OnInit, OnChanges {
       if (this.data.tableBody.length > 0) {
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
           if (this.whichTable !== 'manufacturing' && this.whichTable !== 'batchTable' && this.whichTable !== 'notificationList') {
-            console.log('this.data.tableBody', this.data.tableBody);
             this.data.tableBody.sort((a, b) => (a.NameEN > b.NameEN) ? -1 : 1);
             this.data.tableBody.map(x => {
               x.ID = x.ID ? x.ID.toString() : null;

@@ -500,8 +500,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
               }
             } else {
-              console.log('this.regProductForAllRequestedType.value', this.regProductForAllRequestedType.value);
-              debugger;
               if (!this.regProductForAllRequestedType.value.id) {
                 this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
               } else {
@@ -638,11 +636,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...allDataForSave
     };
 
-    console.log('newObjectData', newObjectData);
-
     this.getService.createProductRequest(newObjectData).subscribe((res: any) => {
       this.editData = res;
-      console.log('res', res);
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
@@ -814,8 +809,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
-
-      console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType.value);
 
       data.productAttachments.map((x, i) => {
         this.regProductForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
