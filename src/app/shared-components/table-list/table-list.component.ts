@@ -51,6 +51,8 @@ export class TableListComponent implements OnInit, OnChanges {
 
   filteredData: Observable<any[]>;
 
+
+  @Input() removeFilterKey;
   @Output() removeDetailsRowOutput = new EventEmitter();
   @Output() removeDetailsRowIDs = new EventEmitter();
   @Output() removePackagingRowOutput = new EventEmitter();
@@ -301,6 +303,10 @@ export class TableListComponent implements OnInit, OnChanges {
 
   deleteProduct(request) {
     this.removeDraftProduct.emit(Number(request.ID));
+
+    this.dataAfterFilters = [];
+
+    this.removeFilterKey = true;
   }
 
   pageChanged(event: PageChangedEvent): void {

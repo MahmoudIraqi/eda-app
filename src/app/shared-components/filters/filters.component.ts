@@ -9,6 +9,7 @@ import {FormService} from '../../services/form.service';
 export class FiltersComponent implements OnInit, OnChanges {
 
   @Input() filterData;
+  @Input() removeFilterKey;
   filterRow = [];
   keyForFilter;
   keyWordsForFilter;
@@ -20,6 +21,9 @@ export class FiltersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    if (this.removeFilterKey) {
+      this.keyWordsForFilter = '';
+    }
   }
 
   ngOnInit(): void {
