@@ -623,7 +623,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
-    debugger;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
     const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
 
