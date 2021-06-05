@@ -589,6 +589,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       concentrations: this.fb.control('', Validators.required),
       function: this.fb.control('', Validators.required)
     }));
+
+    this.rerenderSubscribtionForClosingActionForDetailsForm();
   }
 
   removeIngrediantDetailsRows(index) {

@@ -30,7 +30,8 @@ export class ApplicationGuard implements CanActivate {
       return true;
     } else {
       const token = localStorage.getItem('privateData');
-      this.getService.logoutAPIToken(token).subscribe((res: any) => {});
+      this.getService.logoutAPIToken(token).subscribe((res: any) => {
+      });
       localStorage.setItem('privateData', '');
       this.routing.navigateByUrl('/login');
       return false;

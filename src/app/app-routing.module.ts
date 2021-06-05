@@ -115,7 +115,7 @@ const routes: Routes = [
         data: {animation: 'notification-list'},
         canActivate: [ApplicationGuard]
       }
-    ], canDeactivate: [ApplicationGuard]
+    ]
   }
 ];
 

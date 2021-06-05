@@ -205,9 +205,7 @@ export class HeaderComponent implements OnInit {
     this.getService.logoutAPIToken(this.Token).subscribe((res: any) => {
       if (res) {
         this.isLoading = false;
-        this.alertNotificationStatus = true;
-        this.router.navigateByUrl('/login');
-        // this.inputService.publish({type: 'Token', payload: ''});
+        this.router.navigate(['/login']).then(() => location.reload());
       } else {
         this.alertErrorNotificationStatus = true;
       }
