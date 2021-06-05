@@ -170,6 +170,7 @@ export class LegacyComponent implements OnInit {
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
+      this.productData = res;
       this.onClosed();
     }, error => this.handleError(error));
   }

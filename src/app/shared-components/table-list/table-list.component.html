@@ -1,6 +1,6 @@
 <div *ngIf="data && data.tableBody.length > 0">
   <div
-    *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest' || whichTable === 'batchTable'">
+    *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest' || whichTable === 'batchTable' || whichTable === 'legacyOldProduct'">
     <app-filters [filterData]="filterData"
                  (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
   </div>
@@ -51,7 +51,7 @@
                         <span>{{request.SubmmittionDate | date}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Type Of License :</label>
+                        <label class="label">Type Of Notification :</label>
                         <span>{{request.productTypeName}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
@@ -194,7 +194,7 @@
                         <span>{{request.SubmmittionDate | date}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Type Of License :</label>
+                        <label class="label">Type Of Notification :</label>
                         <span>{{request.productTypeName}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
@@ -299,7 +299,7 @@
                         <span>{{request.NameEN}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Type Of License :</label>
+                        <label class="label">Type Of Notification :</label>
                         <span>{{request.productTypeName}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
@@ -348,7 +348,7 @@
                         <span>{{request.SubmmittionDate}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label ">Type Of License :</label>
+                        <label class="label ">Type Of Notification :</label>
                         <span>{{request.productTypeName}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">

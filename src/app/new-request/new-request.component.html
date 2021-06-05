@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <mat-label>Type Of License</mat-label>
+              <mat-label>Type Of Notification</mat-label>
               <mat-select (selectionChange)="getFormType($event); getProductsKitLookups('selectedFormType');"
                           [(ngModel)]="this.selectedFormType" required
                           [disabled]="productId">
@@ -23,7 +23,7 @@
             <div class="row">
               <div class="col-12 col-sm-9">
                 <mat-form-field appearance="fill">
-                  <mat-label>Type Of Marketing</mat-label>
+                  <mat-label>Type Of License</mat-label>
                   <mat-select (selectionChange)="getRequestType($event); getPricing('typeOfNotification');"
                               [(ngModel)]="selectedRequestedType" required [disabled]="productId">
                     <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
