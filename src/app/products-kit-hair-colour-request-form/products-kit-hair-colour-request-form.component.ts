@@ -1045,7 +1045,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
       this.regColourKitForAllRequestedType = this.fb.group({
         id: 0,
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
-        productEnglishName: this.fb.control('', Validators.required),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[A-Za-z0-9_]+[ A-Za-z0-9\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*$')]),
         shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
         productColor: this.fb.control(''),
         manufacturingCompany: this.fb.control(null, Validators.required),

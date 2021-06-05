@@ -89,6 +89,7 @@ export class VariationComponent implements OnInit {
 
       this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
       if (this.productNotificationNumber) {
+        console.log('this.form', this.formData);
         this.isLoading = true;
         this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
           this.NotificationNo = res.NotificationNo;
