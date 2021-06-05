@@ -312,6 +312,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   deletedPackagingList = [];
   deletedDetailedList = [];
   deletedIdsListForIngrediant = [];
+  deletedShortNameList = [];
   attachmentRequiredStatus: boolean = false;
   requestId;
   objectForListOfVariationGroup: any;
@@ -440,6 +441,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   removeShortName(i: number) {
     if (this.ShortName.value.length > 1) {
       this.removeShortNameFieldStatus = false;
+
+      this.deletedShortNameList.push(this.ShortName.value[i]);
+      this.regProductForAllRequestedType.get('deletedShortNameList').patchValue(this.deletedShortNameList);
+
       this.ShortName.removeAt(i);
     } else {
       this.removeShortNameFieldStatus = true;
@@ -838,6 +843,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
+        deletedShortNameList: this.fb.control([]),
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),

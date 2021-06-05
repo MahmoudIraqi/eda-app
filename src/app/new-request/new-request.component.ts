@@ -104,9 +104,7 @@ export class NewRequestComponent implements OnInit {
       filter(x => x.type === 'allLookups'),
       distinctUntilChanged()
     ).subscribe(res => {
-      console.log('res', res);
       this.formData = res.payload;
-      console.log('this.form', this.formData);
       this.isLoading = false;
 
       if (this.productId) {

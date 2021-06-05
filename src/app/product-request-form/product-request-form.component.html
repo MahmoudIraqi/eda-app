@@ -95,7 +95,7 @@
                            [required]="enableEditableFields.includes('shortName')? 'required': false"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
-                            [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
+                            [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? false : legacyStatus  ? true :  (productFlags && !productFlags.shortName) ? true: false"
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>
