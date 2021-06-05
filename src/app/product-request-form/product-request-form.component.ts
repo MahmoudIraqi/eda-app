@@ -588,7 +588,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.IngrediantDetailsRows().push(this.fb.group({
       Ingredient_ID: this.fb.control(''),
       ingrediant: this.fb.control('', Validators.required),
-      concentrations: this.fb.control('', Validators.required),
+      concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
       function: this.fb.control('', Validators.required)
     }));
 
@@ -633,8 +633,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       y.loadingStatus = true;
     });
 
-    this.getService.createProductRequest(allDataForSave).subscribe((res: any) => {
+    const newObjectData = {
+      ...this.editData,
+      ...allDataForSave
+    };
+
+    console.log('newObjectData', newObjectData);
+
+    this.getService.createProductRequest(newObjectData).subscribe((res: any) => {
       this.editData = res;
+      console.log('res', res);
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
