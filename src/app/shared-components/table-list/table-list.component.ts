@@ -35,6 +35,7 @@ export class TableListComponent implements OnInit, OnChanges {
   staticFilterKey = {
     'Request Number': 'ID',
     'Submission date': 'SubmmittionDate',
+    'Saved date': 'SubmmittionDate',
     'Product English name': 'NameEN',
     'Product Arabic name': 'NameAR',
     'Status': 'Status',
@@ -81,7 +82,8 @@ export class TableListComponent implements OnInit, OnChanges {
       if (this.data.tableBody.length > 0) {
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
           if (this.whichTable !== 'manufacturing' && this.whichTable !== 'batchTable' && this.whichTable !== 'notificationList') {
-            this.data.tableBody.sort((a, b) => (a.ID > b.ID) ? -1 : 1);
+            console.log('this.data.tableBody', this.data.tableBody);
+            this.data.tableBody.sort((a, b) => (a.NameEN > b.NameEN) ? -1 : 1);
             this.data.tableBody.map(x => {
               x.ID = x.ID ? x.ID.toString() : null;
               x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
@@ -122,12 +124,19 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   sortBy(status, columnName) {
+    this.contentArray = [];
+    this.returnedArray = [];
+
     this.sortStatus = !status;
     if (!this.sortStatus) {
-      this.dataAfterFilters = this.returnedArray.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() > b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
+      this.data.tableBody = this.data.tableBody.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() > b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
     } else if (this.sortStatus) {
-      this.dataAfterFilters = this.returnedArray.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() < b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
+      this.data.tableBody = this.data.tableBody.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() < b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
     }
+
+    this.contentArray = new Array(this.data.tableBody.length).fill('');
+    this.contentArray = this.contentArray.map((v: string, i: number) => this.data.tableBody[i]);
+    this.returnedArray = this.contentArray.slice(0, 10);
   }
 
   removeDetailsRowFunction(i, requestID) {
@@ -274,7 +283,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
-
     const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
