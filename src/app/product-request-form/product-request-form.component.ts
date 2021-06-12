@@ -17,7 +17,7 @@ import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {convertToSpecialObject, formDataClass} from '../../utils/formDataFunction';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
 import {Router} from '@angular/router';
@@ -300,7 +300,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
   requestedProductTypeForNewProductInKit;
-  isloading: boolean = false;
+  isLoading: boolean = false;
   rangeInput;
   activeTabIndex;
   enableEditableFields = [];
@@ -384,7 +384,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
     this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
 
-    this.getLookupForFormArray();
+    // this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
       for (let i = 0; i < Object.values(x).length; i++) {
@@ -411,8 +411,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
     this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
     this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
-    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant);
-    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction);
   }
 
   ngOnDestroy() {
@@ -956,22 +954,70 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterLookupsFunction(whichLookup, formControlValue, list) {
-    if (formControlValue) {
-      return formControlValue.valueChanges
-        .pipe(
-          startWith(''),
-          map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
-        );
+
+    if (whichLookup === 'ingrediant') {
+
+      let historyValue;
+      let historyList;
+      if (formControlValue) {
+        return formControlValue.valueChanges
+          .pipe(
+            startWith(''),
+            distinctUntilChanged(),
+            map(state => {
+              this.isLoading = true;
+              if (state) {
+                if (historyValue !== state) {
+                  historyValue = state;
+                  historyList = this.filterInsideList(whichLookup, state, list);
+                  this.isLoading = false;
+                  return historyList;
+                } else {
+                  this.isLoading = false;
+                  return historyList;
+                }
+              } else {
+                this.isLoading = false;
+                return list.slice();
+              }
+            })
+          );
+      }
+    } else {
+      if (formControlValue) {
+        return formControlValue.valueChanges
+          .pipe(
+            startWith(''),
+            map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
+          );
+      }
     }
   }
 
   filterInsideList(lookup, value, list): LookupState[] {
-    let filterValue;
-    if (value) {
-      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
-    }
+    let returnedList;
+    debugger;
+    if (lookup === 'ingrediant' && value.length > 4) {
+      let filterValue;
+      if (value) {
+        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
+      }
 
-    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+      return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+    } else if (lookup !== 'ingrediant') {
+      let filterValue;
+      if (value) {
+        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
+      }
+
+      return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => {
+        this.isLoadingStatus.emit(false);
+        return x;
+      });
+    } else {
+      debugger;
+      return list;
+    }
   }
 
   convertAllNamingToId(data) {
