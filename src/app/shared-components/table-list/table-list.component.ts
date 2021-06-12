@@ -302,7 +302,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   deleteProduct(request) {
-    console.log('request', request);
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
       this.removeDraftProduct.emit(request.NotificationNo);

@@ -1091,7 +1091,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     } else if (event.status === 'New') {
       this.isLoading = true;
       this.appliedProductStatus = false;
-      console.log('event', event);
 
       if (this.allProductsInKit.tableBody.filter(product => product.id === event.notificationNumberOrId).length === 0) {
         this.getServices.getProductWithProductIDList(event.notificationNumberOrId, 'kit').subscribe((res: any) => {

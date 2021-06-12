@@ -220,7 +220,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients?pagesize=40000&pageNo=${page}&searchname=${filterText}`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients?pagesize=1000&pageNo=${page}&searchname=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

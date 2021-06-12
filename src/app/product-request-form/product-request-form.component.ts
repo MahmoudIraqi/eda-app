@@ -957,27 +957,43 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterLookupsFunction(whichLookup, formControlValue, list) {
-
     if (whichLookup === 'ingrediant') {
-
       let historyValue;
-      let historyList;
+      let historyList: any[];
       if (formControlValue) {
         return formControlValue.valueChanges
           .pipe(
             startWith(''),
             distinctUntilChanged(),
-            map(state => {
-              this.isLoading = true;
+            map((state: string) => {
+              // this.isLoading = true;
               if (state) {
                 if (historyValue !== state) {
                   historyValue = state;
-                  historyList = this.filterInsideList(whichLookup, state, list);
-                  this.isLoading = false;
-                  return historyList;
+                  if (state.length > 2) {
+                    this.getDataAfterFiltering(state).then(res => {
+                      console.log('res', res);
+                      historyList = res;
+                      this.isLoading = false;
+                      return historyList;
+                    });
+
+                    // debugger;
+                    // if (historyList && historyList.length > 0) {
+                    //   return historyList;
+                    // } else {
+                    //   return list.slice();
+                    // }
+                  } else {
+                    return list.slice();
+                  }
                 } else {
                   this.isLoading = false;
-                  return historyList;
+                  if (historyList && historyList.length > 0) {
+                    return historyList;
+                  } else {
+                    return list.slice();
+                  }
                 }
               } else {
                 this.isLoading = false;
@@ -1087,7 +1103,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.subscription.unsubscribe();
     }
     list ? list.subscribe(y => {
-      if (y.length === 0) {
+      if (y && y.length === 0) {
         this.IngrediantDetailsRows().controls.map((x) => {
           if (x['controls'][field].dirty) {
             x['controls'][field].setValue(null);
@@ -1432,5 +1448,23 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         loadingStatus: false,
       }
     ];
+  }
+
+  async getDataAfterFiltering(state): Promise<any[]> {
+    let responseOfRequest: any[];
+    const request = await this.getService.getProductIngrediantsLookUp(1, state);
+    const PromiseValue = new Promise(resolve => {
+      console.log('request', request);
+      request.subscribe(res => {
+        console.log('request_res', res);
+        responseOfRequest = res;
+      }, error => this.handleError(error), () => {
+        console.log('responseOfRequest', responseOfRequest);
+        resolve(responseOfRequest);
+      });
+    });
+
+    console.log('PromiseValue.then((res: any[]) => res)', PromiseValue.then((res: any[]) => res));
+    return PromiseValue.then((res: any[]) => res);
   }
 }
