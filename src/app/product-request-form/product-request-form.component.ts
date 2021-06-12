@@ -970,7 +970,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
               if (state) {
                 if (historyValue !== state) {
                   historyValue = state;
-                  if (state.length > 2) {
+                  if (state.length > 1) {
                     this.getDataAfterFiltering(state).then(res => {
                       console.log('res', res);
                       historyList = res;
