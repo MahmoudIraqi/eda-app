@@ -302,7 +302,18 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   deleteProduct(request) {
-    this.removeDraftProduct.emit(Number(request.ID));
+    console.log('request', request);
+    const editFrom = this.route.snapshot.routeConfig.path;
+    if (editFrom === 'tell_do_variation') {
+      this.removeDraftProduct.emit(request.NotificationNo);
+    } else if (editFrom === 'do_tell_variation') {
+      this.removeDraftProduct.emit(request.NotificationNo);
+    } else if (editFrom === 'registration') {
+      this.removeDraftProduct.emit(Number(request.ID));
+    } else if (editFrom === 'legacy') {
+      this.removeDraftProduct.emit(Number(request.OLD_PRODUCT_ID));
+    }
+
 
     this.dataAfterFilters = [];
 
