@@ -881,6 +881,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         unitOfMeasure: this.fb.control('', Validators.required),
         typeOfPackaging: this.fb.control('', Validators.required),
         packagingDescription: this.fb.control(''),
+        isCartonBox: this.fb.control(''),
       });
     }
   }

@@ -631,6 +631,11 @@
                         <label class="label">Packaging Description :</label>
                         <span>{{request.packagingDescription}}</span>
                       </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Carton box :</label>
+                        <span style="color: green" *ngIf="request.isCartonBox"><i class="fas fa-check"></i></span>
+                        <span style="color: red" *ngIf="!request.isCartonBox"><i class="fas fa-times"></i></span>
+                      </div>
                     </div>
                   </div>
                 </mat-expansion-panel>
