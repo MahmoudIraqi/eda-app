@@ -23,7 +23,7 @@ export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistr
     trackType,
     ...event,
     id,
-    isCompleted: WhichForm === 'submitProductForKit' && typeOfMarketing === 5 ? true : false,
+    isCompleted: WhichForm === 'submitProductForKit' && (typeOfMarketing === 5 || typeOfMarketing === 6) ? true : false,
     isDraft: WhichForm === 'save' || WhichForm === 'submitProductForKit' ? 1 : 0,
   };
 };
