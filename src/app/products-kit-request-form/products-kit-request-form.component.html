@@ -53,7 +53,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
+                          [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -73,14 +73,15 @@
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
+                           [required]="enableEditableFields.includes('shortName')? 'required': false"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
-                            [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
-                      this field must be in English
+                      This Field must not be arabic and must be two words
                     </div>
                   </mat-form-field>
                 </div>

@@ -53,6 +53,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   @Output() saveDataOutputForAttachment = new EventEmitter();
+  @Output() requestIsDraft = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
   @Output() errorForAttachemntRequest = new EventEmitter();
@@ -902,6 +903,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
+      this.requestIsDraft.emit(data.isDraft === 1);
+
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();
