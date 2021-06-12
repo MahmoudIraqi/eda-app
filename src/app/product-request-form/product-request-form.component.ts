@@ -69,6 +69,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Output() ingrediantSearchText = new EventEmitter();
   @Output() errorMessage = new EventEmitter();
   @Output() errorMessageForAttachment = new EventEmitter();
+  @Output() requestIsDraft = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
   @Output() errorForAttachemntRequest = new EventEmitter();
   formData;
@@ -432,7 +433,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   addShortName() {
     this.removeShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+')));
+      this.ShortName.push(this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s\\r\\n\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*){1,2}$')));
     }
   }
 
@@ -748,6 +749,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   getFormAsStarting(data) {
     if (data) {
       this.isDraft = data.isDraft === 1;
+      this.requestIsDraft.emit(data.isDraft === 1)
 
       data.shortName ? data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
@@ -823,7 +825,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         id: 0,
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[A-Za-z0-9_]+[ A-Za-z0-9\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*$')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s\\r\\n\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*){1,2}$'))]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
