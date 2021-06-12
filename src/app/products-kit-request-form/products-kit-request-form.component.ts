@@ -1036,106 +1036,115 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     if (event.status === 'Registered') {
       this.isLoading = true;
       this.appliedProductStatus = false;
-      this.getServices.getProductWithNotificationNumberList(event.notificationNumberOrId, 'kit').subscribe((res: any) => {
-        if (res) {
-          if (res.canUse) {
-            const objectData = {
-              ...res
-            };
+      if (this.allProductsInKit.tableBody.filter(product => product.NotificationNo === event.notificationNumberOrId).length === 0) {
+        this.getServices.getProductWithNotificationNumberList(event.notificationNumberOrId, 'kit').subscribe((res: any) => {
+          if (res) {
+            if (res.canUse) {
+              const objectData = {
+                ...res
+              };
 
-            this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
-            this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
-            this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
-            this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
-            this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
-            this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
-            this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
-            this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
-            this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
+              this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
+              this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
+              this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
+              this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
+              this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
+              this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
+              this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
+              this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
+              this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
 
-            objectData.packagingTable ? objectData.packagingTable.map(x => {
-              this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
-              this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-            }) : null;
-            objectData.detailsTable ? objectData.detailsTable.map(x => {
-              x.ingrediantDetails.map(y => {
-                this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
-                this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
-              });
-            }) : null;
+              objectData.packagingTable ? objectData.packagingTable.map(x => {
+                this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+                this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+              }) : null;
+              objectData.detailsTable ? objectData.detailsTable.map(x => {
+                x.ingrediantDetails.map(y => {
+                  this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+                  this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+                });
+              }) : null;
 
-            this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
-
-
-            const resObject = {
-              productStatus: event.status,
-              NotificationNo: event.status === 'Registered' ? event.notificationNumberOrId : '',
-              productID: event.status === 'New' ? event.notificationNumberOrId : '',
-              productDetails: res
-            };
+              this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
 
 
-            this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
-          } else {
-            this.handleError(res.canuseMsg);
+              const resObject = {
+                productStatus: event.status,
+                NotificationNo: event.status === 'Registered' ? event.notificationNumberOrId : '',
+                productID: event.status === 'New' ? event.notificationNumberOrId : '',
+                productDetails: res
+              };
+
+
+              this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
+            } else {
+              this.handleError(res.canuseMsg);
+            }
           }
-        }
 
-        this.isLoading = false;
-        this.appliedProductStatus = true;
-      }, error => this.handleError(error));
-
+          this.isLoading = false;
+          this.appliedProductStatus = true;
+        }, error => this.handleError(error));
+      } else {
+        this.handleError('This product already added to this kit');
+      }
     } else if (event.status === 'New') {
       this.isLoading = true;
       this.appliedProductStatus = false;
-      this.getServices.getProductWithProductIDList(event.notificationNumberOrId, 'kit').subscribe((res: any) => {
-        if (res) {
-          if (res.canUse) {
-            const objectData = {
-              ...res
-            };
+      console.log('event', event);
 
-            this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
-            this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
-            this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
-            this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
-            this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
-            this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
-            this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
-            this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
-            this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
+      if (this.allProductsInKit.tableBody.filter(product => product.id === event.notificationNumberOrId).length === 0) {
+        this.getServices.getProductWithProductIDList(event.notificationNumberOrId, 'kit').subscribe((res: any) => {
+          if (res) {
+            if (res.canUse) {
+              const objectData = {
+                ...res
+              };
 
-            objectData.packagingTable ? objectData.packagingTable.map(x => {
-              this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
-              this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-            }) : null;
-            objectData.detailsTable ? objectData.detailsTable.map(x => {
-              x.ingrediantDetails.map(y => {
-                this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
-                this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
-              });
-            }) : null;
+              this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
+              this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
+              this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
+              this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
+              this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
+              this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
+              this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
+              this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
+              this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
 
-            this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
+              objectData.packagingTable ? objectData.packagingTable.map(x => {
+                this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+                this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+              }) : null;
+              objectData.detailsTable ? objectData.detailsTable.map(x => {
+                x.ingrediantDetails.map(y => {
+                  this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+                  this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+                });
+              }) : null;
 
-
-            const resObject = {
-              productStatus: event.status,
-              NotificationNo: event.status === 'Registered' ? event.notificationNumberOrId : '',
-              productID: event.status === 'New' ? event.notificationNumberOrId : '',
-              productDetails: res
-            };
+              this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
 
 
-            this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
+              const resObject = {
+                productStatus: event.status,
+                NotificationNo: event.status === 'Registered' ? event.notificationNumberOrId : '',
+                productID: event.status === 'New' ? event.notificationNumberOrId : '',
+                productDetails: res
+              };
 
-            this.isLoading = false;
-            this.appliedProductStatus = true;
-          } else {
-            this.handleError(res.canuseMsg);
+
+              this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
+
+              this.isLoading = false;
+              this.appliedProductStatus = true;
+            } else {
+              this.handleError(res.canuseMsg);
+            }
           }
-        }
-      }, error => this.handleError(error));
+        }, error => this.handleError(error));
+      } else {
+        this.handleError('This product already added to this kit');
+      }
     }
   }
 

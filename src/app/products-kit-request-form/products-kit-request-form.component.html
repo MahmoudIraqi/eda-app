@@ -423,8 +423,8 @@
                       <div class="RequestingTableForKit">
                         <app-table-list [data]="allProductsInKit"
                                         [whichTable]="'productsKitList'"
-                                        (removeProductFromKit)="editData && editData.isDraft=== 1 ? deletedProductsIdsList($event):null"
-                                        (removeProductFromKit)="editData && editData.isDraft=== 1 ? removeProductsGroupRows($event):null"
+                                        (removeProductFromKit)="(editData && editData.isDraft=== 1) || !editData ? deletedProductsIdsList($event):null"
+                                        (removeProductFromKit)="(editData && editData.isDraft=== 1) || !editData ? removeProductsGroupRows($event):null"
                         ></app-table-list>
                       </div>
                     </div>
@@ -511,11 +511,7 @@
           *ngIf="!approvedStatus"
           [disabled]="trackProductStatus && !editProcessInTrackedProduct"
           class="btn btn-primary btn-sm">
-          <span
-            *ngIf="!kitProductStatus && !reRegistrationStatus">Submit</span>
-          <span
-            *ngIf="kitProductStatus">Apply Product</span>
-          <span *ngIf="reRegistrationStatus">Re-Notification Product</span>
+          <span>Submit</span>
         </button>
       </div>
     </div>
