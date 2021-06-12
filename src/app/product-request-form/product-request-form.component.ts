@@ -92,7 +92,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       name: 'Free Sale',
       fileName: '',
       fileValue: '',
-      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+      required: false,
       enable: true,
       attachmentTypeStatus: '',
       loadingStatus: false,
@@ -845,7 +845,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
-        freeSaleDoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        freeSaleDoc: this.fb.control(''),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
         artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
@@ -996,7 +996,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   filterInsideList(lookup, value, list): LookupState[] {
     let returnedList;
-    debugger;
     if (lookup === 'ingrediant' && value.length > 4) {
       let filterValue;
       if (value) {
@@ -1015,7 +1014,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         return x;
       });
     } else {
-      debugger;
       return list;
     }
   }
@@ -1235,7 +1233,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         name: 'Free Sale',
         fileName: '',
         fileValue: '',
-        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        required: false,
         enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
