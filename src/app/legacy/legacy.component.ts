@@ -43,6 +43,7 @@ export class LegacyComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   productId;
+  typeOfProcess
   successSubmission: boolean = false;
   companyProfileId: any;
 
@@ -61,8 +62,9 @@ export class LegacyComponent implements OnInit {
     ).subscribe(res => {
       this.companyProfileId = res.payload;
     });
-    this.productId = this.route.snapshot.paramMap.get('id');
 
+    this.productId = this.route.snapshot.paramMap.get('id');
+    this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
 
 
     this.inputService.getInput$().pipe(

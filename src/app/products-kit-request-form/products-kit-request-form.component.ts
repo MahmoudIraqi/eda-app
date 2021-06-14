@@ -873,7 +873,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   addShortName() {
     this.removeShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s\\r\\n\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*){1,2}$')));
+      this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')]));
     }
   }
 
@@ -913,7 +913,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       this.allProductsInKit.tableBody = [];
       data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
-        product.productStatus = '';
         this.formData.productColorList.filter(item => item.ID === product.productDetails.productColor).map(x => product.productDetails.productColor = x.NAME);
         this.formData.manufacturingCompanyList.filter(item => item.ID === product.productDetails.manufacturingCompany).map(x => product.productDetails.manufacturingCompany = x.NAME);
         this.formData.manufacturingCountryList.filter(item => item.ID === product.productDetails.manufacturingCountry).map(x => product.productDetails.manufacturingCountry = x.NAME);
@@ -984,8 +983,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         productColor: this.fb.control(''),
         id: 0,
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[A-Za-z0-9_]+[ A-Za-z0-9\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*$')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s\\r\\n\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*){1,2}$'))]),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w])*$')]),
+        shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')])]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
@@ -1077,11 +1076,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
 
               this.regKitForAllRequestedType.get('ProductsForKit').value.push(resObject);
+
+
             } else {
               this.handleError(res.canuseMsg);
             }
           }
-
           this.isLoading = false;
           this.appliedProductStatus = true;
         }, error => this.handleError(error));

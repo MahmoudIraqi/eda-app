@@ -104,7 +104,7 @@ const routes: Routes = [
         canActivate: [ApplicationGuard]
       },
       {
-        path: 'legacy-form/:id',
+        path: 'legacy-form/:id/:typeOfProcess',
         component: LegacyComponent,
         data: {animation: 'legacy-products'},
         canActivate: [ApplicationGuard]

@@ -11,353 +11,356 @@ import {CurrencyPipe} from '@angular/common';
 
 
 @Component({
-    selector: 'app-new-request',
-    templateUrl: './new-request.component.html',
-    styleUrls: ['./new-request.component.css']
+  selector: 'app-new-request',
+  templateUrl: './new-request.component.html',
+  styleUrls: ['./new-request.component.css']
 })
 export class NewRequestComponent implements OnInit {
 
-    formData = {
-        formType: [],
-        formTypeForNewProductInKit: [],
-        requestType: [],
-        manufacturingCompanyList: [],
-        manufacturingCountryList: [],
-        productColorList: [],
-        applicantList: [],
-        licenseHolderList: [],
-        licenseHolderCountryList: [],
-        physicalStateList: [],
-        purposeOfUseList: [],
-        typeOfPackagingList: [],
-        unitOfMeasureList: [],
-        ingrediantList: [],
-        functionList: [],
-        storagePlaceList: [],
-        trackType: []
-    };
-    productsKitIds = [];
-    manufacturingCompanyList = [];
-    selectedFormType;
-    selectedRequestedType;
-    selectedTrackType;
-    selectedIsExport;
-    error: boolean;
-    errorMessage;
-    successSubmission: boolean = false;
-    alertNotificationStatus: boolean = false;
-    alertNotification: any;
-    alertErrorNotificationStatus: boolean = false;
-    alertErrorNotification: any;
-    isLoading: boolean = false;
-    saveResponseDataForRegisterProduct;
-    saveResponseDataForRegisterKitProduct;
-    saveResponseDataForRegisterColorantProduct;
-    saveResponseDataForRegisterColorantKitProduct;
-    productId;
-    typeOfProcess;
-    updatingProductData: any;
-    requestId;
-    estimatedValue;
-    getAllLookupsStatus = false;
-    companyProfileId: any;
-    variablesPricingList: any;
-    trackTypeVariable;
-    trackTypeVariableForKitLookups;
-    typeOfNotificationVariableForKitLookups;
-    typeOfNotificationVariable;
-    fromAttachment;
-    editFormIPStatus: boolean = false;
-    getDraftProductData: boolean = false;
-    isDraftRequestStatus;
+  formData = {
+    formType: [],
+    formTypeForNewProductInKit: [],
+    requestType: [],
+    manufacturingCompanyList: [],
+    manufacturingCountryList: [],
+    productColorList: [],
+    applicantList: [],
+    licenseHolderList: [],
+    licenseHolderCountryList: [],
+    physicalStateList: [],
+    purposeOfUseList: [],
+    typeOfPackagingList: [],
+    unitOfMeasureList: [],
+    ingrediantList: [],
+    functionList: [],
+    storagePlaceList: [],
+    trackType: []
+  };
+  productsKitIds = [];
+  manufacturingCompanyList = [];
+  selectedFormType;
+  selectedRequestedType;
+  selectedTrackType;
+  selectedIsExport;
+  error: boolean;
+  errorMessage;
+  successSubmission: boolean = false;
+  alertNotificationStatus: boolean = false;
+  alertNotification: any;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
+  isLoading: boolean = false;
+  saveResponseDataForRegisterProduct;
+  saveResponseDataForRegisterKitProduct;
+  saveResponseDataForRegisterColorantProduct;
+  saveResponseDataForRegisterColorantKitProduct;
+  productId;
+  typeOfProcess;
+  updatingProductData: any;
+  requestId;
+  estimatedValue;
+  getAllLookupsStatus = false;
+  companyProfileId: any;
+  variablesPricingList: any;
+  trackTypeVariable;
+  trackTypeVariableForKitLookups;
+  typeOfNotificationVariableForKitLookups;
+  typeOfNotificationVariable;
+  fromAttachment;
+  editFormIPStatus: boolean = false;
+  getDraftProductData: boolean = false;
+  isDraftRequestStatus;
 
-    constructor(private getService: FormService, private readonly route: ActivatedRoute, private router: Router,
-                private inputService: InputService, private currencyPipe: CurrencyPipe) {
-    }
+  constructor(private getService: FormService, private readonly route: ActivatedRoute, private router: Router,
+              private inputService: InputService, private currencyPipe: CurrencyPipe) {
+  }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
+    this.isLoading = true;
+
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.companyProfileId = res.payload;
+    });
+
+    const pathInEditMode = this.route.snapshot.routeConfig.path.split('/')[0];
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      const variableGroup = pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
+      res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
+
+
+    this.productId = this.route.snapshot.paramMap.get('id');
+    this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'allLookups'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.formData = res.payload;
+      this.isLoading = false;
+
+      if (this.productId) {
         this.isLoading = true;
-
-
-        this.inputService.getInput$().pipe(
-            filter(x => x.type === 'CompanyId'),
-            distinctUntilChanged()
-        ).subscribe(res => {
-            this.companyProfileId = res.payload;
-        });
-
-        const pathInEditMode = this.route.snapshot.routeConfig.path.split('/')[0];
-
-        this.inputService.getInput$().pipe(
-            filter(x => x.type === 'variablesPrices'),
-            distinctUntilChanged()
-        ).subscribe(res => {
-            const variableGroup = pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
-            res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
-                this.variablesPricingList = variableList;
-            });
-        });
-
-
-        this.productId = this.route.snapshot.paramMap.get('id');
-        this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
-        this.inputService.getInput$().pipe(
-            filter(x => x.type === 'allLookups'),
-            distinctUntilChanged()
-        ).subscribe(res => {
-            this.formData = res.payload;
+        if (!this.getDraftProductData) {
+          this.getService.getProductWithProductIDList(Number(this.productId), '').subscribe((res: any) => {
+            this.selectedFormType = res.typeOfMarketing;
+            this.selectedRequestedType = res.typeOfRegistration;
+            this.selectedTrackType = res.Tracktype;
+            this.selectedIsExport = res.isExport;
+            this.updatingProductData = res;
+            this.editFormIPStatus = true;
             this.isLoading = false;
 
-            if (this.productId) {
-                this.isLoading = true;
-                if (!this.getDraftProductData) {
-                    this.getService.getProductWithProductIDList(Number(this.productId), '').subscribe((res: any) => {
-                        this.selectedFormType = res.typeOfMarketing;
-                        this.selectedRequestedType = res.typeOfRegistration;
-                        this.selectedTrackType = res.Tracktype;
-                        this.selectedIsExport = res.isExport;
-                        this.updatingProductData = res;
-                        this.editFormIPStatus = true;
-                        this.isLoading = false;
-
-                        this.getPricing('draftRequest');
-                        this.getProductsKitLookups('draftRequest');
-                    }, error => this.handleError(error));
-                }
-            }
-        });
-    }
-
-    getFormType(event) {
-        this.selectedFormType = event.value;
-    }
-
-    getRequestType(event) {
-        this.selectedRequestedType ? this.selectedRequestedType = '' : null;
-        this.isLoading = true;
-
-        setTimeout(() => {
-            this.selectedRequestedType = event.value;
-            this.isLoading = false;
-            this.getPricing('typeOfNotification');
-        }, 500);
-    }
-
-    getTrackType(event) {
-        this.selectedTrackType ? this.selectedTrackType = '' : null;
-        this.isLoading = true;
-
-        setTimeout(() => {
-            this.selectedTrackType = event.value;
-            this.isLoading = false;
-            this.getPricing('trackType');
-            this.getProductsKitLookups('trackType');
-        }, 500);
-    }
-
-    getRequestId(event) {
-        this.requestId = event;
-    }
-
-    saveData(event) {
-        this.isLoading = true;
-
-        if (this.selectedFormType === 1 || this.selectedFormType === 3 || this.selectedFormType === 5 || this.selectedFormType === 6) {
-            const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
-            const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
-
-            const newEventObject = {
-                ...newEvent,
-                isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
-            };
-
-            this.getService.createProductRequest(newEventObject).subscribe((res: any) => {
-                this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
-                this.updatingProductData = res;
-                this.editFormIPStatus = false;
-                this.isLoading = false;
-                this.alertNotificationStatus = true;
-                this.alertNotification = this.alertForSaveRequest();
-                this.onClosed();
-            }, error => this.handleError(error));
-        } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-            const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
-            const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
-
-            const newEventObject = {
-                ...newEvent,
-                isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
-            };
-
-            this.getService.createProductKitRequest(newEventObject).subscribe((res: any) => {
-                this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
-                this.updatingProductData = res;
-                this.editFormIPStatus = false;
-                this.isLoading = false;
-                this.alertNotificationStatus = true;
-                this.alertNotification = this.alertForSaveRequest();
-                this.onClosed();
-            }, error => this.handleError(error));
+            this.getPricing('draftRequest');
+            this.getProductsKitLookups('draftRequest');
+          }, error => this.handleError(error));
         }
-    }
+      }
+    });
+  }
 
-    onSubmit(event) {
-        this.isLoading = true;
-        this.successSubmission = false;
-        if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-            const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
-            const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+  getFormType(event) {
+    this.selectedFormType = event.value;
+  }
 
-            this.getService.createProductRequest(newEvent).subscribe((res: any) => {
-                this.isLoading = false;
-                this.successSubmission = true;
-                this.alertNotificationStatus = true;
-                this.alertNotification = this.alertForSubmitRequest();
-                this.emptyTheTopField();
-                this.onClosed();
-            }, error => this.handleError(error));
-        } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-            const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
-            const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+  getRequestType(event) {
+    this.selectedRequestedType ? this.selectedRequestedType = '' : null;
+    this.isLoading = true;
 
-            this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
-                this.isLoading = false;
-                this.successSubmission = true;
-                this.alertNotificationStatus = true;
-                this.alertNotification = this.alertForSubmitRequest();
-                this.emptyTheTopField();
-                this.onClosed();
-            }, error => this.handleError(error));
+    setTimeout(() => {
+      this.selectedRequestedType = event.value;
+      this.isLoading = false;
+      this.getPricing('typeOfNotification');
+    }, 500);
+  }
 
-        } else if (this.selectedFormType === 5 || this.selectedFormType === 6) {
-            const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
-            const newEvent = convertToSpecialObject('submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+  getTrackType(event) {
+    this.selectedTrackType ? this.selectedTrackType = '' : null;
+    this.isLoading = true;
 
-            this.getService.createProductRequest(newEvent).subscribe((res: any) => {
-                this.updatingProductData = res;
-                this.editFormIPStatus = false;
-                this.isLoading = false;
-                this.alertNotificationStatus = true;
-                this.alertNotification = this.alertForSaveRequest();
-                this.emptyTheTopField();
-                this.onClosed();
-            }, error => this.handleError(error));
-        }
-    }
+    setTimeout(() => {
+      this.selectedTrackType = event.value;
+      this.isLoading = false;
+      this.getPricing('trackType');
+      this.getProductsKitLookups('trackType');
+    }, 500);
+  }
 
-    alertForSaveRequest() {
-        return {msg: 'You had a successful saving'};
-    }
+  getRequestId(event) {
+    this.requestId = event;
+  }
 
-    alertSaveRequestForKit() {
-        return {msg: 'You can apply this product in kit with request id'};
-    }
+  saveData(event) {
+    this.isLoading = true;
 
-    alertForSubmitRequest() {
-        return {msg: 'You had a successful Submission'};
-    }
+    if (this.selectedFormType === 1 || this.selectedFormType === 3 || this.selectedFormType === 5 || this.selectedFormType === 6) {
+      const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-    onClosed() {
-        setTimeout(() => {
-            this.alertNotificationStatus = false;
-        }, 2000);
-    }
+      const newEventObject = {
+        ...newEvent,
+        isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
+      };
 
-    onClosedErrorAlert() {
-        setTimeout(() => {
-            this.alertErrorNotificationStatus = false;
-        }, 2000);
-    }
-
-    emptyTheTopField() {
-        this.selectedTrackType = '';
-        this.selectedFormType = '';
-        this.selectedRequestedType = '';
-        this.selectedIsExport = '';
-        this.estimatedValue = '';
-
-        setTimeout(() => {
-            this.router.navigate([`/new-request/registration`]);
-        }, 2000);
-
-    }
-
-    handleError(error) {
-        this.alertErrorNotificationStatus = true;
-        this.alertErrorNotification = {msg: error.message};
+      this.getService.createProductRequest(newEventObject).subscribe((res: any) => {
+        this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
+        this.updatingProductData = res;
+        this.editFormIPStatus = false;
         this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.onClosed();
+      }, error => this.handleError(error));
+    } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
+      const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+
+      const newEventObject = {
+        ...newEvent,
+        isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
+      };
+
+      this.getService.createProductKitRequest(newEventObject).subscribe((res: any) => {
+        this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
+        this.updatingProductData = res;
+        this.editFormIPStatus = false;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.onClosed();
+      }, error => this.handleError(error));
+    }
+  }
+
+  onSubmit(event) {
+    this.isLoading = true;
+    this.successSubmission = false;
+    if (this.selectedFormType === 1 || this.selectedFormType === 3) {
+      const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+
+      this.getService.createProductRequest(newEvent).subscribe((res: any) => {
+        this.isLoading = false;
+        this.successSubmission = true;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
+        this.onClosed();
+      }, error => this.handleError(error));
+    } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
+      const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+
+      this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
+        this.isLoading = false;
+        this.successSubmission = true;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.emptyTheTopField();
+        this.onClosed();
+      }, error => this.handleError(error));
+
+    } else if (this.selectedFormType === 5 || this.selectedFormType === 6) {
+      const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      console.log('selectedTrackType_OnSubmit', this.selectedTrackType);
+      const newEvent = convertToSpecialObject('submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+
+      console.log('newEvent', newEvent);
+
+      this.getService.createProductRequest(newEvent).subscribe((res: any) => {
+        this.updatingProductData = res;
+        this.editFormIPStatus = false;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.emptyTheTopField();
+        this.onClosed();
+      }, error => this.handleError(error));
+    }
+  }
+
+  alertForSaveRequest() {
+    return {msg: 'You had a successful saving'};
+  }
+
+  alertSaveRequestForKit() {
+    return {msg: 'You can apply this product in kit with request id'};
+  }
+
+  alertForSubmitRequest() {
+    return {msg: 'You had a successful Submission'};
+  }
+
+  onClosed() {
+    setTimeout(() => {
+      this.alertNotificationStatus = false;
+    }, 2000);
+  }
+
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
+  }
+
+  emptyTheTopField() {
+    this.selectedTrackType = '';
+    this.selectedFormType = '';
+    this.selectedRequestedType = '';
+    this.selectedIsExport = '';
+    this.estimatedValue = '';
+
+    setTimeout(() => {
+      this.router.navigate([`/new-request/registration`]);
+    }, 2000);
+
+  }
+
+  handleError(error) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: error.message};
+    this.isLoading = false;
+  }
+
+  getPricing(fromWhere) {
+    if (fromWhere === 'trackType') {
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+    } else if (fromWhere === 'typeOfNotification') {
+      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+    } else if (fromWhere === 'draftRequest') {
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
     }
 
-    getPricing(fromWhere) {
-        if (fromWhere === 'trackType') {
-            this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
-        } else if (fromWhere === 'typeOfNotification') {
-            this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
-        } else if (fromWhere === 'draftRequest') {
-            this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
-            this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
-        }
+    if (this.trackTypeVariable && this.typeOfNotificationVariable) {
+      const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
 
-        if (this.trackTypeVariable && this.typeOfNotificationVariable) {
-            const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
+      this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
+        this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
+      }) : null;
+    }
+  }
 
-            this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
-                this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
-            }) : null;
-        }
+  getProductsKitLookups(fromWhere) {
+    if (fromWhere === 'trackType') {
+      this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
+    } else if (fromWhere === 'selectedFormType') {
+      this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
+    } else if (fromWhere === 'draftRequest') {
+      this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
     }
 
-    getProductsKitLookups(fromWhere) {
-        if (fromWhere === 'trackType') {
-            this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
-        } else if (fromWhere === 'selectedFormType') {
-            this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
-        } else if (fromWhere === 'draftRequest') {
-            this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
-            this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
-        }
-
-        if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined && (this.typeOfNotificationVariableForKitLookups === 'REG_KIT' || this.typeOfNotificationVariableForKitLookups === 'REG_HAIR_KIT')) {
-            this.getService.getProductsKitIdLookupsRequest(this.typeOfNotificationVariableForKitLookups, this.trackTypeVariableForKitLookups).subscribe((res) => {
-                this.productsKitIds = res;
-            }, error => {
-                this.handleError(error);
-            });
-        }
+    if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined && (this.typeOfNotificationVariableForKitLookups === 'REG_KIT' || this.typeOfNotificationVariableForKitLookups === 'REG_HAIR_KIT')) {
+      this.getService.getProductsKitIdLookupsRequest(this.typeOfNotificationVariableForKitLookups, this.trackTypeVariableForKitLookups).subscribe((res) => {
+        this.productsKitIds = res;
+      }, error => {
+        this.handleError(error);
+      });
     }
+  }
 
-    filterInBigSizeLookups(whichLookups, value) {
-        if (whichLookups === 'manufacturingCompany') {
-            this.getService.getManufacturingCompanyLookUp(1, value).subscribe((res: any) => {
-                this.manufacturingCompanyList = res;
-                this.formData.licenseHolderList = res;
-                this.isLoading = false;
-            }, error => this.handleError(error));
-        } else if (whichLookups === 'companyProfile') {
-            this.getService.getCompanyProfileLookUp(1, this.companyProfileId, value).subscribe((res: any) => {
-                this.isLoading = false;
-            }, error => this.handleError(error));
-        } else if (whichLookups === 'ingrediant') {
-            this.getService.getProductIngrediantsLookUp(1, value).subscribe((res: any) => {
-                this.formData.ingrediantList = res;
-                this.isLoading = false;
-            }, error => this.handleError(error));
-        }
+  filterInBigSizeLookups(whichLookups, value) {
+    if (whichLookups === 'manufacturingCompany') {
+      this.getService.getManufacturingCompanyLookUp(1, value).subscribe((res: any) => {
+        this.manufacturingCompanyList = res;
+        this.formData.licenseHolderList = res;
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else if (whichLookups === 'companyProfile') {
+      this.getService.getCompanyProfileLookUp(1, this.companyProfileId, value).subscribe((res: any) => {
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else if (whichLookups === 'ingrediant') {
+      this.getService.getProductIngrediantsLookUp(1, value).subscribe((res: any) => {
+        this.formData.ingrediantList = res;
+        this.isLoading = false;
+      }, error => this.handleError(error));
     }
+  }
 
-    showAlertMessager(messageStatus) {
-        messageStatus ? this.handleError({message: 'please complete the required values which marked with *'}) : null;
-    }
+  showAlertMessager(messageStatus) {
+    messageStatus ? this.handleError({message: 'please complete the required values which marked with *'}) : null;
+  }
 
-    enableLoadingForAttachment(event) {
-        if (event) {
-            this.isLoading = true;
-        } else {
-            this.isLoading = false;
-        }
+  enableLoadingForAttachment(event) {
+    if (event) {
+      this.isLoading = true;
+    } else {
+      this.isLoading = false;
     }
+  }
 
-    isDraftRequest(event) {
-        this.isDraftRequestStatus = event;
-    }
+  isDraftRequest(event) {
+    this.isDraftRequestStatus = event;
+  }
 }

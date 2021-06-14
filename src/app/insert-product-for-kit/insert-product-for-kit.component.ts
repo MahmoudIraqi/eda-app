@@ -28,6 +28,12 @@ export class InsertProductForKitComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.getDisabledValues();
+
+    if (this.appliedProductStatus) {
+      this.productStatusField = '';
+      this.notificationNoField = '';
+      this.requestIdField = '';
+    }
   }
 
   ngOnInit(): void {

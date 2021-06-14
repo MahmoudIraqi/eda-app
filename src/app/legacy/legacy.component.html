@@ -43,27 +43,18 @@
         <div class="col-12 mt-5">
           <div class="formTable">
             <div class="row">
-              <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 1 ">
+              <div class="col-12 mt-5"
+                   *ngIf="productData && (productData.typeOfMarketing === 1 || productData.typeOfMarketing === 3) ">
                 <app-product-request-form
                   [lookupsData]="formData"
                   [editData]="productData"
                   [legacyStatus]="true"
+                  [trackProductStatus]="typeOfProcess === 'Track'"
                   (saveDataOutput)="onSave($event)"
                   (submitDataOutput)="onSubmit($event)"
                   (errorMessage)="showAlertMessager($event)"
                   (isLoadingStatus)="enableLoadingForAttachment($event)"
                 ></app-product-request-form>
-              </div>
-              <div class="col-12 mt-5"
-                   *ngIf="productData && productData.typeOfMarketing === 3">
-                <app-products-hair-colour-request-form
-                  [lookupsData]="formData"
-                  [editData]="productData"
-                  (saveDataOutput)="onSave($event)"
-                  (submitDataOutput)="onSubmit($event)"
-                  (errorMessage)="showAlertMessager($event)"
-                  (isLoadingStatus)="enableLoadingForAttachment($event)"
-                ></app-products-hair-colour-request-form>
               </div>
             </div>
           </div>
