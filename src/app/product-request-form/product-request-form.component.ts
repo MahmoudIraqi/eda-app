@@ -468,7 +468,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getLookupForFormArray() {
     this.IngrediantDetailsRows().controls.map((x) => {
-      this.filteredOptionsForIngradiant = this.filterLookupsFunctionForIngredient('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
+      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
       this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList);
     });
   }
@@ -606,7 +606,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       function: this.fb.control('', Validators.required)
     }));
 
-    this.rerenderSubscribtionForClosingActionForDetailsForm();
+    this.rerenderSubscribtionForClosingActionForDetailsForm(this.IngrediantDetailsRows().controls.length - 1);
   }
 
   removeIngrediantDetailsRows(index) {
@@ -975,6 +975,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       return formControlValue.valueChanges
         .pipe(
           startWith(''),
+          debounceTime(500),
           map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
         );
     }
@@ -1050,15 +1051,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }) : null;
   }
 
-  private _subscribeToClosingActionsForDetailsFormArray(field, list): void {
+  private _subscribeToClosingActionsForDetailsFormArray(field, list, index): void {
+    console.log('field', field);
+    console.log('list', list);
+    console.log('index', index);
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
     list ? list.subscribe(y => {
       if (y && y.length === 0) {
-        this.IngrediantDetailsRows().controls.map((x) => {
-          if (x['controls'][field].dirty) {
-            x['controls'][field].setValue(null);
+        this.IngrediantDetailsRows().controls.map((x, i) => {
+          if (i === index) {
+            if (x['controls'][field].dirty) {
+              x['controls'][field].setValue(null);
+            }
           }
         });
       }
@@ -1190,11 +1196,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
   }
 
-  rerenderSubscribtionForClosingActionForDetailsForm() {
+  rerenderSubscribtionForClosingActionForDetailsForm(index) {
     this.getLookupForFormArray();
 
-    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant);
-    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction);
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant, index);
+    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction, index);
   }
 
   rerenderFileAttachmentList() {

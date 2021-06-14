@@ -604,7 +604,7 @@
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
                             [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
-                            (click)="openModal(detailedModal); rerenderSubscribtionForClosingActionForDetailsForm();">
+                            (click)="openModal(detailedModal); rerenderSubscribtionForClosingActionForDetailsForm(0);">
                       Add new detail
                     </button>
                   </div>
