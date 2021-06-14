@@ -456,7 +456,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getLookupForFormArray() {
     this.IngrediantDetailsRows().controls.map((x) => {
-      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
+      this.filteredOptionsForIngradiant = this.filterLookupsFunctionForIngredient('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
       this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList);
     });
   }
@@ -957,84 +957,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterLookupsFunction(whichLookup, formControlValue, list) {
-    if (whichLookup === 'ingrediant') {
-      let historyValue;
-      let historyList: any[];
-      if (formControlValue) {
-        return formControlValue.valueChanges
-          .pipe(
-            startWith(''),
-            distinctUntilChanged(),
-            map((state: string) => {
-              // this.isLoading = true;
-              if (state) {
-                if (historyValue !== state) {
-                  historyValue = state;
-                  if (state.length > 1) {
-                    this.getDataAfterFiltering(state).then(res => {
-                      console.log('res', res);
-                      historyList = res;
-                      this.isLoading = false;
-                      return historyList;
-                    });
-
-                    // debugger;
-                    // if (historyList && historyList.length > 0) {
-                    //   return historyList;
-                    // } else {
-                    //   return list.slice();
-                    // }
-                  } else {
-                    return list.slice();
-                  }
-                } else {
-                  this.isLoading = false;
-                  if (historyList && historyList.length > 0) {
-                    return historyList;
-                  } else {
-                    return list.slice();
-                  }
-                }
-              } else {
-                this.isLoading = false;
-                return list.slice();
-              }
-            })
-          );
-      }
-    } else {
-      if (formControlValue) {
-        return formControlValue.valueChanges
-          .pipe(
-            startWith(''),
-            map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
-          );
-      }
+    if (formControlValue) {
+      return formControlValue.valueChanges
+        .pipe(
+          startWith(''),
+          map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
+        );
     }
   }
 
   filterInsideList(lookup, value, list): LookupState[] {
-    let returnedList;
-    if (lookup === 'ingrediant' && value.length > 4) {
-      let filterValue;
-      if (value) {
-        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
-      }
-
-      return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
-    } else if (lookup !== 'ingrediant') {
-      let filterValue;
-      if (value) {
-        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
-      }
-
-      return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => {
-        this.isLoadingStatus.emit(false);
-        return x;
-      });
-    } else {
-      return list;
+    let filterValue;
+    if (value) {
+      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
     }
+
+    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
   convertAllNamingToId(data) {
@@ -1448,6 +1386,53 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         loadingStatus: false,
       }
     ];
+  }
+
+  filterLookupsFunctionForIngredient(whichLookup, formControlValue, list) {
+    let historyValue;
+    let historyList: any[];
+    if (formControlValue) {
+      return formControlValue.valueChanges
+        .pipe(
+          startWith(''),
+          distinctUntilChanged(),
+          map((state: string) => {
+            // this.isLoading = true;
+            if (state) {
+              if (historyValue !== state) {
+                historyValue = state;
+                if (state.length > 1) {
+                  this.getDataAfterFiltering(state).then(res => {
+                    console.log('res', res);
+                    historyList = res;
+                    this.isLoading = false;
+                    return historyList;
+                  });
+
+                  // debugger;
+                  // if (historyList && historyList.length > 0) {
+                  //   return historyList;
+                  // } else {
+                  //   return list.slice();
+                  // }
+                } else {
+                  return list.slice();
+                }
+              } else {
+                this.isLoading = false;
+                if (historyList && historyList.length > 0) {
+                  return historyList;
+                } else {
+                  return list.slice();
+                }
+              }
+            } else {
+              this.isLoading = false;
+              return list.slice();
+            }
+          })
+        );
+    }
   }
 
   async getDataAfterFiltering(state): Promise<any[]> {
