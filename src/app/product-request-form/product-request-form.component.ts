@@ -368,8 +368,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.rerenderFileAttachmentList();
 
-    console.log('this.selectedTrackType', this.selectedTrackType);
-
     this.getDisabledValues();
 
     this.getFormAsStarting(this.editData);
@@ -1052,9 +1050,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   private _subscribeToClosingActionsForDetailsFormArray(field, list, index): void {
-    console.log('field', field);
-    console.log('list', list);
-    console.log('index', index);
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
@@ -1462,17 +1457,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     let responseOfRequest: any[];
     const request = await this.getService.getProductIngrediantsLookUp(1, state);
     const PromiseValue = new Promise(resolve => {
-      console.log('request', request);
       request.subscribe(res => {
-        console.log('request_res', res);
         responseOfRequest = res;
       }, error => this.handleError(error), () => {
-        console.log('responseOfRequest', responseOfRequest);
         resolve(responseOfRequest);
       });
     });
 
-    console.log('PromiseValue.then((res: any[]) => res)', PromiseValue.then((res: any[]) => res));
     return PromiseValue.then((res: any[]) => res);
   }
 }

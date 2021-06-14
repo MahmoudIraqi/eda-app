@@ -304,9 +304,9 @@ export class TableListComponent implements OnInit, OnChanges {
   deleteProduct(request) {
     const editFrom = this.route.snapshot.routeConfig.path;
     if (editFrom === 'tell_do_variation') {
-      this.removeDraftProduct.emit(request.NotificationNo);
+      this.removeDraftProduct.emit(request);
     } else if (editFrom === 'do_tell_variation') {
-      this.removeDraftProduct.emit(request.NotificationNo);
+      this.removeDraftProduct.emit(request);
     } else if (editFrom === 'registration') {
       this.removeDraftProduct.emit(Number(request.ID));
     } else if (editFrom === 'legacy') {

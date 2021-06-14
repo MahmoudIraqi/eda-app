@@ -155,6 +155,7 @@ export class VariationComponent implements OnInit {
 
     const data = {
       ...event,
+      isDraft: 0,
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
 

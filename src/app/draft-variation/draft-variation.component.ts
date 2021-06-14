@@ -58,7 +58,7 @@ export class DraftVariationComponent implements OnInit {
   removeProduct() {
     this.isLoading = true;
 
-    this.getService.deleteDraftProductRequest(this.modalRequestId).subscribe(res => {
+    this.getService.deleteDraftProductRequest(this.modalRequestId.ID).subscribe(res => {
       if (res) {
         this.isLoading = false;
         this.modalRef.hide();
