@@ -27,11 +27,25 @@
 }
 
 
-.flaticon-tracking:before { content: "\f100"; }
-.flaticon-approval:before { content: "\f101"; }
-.flaticon-rejected:before { content: "\f102"; }
-.flaticon-archive:before { content: "\f103"; }
-.flaticon-edit:before { content: "\f104"; }
+.flaticon-tracking:before {
+  content: "\f100";
+}
+
+.flaticon-approval:before {
+  content: "\f101";
+}
+
+.flaticon-rejected:before {
+  content: "\f102";
+}
+
+.flaticon-archive:before {
+  content: "\f103";
+}
+
+.flaticon-edit:before {
+  content: "\f104";
+}
 
 .flaticon-new-document:before {
   content: "\f100";
@@ -598,6 +612,17 @@ body {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.chartContainer {
+  width: 100% !important;
+  height: 450px;
+}
+
+.containerPieChart {
+  height: 450px;
+  margin-top: 3em;
+  display: inline-block;
 }
 
 /* ----------------------- responsive -------------------------- */

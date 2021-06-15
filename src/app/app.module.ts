@@ -67,6 +67,7 @@ import {TrackLegacyComponent} from './track-legacy/track-legacy.component';
 import {DraftLegacyComponent} from './draft-legacy/draft-legacy.component';
 import { InsertProductForKitComponent } from './insert-product-for-kit/insert-product-for-kit.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ChartsComponentComponent } from './charts-component/charts-component.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     DraftLegacyComponent,
     InsertProductForKitComponent,
     DashboardComponent,
+    ChartsComponentComponent,
   ],
   imports: [
     BrowserModule,
