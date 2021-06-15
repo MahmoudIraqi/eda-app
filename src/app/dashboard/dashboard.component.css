@@ -12,6 +12,7 @@
   border-radius: 10px 0px 10px 10px;
   color: #fff;
   padding: 1em;
+  cursor: pointer;
 }
 
 .amountOfAllRequests ul li:last-child {
