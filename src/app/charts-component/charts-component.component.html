@@ -9,7 +9,7 @@
       <ul>
         <li *ngFor="let colorItem of pieData" class="d-flex align-items-center">
           <span class="colorSchema" [ngStyle]="{'background': colorItem.color}"></span>
-          <span class="colorSchemaText">{{colorItem.name}} is {{colorItem.value}}</span>
+          <span class="colorSchemaText">{{colorItem.name}} is <b>{{colorItem.value}}</b></span>
         </li>
       </ul>
     </div>

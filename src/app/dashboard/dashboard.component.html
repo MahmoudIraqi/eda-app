@@ -2,7 +2,9 @@
   <div class="col-12">
     <div class="amountOfAllRequests">
       <ul>
-        <li *ngFor="let request of numberOFAllRequestObject; let i = index" (click)="selectCharts(request.id, i)">
+        <li *ngFor="let request of numberOFAllRequestObject; let i = index"
+            (click)="selectCharts(request.id, i)"
+            [ngClass]="{'active': request.active}">
           <div class="d-flex align-items-center justify-content-center">
             <div class="icon">
               <i class="{{request.icon}}"></i>

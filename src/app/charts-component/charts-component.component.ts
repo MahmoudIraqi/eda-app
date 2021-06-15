@@ -1,4 +1,5 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-charts-component',
@@ -22,15 +23,17 @@ export class ChartsComponentComponent implements OnInit, OnChanges {
   constructor() {
   }
 
-  ngOnChange(): void {
+  ngOnChanges(changes: SimpleChanges) {
+    d3.selectAll('svg#chart svg').remove();
+    d3.selectAll('div#containerPieChart svg').remove();
+
+    console.log('this.drawBars(this.data)', this.data);
+
     this.drawBars(this.data);
     this.drawPieChart(this.pieData);
   }
 
-
   ngOnInit(): void {
-    this.drawBars(this.data);
-    this.drawPieChart(this.pieData);
   }
 
   drawBars(data: any[]): void {
@@ -78,8 +81,7 @@ export class ChartsComponentComponent implements OnInit, OnChanges {
   }
 
   drawPieChart(data: any[]): void {
-
-    this.svgPie = d3.select('#containerPieChart')
+    this.svgPie = d3.select('div#containerPieChart')
       .append('svg')
       .attr('width', this.widthPie)
       .attr('height', this.heightPie)
@@ -117,5 +119,4 @@ export class ChartsComponentComponent implements OnInit, OnChanges {
       x.color = color(x.color);
     });
   }
-
 }
