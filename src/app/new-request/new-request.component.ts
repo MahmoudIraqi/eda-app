@@ -301,10 +301,6 @@ export class NewRequestComponent implements OnInit {
     if (this.trackTypeVariable && this.typeOfNotificationVariable) {
       const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
 
-      console.log('this.variablesPricingList.LKUPVARIABLESDt', this.variablesPricingList.LKUPVARIABLESDto);
-      console.log('this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto', this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0);
-      console.log('this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode)', this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode));
-
       this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
         this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
       }) : null;

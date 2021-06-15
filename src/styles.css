@@ -575,6 +575,14 @@ body {
   font-weight: bolder;
 }
 
+.table td span.ellipsisSpan {
+  white-space: nowrap;
+  width: 230px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {
