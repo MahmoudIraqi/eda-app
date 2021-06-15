@@ -694,6 +694,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
+    console.log('editData', this.editData);
+    console.log('data', data);
+
     const newObjectForData = {
       ...this.editData,
       ...data,
