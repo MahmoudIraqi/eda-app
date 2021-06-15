@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 
 @Component({
@@ -21,11 +21,11 @@ export class TrackReRegistrationRequestComponent implements OnInit {
 
     this.getService.getTrackReRegistrationRequestsList().subscribe((res: any) => {
       this.trackReRegistrationListRequests = {
-        tableHeader: ['Request id', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type'],
+        tableHeader: ['Notification Number', 'Submission date', 'Type Of Notification', 'Product English name', 'Product Arabic name', 'Status'],
         tableBody: res
       };
       this.isLoading = false;
-    },error => this.handleError(error));
+    }, error => this.handleError(error));
   }
 
   handleError(message) {

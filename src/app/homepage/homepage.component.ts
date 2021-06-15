@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-homepage',
@@ -27,11 +27,11 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Tell & Do variation',
-            link: '/new-request/tell_do-variation'
+            link: '/new-request/tell_do_variation'
           },
           {
             name: 'Do & Tell Variation',
-            link: '/new-request/do_tell-variation'
+            link: '/new-request/do_tell_variation'
           },
           {
             name: 'Inspection',
@@ -39,7 +39,7 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Custom Release',
-            link: '#'
+            link: '/new-request/custom-release'
           },
           {
             name: 'General Enquiries',
@@ -63,11 +63,11 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Tell & Do variation',
-            link: '/track-request/tell_do-variation'
+            link: '/track-request/tell_do_variation'
           },
           {
             name: 'Do & Tell Variation',
-            link: '/track-request/do_tell-variation'
+            link: '/track-request/do_tell_variation'
           },
           {
             name: 'Inspection',
@@ -95,11 +95,11 @@ export class HomepageComponent implements OnInit {
           },
           {
             name: 'Tell & Do variation',
-            link: '/draft-request/tell_do-variation'
+            link: '/draft-request/tell_do_variation'
           },
           {
             name: 'Do & Tell Variation',
-            link: '/draft-request/do_tell-variation'
+            link: '/draft-request/do_tell_variation'
           },
           {
             name: 'Inspection',

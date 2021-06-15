@@ -7,7 +7,7 @@ import {
   OnChanges, OnDestroy,
   OnInit,
   Output,
-  QueryList,
+  QueryList, SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -19,6 +19,7 @@ import {Observable, Subscription} from 'rxjs';
 import {LookupState} from '../products-kit-request-form/products-kit-request-form.component';
 import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {convertToSpecialObject} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-products-kit-hair-colour-request-form',
@@ -29,22 +30,32 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
 
   @Input() selectedRequestedType;
   @Input() selectedFormType;
+  @Input() selectedIsExport;
   @Input() selectedTrackType;
   @Input() successSubmission;
   @Input() editData;
+  @Input() whichVariation;
+  @Input() editFromWhere;
+  @Input() legacyStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
   @Input() lookupsData;
+  @Input() lookupForProductIds;
+  @Input() companyProfile;
   @Output() saveDataOutput = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
+  @Output() saveDataOutputForAttachment = new EventEmitter();
+  @Output() errorMessage = new EventEmitter();
+  @Output() isLoadingStatus = new EventEmitter();
+  @Output() errorForAttachemntRequest = new EventEmitter();
 
   formData;
   selectedKitProductsStatus;
   regColourKitForAllRequestedType: FormGroup;
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
       required: false
@@ -130,144 +141,204 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   ];
   attachmentFieldsForKits = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'GMP',
       name: 'GMP',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'CoA',
       name: 'CoA',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
-      id: 'artWorkForTheKit',
+      id: 'artWork',
       name: 'Art Work For The Kit',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'leaflet',
       name: 'leaflet',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'reference',
       name: 'reference',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'methodOfAnalysis',
       name: 'Method of Analysis',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'receipt',
       name: 'receipt',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingContract',
       name: 'Manufacturing Contract',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'storageContract',
       name: 'Storage Contract',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'others',
       name: 'others',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'factoryLicense',
       name: 'Factory license',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingAssignment',
       name: 'Manufacturing Assignment',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'commercialRecord',
       name: 'Commercial Record',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'stabilityStudy',
       name: 'Stability study',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'shelfLifeAttachment',
       name: 'Shelf life',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'letterOfVariationFromLicenseHolder',
       name: 'letter of variation from license holder',
       fileName: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      fileValue: '',
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     }
   ];
   removeShortNameFieldStatus = false;
@@ -275,951 +346,13 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   @ViewChild('insideFormTabs', {static: false}) insideFormTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   status;
-  detailsListTable = {
-    tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Volumes', 'Actions'],
-    tableBody: []
-  };
-  detailsListTableForKitProduct = {
-    tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Volumes', 'Actions'],
-    tableBody: []
-  };
   allProductsInKit = {
-    tableHeader: ['Group Name', 'Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
+    tableHeader: ['Notification Number', 'Product Name', 'Manufacturing Company', 'Manufacturing Country', 'Applicant', 'Actions'],
     tableBody: []
   };
   editDetailedRowStatus = false;
   editIndex;
-  editTheKitProductDetailedRowStatus = false;
-  editTheKitProductsIndex;
-  dummyDataForRegisteredProductForKits = [
-    {
-      newProduct: {
-        productArabicName: '',
-        productEnglishName: 'Mahmoud',
-        shortName: ['Iraqy', 'Osary'],
-        manufacturingCompany: 'Comp2',
-        manufacturingCountry: 'Egypt',
-        applicant: 'Applicant1',
-        licenseHolder: 'licenseHolder1',
-        licenseHolderTxt: '',
-        countryOfLicenseHolder: 'Egypt',
-        tradeMark: 'Prod1',
-        physicalState: 'physicalState1',
-        physicalStateTxt: '',
-        purposeOfUse: 'purposeOfUse2',
-        purposeOfUseTxt: '',
-        shelfLife: 6,
-        receiptNumber: '219',
-        receiptValue: '12.4',
-        detailsTable: [
-          {
-            colour: 'Red',
-            fragrance: 'Red',
-            flavor: 'Red',
-            barCode: 'Red',
-            volumes: 'Red',
-            unitOfMeasure: 'unitOfMeasure1',
-            typeOfPackaging: 'typeOfPackaging1',
-            packagingDescription: '',
-            ingrediantDetails: [
-              {
-                ingrediant: 'ingrediant1',
-                concentrations: 'Test1',
-                function: 'function1',
-              }
-            ]
-          }
-        ],
-        freeSale: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        GMP: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        artWork: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        leaflet: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        reference: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        methodOfAnalysis: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        specificationsOfFinishedProduct: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        receipt: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        authorizationLetter: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        manufacturingContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        storageContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        others: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        otherFees: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-      },
-      productStatus: '',
-      NotificationNo: '12345',
-    },
-    {
-      newProduct: {
-        productArabicName: '',
-        productEnglishName: 'Osary',
-        shortName: ['Abdel Fattah', 'Elsayed'],
-        manufacturingCompany: 'Comp3',
-        manufacturingCountry: 'Brazil',
-        applicant: 'Applicant3',
-        licenseHolder: 'licenseHolder2',
-        licenseHolderTxt: '',
-        countryOfLicenseHolder: 'Brazil',
-        tradeMark: 'Prod3',
-        physicalState: 'physicalState2',
-        physicalStateTxt: '',
-        purposeOfUse: 'purposeOfUse3',
-        purposeOfUseTxt: '',
-        shelfLife: 3,
-        receiptNumber: '219',
-        receiptValue: '12.4',
-        detailsTable: [
-          {
-            colour: 'Red',
-            fragrance: 'Red',
-            flavor: 'Red',
-            barCode: 'Red',
-            volumes: 'Red',
-            unitOfMeasure: 'unitOfMeasure1',
-            typeOfPackaging: 'typeOfPackaging1',
-            packagingDescription: '',
-            ingrediantDetails: [
-              {
-                ingrediant: 'ingrediant1',
-                concentrations: 'Test1',
-                function: 'function1',
-              }
-            ]
-          }
-        ],
-        freeSale: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        GMP: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        artWork: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        leaflet: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        reference: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        methodOfAnalysis: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        specificationsOfFinishedProduct: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        receipt: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        authorizationLetter: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        manufacturingContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        storageContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        others: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        otherFees: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-      },
-      productStatus: '',
-      NotificationNo: '67890',
-    },
-    {
-      newProduct: {
-        productArabicName: '',
-        productEnglishName: 'Mahmoud',
-        shortName: ['Iraqy', 'Osary'],
-        manufacturingCompany: 'Comp2',
-        manufacturingCountry: 'Egypt',
-        applicant: 'Applicant1',
-        licenseHolder: 'licenseHolder1',
-        licenseHolderTxt: '',
-        countryOfLicenseHolder: 'Egypt',
-        tradeMark: 'Prod1',
-        physicalState: 'physicalState1',
-        physicalStateTxt: '',
-        purposeOfUse: 'purposeOfUse2',
-        purposeOfUseTxt: '',
-        shelfLife: 6,
-        receiptNumber: '219',
-        receiptValue: '12.4',
-        detailsTable: [
-          {
-            colour: 'Red',
-            fragrance: 'Red',
-            flavor: 'Red',
-            barCode: 'Red',
-            volumes: 'Red',
-            unitOfMeasure: 'unitOfMeasure1',
-            typeOfPackaging: 'typeOfPackaging1',
-            packagingDescription: '',
-            ingrediantDetails: [
-              {
-                ingrediant: 'ingrediant1',
-                concentrations: 'Test1',
-                function: 'function1',
-              }
-            ]
-          }
-        ],
-        freeSale: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        GMP: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        artWork: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        leaflet: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        reference: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        methodOfAnalysis: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        specificationsOfFinishedProduct: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        receipt: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        authorizationLetter: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        manufacturingContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        storageContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        others: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        otherFees: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-      },
-      productStatus: '',
-      NotificationNo: '13579',
-    },
-    {
-      newProduct: {
-        productArabicName: '',
-        productEnglishName: 'Osary',
-        shortName: ['Abdel Fattah', 'Elsayed'],
-        manufacturingCompany: 'Comp3',
-        manufacturingCountry: 'Brazil',
-        applicant: 'Applicant3',
-        licenseHolder: 'licenseHolder2',
-        licenseHolderTxt: '',
-        countryOfLicenseHolder: 'Brazil',
-        tradeMark: 'Prod3',
-        physicalState: 'physicalState2',
-        physicalStateTxt: '',
-        purposeOfUse: 'purposeOfUse3',
-        purposeOfUseTxt: '',
-        shelfLife: 3,
-        receiptNumber: '219',
-        receiptValue: '12.4',
-        detailsTable: [
-          {
-            colour: 'Red',
-            fragrance: 'Red',
-            flavor: 'Red',
-            barCode: 'Red',
-            volumes: 'Red',
-            unitOfMeasure: 'unitOfMeasure1',
-            typeOfPackaging: 'typeOfPackaging1',
-            packagingDescription: '',
-            ingrediantDetails: [
-              {
-                ingrediant: 'ingrediant1',
-                concentrations: 'Test1',
-                function: 'function1',
-              }
-            ]
-          }
-        ],
-        freeSale: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        GMP: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        artWork: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        leaflet: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        reference: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        methodOfAnalysis: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        specificationsOfFinishedProduct: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        receipt: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        authorizationLetter: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        manufacturingContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        storageContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        others: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        otherFees: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-      },
-      productStatus: '',
-      NotificationNo: '24680',
-    },
-    {
-      newProduct: {
-        productArabicName: '',
-        productEnglishName: 'Mahmoud',
-        shortName: ['Iraqy', 'Osary'],
-        manufacturingCompany: 'Comp2',
-        manufacturingCountry: 'Egypt',
-        applicant: 'Applicant1',
-        licenseHolder: 'licenseHolder1',
-        licenseHolderTxt: '',
-        countryOfLicenseHolder: 'Egypt',
-        tradeMark: 'Prod1',
-        physicalState: 'physicalState1',
-        physicalStateTxt: '',
-        purposeOfUse: 'purposeOfUse2',
-        purposeOfUseTxt: '',
-        shelfLife: 6,
-        receiptNumber: '219',
-        receiptValue: '12.4',
-        detailsTable: [
-          {
-            colour: 'Red',
-            fragrance: 'Red',
-            flavor: 'Red',
-            barCode: 'Red',
-            volumes: 'Red',
-            unitOfMeasure: 'unitOfMeasure1',
-            typeOfPackaging: 'typeOfPackaging1',
-            packagingDescription: '',
-            ingrediantDetails: [
-              {
-                ingrediant: 'ingrediant1',
-                concentrations: 'Test1',
-                function: 'function1',
-              }
-            ]
-          }
-        ],
-        freeSale: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        GMP: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        artWork: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        leaflet: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        reference: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        methodOfAnalysis: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        specificationsOfFinishedProduct: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        receipt: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        authorizationLetter: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        manufacturingContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        storageContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        others: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        otherFees: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-      },
-      productStatus: '',
-      NotificationNo: '09876',
-    },
-    {
-      newProduct: {
-        productArabicName: '',
-        productEnglishName: 'Osary',
-        shortName: ['Abdel Fattah', 'Elsayed'],
-        manufacturingCompany: 'Comp3',
-        manufacturingCountry: 'Brazil',
-        applicant: 'Applicant3',
-        licenseHolder: 'licenseHolder2',
-        licenseHolderTxt: '',
-        countryOfLicenseHolder: 'Brazil',
-        tradeMark: 'Prod3',
-        physicalState: 'physicalState2',
-        physicalStateTxt: '',
-        purposeOfUse: 'purposeOfUse3',
-        purposeOfUseTxt: '',
-        shelfLife: 3,
-        receiptNumber: '219',
-        receiptValue: '12.4',
-        detailsTable: [
-          {
-            colour: 'Red',
-            fragrance: 'Red',
-            flavor: 'Red',
-            barCode: 'Red',
-            volumes: 'Red',
-            unitOfMeasure: 'unitOfMeasure1',
-            typeOfPackaging: 'typeOfPackaging1',
-            packagingDescription: '',
-            ingrediantDetails: [
-              {
-                ingrediant: 'ingrediant1',
-                concentrations: 'Test1',
-                function: 'function1',
-              }
-            ]
-          }
-        ],
-        freeSale: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        GMP: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        CoA: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        artWork: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        leaflet: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        reference: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        methodOfAnalysis: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        specificationsOfFinishedProduct: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        receipt: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        authorizationLetter: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        manufacturingContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        storageContract: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        others: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-        otherFees: {
-          lastModified: '1608642169292',
-          lastModifiedDate: 'Tue Dec 22 2020 15:02:49 GMT+0200 (Eastern European Standard Time)',
-          name: 'Hausbank_RuesselsheimerVB_Einzelkunden_FK (1).csv',
-          size: '374554',
-          type: 'application/vnd.ms-excel',
-          webkitRelativePath: ''
-        },
-      },
-      productStatus: '',
-      NotificationNo: '54321',
-    },
-  ];
   newProductObject: any;
-  selectedTrackTypeForNewProduct;
-  selectedRegisteredTypeForProduct;
   selectedRegisteredProductTypeForProduct;
   enableEditableFields = [];
   disabledSaveButton: boolean = false;
@@ -1233,8 +366,16 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
   filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
   filteredOptionsForStoragePlace: Observable<LookupState[]>;
+  // filteredOptionsForProductIds: Observable<LookupState[]>;
   subscription: Subscription;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  productFlags;
+  productComments;
+  requestId;
+  attachmentRequiredStatus: boolean = false;
+  isDraft: boolean = false;
+  deletedProductIdLists = [];
+  objectForListOfVariationGroup: any;
 
   constructor(private fb: FormBuilder,
               private getServices: FormService,
@@ -1242,9 +383,8 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.getFormAsStarting('');
   }
 
-  ngOnChanges() {
-    this.formData = {...this.lookupsData, productStatusList: ['Registered', 'New']};
-    // this.getFormAsStarting();
+  ngOnChanges(changes: SimpleChanges) {
+    this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
 
     if (this.successSubmission) {
       this.resetForms();
@@ -1253,6 +393,211 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     if (this.editData) {
       this.getFormAsStarting(this.editData);
     }
+
+    this.attachmentFieldsForKits = [
+      {
+        id: 'freeSaleDoc',
+        name: 'Free Sale',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'GMP',
+        name: 'GMP',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'CoA',
+        name: 'CoA',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'artWork',
+        name: 'Art Work For The Kit',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'leaflet',
+        name: 'leaflet',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'reference',
+        name: 'reference',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'methodOfAnalysis',
+        name: 'Method of Analysis',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'specificationsOfFinishedProduct',
+        name: 'Specifications of Finished Product',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'authorizationLetter',
+        name: 'Authorization Letter',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'manufacturingContract',
+        name: 'Manufacturing Contract',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'storageContract',
+        name: 'Storage Contract',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'others',
+        name: 'others',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'otherFees',
+        name: 'otherFees',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'factoryLicense',
+        name: 'Factory license',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'manufacturingAssignment',
+        name: 'Manufacturing Assignment',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'commercialRecord',
+        name: 'Commercial Record',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'stabilityStudy',
+        name: 'Stability study',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'shelfLifeAttachment',
+        name: 'Shelf life',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'letterOfVariationFromLicenseHolder',
+        name: 'letter of variation from license holder',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      }
+    ];
+
+    this.setApplicant(this.companyProfile);
 
     this.getDisabledValues();
   }
@@ -1281,13 +626,14 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('productColor');
-    this._subscribeToClosingActions('manufacturingCompany');
-    this._subscribeToClosingActions('manufacturingCountry');
-    this._subscribeToClosingActions('applicant');
-    this._subscribeToClosingActions('licenseHolder');
-    this._subscribeToClosingActions('countryOfLicenseHolder');
-    this._subscribeToClosingActions('storagePlace');
+    this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
+    this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
+    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
+    this._subscribeToClosingActions('applicant', this.filteredOptionsForApplicant);
+    this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
+    this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
+    this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
+    // this._subscribeToClosingActionsForKitProducts('productID', this.filteredOptionsForProductIds);
   }
 
   ngOnDestroy() {
@@ -1297,10 +643,59 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   onFileSelect(event, fileControlName) {
+    let cardImageBase64;
+    let resForSetAttachment;
+    let attachmentValue;
+
+    if (this.attachmentFieldsForKits.filter(x => x.loadingStatus === true).length === 0) {
+      if (event.target.files.length > 0) {
+        if (event.target.files[0].type === 'application/pdf') {
+
+          this.attachmentFieldsForKits.filter(x => x.id === fileControlName).map(y => {
+            y.fileName = event.target.value.split(/(\\|\/)/g).pop();
+            attachmentValue = y.fileValue;
+          });
+
+          this.attachmentFieldsForKits.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'Yes';
+            this.isLoadingStatus.emit(true);
+          });
+          const file = event.target.files[0];
+          const reader = new FileReader();
+
+          reader.readAsDataURL(file);
+          reader.onload = (res: any) => {
+            if (this.variationFieldsStatus) {
+              if (this.editData.isVariationSaved === false) {
+                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regColourKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
+            } else {
+              if (!this.regColourKitForAllRequestedType.value.id) {
+                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regColourKitForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
+            }
+          };
+
+        }// this.regColourKitForAllRequestedType.get(fileControlName).setValue(file);
+        else {
+          this.attachmentFieldsForKits.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'No';
+            this.isLoadingStatus.emit(false);
+          });
+        }
+      }
+    }
+  }
+
+  onFileSelectFromDetailsProductForKit(event, fileControlName, index) {
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.regColourKitForAllRequestedType.get(fileControlName).setValue(file);
+      this.ProductGroupsRows().at(index).get(fileControlName).setValue(file);
     }
   }
 
@@ -1330,14 +725,134 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   saveData() {
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
-    this.saveDataOutput.emit(data);
+
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
+    this.saveDataOutput.emit(newObjectForData);
   }
 
   onSubmit() {
+    this.attachmentRequiredStatus = true;
     this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
 
-    this.submitDataOutput.emit(data);
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
+    if (this.regColourKitForAllRequestedType.valid) {
+      this.submitDataOutput.emit(newObjectForData);
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
+  saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
+    this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFieldsForKits.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+    this.getServices.createProductKitRequest(allDataForSave).subscribe((res: any) => {
+      this.editData = res;
+      this.saveDataOutputForAttachment.emit(res.id);
+      this.regColourKitForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  saveProductForAttachmentVariation(fileId, fileName, id, base64Data, fileValue) {
+    this.regColourKitForAllRequestedType.value.ProductsForKit.splice(this.regColourKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
+    const data = this.convertAllNamingToId(this.regColourKitForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFieldsForKits.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+
+    const newObject = {
+      ...this.editData,
+      ...allDataForSave,
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3,
+      ...this.objectForListOfVariationGroup
+    };
+
+
+    this.getServices.setVariationProduct(newObject).subscribe((res: any) => {
+      this.editData = res;
+      this.regColourKitForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
+    const dataForRequest = this.convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue);
+
+    this.attachmentFieldsForKits.filter(x => x.id === FileID).map(y => {
+      y.loadingStatus = true;
+    });
+
+    this.getServices.setAttachmentFile(dataForRequest).subscribe((res: any) => {
+      this.attachmentFieldsForKits.filter(x => x.id === FileID).map(y => {
+        y.fileValue = res.ID;
+        y.loadingStatus = false;
+        this.isLoadingStatus.emit(false);
+        this.regColourKitForAllRequestedType.get(FileID).setValue(res.ID);
+      });
+
+      return res;
+    }, error => this.errorForAttachemntRequest.emit(error));
+  }
+
+  convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
+    return {
+      RequestId: this.regColourKitForAllRequestedType.value.id ? this.regColourKitForAllRequestedType.value.id : this.requestId,
+      AttachmentName: FileID,
+      AttachmentFileName: FileName,
+      base64Data: base64Data,
+      ID: fileValue ? fileValue : id
+    };
+  }
+
+  downloadFile(FileName) {
+    this.getServices.getAttachmentFileByID(this.regColourKitForAllRequestedType.value.id, FileName).subscribe((res: any) => {
+      this.convertFilesToPDF(res.base64Data, FileName);
+    });
+  }
+
+  convertFilesToPDF(base64Data, fileName) {
+    let obj = document.createElement('object');
+    obj.style.width = '100%';
+    obj.style.height = '842pt';
+    obj.type = 'application/pdf';
+    obj.data = 'data:application/pdf;base64,' + base64Data;
+
+    var link = document.createElement('a');
+    link.innerHTML = 'Download PDF file';
+    link.download = `${fileName}`;
+    link.className = 'pdfLink';
+    link.href = 'data:application/pdf;base64,' + base64Data;
+
+    link.click();
   }
 
   get ShortName(): FormArray {
@@ -1347,7 +862,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   addShortName() {
     this.removeShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+')));
+      this.ShortName.push(this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+'))); //
     }
   }
 
@@ -1364,63 +879,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     }
   }
 
-  DetailsRows(index): FormArray {
-    return this.ProductGroupsRows().at(index).get('detailsTable') as FormArray;
-  }
-
-  addDetailsRows(index) {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable(index);
-    this.DetailsRows(index).push(this.fb.group({
-      colour: this.fb.control(''),
-      fragrance: this.fb.control(''),
-      flavor: this.fb.control(''),
-      barCode: this.fb.control(''),
-      volumes: this.fb.control('', Validators.required),
-      unitOfMeasure: this.fb.control('', Validators.required),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
-      ingrediantDetails: this.fb.array([this.fb.group({
-        ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', Validators.required),
-        function: this.fb.control('', Validators.required),
-      })])
-    }));
-  }
-
-  editDataDetailsRows(index) {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable(index);
-  }
-
-  removeDetailsRows(event) {
-    this.DetailsRows(event.rowIndex).removeAt(event.i);
-
-    this.equalTheNewDetailsTable(event.rowIndex);
-  }
-
-  IngrediantDetailsRows(index, i): FormArray {
-    return this.DetailsRows(i).at(index).get('ingrediantDetails') as FormArray;
-  }
-
-  addIngrediantDetailsRows(rowIndex, index) {
-    this.IngrediantDetailsRows(rowIndex, index).push(this.fb.group({
-      ingrediant: this.fb.control('', Validators.required),
-      concentrations: this.fb.control('', Validators.required),
-      function: this.fb.control('', Validators.required)
-    }));
-  }
-
-  removeIngrediantDetailsRows(fromWhere, event) {
-    if (this.IngrediantDetailsRows(event.rowIndex, event.i).length > 1) {
-      this.IngrediantDetailsRows(event.rowIndex, event.i).removeAt(event.childIndex);
-    }
-
-    if (fromWhere !== 'form') {
-      this.equalTheNewDetailsTable(event.rowIndex);
-    }
-  }
-
   ProductGroupsRows(): FormArray {
     return this.regColourKitForAllRequestedType.get('ProductsForKit') as FormArray;
   }
@@ -1431,55 +889,130 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.ProductGroupsRows().push(this.fb.group({
       productStatus: this.fb.control(''),
       NotificationNo: this.fb.control(''),
-      productDetails: this.fb.group({})
+      productID: this.fb.control(''),
+      productDetails: this.fb.group({
+        id: 0,
+        productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
+        productEnglishName: this.fb.control(''),
+        shortName: this.fb.array([this.fb.control('')]),
+        manufacturingCompany: this.fb.control(null),
+        manufacturingCountry: this.fb.control(''),
+        applicant: this.fb.control(''),
+        licenseHolder: this.fb.control(''),
+        licenseHolderTxt: this.fb.control(''),
+        countryOfLicenseHolder: this.fb.control(''),
+        tradeMark: this.fb.control(''),
+        physicalState: this.fb.control(''),
+        physicalStateTxt: this.fb.control(''),
+        purposeOfUse: this.fb.control(''),
+        purposeOfUseTxt: this.fb.control(''),
+        storagePlace: this.fb.control(''),
+        shelfLife: this.fb.control(0),
+        receiptNumber: this.fb.control(''),
+        receiptValue: this.fb.control(''),
+        packagingTable: this.fb.array([this.fb.group({
+          volumesID: this.fb.control(''),
+          volumes: this.fb.control(''),
+          unitOfMeasure: this.fb.control(''),
+          typeOfPackaging: this.fb.control(''),
+          packagingDescription: this.fb.control(''),
+        })]),
+        detailsTable: this.fb.array([this.fb.group({
+          DetailsID: this.fb.control(''),
+          PRODUCT_ID: this.fb.control(''),
+          colour: this.fb.control(''),
+          fragrance: this.fb.control(''),
+          flavor: this.fb.control(''),
+          barCode: this.fb.control(''),
+          ingrediantDetails: this.fb.array([this.fb.group({
+            Ingredient_ID: this.fb.control(''),
+            ingrediant: this.fb.control(''),
+            concentrations: this.fb.control(''),
+            function: this.fb.control(''),
+          })])
+        })]),
+        deletedIngredientsIds: this.fb.control(null),
+        deletedProductDetailsIds: this.fb.control(null),
+        deletedpacklstIds: this.fb.control(null),
+        freeSaleDoc: this.fb.control(''),
+        GMP: this.fb.control(''),
+        CoA: this.fb.control(''),
+        artWork: this.fb.control(''),
+        leaflet: this.fb.control(''),
+        reference: this.fb.control(''),
+        methodOfAnalysis: this.fb.control(''),
+        specificationsOfFinishedProduct: this.fb.control(''),
+        receipt: this.fb.control(''),
+        authorizationLetter: this.fb.control(''),
+        manufacturingContract: this.fb.control(''),
+        storageContract: this.fb.control(''),
+        factoryLicense: this.fb.control(''),
+        manufacturingAssignment: this.fb.control(''),
+        commercialRecord: this.fb.control(''),
+        stabilityStudy: this.fb.control(''),
+        shelfLifeAttachment: this.fb.control(''),
+        letterOfVariationFromLicenseHolder: this.fb.control(''),
+        others: this.fb.control(''),
+        otherFees: this.fb.control(''),
+      })
     }));
   }
 
-  removeProductsGroupRows(i) {
-    this.allProductsInKit.tableBody = [];
+  removeProductsGroupRows(index) {
+    this.ProductGroupsRows().removeAt(index);
+    this.allProductsInKit.tableBody.splice(index, 1);
+  }
 
-    let control = <FormArray> this.regColourKitForAllRequestedType.controls.deletedProductIdLists;
-    if (control.value.filter(x => x === this.ProductGroupsRows().value[i].productDetails.id).length < 1) {
-      control.push(this.fb.control(this.ProductGroupsRows().value[i].productDetails.id));
-    }
-
-    this.ProductGroupsRows().removeAt(i);
-
-    this.ProductGroupsRows().value.filter(y => y.productStatus).map(x => {
-      if (this.allProductsInKit.tableBody.length === 0) {
-        this.allProductsInKit.tableBody = [x.productDetails];
-      } else {
-        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
-      }
-    });
-
+  deletedProductsIdsList(index) {
+    this.deletedProductIdLists.push(this.ProductGroupsRows().controls[index].value.productDetails.id);
+    this.regColourKitForAllRequestedType.get('deletedProductIdLists').patchValue(this.deletedProductIdLists);
   }
 
   getFormAsStarting(data) {
     if (data) {
-      data.ProductsForKit.map((x, i) => {
-        const keyOfLookup = Object.keys(this.lookupsData);
-        keyOfLookup.map(key => {
-          const keyLowerCase = key.replace('List', '');
-          const value = x[keyLowerCase];
-
-          this.lookupsData[key].filter(y => y.ID === value).map(x => {
-            x[keyLowerCase] = x.NAME;
-          });
-        });
-
-        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, x.productDetails];
-      });
-
+      this.isDraft = data.isDraft === 1;
       data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();
         }
       });
+      if (this.editFromWhere) {
+        data.ProductsForKit.length > 0 ? data.ProductsForKit.map((x, i) => {
+          if (data.ProductsForKit.length > 1 && i < data.ProductsForKit.length - 1) {
+            this.addProductsGroupRows();
+          }
+        }) : data.ProductsForKit = [];
+      }
+
+      this.allProductsInKit.tableBody = [];
+      data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
+        product.productStatus = '';
+        this.formData.manufacturingCompanyList.filter(item => item.ID === product.productDetails.manufacturingCompany).map(x => product.productDetails.manufacturingCompany = x.NAME);
+        this.formData.manufacturingCountryList.filter(item => item.ID === product.productDetails.manufacturingCountry).map(x => product.productDetails.manufacturingCountry = x.NAME);
+        this.formData.applicantList.filter(option => option.ID === product.productDetails.applicant).map(x => product.productDetails.applicant = x.NAME);
+        this.formData.licenseHolderList.filter(option => option.ID === product.productDetails.licenseHolder).map(x => product.productDetails.licenseHolder = x.NAME);
+        this.formData.licenseHolderCountryList.filter(option => option.ID === product.productDetails.countryOfLicenseHolder).map(x => product.productDetails.countryOfLicenseHolder = x.NAME);
+        this.formData.storagePlaceList.filter(option => option.ID === product.productDetails.storagePlace).map(x => product.productDetails.storagePlace = x.NAME);
+        this.formData.physicalStateList.filter(option => option.ID === product.productDetails.physicalState).map(x => product.productDetails.physicalState = x.NAME);
+        this.formData.purposeOfUseList.filter(option => option.ID === product.productDetails.purposeOfUse).map(x => product.productDetails.purposeOfUse = x.NAME);
+
+        product.productDetails.packagingTable ? product.productDetails.packagingTable.map(x => {
+          this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+          this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+        }) : null;
+        product.productDetails.detailsTable ? product.productDetails.detailsTable.map(x => {
+          x.ingrediantDetails.map(y => {
+            this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+            this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+          });
+        }) : null;
+
+        this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, product.productDetails];
+      }) : null;
 
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
-      this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+      this.formData.manufacturingCountryList.filter(item => item.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
@@ -1498,51 +1031,116 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         }
       });
 
+      this.productFlags = data.productFlags;
+      this.productComments = data.productComments;
+
       this.regColourKitForAllRequestedType.patchValue({
-        ...data,
+        ...data
       });
 
-      let control = <FormArray> this.regColourKitForAllRequestedType.controls.ProductsForKit;
-      data.ProductsForKit.map(x => {
-        control.push(this.fb.group(x));
+      data.productAttachments.map((x, i) => {
+        this.regColourKitForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
       });
-
-      this.addProductsGroupRows();
     } else {
       this.regColourKitForAllRequestedType = this.fb.group({
-        productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
+        id: 0,
+        productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[A-Za-z0-9_]+[ A-Za-z0-9\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*$')]),
+        shortName: this.fb.array([this.fb.control('', Validators.pattern('[A-Za-z0-9]+'))]),
         productColor: this.fb.control(''),
-        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
         licenseHolder: this.fb.control('', Validators.required),
         licenseHolderTxt: this.fb.control(''),
         countryOfLicenseHolder: this.fb.control('', Validators.required),
         tradeMark: this.fb.control(''),
-        shelfLife: this.fb.control(0),
-        storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-        receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-        groupName: this.fb.control('', Validators.required),
+        shelfLife: this.fb.control(null, Validators.required),
+        storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
+        receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         ProductsForKit: this.fb.array([this.fb.group({
           productStatus: this.fb.control(''),
           NotificationNo: this.fb.control(''),
-          productDetails: this.fb.group({})
+          productID: this.fb.control(''),
+          productDetails: this.fb.group({
+            id: 0,
+            productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
+            productEnglishName: this.fb.control(''),
+            shortName: this.fb.array([this.fb.control('')]),
+            manufacturingCompany: this.fb.control(null),
+            manufacturingCountry: this.fb.control(''),
+            applicant: this.fb.control(''),
+            licenseHolder: this.fb.control(''),
+            licenseHolderTxt: this.fb.control(''),
+            countryOfLicenseHolder: this.fb.control(''),
+            tradeMark: this.fb.control(''),
+            physicalState: this.fb.control(''),
+            physicalStateTxt: this.fb.control(''),
+            purposeOfUse: this.fb.control(''),
+            purposeOfUseTxt: this.fb.control(''),
+            storagePlace: this.fb.control(''),
+            shelfLife: this.fb.control(0),
+            receiptNumber: this.fb.control(''),
+            receiptValue: this.fb.control(''),
+            packagingTable: this.fb.array([this.fb.group({
+              volumesID: this.fb.control(''),
+              volumes: this.fb.control(''),
+              unitOfMeasure: this.fb.control(''),
+              typeOfPackaging: this.fb.control(''),
+              packagingDescription: this.fb.control(''),
+            })]),
+            detailsTable: this.fb.array([this.fb.group({
+              DetailsID: this.fb.control(''),
+              PRODUCT_ID: this.fb.control(''),
+              colour: this.fb.control(''),
+              fragrance: this.fb.control(''),
+              flavor: this.fb.control(''),
+              barCode: this.fb.control(''),
+              ingrediantDetails: this.fb.array([this.fb.group({
+                Ingredient_ID: this.fb.control(''),
+                ingrediant: this.fb.control(''),
+                concentrations: this.fb.control(''),
+                function: this.fb.control(''),
+              })])
+            })]),
+            deletedIngredientsIds: this.fb.control(null),
+            deletedProductDetailsIds: this.fb.control(null),
+            deletedpacklstIds: this.fb.control(null),
+            freeSaleDoc: this.fb.control(''),
+            GMP: this.fb.control(''),
+            CoA: this.fb.control(''),
+            artWork: this.fb.control(''),
+            leaflet: this.fb.control(''),
+            reference: this.fb.control(''),
+            methodOfAnalysis: this.fb.control(''),
+            specificationsOfFinishedProduct: this.fb.control(''),
+            receipt: this.fb.control(''),
+            authorizationLetter: this.fb.control(''),
+            manufacturingContract: this.fb.control(''),
+            storageContract: this.fb.control(''),
+            factoryLicense: this.fb.control(''),
+            manufacturingAssignment: this.fb.control(''),
+            commercialRecord: this.fb.control(''),
+            stabilityStudy: this.fb.control(''),
+            shelfLifeAttachment: this.fb.control(''),
+            letterOfVariationFromLicenseHolder: this.fb.control(''),
+            others: this.fb.control(''),
+            otherFees: this.fb.control(''),
+          })
         })]),
-        deletedProductIdLists: this.fb.array([]),
-        freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        deletedProductIdLists: this.fb.control(null),
+        freeSaleDoc: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         GMP: this.fb.control(''),
-        CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
-        artWorkForTheKit: this.fb.control('', Validators.required),
+        CoA: this.fb.control(''),
+        artWork: this.fb.control('', Validators.required),
         leaflet: this.fb.control(''),
         reference: this.fb.control(''),
         methodOfAnalysis: this.fb.control(''),
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-        receipt: this.fb.control('', Validators.required),
-        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-        manufacturingContract: this.fb.control(''),
+        receipt: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        manufacturingContract: this.fb.control('', this.selectedRequestedType === 8 ? Validators.required : null),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
         manufacturingAssignment: this.fb.control(''),
@@ -1551,13 +1149,13 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
         shelfLifeAttachment: this.fb.control(''),
         letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
-        otherFees: this.fb.control('', Validators.required),
+        otherFees: this.fb.control('', Validators.required)
       });
     }
   }
 
   equalTheNewDetailsTable(index) {
-    this.detailsListTable.tableBody = this.regColourKitForAllRequestedType.get('ProductsForKit')[index];
+    // this.detailsListTable.tableBody = this.regColourKitForAllRequestedType.get('ProductsForKit')[index]
   }
 
   editTheDetailsRow(event) {
@@ -1568,52 +1166,88 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   applyProduct(data, status, index) {
     if (status === 'registered') {
       this.isLoading = true;
-      this.getServices.getProductWithNotificationNumberList(data.value.NotificationNo).subscribe((res: any) => {
+      this.getServices.getProductWithNotificationNumberList(Number(data.value.NotificationNo), 'kit').subscribe((res: any) => {
         if (res) {
+          if (res.canUse) {
+            const objectData = {
+              ...res
+            };
+
+            this.ProductGroupsRows().value[index].productDetails = res;
+            this.formData.productColorList.filter(item => item.ID === objectData.productColor).map(x => objectData.productColor = x.NAME);
+            this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
+            this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
+            this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
+            this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
+            this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
+            this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
+            this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
+            this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
+
+            objectData.packagingTable ? objectData.packagingTable.map(x => {
+              this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+              this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+            }) : null;
+            objectData.detailsTable ? objectData.detailsTable.map(x => {
+              x.ingrediantDetails.map(y => {
+                this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+                this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+              });
+            }) : null;
+
+            this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
+            this.addProductsGroupRows();
+          } else {
+            this.handleError(res.canuseMsg);
+          }
+        }
+
+        this.isLoading = false;
+      }, error => this.handleError(error));
+
+    } else if (status === 'new') {
+      this.isLoading = true;
+      this.getServices.getProductWithProductIDList(data.value.productID, 'kit').subscribe((res: any) => {
+        if (res) {
+          // if (res.canUse) {
+          //
+          // } else {
+          //   this.handleError(res.canuseMsg);
+          // }
           const objectData = {
-            ...res,
-            groupName: this.regColourKitForAllRequestedType.get('groupName').value
+            ...res
           };
 
+          this.ProductGroupsRows().value[index].productID = res.id;
           this.ProductGroupsRows().value[index].productDetails = res;
-          const keyOfLookup = Object.keys(this.lookupsData);
-          keyOfLookup.map(key => {
-            const keyLowerCase = key.replace('List', '');
-            const value = objectData[keyLowerCase];
 
-            this.lookupsData[key].filter(y => y.ID === value).map(x => {
-              objectData[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
+          this.formData.manufacturingCompanyList.filter(item => item.ID === objectData.manufacturingCompany).map(x => objectData.manufacturingCompany = x.NAME);
+          this.formData.manufacturingCountryList.filter(item => item.ID === objectData.manufacturingCountry).map(x => objectData.manufacturingCountry = x.NAME);
+          this.formData.applicantList.filter(option => option.ID === objectData.applicant).map(x => objectData.applicant = x.NAME);
+          this.formData.licenseHolderList.filter(option => option.ID === objectData.licenseHolder).map(x => objectData.licenseHolder = x.NAME);
+          this.formData.licenseHolderCountryList.filter(option => option.ID === objectData.countryOfLicenseHolder).map(x => objectData.countryOfLicenseHolder = x.NAME);
+          this.formData.storagePlaceList.filter(option => option.ID === objectData.storagePlace).map(x => objectData.storagePlace = x.NAME);
+          this.formData.physicalStateList.filter(option => option.ID === objectData.physicalState).map(x => objectData.physicalState = x.NAME);
+          this.formData.purposeOfUseList.filter(option => option.ID === objectData.purposeOfUse).map(x => objectData.purposeOfUse = x.NAME);
+
+          objectData.packagingTable ? objectData.packagingTable.map(x => {
+            this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+            this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+          }) : null;
+          objectData.detailsTable ? objectData.detailsTable.map(x => {
+            x.ingrediantDetails.map(y => {
+              this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+              this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
             });
-          });
+          }) : null;
+
           this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, objectData];
           this.addProductsGroupRows();
         }
 
         this.isLoading = false;
       }, error => this.handleError(error));
-    } else if (status === 'new') {
-      this.newProductObject = data;
-      const keyOfLookup = Object.keys(this.lookupsData);
-      keyOfLookup.map(key => {
-        const keyLowerCase = key.replace('List', '');
-        const value = data[keyLowerCase];
-
-        this.lookupsData[key].filter(y => y.ID === value).map(x => {
-          data[keyLowerCase] = keyLowerCase === 'manufacturingCompany' ? x.MANUFACTORY_NAME : keyLowerCase === 'manufacturingCountry' ? x.COUNTRY_NAME : keyLowerCase === 'licenseHolderCountry' ? x.COUNTRY_NAME : x.NAME;
-        });
-      });
-      this.allProductsInKit.tableBody = [...this.allProductsInKit.tableBody, data];
-
-      this.addProductsGroupRows();
     }
-  }
-
-  getTrackTypeForProduct(event) {
-    this.selectedTrackTypeForNewProduct = event.value;
-  }
-
-  getRegisteredTypeForProduct(event) {
-    this.selectedRegisteredTypeForProduct = event.value;
   }
 
   getProductTypeFromNewProductInKit(event) {
@@ -1626,9 +1260,7 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     });
 
     const lastRowInArray = this.ProductGroupsRows().value.length - 1;
-
     const data = {
-      groupName: this.regColourKitForAllRequestedType.get('groupName').value,
       typeOfMarketing: this.selectedRegisteredProductTypeForProduct,
       typeOfRegistration: this.selectedRequestedType,
       trackType: this.selectedTrackType,
@@ -1639,7 +1271,6 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   getDecimalValue(value) {
-
     this.regColourKitForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regColourKitForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
@@ -1650,10 +1281,20 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
   }
 
   getDisabledValues() {
+    let variaionGroupCodeList = [];
+    let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
+        variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        this.objectForListOfVariationGroup = {
+          variationGroups: variaionGroupCodeList,
+          variationFields: variaionGroupFieldsCodeList,
+        };
       });
     }
   }
@@ -1684,11 +1325,39 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
     this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
     this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
+    this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
+    this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
     this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+
+    data.packagingTable ? data.packagingTable.map(x => {
+      this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
+      this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+    }) : null;
+    data.detailsTable ? data.detailsTable.map(x => {
+      x.ingrediantDetails.map(y => {
+        this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
+        this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
+      });
+    }) : null;
 
     return data;
   }
 
+  setApplicant(companyProfileID) {
+    this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regColourKitForAllRequestedType.patchValue({
+      applicant: x.NAME
+    }));
+  }
+
+  setShelfValue(event) {
+    if (Number(event.target.value) > 60) {
+      this.regColourKitForAllRequestedType.get('shelfLife').patchValue(60);
+    } else {
+      this.regColourKitForAllRequestedType.get('shelfLife').patchValue(Number(event.target.value));
+    }
+  }
+
+  // @ts-ignore
   handleError(message) {
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: message};
@@ -1701,21 +1370,38 @@ export class ProductsKitHairColourRequestFormComponent implements OnInit, OnChan
     }, 2000);
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.regColourKitForAllRequestedType.controls[field].dirty) {
-              this.regColourKitForAllRequestedType.controls[field].setValue(null);
-            }
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.regColourKitForAllRequestedType.controls[field].dirty) {
+          this.regColourKitForAllRequestedType.controls[field].setValue(null);
+        }
+      }
+    });
+  }
+
+  private _subscribeToClosingActionsForKitProducts(field, list): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+    list ? list.subscribe(y => {
+      if (y.length === 0) {
+        this.ProductGroupsRows().controls.map((x) => {
+          if (x['controls'][field].dirty) {
+            x['controls'][field].setValue(null);
           }
         });
+      }
+    }) : null;
+  }
+
+  checkValue(formControl, list, form) {
+    if (list.filter(x => x.NAME === form.get(formControl).value).length === 0) {
+      form.get(formControl).setValue(null);
     }
   }
 }
-

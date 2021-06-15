@@ -8,6 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class LoaderComponentComponent implements OnInit {
 
   @Input() loadingStatus;
+  @Input() forWhat;
 
   constructor() { }
 

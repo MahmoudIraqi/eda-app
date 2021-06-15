@@ -1,6 +1,9 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {FormService} from '../services/form.service';
+import {FormBuilder} from '@angular/forms';
+import {InputService} from '../services/input.service';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -10,8 +13,6 @@ import {FormService} from '../services/form.service';
 export class HeaderComponent implements OnInit {
 
   screenWidth;
-
-
   menuObject = [
     {
       name: 'Home',
@@ -33,19 +34,23 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Tell & Do variation',
-          link: '/new-request/tell_do-variation'
+          link: '/new-request/tell_do_variation'
         },
         {
           name: 'Do & Tell Variation',
-          link: '/new-request/do_tell-variation'
+          link: '/new-request/do_tell_variation'
         },
         {
           name: 'Inspection',
-          link: '#'
+          link: '/new-request/inspection'
         },
         {
           name: 'Custom Release',
-          link: '#'
+          link: '/new-request/custom-release'
+        },
+        {
+          name: 'Custom Release2',
+          link: '/new-request/custom-release2'
         },
         {
           name: 'General Enquiries',
@@ -64,11 +69,11 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Tell & Do variation',
-          link: '/draft-request/tell_do-variation'
+          link: '/draft-request/tell_do_variation'
         },
         {
           name: 'Do & Tell Variation',
-          link: '/draft-request/do_tell-variation'
+          link: '/draft-request/do_tell_variation'
         },
         {
           name: 'Inspection',
@@ -77,7 +82,11 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Custom Release',
           link: '#'
-        }
+        },
+        {
+          name: 'Legacy',
+          link: '/draft-request/legacy'
+        },
       ]
     },
     {
@@ -96,11 +105,11 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Tell & Do variation',
-          link: '/track-request/tell_do-variation'
+          link: '/track-request/tell_do_variation'
         },
         {
           name: 'Do & Tell Variation',
-          link: '/track-request/do_tell-variation'
+          link: '/track-request/do_tell_variation'
         },
         {
           name: 'Inspection',
@@ -113,7 +122,11 @@ export class HeaderComponent implements OnInit {
         {
           name: 'General Enquiries',
           link: '/track-request/general-enquiries'
-        }
+        },
+        {
+          name: 'Legacy',
+          link: '/track-request/legacy'
+        },
       ]
     },
     {
@@ -131,7 +144,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Legacy',
-          link: '#',
+          link: '/legacy-products',
         }
       ]
     },
@@ -155,13 +168,28 @@ export class HeaderComponent implements OnInit {
       ]
     },
   ];
+  alertNotificationStatus: boolean = false;
+  alertNotification: any;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
+  isLoading: boolean = false;
+  Token;
 
-  constructor(private readonly route: ActivatedRoute,
-              private readonly router: Router) {
+  constructor(private fb: FormBuilder,
+              private getService: FormService,
+              private inputService: InputService,
+              private router: Router,
+              private route: ActivatedRoute) {
     this.onResize();
   }
 
   ngOnInit(): void {
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'Token'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.Token = res.payload;
+    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -171,5 +199,22 @@ export class HeaderComponent implements OnInit {
 
   isActive(link) {
     return this.router.url.includes(`${link}`);
+  }
+
+  logoutFunction() {
+    this.getService.logoutAPIToken(this.Token).subscribe((res: any) => {
+      if (res) {
+        this.isLoading = false;
+        this.router.navigate(['/login']).then(() => location.reload());
+      } else {
+        this.alertErrorNotificationStatus = true;
+      }
+    }, error => this.handleError(error));
+  }
+
+  handleError(message) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
   }
 }

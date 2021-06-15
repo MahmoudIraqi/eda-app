@@ -2,20 +2,48 @@
   <div class="row">
     <div class="col-12">
       <app-title
-        [title]="'Draft requests  ' + (whichVariation === 'tell_do-variation'? 'Tell & Do variation' : 'Do & Tell Variation')"
+        [title]="'Draft requests  ' + (whichVariation === 'tell_do_variation'? 'Tell & Do variation' : 'Do & Tell Variation')"
         [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
       <div class="tableContainer TrackTable">
-        <app-table-list [data]="draftVariationListRequests" [whichTable]="'draft'"></app-table-list>
+        <app-table-list [data]="draftVariationListRequests" [whichTable]="'draftVariation'"
+                        (removeDraftProduct)="openDeleteModal($event)"></app-table-list>
       </div>
     </div>
   </div>
 </div>
 
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
 <alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
        *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>
+
+<ng-template #deleteModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete Draft Variation Product</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-center">
+          Are you sure you want to delete this product with notification number <b>({{modalRequestId.NotificationNo}})</b> ?
+        </h2>
+      </div>
+      <div class="col-12 col-sm-4"></div>
+      <div class="col-12 col-sm-4 d-flex align-items-center mt-2 justify-content-center">
+        <button type="button" class="btn btn-primary" (click)="removeProduct()">Yes</button>
+        <button type="button" class="btn btn-primary ml-auto" (click)="modalRef.hide()">No</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

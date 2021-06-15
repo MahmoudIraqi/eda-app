@@ -44,7 +44,22 @@ form > .row > div:nth-child(n + 4) {
   color: #ff0000;
   background: none;
   border: none;
-  font-size: 11px;
+  font-size: 13px;
+}
+
+.custom-file .alert-danger {
+  top: -25px;
+  width: 350px;
+  text-align: right;
+  background: #fff;
+}
+
+.custom-file.required .custom-file-label {
+  border: 1.5px solid #ff0000 !important;
+}
+
+.custom-file.required .custom-file-download-Button {
+  border-color: #ff0000 !important;
 }
 
 .alert-danger.RelativeAlert {
@@ -59,6 +74,14 @@ form > .row > div:nth-child(n + 4) {
   border: none;
   text-align: center;
   font-size: 14px;
+}
+
+.hintForEmptyObject h5 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f00;
+  text-decoration: underline;
+  margin-top: 1em;
 }
 
 /*  ------------------------------ Short Name Field Container --------------- */
@@ -202,6 +225,25 @@ input[type=file] {
   color: #161c30;
   border-left: 1px solid #161c30;
   border-radius: 0px 0px 10px 0px;
+}
+
+.custom-file-download-Button {
+  position: absolute;
+  z-index: 1000;
+  background: #c28a30;
+  border: none;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: rgb(118, 118, 118);
+  height: 100%;
+  right: 5em;
+  color: #fff;
+}
+
+.custom-file-download-Button:hover {
+  background: transparent;
+  border-left: 2px solid #c28a30;
+  color: #c28a30;
 }
 
 /* -------------------- Button Container ---------------------------- */

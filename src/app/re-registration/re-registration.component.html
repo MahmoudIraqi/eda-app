@@ -26,38 +26,62 @@
               </div>
             </div>
           </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 1 ">
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field class="example-full-width">
+              <mat-label>Estimated Value</mat-label>
+              <input type="text" class="form-control" matInput [(ngModel)]="estimatedValue"
+                     placeholder="Estimated Value"
+                     [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div class="col-12 mt-3" *ngIf="productData">
+            <div class="row">
+              <div class="col-lg-4 col-sm-6 col-12">
+                <mat-form-field appearance="fill">
+                  <mat-label>Type Of Notification</mat-label>
+                  <mat-select [(ngModel)]="this.selectedFormType" required
+                              [disabled]="true">
+                    <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
+                      {{option.NAME}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-4 col-sm-6 col-12">
+                <div class="row">
+                  <div class="col-12 col-sm-9">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Type Of License</mat-label>
+                      <mat-select [(ngModel)]="selectedRequestedType" required [disabled]="true">
+                        <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
+                          {{option.NAME}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-12 col-sm-3">
+                    <section class="example-section mt-4">
+                      <mat-checkbox class="example-margin"
+                                    [(ngModel)]="selectedIsExport"
+                                    [disabled]="true">
+                        Export only
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-5" *ngIf="productData && (productData.typeOfMarketing === 1 || productData.typeOfMarketing === 3)">
             <app-product-request-form
               [editData]="this.productData"
               [lookupsData]="formData"
+              [companyProfile]="companyProfileId"
               [reRegistrationStatus]="true"
               (submitDataOutput)="onSubmit($event)"
+              (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
             ></app-product-request-form>
-          </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 2">
-            <app-products-kit-request-form
-              [editData]="this.productData"
-              [lookupsData]="formData"
-              [reRegistrationStatus]="true"
-              (submitDataOutput)="onSubmit($event)"
-            ></app-products-kit-request-form>
-          </div>
-          <div class="col-12 mt-5"
-               *ngIf="productData && productData.typeOfMarketing === 3">
-            <app-products-hair-colour-request-form
-              [editData]="this.productData"
-              [lookupsData]="formData"
-              [reRegistrationStatus]="true"
-              (submitDataOutput)="onSubmit($event)"
-            ></app-products-hair-colour-request-form>
-          </div>
-          <div class="col-12 mt-5" *ngIf="productData && productData.typeOfMarketing === 4">
-            <app-products-kit-hair-colour-request-form
-              [editData]="this.productData"
-              [lookupsData]="formData"
-              [reRegistrationStatus]="true"
-              (submitDataOutput)="onSubmit($event)"
-            ></app-products-kit-hair-colour-request-form>
           </div>
         </div>
       </div>
@@ -71,7 +95,7 @@
 
 <alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
        *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

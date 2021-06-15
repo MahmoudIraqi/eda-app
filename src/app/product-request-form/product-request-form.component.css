@@ -15,13 +15,13 @@ input:active, input:focus {
   box-shadow: none;
 }
 
-form > .row > div:nth-child(n + 4) {
-  margin-top: 2em;
-}
+/*form > .row > div:nth-child(n + 4) {*/
+/*  margin-top: 2em;*/
+/*}*/
 
-tab-pane .row > div:nth-child(n + 4) {
-  margin-top: 2em;
-}
+/*tab-pane .row > div:nth-child(n + 4) {*/
+/*  margin-top: 2em;*/
+/*}*/
 
 .form-group {
   position: relative;
@@ -48,7 +48,22 @@ tab-pane .row > div:nth-child(n + 4) {
   color: #ff0000;
   background: none;
   border: none;
-  font-size: 11px;
+  font-size: 13px;
+}
+
+.custom-file .alert-danger {
+  top: -25px;
+  width: 350px;
+  text-align: right;
+  background: #fff;
+}
+
+.custom-file.required .custom-file-label {
+  border: 1.5px solid #ff0000 !important;
+}
+
+.custom-file.required .custom-file-download-Button {
+  border-color: #ff0000 !important;
 }
 
 .alert-danger.RelativeAlert {
@@ -208,6 +223,25 @@ input[type=file] {
   border-radius: 0px 0px 10px 0px;
 }
 
+.custom-file-download-Button {
+  position: absolute;
+  z-index: 1000;
+  background: #c28a30;
+  border: none;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: rgb(118, 118, 118);
+  height: 100%;
+  right: 5em;
+  color: #fff;
+}
+
+.custom-file-download-Button:hover {
+  background: transparent;
+  border-left: 2px solid #c28a30;
+  color: #c28a30;
+}
+
 /* -------------------- Button Container ---------------------------- */
 .buttonContainer {
   margin-top: 3em;
@@ -264,6 +298,14 @@ input[type=file] {
   color: #c28a30 !important;
 }
 
+.hintForEmptyObject h5 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f00;
+  text-decoration: underline;
+  margin-top: 1em;
+}
+
 /* ---------------------------------- addDetailsRequestContainer ----------------------------- */
 
 .addDetailsRequestContainer {
@@ -277,13 +319,12 @@ input[type=file] {
   background: #fff;
   border-radius: 10px 0 10px 10px;
   padding: 1em;
-  margin-top: 2em;
 }
 
 .ingrediantDetailsContainer .rowContainer {
   border-radius: 10px 0 10px 10px;
   border: 0.5px solid #c28a30;
-  padding: 1em;
+  padding: 0em 1em;
 }
 
 .addDetailsRequestContainer .col-3:nth-child(n+4) {
@@ -309,15 +350,17 @@ input[type=file] {
 
 
 /* -------------------------- Responsive --------------------- */
-@media only screen and (max-width: 1000px){
-  .conSpace{
+@media only screen and (max-width: 1000px) {
+  .conSpace {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
-  .inputBesideSelect .mat-form-field-infix{
+
+  .inputBesideSelect .mat-form-field-infix {
     padding: 0 !important;
   }
 }
+
 @media only screen and (max-width: 640px) {
   .buttonContainer .btn-primary {
     width: 100%;

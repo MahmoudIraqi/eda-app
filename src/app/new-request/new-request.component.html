@@ -1,15 +1,18 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="productId ? 'Edit Request for Notification':'Create request for Notification'" [bigTitle]="true"></app-title>
+      <app-title [title]="productId ? 'Edit Request for Notification':'Create request for Notification'"
+                 [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
       <div class="formTable">
         <div class="row">
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
-              <mat-label>Product type</mat-label>
-              <mat-select (selectionChange)="getFormType($event)" [(ngModel)]="this.selectedFormType">
+              <mat-label>Type Of Notification</mat-label>
+              <mat-select (selectionChange)="getFormType($event); getProductsKitLookups('selectedFormType');"
+                          [(ngModel)]="this.selectedFormType" required
+                          [disabled]="productId || isDraftRequestStatus">
                 <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
                   {{option.NAME}}
                 </mat-option>
@@ -20,8 +23,10 @@
             <div class="row">
               <div class="col-12 col-sm-9">
                 <mat-form-field appearance="fill">
-                  <mat-label>Type Of Notification</mat-label>
-                  <mat-select (selectionChange)="getRequestType($event)" [(ngModel)]="selectedRequestedType">
+                  <mat-label>Type Of License</mat-label>
+                  <mat-select (selectionChange)="getRequestType($event);"
+                              [(ngModel)]="selectedRequestedType" required
+                              [disabled]="productId || isDraftRequestStatus">
                     <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>
@@ -40,60 +45,112 @@
             </div>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
-            <mat-form-field appearance="fill">
-              <mat-label>Track Type</mat-label>
-              <mat-select (selectionChange)="getTrackType($event)" [(ngModel)]="this.selectedTrackType">
-                <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
-                  {{option.NAME}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <mat-form-field appearance="fill">
+                  <mat-label>Track Type</mat-label>
+                  <mat-select
+                    (selectionChange)="getTrackType($event);"
+                    [(ngModel)]="this.selectedTrackType" required
+                    [disabled]="productId && updatingProductData && updatingProductData.isDraft === 0">
+                    <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
+                      {{option.NAME}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-sm-6 ">
+                <mat-form-field class="example-full-width mainRequest">
+                  <mat-label>Estimated Value</mat-label>
+                  <input type="text" class="form-control" matInput [(ngModel)]="estimatedValue"
+                         placeholder="Estimated Value"
+                         [readonly]="true">
+                </mat-form-field>
+              </div>
+            </div>
           </div>
-          <div class="col-12 mt-5" *ngIf="selectedFormType === 1 && selectedRequestedType">
+          <div class="col-12 mt-5"
+               *ngIf="(selectedFormType === 1 || selectedFormType === 3)&& selectedRequestedType && selectedTrackType">
             <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
+              [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
+              [approvedStatus]="typeOfProcess === 'Approved'"
+              [trackProductStatus]="typeOfProcess === 'Track'"
+              [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"
+              [editFromWhere]="editFormIPStatus"
               [lookupsData]="formData"
+              [manufacturingCompanyList]="manufacturingCompanyList"
+              [getAllLookupsStatus]="getAllLookupsStatus"
+              [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
+              (saveDataOutputForAttachment)="getRequestId($event)"
               (submitDataOutput)="onSubmit($event)"
+              (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
+              (companyProfileSearchText)="filterInBigSizeLookups('licenseHolder', $event)"
+              (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
+              (requestIsDraft)="isDraftRequest($event)"
+              (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
             ></app-product-request-form>
           </div>
-          <div class="col-12 mt-5" *ngIf="selectedFormType === 2 && selectedRequestedType">
+          <div class="col-12 mt-5"
+               *ngIf="(selectedFormType === 2 ||selectedFormType === 4 ) && selectedRequestedType && selectedTrackType">
             <app-products-kit-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
+              [approvedStatus]="typeOfProcess === 'Approved'"
+              [trackProductStatus]="typeOfProcess === 'Track'"
               [editData]="updatingProductData"
+              [editFromWhere]="editFormIPStatus"
               [lookupsData]="formData"
+              [lookupForProductIds]="productsKitIds"
+              [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
+              (requestIsDraft)="isDraftRequest($event)"
+              (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
+              (saveDataOutputForAttachment)="getRequestId($event)"
             ></app-products-kit-request-form>
           </div>
           <div class="col-12 mt-5"
-               *ngIf="selectedFormType === 3 && selectedRequestedType">
-            <app-products-hair-colour-request-form
-              [selectedRequestedType]="selectedRequestedType"
-              [successSubmission]="successSubmission"
-              [editData]="updatingProductData"
-              [lookupsData]="formData"
-              (saveDataOutput)="saveData($event)"
-              (submitDataOutput)="onSubmit($event)"
-            ></app-products-hair-colour-request-form>
-          </div>
-          <div class="col-12 mt-5" *ngIf="selectedFormType === 4 && selectedRequestedType">
-            <app-products-kit-hair-colour-request-form
+               *ngIf="(selectedFormType === 5 || selectedFormType === 6) && selectedRequestedType && selectedTrackType">
+            <app-product-request-form
               [selectedRequestedType]="selectedRequestedType"
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
+              [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"
+              [editFromWhere]="editFormIPStatus"
+              [kitProductStatus]="true"
               [lookupsData]="formData"
+              [manufacturingCompanyList]="manufacturingCompanyList"
+              [getAllLookupsStatus]="getAllLookupsStatus"
+              [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
+              (saveDataOutputForAttachment)="getRequestId($event)"
               (submitDataOutput)="onSubmit($event)"
-            ></app-products-kit-hair-colour-request-form>
+              (requestIsDraft)="isDraftRequest($event)"
+              (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
+              (companyProfileSearchText)="filterInBigSizeLookups('licenseHolder', $event)"
+              (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
+              (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
+            ></app-product-request-form>
           </div>
         </div>
       </div>
@@ -105,8 +162,9 @@
   <strong>Thank You</strong> <br> {{alertNotification.msg}}
 </alert>
 
-<alert type="danger" class="AlertForAllRequests" dismissible="true" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+<alert type="danger" class="AlertForAllRequests" dismissible="true" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

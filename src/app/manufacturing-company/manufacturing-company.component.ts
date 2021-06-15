@@ -92,6 +92,16 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   //     }
   //   ],
   // };
+  attachmentFields = [
+    {
+      id: 'attachment',
+      name: 'Attachment',
+      fileName: '',
+      required: true,
+      enable: true,
+      attachmentTypeStatus: ''
+    },
+  ];
 
   constructor(private getService: FormService,
               private fb: FormBuilder) {
@@ -109,7 +119,7 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
   }
 
   ngOnDestroy() {
@@ -118,10 +128,37 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
+  onFileSelect(event, fileControlName) {
+    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
+    if (event.target.files.length > 0) {
+      if (event.target.files[0].type === 'application/pdf') {
+        this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+          file.attachmentTypeStatus = 'Yes';
+        });
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = (res: any) => {
+          this.manufacturingCompanyForm.get(fileControlName).setValue({
+            fileName: file.name,
+            AttachName: 'manuFactureAttach',
+            base64Data: res.target.result
+          });
+        };
+      } else {
+        this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+          file.attachmentTypeStatus = 'No';
+        });
+      }
+    }
+  }
+
   getFormAsStarting() {
     this.manufacturingCompanyForm = this.fb.group({
       manufacturingCompany: this.fb.control('', Validators.required),
       manufacturingCountry: this.fb.control('', Validators.required),
+      attachment: this.fb.control('', Validators.required),
     });
   }
 
@@ -167,21 +204,18 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
     return data;
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.manufacturingCompanyForm.controls[field].dirty) {
-              this.manufacturingCompanyForm.controls[field].setValue(null);
-            }
-          }
-        });
-    }
+    list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.manufacturingCompanyForm.controls[field].dirty) {
+          this.manufacturingCompanyForm.controls[field].setValue(null);
+        }
+      }
+    });
   }
 
   onClosed() {

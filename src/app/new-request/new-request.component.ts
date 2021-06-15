@@ -4,7 +4,10 @@ import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {FormService} from '../services/form.service';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
+import {InputService} from '../services/input.service';
+import {CurrencyPipe} from '@angular/common';
 
 
 @Component({
@@ -13,7 +16,6 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./new-request.component.css']
 })
 export class NewRequestComponent implements OnInit {
-
 
   formData = {
     formType: [],
@@ -34,6 +36,8 @@ export class NewRequestComponent implements OnInit {
     storagePlaceList: [],
     trackType: []
   };
+  productsKitIds = [];
+  manufacturingCompanyList = [];
   selectedFormType;
   selectedRequestedType;
   selectedTrackType;
@@ -51,86 +55,77 @@ export class NewRequestComponent implements OnInit {
   saveResponseDataForRegisterColorantProduct;
   saveResponseDataForRegisterColorantKitProduct;
   productId;
+  typeOfProcess;
   updatingProductData: any;
+  requestId;
+  estimatedValue;
+  getAllLookupsStatus = false;
+  companyProfileId: any;
+  variablesPricingList: any;
+  trackTypeVariable;
+  trackTypeVariableForKitLookups;
+  typeOfNotificationVariableForKitLookups;
+  typeOfNotificationVariable;
+  fromAttachment;
+  editFormIPStatus: boolean = false;
+  getDraftProductData: boolean = false;
+  isDraftRequestStatus;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute, private router: Router,
+              private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
-      this.formData.formType = res;
-      if (res) {
-        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
-      }
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getRequestTypeLookUp().subscribe((res: any) => {
-      this.formData.requestType = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.formData.licenseHolderCountryList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getFunctionLookUp().subscribe((res: any) => {
-      this.formData.functionList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-      this.formData.typeOfPackagingList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-      this.formData.physicalStateList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-      this.formData.unitOfMeasureList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-      this.formData.purposeOfUseList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getProductColorLookUp().subscribe((res: any) => {
-      this.formData.productColorList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
-      this.formData.ingrediantList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
-      this.formData.applicantList = res;
-      this.formData.licenseHolderList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
-      this.formData.storagePlaceList = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
-    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-      this.formData.trackType = res;
-      this.isLoading = false;
-    },error => this.handleError(error));
+
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.companyProfileId = res.payload;
+    });
+
+    const pathInEditMode = this.route.snapshot.routeConfig.path.split('/')[0];
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      const variableGroup = pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
+      res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
+
 
     this.productId = this.route.snapshot.paramMap.get('id');
-    if (this.productId) {
-      this.isLoading = true;
-      this.getService.getProductWithProductIDList(Number(this.productId)).subscribe((res: any) => {
-        this.selectedFormType = res.typeOfMarketing;
-        this.selectedRequestedType = res.typeOfRegistration;
-        this.selectedTrackType = res.Tracktype;
-        this.selectedIsExport = res.isExport;
-        this.updatingProductData = res;
-      },error => this.handleError(error));
-    }
+    this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'allLookups'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.formData = res.payload;
+      this.isLoading = false;
+
+      if (this.productId) {
+        this.isLoading = true;
+        if (!this.getDraftProductData) {
+          this.getService.getProductWithProductIDList(Number(this.productId), '').subscribe((res: any) => {
+            this.selectedFormType = res.typeOfMarketing;
+            this.selectedRequestedType = res.typeOfRegistration;
+            this.selectedTrackType = res.Tracktype;
+            this.selectedIsExport = res.isExport;
+            this.updatingProductData = res;
+            this.editFormIPStatus = true;
+            this.isLoading = false;
+
+            this.getPricing('draftRequest');
+            this.getProductsKitLookups('draftRequest');
+          }, error => this.handleError(error));
+        }
+      }
+    });
   }
 
   getFormType(event) {
@@ -138,38 +133,71 @@ export class NewRequestComponent implements OnInit {
   }
 
   getRequestType(event) {
-    this.selectedRequestedType = event.value;
+    this.selectedRequestedType ? this.selectedRequestedType = '' : null;
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.selectedRequestedType = event.value;
+      this.isLoading = false;
+      this.getPricing('typeOfNotification');
+    }, 500);
   }
 
   getTrackType(event) {
-    this.selectedTrackType = event.value;
+    this.selectedTrackType ? this.selectedTrackType = '' : null;
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.selectedTrackType = event.value;
+      this.isLoading = false;
+      this.getPricing('trackType');
+      this.getProductsKitLookups('trackType');
+    }, 500);
+  }
+
+  getRequestId(event) {
+    this.requestId = event;
   }
 
   saveData(event) {
     this.isLoading = true;
 
-    if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-      const id = Number(this.productId ? this.productId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct : this.saveResponseDataForRegisterColorantProduct);
-      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+    if (this.selectedFormType === 1 || this.selectedFormType === 3 || this.selectedFormType === 5 || this.selectedFormType === 6) {
+      const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductRequest(event).subscribe((res: any) => {
+      const newEventObject = {
+        ...newEvent,
+        isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
+      };
+
+      this.getService.createProductRequest(newEventObject).subscribe((res: any) => {
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
+        this.updatingProductData = res;
+        this.editFormIPStatus = false;
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
         this.onClosed();
-      },error => this.handleError(error));
+      }, error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-      const id = Number(this.productId ? this.productId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct : this.saveResponseDataForRegisterColorantKitProduct);
-      event = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+      const id = Number(this.productId ? this.productId : this.requestId ? this.requestId : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const newEvent = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductKitRequest(event).subscribe((res: any) => {
+      const newEventObject = {
+        ...newEvent,
+        isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
+      };
+
+      this.getService.createProductKitRequest(newEventObject).subscribe((res: any) => {
         this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
+        this.updatingProductData = res;
+        this.editFormIPStatus = false;
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSaveRequest();
         this.onClosed();
-      },error => this.handleError(error));
+      }, error => this.handleError(error));
     }
   }
 
@@ -177,33 +205,52 @@ export class NewRequestComponent implements OnInit {
     this.isLoading = true;
     this.successSubmission = false;
     if (this.selectedFormType === 1 || this.selectedFormType === 3) {
-      event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
+      const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductRequest(event).subscribe((res: any) => {
+      this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
         this.onClosed();
-      },error => this.handleError(error));
+      }, error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
-      event = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, '', event);
+      const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
+      const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
-      this.getService.createProductKitRequest(event).subscribe((res: any) => {
+      this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.successSubmission = true;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
         this.onClosed();
-      },error => this.handleError(error));
+      }, error => this.handleError(error));
 
+    } else if (this.selectedFormType === 5 || this.selectedFormType === 6) {
+      const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 5 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
+      const newEvent = convertToSpecialObject('submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+
+      this.getService.createProductRequest(newEvent).subscribe((res: any) => {
+        this.updatingProductData = res;
+        this.editFormIPStatus = false;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.emptyTheTopField();
+        this.onClosed();
+      }, error => this.handleError(error));
     }
   }
 
   alertForSaveRequest() {
     return {msg: 'You had a successful saving'};
+  }
+
+  alertSaveRequestForKit() {
+    return {msg: 'You can apply this product in kit with request id'};
   }
 
   alertForSubmitRequest() {
@@ -227,11 +274,90 @@ export class NewRequestComponent implements OnInit {
     this.selectedFormType = '';
     this.selectedRequestedType = '';
     this.selectedIsExport = '';
+    this.estimatedValue = '';
+
+    setTimeout(() => {
+      this.router.navigate([`/new-request/registration`]);
+    }, 2000);
+
   }
 
-  handleError(message){
+  handleError(error) {
     this.alertErrorNotificationStatus = true;
-    this.alertErrorNotification = {msg: message};
+    this.alertErrorNotification = {msg: error.message};
     this.isLoading = false;
+  }
+
+  getPricing(fromWhere) {
+    if (fromWhere === 'trackType') {
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+    } else if (fromWhere === 'typeOfNotification') {
+      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+    } else if (fromWhere === 'draftRequest') {
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+    }
+
+    if (this.trackTypeVariable && this.typeOfNotificationVariable) {
+      const concatVariableCode = `${this.trackTypeVariable}_${this.typeOfNotificationVariable}`;
+
+      this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === concatVariableCode).map(y => {
+        this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
+      }) : null;
+    }
+  }
+
+  getProductsKitLookups(fromWhere) {
+    if (fromWhere === 'trackType') {
+      this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
+    } else if (fromWhere === 'selectedFormType') {
+      this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
+    } else if (fromWhere === 'draftRequest') {
+      this.trackTypeVariableForKitLookups = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariableForKitLookups = this.formData.formType[this.selectedFormType - 1].CODE;
+    }
+
+    if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined && (this.typeOfNotificationVariableForKitLookups === 'REG_KIT' || this.typeOfNotificationVariableForKitLookups === 'REG_HAIR_KIT')) {
+      this.getService.getProductsKitIdLookupsRequest(this.typeOfNotificationVariableForKitLookups, this.trackTypeVariableForKitLookups).subscribe((res) => {
+        this.productsKitIds = res;
+      }, error => {
+        this.handleError(error);
+      });
+    }
+  }
+
+  filterInBigSizeLookups(whichLookups, value) {
+    if (whichLookups === 'manufacturingCompany') {
+      this.getService.getManufacturingCompanyLookUp(1, value).subscribe((res: any) => {
+        this.manufacturingCompanyList = res;
+        this.formData.licenseHolderList = res;
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else if (whichLookups === 'companyProfile') {
+      this.getService.getCompanyProfileLookUp(1, this.companyProfileId, value).subscribe((res: any) => {
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else if (whichLookups === 'ingrediant') {
+      this.getService.getProductIngrediantsLookUp(1, value).subscribe((res: any) => {
+        this.formData.ingrediantList = res;
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    }
+  }
+
+  showAlertMessager(messageStatus) {
+    messageStatus ? this.handleError({message: 'please complete the required values which marked with *'}) : null;
+  }
+
+  enableLoadingForAttachment(event) {
+    if (event) {
+      this.isLoading = true;
+    } else {
+      this.isLoading = false;
+    }
+  }
+
+  isDraftRequest(event) {
+    this.isDraftRequestStatus = event;
   }
 }

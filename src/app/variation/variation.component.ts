@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
+import {InputService} from '../services/input.service';
+import {CurrencyPipe} from '@angular/common';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-variation',
@@ -41,114 +44,119 @@ export class VariationComponent implements OnInit {
   alertErrorNotification: any;
   whichVariation;
   productNotificationNumber;
+  estimatedValue;
+  selectedTrackType;
+  selectedRequestedType;
+  selectedFormType;
+  selectedIsExport;
+  variablesPricingList: any;
+  trackTypeVariable;
+  typeOfNotificationVariable;
+  companyProfileId: any;
+  lookupResponse: any;
+  variationID;
 
-  constructor(private getService: FormService, private route: ActivatedRoute) {
+  constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.getService.getMarketingTypeLookUp().subscribe((res: any) => {
-      this.formData.formType = res;
-      if (res) {
-        this.formData.formTypeForNewProductInKit = res.filter(x => x.ID === 1 || x.ID === 3).map(x => x);
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'CompanyId'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.companyProfileId = res.payload;
+    });
+
+    this.whichVariation = this.route.snapshot.routeConfig.path.split('/')[0];
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path.split('/')[0]).map(variableList => {
+        this.variablesPricingList = variableList;
+      });
+    });
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'allLookups'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.formData = res.payload;
+      this.isLoading = false;
+
+      this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
+      if (this.productNotificationNumber) {
+        this.isLoading = true;
+        this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
+          this.NotificationNo = res.NotificationNo;
+          this.selectedFormType = res.typeOfMarketing;
+          this.selectedRequestedType = res.typeOfRegistration;
+          this.selectedIsExport = res.isExport;
+          this.selectedTrackType = res.Tracktype;
+          this.productData = res;
+          this.typeOfRegistrationForProduct = res.typeOfRegistration;
+
+          this.isLoading = false;
+          this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
+        }, error => this.handleError(error));
       }
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getRequestTypeLookUp().subscribe((res: any) => {
-      this.formData.requestType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.formData.licenseHolderCountryList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getManufacturingCompanyLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCompanyList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getFunctionLookUp().subscribe((res: any) => {
-      this.formData.functionList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPackagingTypeLookUp().subscribe((res: any) => {
-      this.formData.typeOfPackagingList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getPhysicalStateLookUp().subscribe((res: any) => {
-      this.formData.physicalStateList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
-      this.formData.unitOfMeasureList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getUsePurposeLookUp().subscribe((res: any) => {
-      this.formData.purposeOfUseList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductColorLookUp().subscribe((res: any) => {
-      this.formData.productColorList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getProductIngrediantsLookUp().subscribe((res: any) => {
-      this.formData.ingrediantList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getCompanyProfileLookUp().subscribe((res: any) => {
-      this.formData.applicantList = res;
-      this.formData.licenseHolderList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
-      this.formData.storagePlaceList = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-    this.getService.getTrackTypeLookUp().subscribe((res: any) => {
-      this.formData.trackType = res;
-      this.isLoading = false;
-    }, error => this.handleError(error));
-
-    this.whichVariation = this.route.snapshot.routeConfig.path;
-
-    this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
-    if (this.productNotificationNumber) {
-      this.NotificationNo = this.productNotificationNumber;
-      this.applyProduct(this.NotificationNo);
-    }
+    });
   }
 
   applyProduct(NotificationNo) {
     this.isLoading = true;
-    this.getService.getProductWithNotificationNumberList(NotificationNo).subscribe((res: any) => {
-      this.productData = res;
-      this.typeOfRegistrationForProduct = res.typeOfRegistration;
-      this.isLoading = false;
-      this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell-variation' ? 2 : 1);
+    this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
+      if (res.canUse) {
+        this.selectedFormType = res.typeOfMarketing;
+        this.selectedRequestedType = res.typeOfRegistration;
+        this.selectedIsExport = res.isExport;
+        this.selectedTrackType = res.Tracktype;
+        this.productData = res;
+        this.typeOfRegistrationForProduct = res.typeOfRegistration;
+        this.isLoading = false;
+
+        res.receiptValue = '';
+        res.receiptNumber = '';
+        res.receipt = '';
+        let indexOfReceiptAttachment;
+        res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
+        res.productAttachments.splice(indexOfReceiptAttachment, 1);
+
+        this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
+      } else {
+        this.handleError(res.canuseMsg);
+      }
     }, error => this.handleError(error));
   }
 
   onSave(event) {
     this.isLoading = true;
+
     const data = {
-      ...this.productData,
       ...event,
-      isDraft: 1
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
 
     this.getService.setVariationProduct(data).subscribe((res: any) => {
+      this.productData = res;
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
+      this.onClosed();
     }, error => this.handleError(error));
   }
 
   onSubmit(event) {
     this.isLoading = true;
+
     const data = {
-      ...this.productData,
       ...event,
-      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell-variation' ? 4 : 3
+      isDraft: 0,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
 
     this.getService.setVariationProduct(data).subscribe((res: any) => {
@@ -162,14 +170,24 @@ export class VariationComponent implements OnInit {
 
   getVariationRequiredFields(typeOfRegistration, whichVariation) {
     this.isLoading = true;
+
     this.getService.getVariationRequiredFields(typeOfRegistration, whichVariation).subscribe((res: any) => {
       this.variationGroupList = res;
       this.isLoading = false;
+
+      this.productData.variationGroups ? this.productData.variationGroups.map(x => {
+        this.variationGroupList.filter(group => group.Code === x).map(groupObject => {
+          this.variationFields = [...this.variationFields, groupObject];
+          this.typeOfVariationForProduct = this.variationFields;
+          this.getPricing();
+        });
+      }) : null;
     }, error => this.handleError(error));
   }
 
   onSelectionChange(event) {
     this.variationFields = event.value;
+    this.getPricing();
   }
 
   alertForSaveRequest() {
@@ -191,6 +209,7 @@ export class VariationComponent implements OnInit {
     this.NotificationNo = '';
     this.typeOfVariationForProduct = '';
     this.variationGroupList = [];
+    this.estimatedValue = '';
   }
 
   handleError(message) {
@@ -205,4 +224,38 @@ export class VariationComponent implements OnInit {
     }, 2000);
   }
 
+  getPricing() {
+    this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+
+    let allCodes = [];
+    let PricesList = [];
+
+    this.variationFields.map(x => {
+      allCodes.push(`${this.trackTypeVariable}_${x.Code}`);
+    });
+
+    if (this.trackTypeVariable && allCodes.length > 0) {
+      allCodes.map(code => {
+        this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode === code).map(y => {
+          PricesList.push(y.variableValue);
+        }) : null;
+      });
+
+      this.estimatedValue = this.currencyPipe.transform(PricesList.reduce((acc, curr) => acc + curr), 'EGP', 'symbol');
+    } else {
+      this.estimatedValue = '';
+    }
+  }
+
+  showAlertMessager(messageStatus) {
+    messageStatus ? this.handleError('please complete the required values which marked with *') : null;
+  }
+
+  enableLoadingForAttachment(event) {
+    if (event) {
+      this.isLoading = true;
+    } else {
+      this.isLoading = false;
+    }
+  }
 }

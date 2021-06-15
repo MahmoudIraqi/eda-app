@@ -1,25 +1,27 @@
 import {
   AfterViewInit,
-  Component,
+  Component, DoCheck,
   ElementRef,
-  EventEmitter,
+  EventEmitter, HostListener,
   Input,
   OnChanges, OnDestroy,
   OnInit,
   Output,
   QueryList,
-  SimpleChanges,
+  SimpleChanges, TemplateRef,
   ViewChild,
   ViewChildren
 } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
-import {formDataClass} from '../../utils/formDataFunction';
+import {convertToSpecialObject, formDataClass} from '../../utils/formDataFunction';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
-
+import {FormService} from '../services/form.service';
+import {Router} from '@angular/router';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 export interface LookupState {
   ID: number;
@@ -37,22 +39,46 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() selectedRequestedType;
   @Input() selectedFormType;
   @Input() selectedTrackType;
+  @Input() selectedIsExport;
   @Input() successSubmission;
+  @Input() approvedStatus;
+  @Input() trackProductStatus;
   @Input() editData;
+  @Input() editFromWhere;
+  @Input() getAllLookupsStatus;
+  @Input() legacyStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
+  @Input() whichVariation;
   @Input() lookupsData;
+  @Input() manufacturingCompanyList;
+  @Input() companyProfile;
   @Input() kitProductStatus;
+  @Input() saveFromAttachment;
+  @Input() saveResponseDataForRegisterProductID;
   @Output() saveDataOutput = new EventEmitter();
+  @Output() saveTrackDataOutput = new EventEmitter();
+  @Output() saveDataOutputForAttachment = new EventEmitter();
   @Output() submitDataOutput = new EventEmitter();
   @Output() selectedTrackTypeForKit = new EventEmitter();
   @Output() selectedRegisteredTypeForKit = new EventEmitter();
   @Output() selectedRegisteredProductTypeForKit = new EventEmitter();
+  @Output() manufacturingSearchText = new EventEmitter();
+  @Output() companyProfileSearchText = new EventEmitter();
+  @Output() ingrediantSearchText = new EventEmitter();
+  @Output() errorMessage = new EventEmitter();
+  @Output() errorMessageForAttachment = new EventEmitter();
+  @Output() requestIsDraft = new EventEmitter();
+  @Output() isLoadingStatus = new EventEmitter();
+  @Output() errorForAttachemntRequest = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
+  @ViewChild('packagingModal') modalTemplate: TemplateRef<any>;
+  @ViewChild('detailedModal') modalDetailedTemplate: TemplateRef<any>;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  isDraft: boolean = false;
   detailsListTable = {
     tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Actions'],
     tableBody: []
@@ -63,144 +89,214 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   };
   attachmentFields = [
     {
-      id: 'freeSale',
+      id: 'freeSaleDoc',
       name: 'Free Sale',
       fileName: '',
-      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      fileValue: '',
+      required: false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'GMP',
       name: 'GMP',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'CoA',
       name: 'CoA',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'artWork',
       name: 'Art Work',
       fileName: '',
+      fileValue: '',
       required: !this.kitProductStatus ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'leaflet',
       name: 'leaflet',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'reference',
       name: 'reference',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'methodOfAnalysis',
       name: 'Method of Analysis',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'specificationsOfFinishedProduct',
       name: 'Specifications of Finished Product',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
-    },
-    {
-      id: 'receipt',
-      name: 'receipt',
-      fileName: '',
-      required: true,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'authorizationLetter',
       name: 'Authorization Letter',
       fileName: '',
+      fileValue: '',
       required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingContract',
       name: 'Manufacturing Contract',
       fileName: '',
-      required: false,
-      enable: true
+      fileValue: '',
+      required: this.selectedRequestedType === 8 ? true : false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'storageContract',
       name: 'Storage Contract',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'others',
       name: 'others',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
+      id: 'receipt',
+      name: 'receipt',
+      fileName: '',
+      fileValue: '',
+      required: true,
+      enable: !this.legacyStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'otherFees',
       name: 'otherFees',
       fileName: '',
+      fileValue: '',
       required: true,
-      enable: true
+      enable: !this.legacyStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'factoryLicense',
       name: 'Factory license',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'manufacturingAssignment',
       name: 'Manufacturing Assignment',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
-      id: 'commercialRecord',
-      name: 'Commercial Record',
+      id: 'commercialRecordForSeller',
+      name: 'Commercial Record For Seller',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
+      id: 'commercialRecordForBuyer',
+      name: 'Commercial Record For Buyer',
+      fileName: '',
+      fileValue: '',
+      required: false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'stabilityStudy',
       name: 'Stability study',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'shelfLifeAttachment',
       name: 'Shelf life',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: true
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     },
     {
       id: 'letterOfVariationFromLicenseHolder',
       name: 'letter of variation from license holder',
       fileName: '',
+      fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false
+      enable: this.variationFieldsStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
     }
   ];
   editIndex;
@@ -208,12 +304,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   editPackagingIndex;
   editPackagingRowStatus = false;
   regProductForAllRequestedType: FormGroup;
+  regPackagingForProduct: FormGroup;
+  regDetailedForProduct: FormGroup;
   subscription: Subscription;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
   requestedProductTypeForNewProductInKit;
-  isloading: boolean = false;
+  isLoading: boolean = false;
   rangeInput;
   activeTabIndex;
   enableEditableFields = [];
@@ -222,10 +320,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   disabledSaveButton: boolean = false;
   productFlags;
   productComments;
+  deletedPackagingList = [];
+  deletedDetailedList = [];
+  deletedIdsListForIngrediant = [];
+  deletedShortNameList = [];
+  attachmentRequiredStatus: boolean = false;
+  requestId;
+  objectForListOfVariationGroup: any;
 
+  filteredOptionsForProductColor: Observable<LookupState[]>;
   filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
-  filteredOptionsForApplicant: Observable<LookupState[]>;
   filteredOptionsForLicenseHolder: Observable<LookupState[]>;
   filteredOptionsForLicenseHolderCountry: Observable<LookupState[]>;
   filteredOptionsForPhysicalState: Observable<LookupState[]>;
@@ -235,177 +340,62 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   filteredOptionsForTypeOfPackaging: Observable<LookupState[]>;
   filteredOptionsForIngradiant: Observable<LookupState[]>;
   filteredOptionsForFunction: Observable<LookupState[]>;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-xl packagingModal',
+  };
+  editProcessInTrackedProduct: boolean = false;
 
   constructor(private fb: FormBuilder,
-              private number: DecimalPipe) {
+              private number: DecimalPipe,
+              private router: Router,
+              private modalService: BsModalService,
+              private getService: FormService) {
     this.getFormAsStarting('');
+    this.getPackagingFormAsStarting('');
+    this.getDetailedFormAsStarting('');
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
+    this.getFormAsStarting('');
 
     if (this.successSubmission) {
       this.resetForms();
     }
 
-    this.attachmentFields = [
-      {
-        id: 'freeSale',
-        name: 'Free Sale',
-        fileName: '',
-        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true
-      },
-      {
-        id: 'GMP',
-        name: 'GMP',
-        fileName: '',
-        required: false,
-        enable: true
-      },
-      {
-        id: 'CoA',
-        name: 'CoA',
-        fileName: '',
-        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
-        enable: true
-      },
-      {
-        id: 'artWork',
-        name: 'Art Work',
-        fileName: '',
-        required: !this.kitProductStatus ? true : false,
-        enable: true
-      },
-      {
-        id: 'leaflet',
-        name: 'leaflet',
-        fileName: '',
-        required: false,
-        enable: true
-      },
-      {
-        id: 'reference',
-        name: 'reference',
-        fileName: '',
-        required: false,
-        enable: true
-      },
-      {
-        id: 'methodOfAnalysis',
-        name: 'Method of Analysis',
-        fileName: '',
-        required: false,
-        enable: true
-      },
-      {
-        id: 'specificationsOfFinishedProduct',
-        name: 'Specifications of Finished Product',
-        fileName: '',
-        required: true,
-        enable: true
-      },
-      {
-        id: 'receipt',
-        name: 'receipt',
-        fileName: '',
-        required: true,
-        enable: true
-      },
-      {
-        id: 'authorizationLetter',
-        name: 'Authorization Letter',
-        fileName: '',
-        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
-        enable: true
-      },
-      {
-        id: 'manufacturingContract',
-        name: 'Manufacturing Contract',
-        fileName: '',
-        required: false,
-        enable: true
-      },
-      {
-        id: 'storageContract',
-        name: 'Storage Contract',
-        fileName: '',
-        required: false,
-        enable: true
-      },
-      {
-        id: 'others',
-        name: 'others',
-        fileName: '',
-        required: false,
-        enable: true
-      },
-      {
-        id: 'otherFees',
-        name: 'otherFees',
-        fileName: '',
-        required: true,
-        enable: true
-      },
-      {
-        id: 'factoryLicense',
-        name: 'Factory license',
-        fileName: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false
-      },
-      {
-        id: 'manufacturingAssignment',
-        name: 'Manufacturing Assignment',
-        fileName: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false
-      },
-      {
-        id: 'commercialRecord',
-        name: 'Commercial Record',
-        fileName: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false
-      },
-      {
-        id: 'stabilityStudy',
-        name: 'Stability study',
-        fileName: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false
-      },
-      {
-        id: 'shelfLifeAttachment',
-        name: 'Shelf life',
-        fileName: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false
-      },
-      {
-        id: 'letterOfVariationFromLicenseHolder',
-        name: 'letter of variation from license holder',
-        fileName: '',
-        required: false,
-        enable: this.variationFieldsStatus ? true : false
-      }
-    ];
+    this.rerenderFileAttachmentList();
+
+    this.getDisabledValues();
 
     this.getFormAsStarting(this.editData);
 
-    this.getDisabledValues();
+    this.setApplicant(this.companyProfile);
+
+    if (this.editData && this.editData.productFlags) {
+      Object.keys(this.editData.productFlags).map(item => {
+        if (this.editData.productFlags[item]) {
+          this.editProcessInTrackedProduct = true;
+        }
+      });
+    }
   }
 
   ngOnInit(): void {
-    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
-    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
-    this.filteredOptionsForApplicant = this.filterLookupsFunction(this.regProductForAllRequestedType.get('applicant'), this.formData.applicantList);
-    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction(this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
-    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
-    this.filteredOptionsForPhysicalState = this.filterLookupsFunction(this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
-    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction(this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
-    this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
-    this.getLookupForFormArray();
+    this.filteredOptionsForProductColor = this.filterLookupsFunction('productColor', this.regProductForAllRequestedType.get('productColor'), this.formData.productColorList);
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction('licenseHolder', this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
+    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction('countryOfLicenseHolder', this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
+    this.filteredOptionsForPhysicalState = this.filterLookupsFunction('physicalState', this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
+    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction('purposeOfUse', this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
+    this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+
+    // this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
       for (let i = 0; i < Object.values(x).length; i++) {
@@ -422,18 +412,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('manufacturingCompany');
-    this._subscribeToClosingActions('manufacturingCountry');
-    this._subscribeToClosingActions('applicant');
-    this._subscribeToClosingActions('licenseHolder');
-    this._subscribeToClosingActions('countryOfLicenseHolder');
-    this._subscribeToClosingActions('physicalState');
-    this._subscribeToClosingActions('purposeOfUse');
-    this._subscribeToClosingActions('storagePlace');
-    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure');
-    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging');
-    this._subscribeToClosingActionsForDetailsFormArray('ingrediant');
-    this._subscribeToClosingActionsForDetailsFormArray('function');
+    this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
+    this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
+    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
+    this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
+    this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
+    this._subscribeToClosingActions('physicalState', this.filteredOptionsForPhysicalState);
+    this._subscribeToClosingActions('purposeOfUse', this.filteredOptionsForPurposeOfUse);
+    this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
+    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
+    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
   }
 
   ngOnDestroy() {
@@ -455,13 +443,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   addShortName() {
     this.removeShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.fb.control('', Validators.pattern('^[a-zA-Z \-\']+')));
+      this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')]));
     }
   }
 
   removeShortName(i: number) {
     if (this.ShortName.value.length > 1) {
       this.removeShortNameFieldStatus = false;
+
+      this.deletedShortNameList.push(this.ShortName.value[i]);
+      this.regProductForAllRequestedType.get('deletedShortNameList').patchValue(this.deletedShortNameList);
+
       this.ShortName.removeAt(i);
     } else {
       this.removeShortNameFieldStatus = true;
@@ -473,16 +465,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getLookupForFormArray() {
-    this.PackagingRows().controls.map((x) => {
-      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(x.get('unitOfMeasure'), this.formData.unitOfMeasureList);
-      this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction(x.get('typeOfPackaging'), this.formData.typeOfPackagingList);
-    });
-
-    this.DetailsRows().value.map((x, i) => {
-      x.ingrediantDetails.map((item, index) => {
-        this.filteredOptionsForIngradiant = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('ingrediant'), this.formData.ingrediantList);
-        this.filteredOptionsForFunction = this.filterLookupsFunction(this.IngrediantDetailsRows(i).controls[index].get('function'), this.formData.functionList);
-      });
+    this.IngrediantDetailsRows().controls.map((x) => {
+      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
+      this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList);
     });
   }
 
@@ -501,170 +486,301 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   // Function for File
   onFileSelect(event, fileControlName) {
     let cardImageBase64;
-    this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
+    let resForSetAttachment;
+    let attachmentValue;
 
-      reader.readAsDataURL(file);
-      reader.onload = (res: any) => {
-        this.regProductForAllRequestedType.get(fileControlName).setValue({name: file.name, base64Data: res.target.result});
-      };
+    if (this.attachmentFields.filter(x => x.loadingStatus === true).length === 0) {
+      if (event.target.files.length > 0) {
+        if (event.target.files[0].type === 'application/pdf') {
 
-      // this.regProductForAllRequestedType.get(fileControlName).setValue(file);
+          this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
+            y.fileName = event.target.value.split(/(\\|\/)/g).pop();
+            attachmentValue = y.fileValue;
+          });
+
+          this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'Yes';
+            this.isLoadingStatus.emit(true);
+          });
+          const file = event.target.files[0];
+          const reader = new FileReader();
+
+          reader.readAsDataURL(file);
+          reader.onload = (res: any) => {
+            if (this.variationFieldsStatus) {
+              if (this.editData.isVariationSaved === false) {
+                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
+            } else {
+              if (!this.regProductForAllRequestedType.value.id) {
+                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+              }
+            }
+          };
+
+        }// this.regProductForAllRequestedType.get(fileControlName).setValue(file);
+        else {
+          this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+            file.attachmentTypeStatus = 'No';
+            this.isLoadingStatus.emit(false);
+          });
+        }
+      }
     }
   }
 
-  // Functions for Details tabls
-  PackagingRows(): FormArray {
-    return this.regProductForAllRequestedType.get('packagingTable') as FormArray;
-  }
-
-  addPackagingRows() {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewPackagingTable('add');
-    this.PackagingRows().push(this.fb.group({
-      volumesID: this.fb.control(''),
-      volumes: this.fb.control('', Validators.required),
-      unitOfMeasure: this.fb.control('', Validators.required),
-      typeOfPackaging: this.fb.control('', Validators.required),
-      packagingDescription: this.fb.control(''),
-    }));
-  }
-
   removePackagingRows(i) {
-    this.PackagingRows().removeAt(i);
-    this.regProductForAllRequestedType.get('packagingTable').value.pop();
-    this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
+    this.regProductForAllRequestedType.get('packagingTable').value.splice(i, 1);
+
+    this.packagingListTable.tableBody = [];
+    this.regProductForAllRequestedType.get('packagingTable').value.map((x, i) => {
+      this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+    });
   }
 
-  cancelThePackagingRows(index) {
-    this.PackagingRows().removeAt(index);
-    this.packagingListTable.tableBody.pop();
+  deletedPackagingIdsList(event) {
+    this.deletedPackagingList = event;
+    this.regProductForAllRequestedType.get('deletedpacklstIds').patchValue(event);
   }
 
   editThePackagingRows(event) {
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
+    const editRowData = this.regProductForAllRequestedType.get('packagingTable').value[event];
+
+    this.regPackagingForProduct.patchValue({
+      ...editRowData
+    });
+
+    this.openModal(this.modalTemplate);
   }
 
-  equalTheNewPackagingTable(fromWhere) {
-    if (fromWhere !== 'form') {
-      if (fromWhere === 'remove') {
-        this.regProductForAllRequestedType.get('packagingTable').value.pop();
-      }
+  removeDetailedRows(i) {
+    this.regProductForAllRequestedType.get('detailsTable').value.splice(i, 1);
 
-      this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
-    }
+    this.detailsListTable.tableBody = [];
+    this.regProductForAllRequestedType.get('detailsTable').value.map((x, i) => {
+      this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+    });
   }
 
-  DetailsRows(): FormArray {
-    return this.regProductForAllRequestedType.get('detailsTable') as FormArray;
+  deletedDetailedIdsList(event) {
+    this.deletedDetailedList = event;
+    this.regProductForAllRequestedType.get('deletedProductDetailsIds').patchValue(event);
   }
 
-  addDetailsRows() {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable('add');
-    this.DetailsRows().push(this.fb.group({
-      DetailsID: this.fb.control(''),
-      PRODUCT_ID: this.fb.control(''),
-      colour: this.fb.control(''),
-      fragrance: this.fb.control(''),
-      flavor: this.fb.control(''),
-      barCode: this.fb.control(''),
-      ingrediantDetails: this.fb.array([this.fb.group({
-        Ingredient_ID: this.fb.control(''),
-        ingrediant: this.fb.control('', Validators.required),
-        concentrations: this.fb.control('', Validators.required),
-        function: this.fb.control('', Validators.required),
-      })])
-    }));
-    this.getLookupForFormArray();
-  }
-
-  cancelTheDetailsRows(index) {
-    this.DetailsRows().removeAt(index);
-    this.detailsListTable.tableBody.pop();
-  }
-
-  editDataDetailsRows(fromWhere) {
-    this.editDetailedRowStatus = false;
-    this.equalTheNewDetailsTable(fromWhere);
-  }
-
-  removeDetailsRows(i) {
-    this.DetailsRows().removeAt(i);
-    this.equalTheNewDetailsTable('remove');
-  }
-
-  editTheDetailsRow(event) {
+  editTheDetailedRows(event) {
     this.editDetailedRowStatus = true;
     this.editIndex = event;
-  }
+    const editRowData = this.regProductForAllRequestedType.get('detailsTable').value[event];
 
-  equalTheNewDetailsTable(fromWhere) {
-    if (fromWhere !== 'form') {
-      if (fromWhere === 'remove') {
-        this.regProductForAllRequestedType.get('detailsTable').value.pop();
+    editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
+      if (i >= 1) {
+        this.addIngrediantDetailsRows();
       }
-      this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
-    }
+    }) : null;
+
+    this.regDetailedForProduct.patchValue({
+      ...editRowData
+    });
+
+    this.openModal(this.modalDetailedTemplate);
   }
 
   //functions for IngrediantDetailsRows
-  IngrediantDetailsRows(index): FormArray {
-    return this.DetailsRows().at(index).get('ingrediantDetails') as FormArray;
+  IngrediantDetailsRows(): FormArray {
+    return this.regDetailedForProduct.get('ingrediantDetails') as FormArray;
   }
 
-  addIngrediantDetailsRows(index) {
-    this.IngrediantDetailsRows(index).push(this.fb.group({
+  addIngrediantDetailsRows() {
+    this.IngrediantDetailsRows().push(this.fb.group({
       Ingredient_ID: this.fb.control(''),
       ingrediant: this.fb.control('', Validators.required),
-      concentrations: this.fb.control('', Validators.required),
+      concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
       function: this.fb.control('', Validators.required)
     }));
-    this.getLookupForFormArray();
+
+    this.rerenderSubscribtionForClosingActionForDetailsForm(this.IngrediantDetailsRows().controls.length - 1);
   }
 
-  removeIngrediantDetailsRows(fromWhere, event) {
-    if (this.IngrediantDetailsRows(event.i).length > 1) {
-      this.IngrediantDetailsRows(event.i).removeAt(event.childIndex);
+  removeIngrediantDetailsRows(index) {
+    this.IngrediantDetailsRows().removeAt(index);
+    if (this.IngrediantDetailsRows().length === 0) {
+      this.addIngrediantDetailsRows();
     }
+  }
 
-    this.equalTheNewDetailsTable(fromWhere);
+  deletedIngrediantIdsList(row) {
+    this.deletedIdsListForIngrediant.push(row.value.Ingredient_ID);
+    this.regProductForAllRequestedType.get('deletedIngredientsIds').patchValue(this.deletedIdsListForIngrediant);
   }
 
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    this.saveDataOutput.emit(data);
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+
+    this.saveDataOutput.emit(newObjectForData);
+  }
+
+  saveTrackProductData() {
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    this.saveTrackDataOutput.emit(data);
+  }
+
+  saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+    const newObjectData = {
+      ...this.editData,
+      ...allDataForSave
+    };
+
+    this.getService.createProductRequest(newObjectData).subscribe((res: any) => {
+      this.editData = res;
+      this.saveDataOutputForAttachment.emit(res.id);
+      this.regProductForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
+  }
+
+  saveProductForAttachmentVariation(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+
+    const newObject = {
+      ...this.editData,
+      ...allDataForSave,
+      isDraft: 1,
+      LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3,
+      ...this.objectForListOfVariationGroup
+    };
+
+
+    this.getService.setVariationProduct(newObject).subscribe((res: any) => {
+      this.editData = res;
+      this.regProductForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    });
   }
 
   onSubmit() {
+    this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    this.submitDataOutput.emit(data);
+    console.log('editData', this.editData);
+    console.log('data', data);
+
+    const newObjectForData = {
+      ...this.editData,
+      ...data,
+      ...this.objectForListOfVariationGroup
+    };
+    if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
+      this.submitDataOutput.emit(newObjectForData);
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
+  onSubmitForPackagingForm() {
+    const data = this.regPackagingForProduct.value;
+    data.unitOfMeasure = this.checkControllerValueWithListForPackaginArray(this.formData.unitOfMeasureList, 'unitOfMeasure', data.unitOfMeasure);
+    data.typeOfPackaging = this.checkControllerValueWithListForPackaginArray(this.formData.typeOfPackagingList, 'typeOfPackaging', data.typeOfPackaging);
+
+    if (this.regPackagingForProduct.valid) {
+      if (!this.editPackagingIndex && this.editPackagingIndex !== 0) {
+        this.regProductForAllRequestedType.value.packagingTable.push({...this.regPackagingForProduct.value});
+      } else {
+        this.regProductForAllRequestedType.get('packagingTable').value[this.editPackagingIndex] = this.regPackagingForProduct.value;
+        this.editPackagingRowStatus = false;
+        this.editPackagingIndex = '';
+      }
+
+      this.modalRef.hide();
+
+      this.packagingListTable.tableBody = this.regProductForAllRequestedType.get('packagingTable').value;
+
+      this.getPackagingFormAsStarting('');
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
+  onSubmitForDetailedForm() {
+    const data = this.regDetailedForProduct.value;
+    data.ingrediantDetails.map((option, index) => {
+      option.ingrediant = this.checkControllerValueWithListForDetailsArray(this.formData.ingrediantList, 'ingrediant', option.ingrediant, index);
+      option.function = this.checkControllerValueWithListForDetailsArray(this.formData.functionList, 'function', option.function, index);
+    });
+
+    if (this.regDetailedForProduct.valid) {
+      if (!this.editIndex && this.editIndex !== 0) {
+        this.regProductForAllRequestedType.value.detailsTable.push({...this.regDetailedForProduct.value});
+      } else {
+        this.regProductForAllRequestedType.get('detailsTable').value[this.editIndex] = this.regDetailedForProduct.value;
+        this.editDetailedRowStatus = false;
+        this.editIndex = '';
+      }
+
+      this.modalRef.hide();
+
+      this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+
+      this.getDetailedFormAsStarting('');
+    } else {
+      this.errorMessage.emit('true');
+    }
   }
 
   getFormAsStarting(data) {
     if (data) {
-      data.shortName.map((X, i) => {
+      this.isDraft = data.isDraft === 1;
+      this.requestIsDraft.emit(data.isDraft === 1);
+
+      data.shortName ? data.shortName.map((X, i) => {
         if (data.shortName.length > 1 && i < data.shortName.length - 1) {
           this.addShortName();
         }
-      });
-      data.detailsTable.map((x, i) => {
-        x.ingrediantDetails.map((y, index) => {
-          if (x.ingrediantDetails.length > 1 && index < x.ingrediantDetails.length - 1) {
-            this.addIngrediantDetailsRows(i);
-          }
-        });
+      }) : data.shortName = [];
 
-        if (data.detailsTable.length > 1 && i < data.detailsTable.length - 1) {
-          this.addDetailsRows();
-        }
-      });
-      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
+      this.packagingListTable.tableBody = [];
+      data.packagingTable ? data.packagingTable.map((x, i) => {
+        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+      }) : null;
+
+      this.detailsListTable.tableBody = [];
+      data.detailsTable ? data.detailsTable.map((x, i) => {
+        this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+      }) : null;
+
+      this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
       this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
@@ -674,16 +790,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.formData.purposeOfUseList.filter(option => option.ID === data.purposeOfUse).map(x => data.purposeOfUse = x.NAME);
       this.formData.storagePlaceList.filter(option => option.ID === data.storagePlace).map(x => data.storagePlace = x.NAME);
       this.formData.unitOfMeasureList.filter(option => option.ID === data.unitOfMeasure).map(x => data.unitOfMeasure = x.NAME);
-      data.packagingTable.map(x => {
+      data.packagingTable ? data.packagingTable.map(x => {
         this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
         this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-      });
-      data.detailsTable.map(x => {
+      }) : null;
+      data.detailsTable ? data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
           this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
           this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
         });
-      });
+      }) : null;
 
       this.regProductForAllRequestedType.valueChanges.subscribe(x => {
         for (let i = 0; i < Object.values(x).length; i++) {
@@ -701,14 +817,29 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.productFlags = data.productFlags;
       this.productComments = data.productComments;
 
+      data.productAttachments ? data.productAttachments.map(file => {
+        this.attachmentFields.filter(fileID => fileID.id === file.attachmentName).map(y => {
+          y.fileName = file.attachmentFileName;
+          y.fileValue = file.Id;
+        });
+      }) : null;
+
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
+
+      data.productAttachments.map((x, i) => {
+        this.regProductForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
+      });
+
+      data.receiptValue === 0 ? this.regProductForAllRequestedType.get('receiptValue').patchValue('') : null;
     } else {
       this.regProductForAllRequestedType = this.fb.group({
-        productArabicName: this.fb.control(''),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
-        shortName: this.fb.array([this.fb.control('', Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$'))]),
+        productColor: this.fb.control(''),
+        id: 0,
+        productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w])*$')]),
+        shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')])]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
@@ -720,32 +851,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         physicalStateTxt: this.fb.control(''),
         purposeOfUse: this.fb.control('', Validators.required),
         purposeOfUseTxt: this.fb.control(''),
-        storagePlace: this.fb.control('', this.selectedRequestedType !== 1 && this.selectedRequestedType !== 2 && this.selectedRequestedType !== 5 && this.selectedRequestedType !== 6 ? Validators.required : null),
-        shelfLife: this.fb.control(0),
-        receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-        receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
-        packagingTable: this.fb.array([this.fb.group({
-          volumesID: this.fb.control(''),
-          volumes: this.fb.control('', Validators.required),
-          unitOfMeasure: this.fb.control('', Validators.required),
-          typeOfPackaging: this.fb.control('', Validators.required),
-          packagingDescription: this.fb.control(''),
-        })]),
-        detailsTable: this.fb.array([this.fb.group({
-          DetailsID: this.fb.control(''),
-          PRODUCT_ID: this.fb.control(''),
-          colour: this.fb.control(''),
-          fragrance: this.fb.control(''),
-          flavor: this.fb.control(''),
-          barCode: this.fb.control(''),
-          ingrediantDetails: this.fb.array([this.fb.group({
-            Ingredient_ID: this.fb.control(''),
-            ingrediant: this.fb.control('', Validators.required),
-            concentrations: this.fb.control('', Validators.required),
-            function: this.fb.control('', Validators.required),
-          })])
-        })]),
-        freeSale: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
+        storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
+        shelfLife: this.fb.control(null, Validators.required),
+        receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
+        packagingTable: this.fb.control([]),
+        detailsTable: this.fb.control([]),
+        deletedShortNameList: this.fb.control([]),
+        deletedIngredientsIds: this.fb.control(null),
+        deletedProductDetailsIds: this.fb.control(null),
+        deletedpacklstIds: this.fb.control(null),
+        freeSaleDoc: this.fb.control(''),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
         artWork: this.fb.control('', this.kitProductStatus !== true ? Validators.required : null),
@@ -753,18 +869,55 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         reference: this.fb.control(''),
         methodOfAnalysis: this.fb.control(''),
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-        receipt: this.fb.control('', Validators.required),
-        authorizationLetter: this.fb.control('', this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? Validators.required : null),
-        manufacturingContract: this.fb.control(''),
+        receipt: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        authorizationLetter: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
+        manufacturingContract: this.fb.control('', this.selectedRequestedType === 8 ? Validators.required : null),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
         manufacturingAssignment: this.fb.control(''),
-        commercialRecord: this.fb.control(''),
+        commercialRecordForSeller: this.fb.control(''),
+        commercialRecordForBuyer: this.fb.control(''),
         stabilityStudy: this.fb.control(''),
         shelfLifeAttachment: this.fb.control(''),
         letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
-        otherFees: this.fb.control('', Validators.required),
+        otherFees: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+      });
+    }
+  }
+
+  getPackagingFormAsStarting(data) {
+    if (data) {
+
+    } else {
+      this.regPackagingForProduct = this.fb.group({
+        volumesID: this.fb.control(''),
+        volumes: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
+        unitOfMeasure: this.fb.control('', Validators.required),
+        typeOfPackaging: this.fb.control('', Validators.required),
+        packagingDescription: this.fb.control(''),
+        isCartonBox: this.fb.control(''),
+      });
+    }
+  }
+
+  getDetailedFormAsStarting(data) {
+    if (data) {
+
+    } else {
+      this.regDetailedForProduct = this.fb.group({
+        DetailsID: this.fb.control(''),
+        PRODUCT_ID: this.fb.control(''),
+        colour: this.fb.control(''),
+        fragrance: this.fb.control(''),
+        flavor: this.fb.control(''),
+        barCode: this.fb.control(''),
+        ingrediantDetails: this.fb.array([this.fb.group({
+          Ingredient_ID: this.fb.control(''),
+          ingrediant: this.fb.control('', Validators.required),
+          concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
+          function: this.fb.control('', Validators.required),
+        })])
       });
     }
   }
@@ -788,46 +941,70 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getDisabledValues() {
+    let variaionGroupCodeList = [];
+    let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
+      this.rerenderFileAttachmentList();
+
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
+        variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
+        this.objectForListOfVariationGroup = {
+          variationGroups: variaionGroupCodeList,
+          variationFields: variaionGroupFieldsCodeList,
+        };
+      });
+
+      this.enableEditableFields.map(field => {
+
+        this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
+
+        this.attachmentFields.filter(file => file.id === field).length > 0 ?
+          this.attachmentFields.filter(file => file.id === field).map(item => {
+            item.required = true;
+          }) : null;
       });
     }
   }
 
-  filterLookupsFunction(formControlValue, list) {
+  filterLookupsFunction(whichLookup, formControlValue, list) {
     if (formControlValue) {
       return formControlValue.valueChanges
         .pipe(
           startWith(''),
-          map(state => state ? this.filterInsideList(state, list) : list.slice())
+          debounceTime(500),
+          map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
         );
     }
   }
 
-  filterInsideList(value, list): LookupState[] {
+  filterInsideList(lookup, value, list): LookupState[] {
     let filterValue;
     if (value) {
-      filterValue = value.toLowerCase();
+      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
     }
 
     return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
   convertAllNamingToId(data) {
-    this.formData.manufacturingCompanyList.filter(option => option.NAME === data.manufacturingCompany).map(x => data.manufacturingCompany = x.ID);
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
-    this.formData.applicantList.filter(option => option.NAME === data.applicant).map(x => data.applicant = x.ID);
-    this.formData.licenseHolderList.filter(option => option.NAME === data.licenseHolder).map(x => data.licenseHolder = x.ID);
-    this.formData.licenseHolderCountryList.filter(option => option.NAME === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.ID);
-    this.formData.physicalStateList.filter(option => option.NAME === data.physicalState).map(x => data.physicalState = x.ID);
-    this.formData.purposeOfUseList.filter(option => option.NAME === data.purposeOfUse).map(x => data.purposeOfUse = x.ID);
-    this.formData.storagePlaceList.filter(option => option.NAME === data.storagePlace).map(x => data.storagePlace = x.ID);
+    data.productColor = this.checkControllerValueWithList(this.formData.productColorList, 'productColor', data.productColor);
+    data.manufacturingCompany = this.checkControllerValueWithList(this.formData.manufacturingCompanyList, 'manufacturingCompany', data.manufacturingCompany);
+    data.manufacturingCountry = this.checkControllerValueWithList(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
+    data.applicant = this.checkControllerValueWithList(this.formData.applicantList, 'applicant', data.applicant);
+    data.licenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderList, 'licenseHolder', data.licenseHolder);
+    data.countryOfLicenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderCountryList, 'countryOfLicenseHolder', data.countryOfLicenseHolder);
+    data.physicalState = this.checkControllerValueWithList(this.formData.physicalStateList, 'physicalState', data.physicalState);
+    data.purposeOfUse = this.checkControllerValueWithList(this.formData.purposeOfUseList, 'purposeOfUse', data.purposeOfUse);
+    data.storagePlace = this.checkControllerValueWithList(this.formData.storagePlaceList, 'storagePlace', data.storagePlace);
 
     data.packagingTable.map(x => {
       this.formData.unitOfMeasureList.filter(option => option.NAME === x.unitOfMeasure).map(item => x.unitOfMeasure = item.ID);
-      this.formData.functionList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
+      this.formData.typeOfPackagingList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
     });
 
     data.detailsTable.map(x => {
@@ -840,60 +1017,456 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     return data;
   }
 
-  private _subscribeToClosingActions(field): void {
+  setApplicant(companyProfileID) {
+    this.formData.applicantList.filter(option => option.ID === companyProfileID).map(x => this.regProductForAllRequestedType.patchValue({
+      applicant: x.NAME
+    }));
+  }
+
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.regProductForAllRequestedType.controls[field].dirty) {
-              this.regProductForAllRequestedType.controls[field].setValue(null);
+    list.subscribe(x => {
+      if (x.length === 0) {
+
+        if (this.regProductForAllRequestedType.controls[field].dirty) {
+          this.regProductForAllRequestedType.controls[field].setValue(null);
+        }
+      }
+    });
+  }
+
+  private _subscribeToClosingActionsForPackagingFormArray(field, list): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    list ? list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.regPackagingForProduct.controls[field].dirty) {
+          this.regPackagingForProduct.controls[field].setValue(null);
+        }
+      }
+    }) : null;
+  }
+
+  private _subscribeToClosingActionsForDetailsFormArray(field, list, index): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+    list ? list.subscribe(y => {
+      if (y && y.length === 0) {
+        this.IngrediantDetailsRows().controls.map((x, i) => {
+          if (i === index) {
+            if (x['controls'][field].dirty) {
+              x['controls'][field].setValue(null);
             }
           }
         });
+      }
+    }) : null;
+  }
+
+  setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
+    const dataForRequest = this.convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue);
+
+    this.attachmentFields.filter(x => x.id === FileID).map(y => {
+      y.loadingStatus = true;
+    });
+
+    this.getService.setAttachmentFile(dataForRequest).subscribe((res: any) => {
+      this.attachmentFields.filter(x => x.id === FileID).map(y => {
+        y.fileValue = res.ID;
+        y.loadingStatus = false;
+        this.isLoadingStatus.emit(false);
+        this.regProductForAllRequestedType.get(FileID).setValue(res.ID);
+      });
+
+      return res;
+    }, error => this.handleError(error)); //
+  }
+
+  downloadFile(FileName) {
+    this.getService.getAttachmentFileByID(this.regProductForAllRequestedType.value.id, FileName).subscribe((res: any) => {
+      this.convertFilesToPDF(res.base64Data, FileName);
+    });
+  }
+
+  convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
+    return {
+      RequestId: this.regProductForAllRequestedType.value.id ? this.regProductForAllRequestedType.value.id : this.requestId,
+      AttachmentName: FileID,
+      AttachmentFileName: FileName,
+      base64Data: base64Data,
+      ID: fileValue ? fileValue : id
+    };
+  }
+
+  convertFilesToPDF(base64Data, fileName) {
+    let obj = document.createElement('object');
+    obj.style.width = '100%';
+    obj.style.height = '842pt';
+    obj.type = 'application/pdf';
+    obj.data = 'data:application/pdf;base64,' + base64Data;
+
+    var link = document.createElement('a');
+    link.innerHTML = 'Download PDF file';
+    link.download = `${fileName}`;
+    link.className = 'pdfLink';
+    link.href = 'data:application/pdf;base64,' + base64Data;
+
+    link.click();
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closePackagingModal() {
+    this.getPackagingFormAsStarting('');
+    this.modalRef.hide();
+    this.editPackagingRowStatus = false;
+  }
+
+  closeDetailedForm() {
+    this.getDetailedFormAsStarting('');
+    this.modalRef.hide();
+    this.editDetailedRowStatus = false;
+  }
+
+  checkValue(formControl, list, form) {
+    if (list.filter(x => x.NAME.includes(form.get(formControl).value)).length === 0) {
+      form.get(formControl).setValue(null);
     }
   }
 
-  private _subscribeToClosingActionsForPackagingFormArray(field): void {
-    if (this.subscription && !this.subscription.closed) {
-      this.subscription.unsubscribe();
-    }
-
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            this.PackagingRows().controls.map((x) => {
-              if (x['controls'][field].dirty) {
-                x['controls'][field].setValue(null);
-              }
-            });
-          }
-        });
-    }
+  handleError(error) {
+    this.errorMessageForAttachment.emit(error);
   }
 
-  private _subscribeToClosingActionsForDetailsFormArray(field): void {
-    if (this.subscription && !this.subscription.closed) {
-      this.subscription.unsubscribe();
+  checkControllerValueWithList(list, formControlKey, formControlValue) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.ID;
+      });
+    } else {
+      this.regProductForAllRequestedType.get(formControlKey).patchValue('');
+      value = '';
     }
+    return value;
+  }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            this.DetailsRows().controls.map((x) => {
-              x['controls'].ingrediantDetails.controls.map((item, index) => {
-                if (item.controls[field].dirty) {
-                  item.controls[field].setValue(null);
+  checkControllerValueWithListForPackaginArray(list, formControlKey, formControlValue) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.NAME;
+      });
+    } else {
+      this.regPackagingForProduct.get(formControlKey).patchValue('');
+      value = '';
+    }
+    return value;
+  }
+
+  checkControllerValueWithListForDetailsArray(list, formControlKey, formControlValue, ingrediantIndex) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.NAME;
+      });
+    } else {
+      this.IngrediantDetailsRows().controls[ingrediantIndex].get(formControlKey).patchValue('');
+
+      value = '';
+    }
+    return value;
+  }
+
+  rerenderSubscribtionForClosingActionForPackagingForm() {
+    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+
+    this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
+    this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
+  }
+
+  rerenderSubscribtionForClosingActionForDetailsForm(index) {
+    this.getLookupForFormArray();
+
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant, index);
+    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction, index);
+  }
+
+  rerenderFileAttachmentList() {
+    this.attachmentFields = [
+      {
+        id: 'freeSaleDoc',
+        name: 'Free Sale',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'GMP',
+        name: 'GMP',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'CoA',
+        name: 'CoA',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'artWork',
+        name: 'Art Work',
+        fileName: '',
+        fileValue: '',
+        required: !this.kitProductStatus ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'leaflet',
+        name: 'leaflet',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'reference',
+        name: 'reference',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'methodOfAnalysis',
+        name: 'Method of Analysis',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'specificationsOfFinishedProduct',
+        name: 'Specifications of Finished Product',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'authorizationLetter',
+        name: 'Authorization Letter',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'manufacturingContract',
+        name: 'Manufacturing Contract',
+        fileName: '',
+        fileValue: '',
+        required: this.selectedRequestedType === 8 ? true : false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'storageContract',
+        name: 'Storage Contract',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'others',
+        name: 'others',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: true,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: !this.legacyStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'otherFees',
+        name: 'otherFees',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: !this.legacyStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'factoryLicense',
+        name: 'Factory license',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'manufacturingAssignment',
+        name: 'Manufacturing Assignment',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'commercialRecordForSeller',
+        name: 'Commercial Record For Seller',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'commercialRecordForBuyer',
+        name: 'Commercial Record For Buyer',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'stabilityStudy',
+        name: 'Stability study',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'shelfLifeAttachment',
+        name: 'Shelf life',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'letterOfVariationFromLicenseHolder',
+        name: 'letter of variation from license holder',
+        fileName: '',
+        fileValue: '',
+        required: false,
+        enable: this.variationFieldsStatus ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      }
+    ];
+  }
+
+  filterLookupsFunctionForIngredient(whichLookup, formControlValue, list) {
+    let historyValue;
+    let historyList: any[];
+    if (formControlValue) {
+      return formControlValue.valueChanges
+        .pipe(
+          startWith(''),
+          distinctUntilChanged(),
+          map((state: string) => {
+            // this.isLoading = true;
+            if (state) {
+              if (historyValue !== state) {
+                historyValue = state;
+                if (state.length > 1) {
+                  this.getDataAfterFiltering(state).then(res => {
+                    console.log('res', res);
+                    historyList = res;
+                    this.isLoading = false;
+                    return historyList;
+                  });
+                } else {
+                  return list.slice();
                 }
-              });
-            });
-          }
-        });
+              } else {
+                this.isLoading = false;
+                if (historyList && historyList.length > 0) {
+                  return historyList;
+                } else {
+                  return list.slice();
+                }
+              }
+            } else {
+              this.isLoading = false;
+              return list.slice();
+            }
+          })
+        );
     }
+  }
+
+  async getDataAfterFiltering(state): Promise<any[]> {
+    let responseOfRequest: any[];
+    const request = await this.getService.getProductIngrediantsLookUp(1, state);
+    const PromiseValue = new Promise(resolve => {
+      request.subscribe(res => {
+        responseOfRequest = res;
+      }, error => this.handleError(error), () => {
+        resolve(responseOfRequest);
+      });
+    });
+
+    return PromiseValue.then((res: any[]) => res);
   }
 }

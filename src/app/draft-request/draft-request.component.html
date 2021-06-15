@@ -5,14 +5,43 @@
     </div>
     <div class="col-12 mt-5">
       <div class="tableContainer DraftTable">
-        <app-table-list [data]="draftListRequests" [whichTable]="'draft'"></app-table-list>
+        <app-table-list [data]="draftListRequests" [whichTable]="'draft'"
+                        (removeDraftProduct)="openDeleteModal($event)"></app-table-list>
       </div>
     </div>
   </div>
 </div>
 
-<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>
+
+<ng-template #deleteModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete Draft Product</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-center">
+          Are you sure you want to delete this product with request number <b>({{modalRequestId}})</b> ?
+        </h2>
+      </div>
+      <div class="col-12 col-sm-4"></div>
+      <div class="col-12 col-sm-4 d-flex align-items-center mt-2 justify-content-center">
+        <button type="button" class="btn btn-primary" (click)="removeProduct()">Yes</button>
+        <button type="button" class="btn btn-primary ml-auto" (click)="modalRef.hide()">No</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

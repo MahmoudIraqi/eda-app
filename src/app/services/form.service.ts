@@ -2,22 +2,32 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {map, catchError} from 'rxjs/operators';
+import {map, catchError, filter, distinctUntilChanged, tap} from 'rxjs/operators';
+import {InputService} from './input.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
-
+  private _isLoggedIn: boolean;
   apiBaseUrl = environment.apiURL;
-  loginAPIURL = environment.loginAPIURL;
+  Token;
 
-  constructor(private http: HttpClient) {
+  // loginAPIURL = environment.loginAPIURL;
+
+  constructor(private http: HttpClient,
+              private inputService: InputService) {
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'Token'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.Token = res.payload;
+    });
   }
 
   loginAPIToken(data) {
     const headers = new HttpHeaders({
-      'Content-type': 'application/json',
+      'Content-type': 'application/json'
     });
     const options = {headers};
 
@@ -28,20 +38,49 @@ export class FormService {
 
     const JSONData = JSON.stringify(newStructure);
 
-    return this.http.post(`${this.loginAPIURL}`, JSONData, options)
-      .pipe(map((res: any) => {
+    return this.http.get(`${this.apiBaseUrl}LoginApi?username=${data.username}&password=${data.password}`, options)
+      .pipe(
+        distinctUntilChanged(),
+        tap((res: any) => {
+          if (res.Status === '1') {
+            this.isLoggedIn = true;
+          }
           return res;
         }),
         catchError(this.handleError));
   }
 
-  getRequestTypeLookUp() {
+  logoutAPIToken(token) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}registration_type`, options)
+    return this.http.post(`${this.apiBaseUrl}Logout`, '', options)
+      .pipe(map((res: any) => {
+          this.isLoggedIn = false;
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  get isLoggedIn() {
+    return this._isLoggedIn;
+  }
+
+  set isLoggedIn(v) {
+    this._isLoggedIn = v;
+  }
+
+  getRequestTypeLookUp() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Lookups/registrationtype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -51,10 +90,11 @@ export class FormService {
   getMarketingTypeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}marketing_type`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/marketingtype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -64,10 +104,11 @@ export class FormService {
   getCountryLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}country`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/Country`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -77,23 +118,25 @@ export class FormService {
   getFunctionLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}function`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/functions`, options)
       .pipe(map((res: any) => {
           return res;
         }),
         catchError(this.handleError));
   }
 
-  getManufacturingCompanyLookUp() {
+  getManufacturingCompanyLookUp(page, filterText) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}manufactory_company`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/manufactorycompany?pagesize=10000&pageNo=${page}&searchname=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -103,10 +146,11 @@ export class FormService {
   getPackagingTypeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}packaging_type`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/packagingtype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -116,10 +160,11 @@ export class FormService {
   getPhysicalStateLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}product_physical_state`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/productphysicalstate`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -129,10 +174,11 @@ export class FormService {
   getUnitOfMeasureLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}UOM`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/unitofmessure`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -142,10 +188,11 @@ export class FormService {
   getUsePurposeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}use_purpose`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/usepurpose`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -155,36 +202,39 @@ export class FormService {
   getProductColorLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}product_colour`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/productcolour`, options)
       .pipe(map((res: any) => {
           return res;
         }),
         catchError(this.handleError));
   }
 
-  getProductIngrediantsLookUp() {
+  getProductIngrediantsLookUp(page, filterText) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}ingredients`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/ingredients?pagesize=40000&pageNo=${page}&searchname=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
         catchError(this.handleError));
   }
 
-  getCompanyProfileLookUp() {
+  getCompanyProfileLookUp(page, companyProfile, filterText) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}company_profile`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/CompanyProfile?pageNo=${page}&pageSize=10000&companyprofileid=${companyProfile}&searchName=${filterText}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -194,10 +244,11 @@ export class FormService {
   getStoragePlaceLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}storage_place`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/storageplaces`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -207,10 +258,11 @@ export class FormService {
   getTrackTypeLookUp() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}track_type`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/tracktype`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -220,13 +272,14 @@ export class FormService {
   createProductRequest(data) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
 
     const options = {headers};
 
     data = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}requests`, data, options)
+    return this.http.post(`${this.apiBaseUrl}product/Notification`, data, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -236,13 +289,15 @@ export class FormService {
   createProductKitRequest(data) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
 
     const options = {headers};
 
     data = JSON.stringify(data);
+    console.log('data', data);
 
-    return this.http.post(`${this.apiBaseUrl}requestsKit`, data, options)
+    return this.http.post(`${this.apiBaseUrl}product/KitNotification`, data, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -252,10 +307,11 @@ export class FormService {
   getTrackRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}requests?Type=track&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=track&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -265,10 +321,11 @@ export class FormService {
   getTrackGeneralEnquiriesList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/InqueryData?Type=track&pageSize=5000&pageNo=1`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/InqueryData?Type=track&pageSize=5000&pageNo=1`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -278,10 +335,11 @@ export class FormService {
   getTrackReRegistrationRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetReRegRequestData?Type=track&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetReRegRequestData?Type=track&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -291,10 +349,11 @@ export class FormService {
   getTrackVariationRequestsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=track&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=track&variationTypeID=${whichVariation === 'do_tell_variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -304,10 +363,11 @@ export class FormService {
   getDraftRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=draft&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=draft&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -317,10 +377,67 @@ export class FormService {
   getApprovedProductsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests?Type=approved&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=approved&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getApprovedLegacyProductsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetLegacyProducts?Type=approved&pageNo=1&pageSize=50000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getTrackLegacyProductsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?pagesize=5000&pageNo=1&type=legacytrack`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getDraftLegacyProductsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?pagesize=5000&pageNo=1&type=legacydraft`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getBatchList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Lookups/productbatches`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -330,10 +447,11 @@ export class FormService {
   getDraftVariationProductsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Requests/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell-variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell_variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -343,37 +461,56 @@ export class FormService {
   getRejectedProductsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}/Requests?Type=rejected&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=rejected&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
         catchError(this.handleError));
   }
 
-  getProductWithNotificationNumberList(notificationNumber) {
+  getProductWithNotificationNumberList(notificationNumber, typeParameter) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}product/GetProductByNotificationNO?NotifictionNo=${notificationNumber}`, options)
+    return this.http.get(`${this.apiBaseUrl}product/GetProductByNotificationNO?NotifictionNo=${notificationNumber}&type=${typeParameter}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
         catchError(this.handleError));
   }
 
-  getProductWithProductIDList(productID) {
+  getProductWithProductIDList(productID, typeParameter) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}request/GetProductByProductID?ID=${productID}`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetProductByProductID?ID=${productID}&type=${typeParameter}`, options)
       .pipe(map((res: any) => {
+
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getLegacyProductWithProductIDList(productID) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetProductLegacyByProductID?ID=${productID}`, options)
+      .pipe(map((res: any) => {
+
           return res;
         }),
         catchError(this.handleError));
@@ -382,10 +519,11 @@ export class FormService {
   getNotificationLogsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}notification_log`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/notificationlog`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -395,10 +533,11 @@ export class FormService {
   setSeenNotificationByID(id) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.post(`${this.apiBaseUrl}notification_log/SeenNotificaion?id=${id}`, {}, options)
+    return this.http.post(`${this.apiBaseUrl}product/SeenNotificaion?id=${id}`, {}, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -408,12 +547,13 @@ export class FormService {
   setReRegistrationProduct(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
     event = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}requests/ReregRequest`, event, options)
+    return this.http.post(`${this.apiBaseUrl}product/ReNotification`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -423,12 +563,13 @@ export class FormService {
   setReRegistrationKitProduct(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
     event = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}RequestsKit/ReregRequest`, event, options)
+    return this.http.post(`${this.apiBaseUrl}product/KitReNotification`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -438,12 +579,13 @@ export class FormService {
   setVariationProduct(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
     event = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}requests/VariationRequest`, event, options)
+    return this.http.post(`${this.apiBaseUrl}product/VariationRequest`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -453,17 +595,20 @@ export class FormService {
   setManufacturingCompany(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
     const data = {
+      id: 0,
       NAME: event.manufacturingCompany,
-      COUNTRY_ID: event.manufacturingCountry
+      COUNTRY_ID: event.manufacturingCountry,
+      manuFactureAttach: event.attachment
     };
 
     const JSONData = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}manufactory_company`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}product/manufactorycompany`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -473,6 +618,7 @@ export class FormService {
   setGeneralEnquiries(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
@@ -481,11 +627,28 @@ export class FormService {
       recieptNumber: event.receiptNumber,
       TITLE: event.title,
       DESCRIPTION: event.description,
+      generalInqueryFile: event.attachment
     };
 
     const JSONData = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}/Requests/PostInquery`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}product/PostInquery`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  setCustomRelease(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    const JSONData = JSON.stringify(event);
+
+    return this.http.post(`${this.apiBaseUrl}product/CustomRelease`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -495,12 +658,43 @@ export class FormService {
   setBatch(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
     const JSONData = JSON.stringify(event);
 
-    return this.http.post(`${this.apiBaseUrl}/product_batches`, JSONData, options)
+    return this.http.post(`${this.apiBaseUrl}product/productbatches`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  setAttachmentFile(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    const JSONData = JSON.stringify(event);
+
+    return this.http.post(`${this.apiBaseUrl}product/UploadAttachment`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getAttachmentFileByID(requestID, attachmentName) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}product/GetAttachment?requestId=${requestID}&attachmentName=${attachmentName}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -510,17 +704,62 @@ export class FormService {
   getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
+      'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}variation_group_fields?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/variationgroups?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
       .pipe(map((res: any) => {
           return res;
         }),
         catchError(this.handleError));
   }
 
+  getVariablesPricesLookUp() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Lookups/variables`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getProductsKitIdLookupsRequest(formType, trackType) {
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Products/GetRequestsID?kitType=${formType}&trackType=${trackType}`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  deleteDraftProductRequest(requestId) {
+    const headers = new HttpHeaders({
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/DeleteByRequestId?requestId=${requestId}`, options).pipe(map((res: any) => {
+        return res;
+      }),
+      catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
+    if (error.status === 401) {
+      this.isLoggedIn = false;
+    }
     return throwError(`Error! ${error.message}`);
   }
 }

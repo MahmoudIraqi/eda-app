@@ -16,6 +16,7 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formData = {
     manufacturingCountryList: [],
+    unitOfMeasureList: [],
   };
   batchForm: FormGroup;
   alertNotificationStatus: boolean = false;
@@ -25,10 +26,12 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   isLoading: boolean = false;
   fromApprovedTable: boolean = false;
   filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
+  filteredOptionsForUnitOfMeasure: Observable<LookupState[]>;
   subscription: Subscription;
   showOtherField: boolean = false;
   batchForWhichProduct;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  batchList;
 
   constructor(private getService: FormService,
               private fb: FormBuilder,
@@ -43,10 +46,27 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe(res => {
       this.batchForm.get('notificationNumber').patchValue(res.payload);
     });
+
+    this.isLoading = true;
+
+    this.getService.getUnitOfMeasureLookUp().subscribe((res: any) => {
+      this.formData.unitOfMeasureList = res;
+      this.isLoading = false;
+    }, error => this.handleError(error), () => {
+      this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction(this.batchForm.get('UOM'), this.formData.unitOfMeasureList);
+    });
+
+    this.getService.getBatchList().subscribe((res: any) => {
+      this.batchList = {
+        tableHeader: ['Batch Number', 'Product Id', 'Submission Date', 'Production Date', 'Expiration Date'],
+        tableBody: res
+      };
+      this.isLoading = false;
+    }, error => this.handleError(error));
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions('manufacturingCountry');
+    this._subscribeToClosingActions('UOM', this.filteredOptionsForUnitOfMeasure);
   }
 
   ngOnDestroy() {
@@ -60,16 +80,22 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
       notificationNumber: this.fb.control('', Validators.required),
       batchNumber: this.fb.control('', Validators.required),
       productionDate: this.fb.control('', Validators.required),
-      expirationDate: this.fb.control('', Validators.required)
+      expirationDate: this.fb.control('', Validators.required),
+      batchQuantity: this.fb.control('', Validators.required),
+      UOM: this.fb.control('', Validators.required),
     });
   }
 
   applyProduct(notificationNumber) {
     this.isLoading = true;
-    this.getService.getProductWithNotificationNumberList(notificationNumber).subscribe((res: any) => {
-      this.isLoading = false;
-      this.showOtherField = true;
-      this.batchForWhichProduct = res.productEnglishName;
+    this.getService.getProductWithNotificationNumberList(notificationNumber, 'batch').subscribe((res: any) => {
+      if (res.canUse) {
+        this.isLoading = false;
+        this.showOtherField = true;
+        this.batchForWhichProduct = res.productEnglishName;
+      } else {
+        this.handleError(res.canuseMsg);
+      }
     }, error => this.handleError(error));
   }
 
@@ -93,8 +119,10 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSubmit() {
+    const data = this.convertAllNamingToId(this.batchForm.value);
+
     this.isLoading = true;
-    this.getService.setBatch(this.batchForm.value).subscribe((res: any) => {
+    this.getService.setBatch(data).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSubmitRequest();
@@ -108,25 +136,24 @@ export class BatchFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   convertAllNamingToId(data) {
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    this.formData.unitOfMeasureList.filter(option => option.NAME === data.UOM).map(x => data.UOM = x.ID);
 
     return data;
   }
 
-  private _subscribeToClosingActions(field): void {
+  private _subscribeToClosingActions(field, list): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
-    for (var trigger of this.triggerCollection.toArray()) {
-      this.subscription = trigger.panelClosingActions
-        .subscribe(e => {
-          if (!e || !e.source) {
-            if (this.batchForm.controls[field].dirty) {
-              this.batchForm.controls[field].setValue(null);
-            }
+    if (list) {
+      list.subscribe(x => {
+        if (x.length === 0) {
+          if (this.batchForm.controls[field].dirty) {
+            this.batchForm.controls[field].setValue(null);
           }
-        });
+        }
+      });
     }
   }
 

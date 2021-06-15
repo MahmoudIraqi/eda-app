@@ -3,7 +3,7 @@
     <div class="col-12">
       <app-title [title]="'Batch Form'" [bigTitle]="true"></app-title>
     </div>
-    <div class="col-12 mt-5">
+    <div class="col-12">
       <div class="formTable">
         <div class="row">
           <div class="col-12">
@@ -42,6 +42,14 @@
                     <input type="text" class="form-control" matInput
                            formControlName="batchNumber"
                            placeholder="" required>
+                    <div
+                      *ngIf="batchForm.get('batchNumber').invalid && (batchForm.get('batchNumber').dirty || batchForm.get('batchNumber').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="batchForm.get('batchNumber').errors.required">
+                        this field is required
+                      </div>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-12 mt-3">
@@ -50,6 +58,14 @@
                     <input matInput [matDatepicker]="picker" formControlName="productionDate" required>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
+                    <div
+                      *ngIf="batchForm.get('productionDate').invalid && (batchForm.get('productionDate').dirty || batchForm.get('productionDate').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="batchForm.get('productionDate').errors.required">
+                        this field is required
+                      </div>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-12 mt-3">
@@ -58,9 +74,59 @@
                     <input matInput [matDatepicker]="picker0" formControlName="expirationDate" required>
                     <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
                     <mat-datepicker #picker0></mat-datepicker>
+                    <div
+                      *ngIf="batchForm.get('expirationDate').invalid && (batchForm.get('expirationDate').dirty || batchForm.get('expirationDate').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="batchForm.get('expirationDate').errors.required">
+                        this field is required
+                      </div>
+                    </div>
                   </mat-form-field>
                 </div>
-                <div class="col-12">
+                <div class="col-lg-4 col-sm-6 col-12 mt-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Batch Quantity</mat-label>
+                    <input type="text" class="form-control" matInput
+                           formControlName="batchQuantity"
+                           placeholder="" required>
+                    <div
+                      *ngIf="batchForm.get('batchQuantity').invalid && (batchForm.get('batchQuantity').dirty || batchForm.get('batchQuantity').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="batchForm.get('batchQuantity').errors.required">
+                        this field is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 mt-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Unit of measure</mat-label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Unit of measure"
+                           aria-label="Unit of measure"
+                           matInput
+                           formControlName="UOM"
+                           [matAutocomplete]="unitOfMeasureList" required>
+                    <mat-autocomplete #unitOfMeasureList="matAutocomplete">
+                      <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
+                                  [value]="option.NAME">
+                        {{option.NAME}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <div
+                      *ngIf="batchForm.get('UOM').invalid && (batchForm.get('UOM').dirty || batchForm.get('UOM').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="batchForm.get('UOM').errors.required">
+                        this field is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 mt-3">
                   <div class="d-flex">
                     <button
                       type="submit"
@@ -77,6 +143,17 @@
       </div>
     </div>
   </div>
+
+  <div class="row mt-5">
+    <div class="col-12">
+      <app-title [title]="'Batch Table'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="tableContainer TrackTable">
+        <app-table-list [data]="batchList" [whichTable]="'batchTable'"></app-table-list>
+      </div>
+    </div>
+  </div>
 </div>
 
 <alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
@@ -85,7 +162,7 @@
 
 <alert type="danger" class="AlertForAllRequests" dismissible="true" (onClosed)="onClosedErrorAlert()"
        *ngIf="alertErrorNotificationStatus">
-  <strong>Please Take Care</strong> <br> {{alertErrorNotification.msg}}
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

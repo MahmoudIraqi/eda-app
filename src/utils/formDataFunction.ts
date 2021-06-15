@@ -15,14 +15,36 @@ export const formDataClass = (req?: any, FormParam?: FormGroup) => {
 };
 
 
-export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistration, isExport, trackType, id, event) => {
+export const convertToSpecialObject = (WhichForm, typeOfMarketing, typeOfRegistration, isExport, Tracktype, id, event) => {
   return {
-    isDraft: WhichForm === 'save' ? 1 : 0,
+    ...event,
     typeOfMarketing,
     typeOfRegistration,
-    isExport,
-    trackType,
+    isExport: isExport ? 1 : 0,
+    Tracktype,
     id,
-    ...event
+    isCompleted: WhichForm === 'submitProductForKit' && (typeOfMarketing === 5 || typeOfMarketing === 6) ? true : false,
+    isDraft: WhichForm === 'save' || WhichForm === 'submitProductForKit' ? 1 : 0,
+  };
+};
+
+export const convertToSpecialObjectForLegacy = (WhichForm, event) => {
+  return {
+    ...event,
+    isDraft: WhichForm === 'save' ? 1 : 0
+  };
+};
+
+export const convertToSpecialObjectForReNotification = (WhichForm, typeOfMarketing, typeOfRegistration, isExport, Tracktype, id, NotificationNo, event) => {
+  return {
+    isDraft: WhichForm === 'save' || WhichForm === 'submitProductForKit' ? 1 : 0,
+    ...event,
+    typeOfMarketing,
+    typeOfRegistration,
+    isExport: isExport ? 1 : 0,
+    Tracktype,
+    id,
+    NotificationNo,
+    isCompleted: WhichForm === 'submitProductForKit' && typeOfMarketing === 5 ? true : false
   };
 };

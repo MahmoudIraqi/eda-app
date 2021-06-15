@@ -1,0 +1,230 @@
+<form class="mt-2" name="form" class="example-form" method="post"
+      [formGroup]="inspectFinalProductRequest"
+      (ngSubmit)="onSubmit()" novalidate xmlns="http://www.w3.org/1999/html">
+  <tabset class="tabs" type="pills" #formTabs>
+    <tab heading="Inspection fields">
+      <div class="mt-5">
+        <div class="row">
+          <div class="col-12">
+            <app-title [smallTitle]="true" [title]="'Notification Product Request'"></app-title>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Notification Number</mat-label>
+                  <input type="text" class="form-control" matInput
+                         formControlName="notificationNo"
+                         placeholder="Notification Number" required>
+                  <div
+                    *ngIf="inspectFinalProductRequest.get('notificationNo').invalid && (inspectFinalProductRequest.get('notificationNo').dirty || inspectFinalProductRequest.get('notificationNo').touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="inspectFinalProductRequest.get('notificationNo').errors.required">
+                      this field is required
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-4 d-flex">
+                <button type="button"
+                        class="btn btn-primary ml-auto mt-sm-3"
+                        [disabled]="!inspectFinalProductRequest.get('notificationNo').value"
+                        (click)="applyProduct(inspectFinalProductRequest.value)">
+                  Apply Product
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-form-field class="example-full-width">
+              <mat-label>Product Name (Arabic)</mat-label>
+              <input type="text" class="form-control" matInput formControlName="productArabicName"
+                     placeholder="Product Name">
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-form-field class="example-full-width">
+              <mat-label>Product Name (English)</mat-label>
+              <input type="text" class="form-control" matInput formControlName="productEnglishName"
+                     placeholder="Product Name">
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-form-field class="example-full-width">
+              <mat-label>Type Of Notification</mat-label>
+              <input type="text" class="form-control" matInput formControlName="typeOfNotification"
+                     placeholder="Type Of Notification">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Batch Number</mat-label>
+                  <input type="text" class="form-control" matInput
+                         formControlName="batchNo"
+                         placeholder="Batch Number" required>
+                  <div
+                    *ngIf="inspectFinalProductRequest.get('batchNo').invalid && (inspectFinalProductRequest.get('batchNo').dirty || inspectFinalProductRequest.get('batchNo').touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="inspectFinalProductRequest.get('batchNo').errors.required">
+                      this field is required
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-4 d-flex">
+                <button type="button"
+                        class="btn btn-primary ml-auto mt-sm-3"
+                        [disabled]="!inspectFinalProductRequest.get('batchNo').value"
+                        (click)="getBatchValues(inspectFinalProductRequest.value)">
+                  Get Batch values
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12 mt-3">
+            <mat-form-field appearance="fill">
+              <mat-label>Choose a production date</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="productionDate" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12 mt-3">
+            <mat-form-field appearance="fill">
+              <mat-label>Choose a expiration date</mat-label>
+              <input matInput [matDatepicker]="picker0" formControlName="expirationDate" required>
+              <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
+              <mat-datepicker #picker0></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-form-field class="example-full-width">
+              <mat-label>Batch Quantity</mat-label>
+              <input type="text" class="form-control" matInput formControlName="batchQuantity"
+                     placeholder="Batch Quantity">
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-form-field class="example-full-width">
+              <mat-label>Unit of measure</mat-label>
+              <input type="text" class="form-control" matInput formControlName="UOM"
+                     placeholder="Unit of measure">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field class="example-full-width inputBesideSelect">
+              <mat-label>Receipt Number</mat-label>
+              <input type="text" class="form-control" matInput formControlName="receiptNumber"
+                     placeholder="Receipt Number" required>
+              <div
+                *ngIf="inspectFinalProductRequest.get('receiptNumber').invalid && (inspectFinalProductRequest.get('receiptNumber').dirty || inspectFinalProductRequest.get('receiptNumber').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="inspectFinalProductRequest.get('receiptNumber').errors.required">
+                  this field is required
+                </div>
+                <div
+                  *ngIf="inspectFinalProductRequest.get('receiptNumber').errors.pattern">
+                  this field must not start with number
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field class="example-full-width inputBesideSelect">
+
+              <mat-label>Receipt Value</mat-label>
+              <input type="text" class="form-control" matInput
+                     (change)="getDecimalValue(inspectFinalProductRequest.get('receiptValue').value)"
+                     formControlName="receiptValue"
+                     placeholder="Receipt Value" required>
+              <div
+                *ngIf="inspectFinalProductRequest.get('receiptValue').invalid && (inspectFinalProductRequest.get('receiptValue').dirty || inspectFinalProductRequest.get('receiptValue').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="inspectFinalProductRequest.get('receiptValue').errors.required">
+                  this field is required
+                </div>
+                <div
+                  *ngIf="inspectFinalProductRequest.get('receiptValue').errors.pattern">
+                  this field must be <strong>Decimal number</strong> as 00.0
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Attachments" class="Attachments">
+      <div class="mt-5">
+        <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
+        <div class="row mt-3">
+          <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFields">
+            <div class="form-group" *ngIf="field.enable">
+              <label>
+                {{field.name}}
+                <span *ngIf="field.required">*</span>
+              </label>
+              <div class="custom-file fileUpload mr-3" id="customFile">
+                <input type="file" class="custom-file-input" id="dataUpload_upload_file"
+                       aria-describedby="fileHelp"
+                       (change)="onFileSelect($event, field.id)"
+                       [required]="field.required">
+                <div
+                  *ngIf="inspectFinalProductRequest.get(field.id).invalid && (inspectFinalProductRequest.get(field.id).dirty || inspectFinalProductRequest.get(field.id).touched)"
+                  class="alert alert-danger">
+                  <div
+                    *ngIf="inspectFinalProductRequest.get(field.id).errors.required">
+                    this field is required
+                  </div>
+                </div>
+                <label class="custom-file-label" for="dataUpload_upload_file">
+                  {{inspectFinalProductRequest.get(field.id).value ? inspectFinalProductRequest.get(field.id).value.name : 'Choose file'}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab>
+  </tabset>
+  <div class="row buttonContainer btm-out">
+    <div class="col-12 d-flex flex-column flex-md-row mt-3">
+      <button *ngIf="!formTabs.tabs[0].active"
+              type="button"
+              class="btn btn-primary btn-sm mr-3 bottomButtons "
+              (click)="backToNextTab()">
+        Back Forward
+      </button>
+      <div class="ml-md-auto ">
+        <button *ngIf="!formTabs.tabs[1].active"
+                type="button"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
+                (click)="nextToNextTab()">
+          Next Forward
+        </button>
+        <button type="button"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
+                [disabled]="!disabledSaveButton"
+                (click)="saveData()">
+          Save
+        </button>
+        <button
+          *ngIf="formTabs.tabs[1].active"
+          type="submit"
+          class="btn btn-primary btn-sm"
+          [disabled]="!inspectFinalProductRequest.valid"> <!--  -->
+          <span>Submit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
