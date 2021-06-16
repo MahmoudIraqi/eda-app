@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {FormService} from '../services/form.service';
 import {FormBuilder} from '@angular/forms';
@@ -12,6 +12,7 @@ import {distinctUntilChanged, filter} from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit {
 
+  @Input() Username;
   screenWidth;
   menuObject = [
     {

@@ -37,6 +37,7 @@ export class HomeContainerComponent implements OnInit {
   alertErrorNotification: any;
   isLoading: boolean = false;
   companyProfileId: any;
+  username;
 
   constructor(private inputService: InputService, private getService: FormService) {
   }
@@ -92,6 +93,13 @@ export class HomeContainerComponent implements OnInit {
                         }, error => this.handleError(error), () => {
                           this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
                             this.formData.applicantList = res;
+
+                            console.log('companyProfileId', this.companyProfileId);
+                            this.formData.applicantList.filter(option => option.ID === this.companyProfileId).map(x => {
+                              console.log('x', x);
+                              this.username = x.NAME;
+                              console.log('this.username', this.username);
+                            });
                           }, error => this.handleError(error), () => {
                             this.getService.getStoragePlaceLookUp().subscribe((res: any) => {
                               this.formData.storagePlaceList = res;
