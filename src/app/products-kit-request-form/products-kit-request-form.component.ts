@@ -765,7 +765,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   saveProductForAttachment(fileId, fileName, id, base64Data, fileValue) {
-    this.regKitForAllRequestedType.value.ProductsForKit.splice(this.regKitForAllRequestedType.value.ProductsForKit.length - 1, 1);
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
     const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
 
@@ -831,7 +830,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       });
 
       return res;
-    }, error => this.errorForAttachemntRequest.emit(error));
+    }, error => {
+      this.errorForAttachemntRequest.emit(error);
+      this.isLoadingStatus.emit(false);
+    });
   }
 
   convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
@@ -912,7 +914,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       });
 
       this.allProductsInKit.tableBody = [];
-      data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
+      data.ProductsForKit && data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
         this.formData.productColorList.filter(item => item.ID === product.productDetails.productColor).map(x => product.productDetails.productColor = x.NAME);
         this.formData.manufacturingCompanyList.filter(item => item.ID === product.productDetails.manufacturingCompany).map(x => product.productDetails.manufacturingCompany = x.NAME);
         this.formData.manufacturingCountryList.filter(item => item.ID === product.productDetails.manufacturingCountry).map(x => product.productDetails.manufacturingCountry = x.NAME);
