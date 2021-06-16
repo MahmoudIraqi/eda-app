@@ -279,11 +279,10 @@ export class FormService {
     });
 
     const options = {headers};
-    let newObject;
 
-    // data = JSON.stringify(data);
+    data = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}product/Notification`, newObject, options)
+    return this.http.post(`${this.apiBaseUrl}product/Notification`, data, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -299,7 +298,6 @@ export class FormService {
     const options = {headers};
 
     data = JSON.stringify(data);
-    console.log('data', data);
 
     return this.http.post(`${this.apiBaseUrl}product/KitNotification`, data, options)
       .pipe(map((res: any) => {

@@ -27,8 +27,6 @@ export class ChartsComponentComponent implements OnInit, OnChanges {
     d3.selectAll('svg#chart svg').remove();
     d3.selectAll('div#containerPieChart svg').remove();
 
-    console.log('this.drawBars(this.data)', this.data);
-
     this.drawBars(this.data);
     this.drawPieChart(this.pieData);
   }

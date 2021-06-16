@@ -237,7 +237,6 @@ export class DashboardComponent implements OnInit {
   }
 
   selectCharts(whichType, index) {
-    debugger
     this.numberOFAllRequestObject.map(request => request.active = false);
 
     this.numberOFAllRequestObject[index].active = true;

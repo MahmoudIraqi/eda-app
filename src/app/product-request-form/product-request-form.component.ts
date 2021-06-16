@@ -694,9 +694,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    console.log('editData', this.editData);
-    console.log('data', data);
-
     const newObjectForData = {
       ...this.editData,
       ...data,
@@ -1431,7 +1428,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
                 historyValue = state;
                 if (state.length > 1) {
                   this.getDataAfterFiltering(state).then(res => {
-                    console.log('res', res);
                     historyList = res;
                     this.isLoading = false;
                     return historyList;
