@@ -283,9 +283,9 @@ export class NewRequestComponent implements OnInit {
   }
 
   handleError(error) {
-    this.alertErrorNotificationStatus = true;
-    this.alertErrorNotification = {msg: error.message};
     this.isLoading = false;
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: error};
   }
 
   getPricing(fromWhere) {

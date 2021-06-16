@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {map, catchError, filter, distinctUntilChanged, tap} from 'rxjs/operators';
 import {InputService} from './input.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,8 @@ export class FormService {
   // loginAPIURL = environment.loginAPIURL;
 
   constructor(private http: HttpClient,
+              private router: Router,
+              private route: ActivatedRoute,
               private inputService: InputService) {
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'Token'),
@@ -276,10 +279,11 @@ export class FormService {
     });
 
     const options = {headers};
+    let newObject;
 
-    data = JSON.stringify(data);
+    // data = JSON.stringify(data);
 
-    return this.http.post(`${this.apiBaseUrl}product/Notification`, data, options)
+    return this.http.post(`${this.apiBaseUrl}product/Notification`, newObject, options)
       .pipe(map((res: any) => {
           return res;
         }),
@@ -758,8 +762,14 @@ export class FormService {
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 401) {
-      this.isLoggedIn = false;
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+
+
+      return throwError(`Error! Please login again`);
+    } else {
+      return throwError(`Error! ${error.error.StatusMessage}`);
     }
-    return throwError(`Error! ${error.message}`);
   }
 }

@@ -27,7 +27,7 @@ export class NewRequestContainerComponent implements OnInit {
 
   handleError(error) {
     this.alertErrorNotificationStatus = true;
-    this.alertErrorNotification = {msg: error.message};
+    this.alertErrorNotification = {msg: error};
     this.isLoading = false;
   }
 
