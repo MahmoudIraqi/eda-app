@@ -4,8 +4,10 @@ import {Observable, Subscription} from 'rxjs';
 import {LookupState} from '../product-request-form/product-request-form.component';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
-import {map, startWith} from 'rxjs/operators';
-import {DecimalPipe} from '@angular/common';
+import {distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
+import {CurrencyPipe, DecimalPipe} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {InputService} from '../services/input.service';
 
 @Component({
   selector: 'app-general-enquireies',
@@ -35,14 +37,36 @@ export class GeneralEnquireiesComponent implements OnInit {
     },
   ];
   errorMessage: boolean = false;
+  attachmentRequiredStatus: boolean = false;
+  variablesPricingList: any;
 
   constructor(private getService: FormService,
               private fb: FormBuilder,
-              private number: DecimalPipe) {
+              private readonly route: ActivatedRoute,
+              private router: Router,
+              private inputService: InputService,
+              private number: DecimalPipe,
+              private currencyPipe: CurrencyPipe) {
     this.getFormAsStarting();
   }
 
   ngOnInit(): void {
+    const pathInEditMode = this.route.snapshot.routeConfig.path.split('/')[0];
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'variablesPrices'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      const variableGroup = pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
+
+      res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
+        this.variablesPricingList = variableList;
+
+        this.variablesPricingList.LKUPVARIABLESDto && this.variablesPricingList.LKUPVARIABLESDto.length > 0 ? this.variablesPricingList.LKUPVARIABLESDto.filter(x => x.varCode.toLowerCase() === variableGroup).map(y => {
+          this.estimatedValue = this.currencyPipe.transform(y.variableValue, 'EGP', 'symbol');
+        }) : null;
+      });
+    });
   }
 
   getFormAsStarting() {
@@ -60,6 +84,7 @@ export class GeneralEnquireiesComponent implements OnInit {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf') {
         this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+          file.fileName = event.target.value.split(/(\\|\/)/g).pop();
           file.attachmentTypeStatus = 'Yes';
         });
         const file = event.target.files[0];
@@ -69,7 +94,7 @@ export class GeneralEnquireiesComponent implements OnInit {
         reader.onload = (res: any) => {
           this.generalEnquiriesForm.get(fileControlName).setValue({
             fileName: file.name,
-            AttachName: 'generalInqueryFile',
+            AttachName: 'manuFactureAttach',
             base64Data: res.target.result
           });
         };
@@ -78,13 +103,12 @@ export class GeneralEnquireiesComponent implements OnInit {
           file.attachmentTypeStatus = 'No';
         });
       }
-      // this.regHairColorantProductForAllRequestedType.get(fileControlName).setValue(file);
     }
   }
 
   onSubmit() {
     this.isLoading = true;
-
+    this.attachmentRequiredStatus = true;
     const data = this.generalEnquiriesForm.value;
 
     if (this.generalEnquiriesForm.valid) {
@@ -130,5 +154,9 @@ export class GeneralEnquireiesComponent implements OnInit {
 
   resetForms() {
     this.getFormAsStarting();
+
+    this.attachmentFields.map(x => {
+      x.fileName = '';
+    });
   }
 }

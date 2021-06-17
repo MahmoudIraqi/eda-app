@@ -4,8 +4,9 @@ import {FormService} from '../services/form.service';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
 import {Observable, Subscription} from 'rxjs';
 import {LookupState} from '../product-request-form/product-request-form.component';
-import {map, startWith} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {InputService} from '../services/input.service';
 
 @Component({
   selector: 'app-manufacturing-company',
@@ -102,18 +103,24 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
       attachmentTypeStatus: ''
     },
   ];
+  attachmentRequiredStatus: boolean = false;
 
   constructor(private getService: FormService,
+              private inputService: InputService,
               private fb: FormBuilder) {
     this.getFormAsStarting();
   }
 
   ngOnInit(): void {
-    this.getService.getCountryLookUp().subscribe((res: any) => {
-      this.formData.manufacturingCountryList = res;
-      this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.manufacturingCompanyForm.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.isLoading = true;
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'allLookups'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.formData.manufacturingCountryList = res.payload.manufacturingCountryList;
       this.isLoading = false;
-    }, error => this.handleError(error));
+    });
 
     this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction(this.manufacturingCompanyForm.get('manufacturingCountry'), this.formData.manufacturingCountryList);
   }
@@ -133,6 +140,7 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf') {
         this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
+          file.fileName = event.target.value.split(/(\\|\/)/g).pop();
           file.attachmentTypeStatus = 'Yes';
         });
         const file = event.target.files[0];
@@ -182,6 +190,7 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   onSubmit() {
+    this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.manufacturingCompanyForm.value);
 
     this.isLoading = true;
@@ -238,5 +247,9 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
 
   resetForms() {
     this.getFormAsStarting();
+
+    this.attachmentFields.map(x => {
+      x.fileName = '';
+    });
   }
 }

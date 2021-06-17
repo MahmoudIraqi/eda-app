@@ -105,26 +105,28 @@
                   <div class="form-group" *ngIf="field.enable">
                     <label>
                       {{field.name}}
-                      <span *ngIf="field.required">*</span>
+                      <span class="requiredStar" *ngIf="field.required">*</span>
                     </label>
-                    <div class="custom-file fileUpload mr-3">
-                      <input type="file" class="custom-file-input"
+                    <div class="custom-file fileUpload mr-3" id="customFile"
+                         [ngClass]="{'required': (generalEnquiriesForm.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'}">
+                      <input type="file" class="custom-file-input" [id]="field.id"
                              aria-describedby="fileHelp"
                              (change)="onFileSelect($event, field.id)"
-                             [required]="field.required">
-                      <div
-                        *ngIf="generalEnquiriesForm.get(field.id).invalid && (generalEnquiriesForm.get(field.id).dirty || generalEnquiriesForm.get(field.id).touched)"
-                        class="alert alert-danger">
-                        <div
-                          *ngIf="generalEnquiriesForm.get(field.id).errors.required">
-                          this field is required
+                             [required]="field.required ? 'required' : ''">
+                      <div class="d-flex alert alert-danger"
+                           *ngIf="(generalEnquiriesForm.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
+                        <div class="ml-auto" *ngIf="field.attachmentTypeStatus === 'No'">
+                          this file must be as PDF
+                        </div>
+                        <div class="ml-auto"
+                             *ngIf="generalEnquiriesForm.get(field.id).invalid && attachmentRequiredStatus">
+                          <div *ngIf="generalEnquiriesForm.get(field.id).errors.required">
+                            this field is required
+                          </div>
                         </div>
                       </div>
-                      <div *ngIf="field.attachmentTypeStatus === 'No'" class="alert alert-danger">
-                        this file must be as PDF
-                      </div>
-                      <label class="custom-file-label">
-                        {{generalEnquiriesForm.get(field.id).value ? generalEnquiriesForm.get(field.id).value.fileName : 'Choose file'}}
+                      <label class="custom-file-label" [for]="field.id">
+                        {{field.fileName ? field.fileName : 'Choose file'}}
                       </label>
                     </div>
                   </div>

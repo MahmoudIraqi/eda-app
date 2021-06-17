@@ -82,9 +82,11 @@ export class TableListComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.data) {
       if (this.data.tableBody.length > 0) {
-        if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'trackGeneralEnquiries' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
+        if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
           if (this.whichTable !== 'manufacturing' && this.whichTable !== 'batchTable' && this.whichTable !== 'notificationList') {
+
             this.data.tableBody.sort((a, b) => (a.ID > b.ID) ? -1 : 1);
+            this.data.tableBody.sort((a, b) => (a.requestID > b.requestID) ? -1 : 1);
             this.data.tableBody.map(x => {
               x.ID = x.ID ? x.ID.toString() : null;
               x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
