@@ -385,17 +385,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   ngOnInit(): void {
-    this.filteredOptionsForProductColor = this.filterLookupsFunction('productColor', this.regProductForAllRequestedType.get('productColor'), this.formData.productColorList);
-    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
-    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
-    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction('licenseHolder', this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
-    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction('countryOfLicenseHolder', this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
-    this.filteredOptionsForPhysicalState = this.filterLookupsFunction('physicalState', this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
-    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction('purposeOfUse', this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
-    this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
-    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
-    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
-
+    this.setAllLookups();
     // this.getLookupForFormArray();
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
@@ -528,8 +518,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             }
           };
 
-        }
-        else {
+        } else {
           this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
             file.attachmentTypeStatus = 'No';
             this.isLoadingStatus.emit(false);
@@ -786,6 +775,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getFormAsStarting(data) {
     if (data) {
+      this.setAllLookups();
       this.isDraft = data.isDraft === 1;
       this.requestIsDraft.emit(data.isDraft === 1);
 
@@ -985,8 +975,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       });
 
       this.enableEditableFields.map(field => {
-
-        console.log('field', field);
         this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
 
         this.attachmentFields.filter(file => file.id === field).length > 0 ?
@@ -1494,5 +1482,18 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
 
     return PromiseValue.then((res: any[]) => res);
+  }
+
+  setAllLookups() {
+    this.filteredOptionsForProductColor = this.filterLookupsFunction('productColor', this.regProductForAllRequestedType.get('productColor'), this.formData.productColorList);
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForLicenseHolder = this.filterLookupsFunction('licenseHolder', this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
+    this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction('countryOfLicenseHolder', this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
+    this.filteredOptionsForPhysicalState = this.filterLookupsFunction('physicalState', this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
+    this.filteredOptionsForPurposeOfUse = this.filterLookupsFunction('purposeOfUse', this.regProductForAllRequestedType.get('purposeOfUse'), this.formData.purposeOfUseList);
+    this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
+    this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
+    this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
   }
 }

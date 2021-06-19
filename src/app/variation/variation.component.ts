@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
 import {InputService} from '../services/input.service';
@@ -10,7 +10,7 @@ import {distinctUntilChanged, filter} from 'rxjs/operators';
   templateUrl: './variation.component.html',
   styleUrls: ['./variation.component.css']
 })
-export class VariationComponent implements OnInit {
+export class VariationComponent implements OnInit, OnChanges {
 
   formData = {
     formType: [],
@@ -59,6 +59,9 @@ export class VariationComponent implements OnInit {
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
+  ngOnChanges(): void {
+  }
+
   ngOnInit(): void {
     this.isLoading = true;
 
@@ -104,6 +107,17 @@ export class VariationComponent implements OnInit {
         }, error => this.handleError(error));
       }
     });
+  }
+
+  getTrackType(event) {
+    this.selectedTrackType ? this.selectedTrackType = '' : null;
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.selectedTrackType = event.value;
+      this.isLoading = false;
+      this.getPricing();
+    }, 500);
   }
 
   applyProduct(NotificationNo) {
@@ -227,6 +241,7 @@ export class VariationComponent implements OnInit {
   }
 
   getPricing() {
+    this.estimatedValue = '';
     this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
 
     let allCodes = [];

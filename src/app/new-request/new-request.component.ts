@@ -129,7 +129,14 @@ export class NewRequestComponent implements OnInit {
   }
 
   getFormType(event) {
-    this.selectedFormType = event.value;
+    this.selectedFormType ? this.selectedFormType = '' : null;
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.selectedFormType = event.value;
+      this.getProductsKitLookups('selectedFormType');
+      this.isLoading = false;
+    }, 500);
   }
 
   getRequestType(event) {
@@ -287,7 +294,6 @@ export class NewRequestComponent implements OnInit {
   handleError(error) {
     this.isLoading = false;
     this.alertErrorNotificationStatus = true;
-    console.log('err', error);
     this.alertErrorNotification = {msg: error};
   }
 

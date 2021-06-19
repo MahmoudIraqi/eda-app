@@ -338,19 +338,22 @@
 .notification {
   /*color: #c28a30;*/
   color: #f00;
-  font-size: 45px;
+  font-size: 50px;
 }
 
-.notification .bellContainer{
+.notification .bellContainer {
   position: relative;
+  text-shadow: 0px 0px 20px #fff;
 }
 
-.notification .bellContainer .notificationCountClass{
-  font-size: 25px;
+.notification .bellContainer .notificationCountClass {
+  font-size: 17px;
   color: #fff;
   position: absolute;
-  top: 9px;
-  right: 12px;
+  font-weight: bold;
+  top: 13px;
+  right: 8px;
+  width: 30px;
 }
 
 /* ---------------- responsive --------------- */

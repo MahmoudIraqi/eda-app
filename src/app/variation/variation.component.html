@@ -93,6 +93,7 @@
                 <mat-form-field appearance="fill">
                   <mat-label>Track Type</mat-label>
                   <mat-select
+                    (selectionChange)="getTrackType($event)"
                     [(ngModel)]="selectedTrackType" required>
                     <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
                       {{option.NAME}}

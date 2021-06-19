@@ -10,7 +10,7 @@
           <div class="col-lg-4 col-sm-6 col-12">
             <mat-form-field appearance="fill">
               <mat-label>Type Of Notification</mat-label>
-              <mat-select (selectionChange)="getFormType($event); getProductsKitLookups('selectedFormType');"
+              <mat-select (selectionChange)="getFormType($event);"
                           [(ngModel)]="this.selectedFormType" required
                           [disabled]="productId || isDraftRequestStatus">
                 <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
