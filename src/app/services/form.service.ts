@@ -272,6 +272,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getDashboardData() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Lookups/Dashboard`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   createProductRequest(data) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

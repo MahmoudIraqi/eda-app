@@ -59,7 +59,7 @@ export class ChartsComponentComponent implements OnInit, OnChanges {
 
     // Create the Y-axis band scale
     const y = d3.scaleLinear()
-      .domain([0, 2000])
+      .domain([0, d3.max(data, d => Math.max(d.value))])
       .range([this.height, 0]);
 
     // Draw the Y-axis on the DOM

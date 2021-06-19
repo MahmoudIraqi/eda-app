@@ -27,4 +27,11 @@
 </div>
 
 
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
+
+
 
