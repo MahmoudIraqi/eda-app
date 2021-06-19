@@ -622,6 +622,25 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   saveData() {
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
+    data.packagingTable.map((item, i) => {
+      if (this.editData.packagingTable[i]) {
+        item.volumesID = this.editData.packagingTable[i].volumesID;
+      }
+    });
+
+    data.detailsTable.map((item, i) => {
+      if (this.editData.detailsTable[i]) {
+        item.DetailsID = this.editData.detailsTable[i].DetailsID;
+        item.PRODUCT_ID = this.editData.detailsTable[i].PRODUCT_ID;
+
+        item.ingrediantDetails.map((element, index) => {
+          if (this.editData.detailsTable[i].ingrediantDetails[index]) {
+            element.Ingredient_ID = this.editData.detailsTable[i].ingrediantDetails[index].Ingredient_ID;
+          }
+        });
+      }
+    });
+
     const newObjectForData = {
       ...this.editData,
       ...data,
@@ -651,6 +670,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.getService.createProductRequest(newObjectData).subscribe((res: any) => {
       this.editData = res;
+      this.getFormAsStarting(res);
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
         id: res.id

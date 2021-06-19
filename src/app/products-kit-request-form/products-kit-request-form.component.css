@@ -49,7 +49,7 @@ form > .row > div:nth-child(n + 4) {
 
 .custom-file .alert-danger {
   top: -25px;
-  width: 350px;
+  width: auto;
   text-align: right;
   background: #fff;
 }

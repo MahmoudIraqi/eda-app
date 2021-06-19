@@ -136,6 +136,8 @@ export class NewRequestComponent implements OnInit {
     this.selectedRequestedType ? this.selectedRequestedType = '' : null;
     this.isLoading = true;
 
+    event !== 3 || event !== 4 || event !== 7 || event !== 8 ? this.selectedIsExport = false : null;
+
     setTimeout(() => {
       this.selectedRequestedType = event.value;
       this.isLoading = false;

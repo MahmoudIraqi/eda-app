@@ -53,7 +53,7 @@ input:active, input:focus {
 
 .custom-file .alert-danger {
   top: -25px;
-  width: 350px;
+  width: auto;
   text-align: right;
   background: #fff;
 }

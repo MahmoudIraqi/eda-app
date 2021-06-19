@@ -17,7 +17,11 @@
               <div class="d-flex align-items-center">
                 <h2>Egycosm</h2>
                 <a class="ml-auto notification" routerLink="/notification-list">
-                  <i class="fas fa-bell"></i>
+                  <div class="bellContainer">
+                    <i class="fas fa-bell"></i>
+
+                    <span class="notificationCountClass">{{notificationCount}}</span>
+                  </div>
                 </a>
               </div>
             </div>
@@ -28,7 +32,7 @@
               </span>
               </button>
               <div class="dropdown-content">
-                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                <ul *dropdownMenu class="dropdown-menu"
                     role="menu" aria-labelledby="button-basic">
                   <li *ngFor="let item of menuObject;let i =index" role="menuitem">
                     <a class="dropdown-item" routerLink="{{item.link}}" routerLinkActive="active">
@@ -54,13 +58,9 @@
                             <i class="fas fa-chevron-down"></i>
                           </span>
                           </button>
-                          <ul id="dropdown-basic"
-                              *dropdownMenu
+                          <ul *dropdownMenu
                               class="dropdown-menu dropdown-menu-right"
                               role="menu" aria-labelledby="button-basic">
-                            <li role="menuitem">
-                              <a class="dropdown-item" href="#">My profile</a>
-                            </li>
                             <li role="menuitem">
                               <a class="dropdown-item" (click)="logoutFunction()">Logout</a>
                             </li>
@@ -90,7 +90,7 @@
                       <i class="fas fa-chevron-down"></i>
                     </a>
                     <div class="dropdown-content">
-                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                      <ul *dropdownMenu class="dropdown-menu"
                           role="menu" aria-labelledby="button-basic">
                         <li *ngFor="let element of item.dropdownLinks" role="menuitem">
                           <a class="dropdown-item" routerLink="{{element.link}}" routerLinkActive="active">
@@ -111,8 +111,7 @@
               </div>
               <div class="profileMenu">
                 <div class="btn-group text-right" dropdown>
-                  <button id="button-basic"
-                          dropdownToggle
+                  <button dropdownToggle
                           type="button"
                           class="btn dropdown-toggle"
                           aria-controls="dropdown-basic">
@@ -121,7 +120,7 @@
                     <i class="fas fa-chevron-down"></i>
                   </span>
                   </button>
-                  <ul id="dropdown-basic" *dropdownMenu
+                  <ul *dropdownMenu
                       class="dropdown-menu dropdown-menu-right"
                       role="menu" aria-labelledby="button-basic">
                     <li role="menuitem">

@@ -38,6 +38,7 @@ export class HomeContainerComponent implements OnInit {
   isLoading: boolean = false;
   companyProfileId: any;
   username;
+  unseenCount;
 
   constructor(private inputService: InputService, private getService: FormService) {
   }
@@ -107,6 +108,12 @@ export class HomeContainerComponent implements OnInit {
                                 this.isLoading = false;
 
                                 this.inputService.publish({type: 'allLookups', payload: this.formData});
+
+                                this.getService.getNotificationLogsList().subscribe((res: any) => {
+                                  this.isLoading = false;
+
+                                  this.unseenCount = res.filter(x => !x.f_seen).map(list => list).length;
+                                }, error => this.handleError(error));
                               });
                             });
                           });
@@ -120,6 +127,13 @@ export class HomeContainerComponent implements OnInit {
           });
         });
       });
+    });
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'notificationUnreadCount'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.unseenCount = res.payload.filter(x => !x.f_seen).map(list => list).length;
     });
   }
 

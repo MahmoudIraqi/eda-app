@@ -13,6 +13,7 @@ import {distinctUntilChanged, filter} from 'rxjs/operators';
 export class HeaderComponent implements OnInit {
 
   @Input() Username;
+  @Input() notificationCount;
   screenWidth;
   menuObject = [
     {

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
+import {InputService} from '../services/input.service';
 
 @Component({
   selector: 'app-notification-list',
@@ -13,7 +14,7 @@ export class NotificationListComponent implements OnInit {
   alertErrorNotification: any;
   isLoading: boolean = false;
 
-  constructor(private getService: FormService) {
+  constructor(private getService: FormService, private inputService: InputService) {
   }
 
   ngOnInit(): void {
@@ -41,13 +42,12 @@ export class NotificationListComponent implements OnInit {
   }
 
   seeNotification(id) {
-    // this.notificationListRequest.tableBody.filter(x => x.ID === id).map(y => {
-    //   y.F_Seen = !y.F_Seen;
-    // });
-
     this.getService.setSeenNotificationByID(id).subscribe(res => {
       this.isLoading = false;
     }, error => this.handleError(error));
+
+
+    this.inputService.publish({type: 'notificationUnreadCount', payload: this.notificationListRequest.tableBody});
   }
 
 }

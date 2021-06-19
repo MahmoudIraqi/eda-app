@@ -336,8 +336,21 @@
 
 /* ---------------- Notification ------------- */
 .notification {
-  color: #c28a30;
+  /*color: #c28a30;*/
+  color: #f00;
+  font-size: 45px;
+}
+
+.notification .bellContainer{
+  position: relative;
+}
+
+.notification .bellContainer .notificationCountClass{
   font-size: 25px;
+  color: #fff;
+  position: absolute;
+  top: 9px;
+  right: 12px;
 }
 
 /* ---------------- responsive --------------- */
