@@ -287,6 +287,7 @@ export class NewRequestComponent implements OnInit {
   handleError(error) {
     this.isLoading = false;
     this.alertErrorNotificationStatus = true;
+    console.log('err', error);
     this.alertErrorNotification = {msg: error};
   }
 
@@ -348,7 +349,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   showAlertMessager(messageStatus) {
-    messageStatus ? this.handleError({message: 'please complete the required values which marked with *'}) : null;
+    messageStatus ? this.handleError('please complete the required values which marked with *') : null;
   }
 
   enableLoadingForAttachment(event) {

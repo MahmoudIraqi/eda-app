@@ -564,6 +564,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
 
     this.openModal(this.modalTemplate);
+    this.rerenderSubscribtionForClosingActionForPackagingForm();
   }
 
   removeDetailedRows(i) {
@@ -596,6 +597,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
 
     this.openModal(this.modalDetailedTemplate);
+
+    this.rerenderSubscribtionForClosingActionForDetailsForm(event);
   }
 
   //functions for IngrediantDetailsRows
