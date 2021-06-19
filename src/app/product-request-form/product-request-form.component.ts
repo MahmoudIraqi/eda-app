@@ -498,9 +498,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     if (this.attachmentFields.filter(x => x.loadingStatus === true).length === 0) {
       if (event.target.files.length > 0) {
-        console.log('event.target.files[0].type', event.target.files[0].type);
-        if (event.target.files[0].type === 'application/pdf') {
-
+        if (event.target.files[0].type === 'application/pdf' && event.target.files[0].size <= 2000000) {
           this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
             y.fileName = event.target.value.split(/(\\|\/)/g).pop();
             attachmentValue = y.fileValue;
@@ -530,7 +528,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             }
           };
 
-        }// this.regProductForAllRequestedType.get(fileControlName).setValue(file);
+        }
         else {
           this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
             file.attachmentTypeStatus = 'No';
