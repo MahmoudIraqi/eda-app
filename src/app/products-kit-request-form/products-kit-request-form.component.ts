@@ -350,6 +350,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     }
   ];
   removeShortNameFieldStatus = false;
+  addShortNameFieldStatus = false;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('insideFormTabs', {static: false}) insideFormTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -876,6 +877,12 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.removeShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
       this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')]));
+    } else {
+      this.addShortNameFieldStatus = true;
+
+      setTimeout(() => {
+        this.addShortNameFieldStatus = false;
+      }, 1500);
     }
   }
 

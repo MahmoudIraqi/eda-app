@@ -61,6 +61,9 @@
                 <div *ngIf="removeShortNameFieldStatus" class="alert alert-danger RelativeAlert">
                   you must have at least one field
                 </div>
+                <div *ngIf="addShortNameFieldStatus" class="alert alert-danger RelativeAlert">
+                  you can't add more than 10 fields
+                </div>
                 <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
                   <mat-form-field class="example-full-width">
                     <div *ngIf="productComments && productComments.shortName"

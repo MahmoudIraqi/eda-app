@@ -307,6 +307,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   regPackagingForProduct: FormGroup;
   regDetailedForProduct: FormGroup;
   subscription: Subscription;
+  addShortNameFieldStatus = false;
   removeShortNameFieldStatus = false;
   trackTypeForNewProductInKit;
   requestedTypeForNewProductInKit;
@@ -441,9 +442,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   addShortName() {
-    this.removeShortNameFieldStatus = false;
+    this.addShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
       this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,3}$')]));
+    } else {
+      this.addShortNameFieldStatus = true;
+
+      setTimeout(() => {
+        this.addShortNameFieldStatus = false;
+      }, 1500);
     }
   }
 
