@@ -237,9 +237,21 @@ body {
   color: #c28a30;
 }
 
+.titleStyle .InfoIconContainer {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  top: 2px;
+  right: auto;
+  left: 12px;
+  text-align: left;
+}
+
 .tooltip-inner {
   border-radius: 10px 0px 10px 10px;
   background-color: #c28a30;
+  max-width: 500px;
+  width: 500px;
 }
 
 .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -248,6 +260,10 @@ body {
 
 .bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
   border-bottom-color: #c28a30;
+}
+
+.bs-tooltip-right .arrow::before, .bs-tooltip-auto[x-placement^="right"] .arrow::before {
+  border-right-color: #c28a30;
 }
 
 /*.detailsTable .mat-form-field-wrapper {*/
@@ -623,6 +639,15 @@ body {
   height: 450px;
   margin-top: 3em;
   display: inline-block;
+}
+
+.readIcon {
+  font-size: 20px;
+  color: green;
+}
+
+.readIcon.open {
+  color: #f00;
 }
 
 /* ----------------------- responsive -------------------------- */

@@ -13,7 +13,8 @@
       <div class="table-responsive mt-5">
         <table class="table table-sm table-ordered" *ngIf="data && data.tableBody.length > 0">
           <tr class="headerRow">
-            <th *ngFor="let request of data.tableHeader; let i = index">
+            <th *ngFor="let request of data.tableHeader; let i = index"
+                [ngClass]="{'text-center': whichTable === 'notificationList' && i === data.tableHeader.length -1}">
               {{request}}
               <span *ngIf="i !== data.tableHeader.length - 1" (click)="sortBy(sortStatus, request)">
                 <i class="fa fa-sort"></i>
@@ -32,8 +33,10 @@
                           <td class="hide">{{request.ID}}</td>
                           <td>{{request.SubmmittionDate | date}}</td>
                           <td class="hide">{{request.productTypeName}}</td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameEN}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameAR}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                 placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                 placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.Status}}</td>
                           <td class="hide">{{request.Track_type}}</td>
                           <td><i (click)="editProduct(request)" class="fa fa-edit"></i></td> <!--  -->
@@ -85,8 +88,10 @@
                         <tr>
                           <td class="hide">{{request.oldNotificationNo}}</td>
                           <td>{{request.SubmmittionDate | date}}</td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameEN}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameAR}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                 placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                 placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.Status}}</td>
                           <td class="hide">{{request.Track_type}}</td>
                           <td><i (click)="editProduct(request)" class="fa fa-edit"></i></td> <!--  -->
@@ -135,7 +140,8 @@
                           <tr>
                             <td class="hide">{{request.oldNotificationNo}}</td>
                             <td>{{request.SubmmittionDate | date}}</td>
-                            <td class="hide"><span class="ellipsisSpan">{{request.NameEN}}</span></td>
+                            <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                   placement="right">{{request.NameEN}}</span></td>
                             <td class="hide">{{request.Track_type}}</td>
                             <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
                           </tr>
@@ -177,8 +183,10 @@
                           <td class="hide">{{request.NotificationNo}}</td>
                           <td>{{request.SubmmittionDate | date}}</td>
                           <td class="hide">{{request.productTypeName}}</td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameEN}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameAR}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                 placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                 placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.Status}}</td>
                         </tr>
                       </table>
@@ -224,7 +232,8 @@
                         <tr>
                           <td class="hide">{{request.requestID}}</td>
                           <td>{{request.submitionDate | date}}</td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.title}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.title}}"
+                                                 placement="right">{{request.title}}</span></td>
                           <td>{{request.status}}</td>
                           <td class="hide">{{request.description}}</td>
                         </tr>
@@ -269,8 +278,10 @@
                             <td class="hide">{{request.ID}}</td>
                             <td>{{request.SubmmittionDate | date}}</td>
                             <td>{{request.productTypeName}}</td>
-                            <td class="hide"><span class="ellipsisSpan">{{request.NameEN}}</span></td>
-                            <td class="hide"><span class="ellipsisSpan">{{request.NameAR}}</span></td>
+                            <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                   placement="right">{{request.NameEN}}</span></td>
+                            <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                   placement="right">{{request.NameAR}}</span></td>
                             <td class="hide">{{request.Track_type}}</td>
                             <td>
                               <span (click)="editProduct(request)">
@@ -292,7 +303,7 @@
                         <span>{{request.ID}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Submission date :</label>
+                        <label class="label">Saved date :</label>
                         <span>{{request.SubmmittionDate}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
@@ -327,8 +338,10 @@
                             <td class="hide">{{request.NotificationNo}}</td>
                             <td>{{request.SubmmittionDate | date}}</td>
                             <td>{{request.productTypeName}}</td>
-                            <td class="hide"><span class="ellipsisSpan">{{request.NameEN}}</span></td>
-                            <td class="hide"><span class="ellipsisSpan">{{request.NameAR}}</span></td>
+                            <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                   placement="right">{{request.NameEN}}</span></td>
+                            <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                   placement="right">{{request.NameAR}}</span></td>
                             <td>
                               <span (click)="editProduct(request)"><i class="fa fa-edit"></i></span>
                               <span class="ml-3" (click)="deleteProduct(request)"><i class="fa fa-trash"></i></span>
@@ -345,7 +358,7 @@
                         <span>{{request.NotificationNo}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Submission date :</label>
+                        <label class="label">Saved date :</label>
                         <span>{{request.SubmmittionDate}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
@@ -379,8 +392,10 @@
                         <tr>
                           <td>{{request.NotificationNo}}</td>
                           <td class="hide">{{request.notificationdate | date}}</td>
-                          <td><span class="ellipsisSpan">{{request.NameEN}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameAR}}</span></td>
+                          <td><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                    placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                 placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.colorFlag ? 'Yes' : ''}}</td>
                           <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
                           <td (click)="addBatch(request.NotificationNo)"><i class="fas fa-cart-plus"></i></td>
@@ -421,8 +436,10 @@
                         <tr>
                           <td>{{request.oldNotificationNo}}</td>
                           <td class="hide">{{request.dueDate | date}}</td>
-                          <td><span class="ellipsisSpan">{{request.productEnglishName}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.productArabicName}}</span></td>
+                          <td><span class="ellipsisSpan" tooltip="{{request.productEnglishName}}"
+                                    placement="right">{{request.productEnglishName}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.productArabicName}}"
+                                                 placement="right">{{request.productArabicName}}</span></td>
                           <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
                           <td (click)="addBatch(request.oldNotificationNo)"><i class="fas fa-cart-plus"></i></td>
                         </tr>
@@ -462,8 +479,10 @@
                         <tr>
                           <td>{{request.NotificationNo}}</td>
                           <td class="hide">{{request.SubmmittionDate | date}}</td>
-                          <td><span class="ellipsisSpan">{{request.NameEN}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan">{{request.NameAR}}</span></td>
+                          <td><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                    placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                 placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.actionStatus}} <strong>{{request.ID}}</strong></td>
                         </tr>
                       </table>
@@ -649,7 +668,8 @@
                       <table class="table table-sm tableDetailsCont">
                         <tr>
                           <td>{{request.NotificationNo ? request.NotificationNo : request.id}}</td>
-                          <td><span class="ellipsisSpan">{{request.productEnglishName}}</span></td>
+                          <td><span class="ellipsisSpan" tooltip="{{request.productEnglishName}}"
+                                    placement="right">{{request.productEnglishName}}</span></td>
                           <td>{{request.manufacturingCompany}}</td>
                           <td>{{request.manufacturingCountry}}</td>
                           <td>{{request.applicant}}</td>
@@ -874,18 +894,24 @@
                       <table class="table table-sm notificationListTable">
                         <tr>
                           <td>{{request.notification_no}}</td>
-                          <td>{{request.comments}}</td>
+                          <td><span class="ellipsisSpan" tooltip="{{request.comments}}"
+                                    placement="right">{{request.comments}}</span></td>
                           <td>{{request.requestTypeName}}</td>
                           <td>{{request.notification_time | date}}</td>
-                          <td><span class="ellipsisSpan">{{request.productName}}</span></td>
-                          <td>
-                            <button *ngIf="!request.f_seen" type="button" class="btn btn-primary"
-                                    (click)="request.f_seen =! request.f_seen; seenNotificationFunction(request.id)">
-                              <i class="fas fa-eye"></i> Read
-                            </button>
-                            <button *ngIf="request.f_seen" type="button" class="btn btn-primary active">
-                              <i class="fas fa-eye-slash"></i> Unread
-                            </button>
+                          <td><span class="ellipsisSpan" tooltip="{{request.productName}}"
+                                    placement="right">{{request.productName}}</span></td>
+                          <td class="text-center">
+                            <span class="readIcon open" *ngIf="!request.f_seen"
+                                  (click)="request.f_seen =! request.f_seen; seenNotificationFunction(request.id)"><i
+                              class="fas fa-envelope"></i></span>
+                            <span class="readIcon" *ngIf="request.f_seen"><i class="fas fa-envelope-open"></i></span>
+                            <!--                            <button *ngIf="!request.f_seen" type="button" class="btn btn-primary"-->
+                            <!--                                    (click)="request.f_seen =! request.f_seen; seenNotificationFunction(request.id)">-->
+                            <!--                              <i class="fas fa-eye"></i> Read-->
+                            <!--                            </button>-->
+                            <!--                            <button *ngIf="request.f_seen" type="button" class="btn btn-primary active">-->
+                            <!--                              <i class="fas fa-eye-slash"></i> Unread-->
+                            <!--                            </button>-->
                           </td>
                         </tr>
                       </table>
@@ -1026,8 +1052,10 @@
                       <table class="table table-sm tableDetailsCont">
                         <tr>
                           <td>{{request.notificationNumber}}</td>
-                          <td><span class="ellipsisSpan">{{request.productArabicName}}</span></td>
-                          <td><span class="ellipsisSpan">{{request.productEnglishName}}</span></td>
+                          <td><span class="ellipsisSpan" tooltip="{{request.productArabicName}}"
+                                    placement="right">{{request.productArabicName}}</span></td>
+                          <td><span class="ellipsisSpan" tooltip="{{request.productEnglishName}}"
+                                    placement="right">{{request.productEnglishName}}</span></td>
                           <td>{{request.manufacturingCompany}}</td>
                           <td>{{request.manufacturingCountry}}</td>
                           <td>{{request.batchNo}}</td>

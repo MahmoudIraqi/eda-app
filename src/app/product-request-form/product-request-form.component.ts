@@ -498,6 +498,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     if (this.attachmentFields.filter(x => x.loadingStatus === true).length === 0) {
       if (event.target.files.length > 0) {
+        console.log('event.target.files[0].type', event.target.files[0].type);
         if (event.target.files[0].type === 'application/pdf') {
 
           this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
@@ -699,7 +700,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       y.loadingStatus = true;
     });
 
-
     const newObject = {
       ...this.editData,
       ...allDataForSave,
@@ -708,9 +708,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...this.objectForListOfVariationGroup
     };
 
-
     this.getService.setVariationProduct(newObject).subscribe((res: any) => {
       this.editData = res;
+      this.getFormAsStarting(res);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
       });
@@ -988,6 +988,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.enableEditableFields.map(field => {
 
+        console.log('field', field);
         this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
 
         this.attachmentFields.filter(file => file.id === field).length > 0 ?
@@ -1003,7 +1004,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       return formControlValue.valueChanges
         .pipe(
           startWith(''),
-          debounceTime(500),
+          debounceTime(300),
           map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
         );
     }
@@ -1171,6 +1172,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   handleError(error) {
     this.errorMessageForAttachment.emit(error);
+    this.isLoadingStatus.emit(false);
   }
 
   checkControllerValueWithList(list, formControlKey, formControlValue) {

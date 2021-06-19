@@ -137,6 +137,7 @@ export class VariationComponent implements OnInit {
 
     const data = {
       ...event,
+      Tracktype: this.selectedTrackType,
       isDraft: 1,
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
@@ -155,6 +156,7 @@ export class VariationComponent implements OnInit {
 
     const data = {
       ...event,
+      Tracktype: this.selectedTrackType,
       isDraft: 0,
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };

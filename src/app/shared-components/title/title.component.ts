@@ -10,6 +10,8 @@ export class TitleComponent implements OnInit {
   @Input() title;
   @Input() bigTitle;
   @Input() smallTitle;
+  @Input() havingComment;
+  @Input() theCommentMessage;
 
   constructor() { }
 

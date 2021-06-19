@@ -81,7 +81,7 @@
                   you must have at least one field
                 </div>
                 <div *ngIf="addShortNameFieldStatus" class="alert alert-danger RelativeAlert">
-                 you can't add more than 10 fields
+                  you can't add more than 10 fields
                 </div>
                 <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
                   <mat-form-field class="example-full-width">
@@ -562,7 +562,9 @@
             <div class="d-flex flex-column">
               <div class="row">
                 <div class="col-12 col-sm-8">
-                  <app-title [smallTitle]="true" [title]="'Packaging data'"></app-title>
+                  <app-title [smallTitle]="true" [title]="'Packaging data'"
+                             [havingComment]="productComments && productComments.packagingTable"
+                             [theCommentMessage]=" productComments && productComments.packagingTable ? productComments.packagingTable : ''"></app-title>
                 </div>
                 <div class="col-12 col-sm-4 ml-auto">
                   <div class="d-flex align-items-center">
@@ -597,7 +599,9 @@
             <div class="d-flex flex-column">
               <div class="row">
                 <div class="col-12 col-sm-8">
-                  <app-title [smallTitle]="true" [title]="'Details data'"></app-title>
+                  <app-title [smallTitle]="true" [title]="'Details data'"
+                             [havingComment]="productComments && productComments.detailsTable"
+                             [theCommentMessage]="productComments && productComments.detailsTable ? productComments.detailsTable : ''"></app-title>
                 </div>
                 <div class="col-12 col-sm-4 ml-auto">
                   <div class="d-flex align-items-center">
@@ -729,13 +733,6 @@
       <div class="row">
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="productComments && productComments.packagingTable"
-                 class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-            </div>
             <mat-label>Volumes</mat-label>
             <input type="text" class="form-control" matInput formControlName="volumes"
                    placeholder="" required
@@ -756,13 +753,6 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="productComments && productComments.packagingTable"
-                 class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-            </div>
             <mat-label>Unit of measure</mat-label>
             <input type="text"
                    class="form-control"
@@ -790,13 +780,6 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 mb-3">
           <mat-form-field appearance="fill">
-            <div *ngIf="productComments && productComments.packagingTable"
-                 class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-            </div>
             <mat-label>Type of Packaging</mat-label>
             <input type="text"
                    class="form-control"
@@ -824,13 +807,6 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
           <mat-form-field class="example-full-width">
-            <div *ngIf="productComments && productComments.packagingTable"
-                 class="InfoIconContainer">
-                                      <span class="infoIcon" tooltip="{{productComments.packagingTable}}"
-                                            placement="top">
-                                        <i class="fas fa-info-circle"></i>
-                                      </span>
-            </div>
             <mat-label>Packaging Description</mat-label>
             <textarea matInput formControlName="packagingDescription"
                       [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
@@ -874,12 +850,6 @@
       <div class="row mt-5">
         <div class="col-12 col-sm-6 col-lg-3 mb-3 ">
           <mat-form-field class="example-full-width">
-            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-            </div>
             <mat-label>Colour</mat-label>
             <input type="text" class="form-control" matInput formControlName="colour"
                    placeholder=""
@@ -888,12 +858,6 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-            </div>
             <mat-label>Fragrance</mat-label>
             <input type="text" class="form-control" matInput
                    formControlName="fragrance"
@@ -903,12 +867,6 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments && productComments.detailsTable}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-            </div>
             <mat-label>Flavor</mat-label>
             <input type="text" class="form-control" matInput formControlName="flavor"
                    placeholder=""
@@ -917,12 +875,6 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
           <mat-form-field class="example-full-width">
-            <div *ngIf="productComments && productComments.detailsTable" class="InfoIconContainer">
-                          <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
-                                placement="top">
-                            <i class="fas fa-info-circle"></i>
-                          </span>
-            </div>
             <mat-label>BarCode</mat-label>
             <input type="text" class="form-control" matInput formControlName="barCode"
                    placeholder=""
@@ -944,13 +896,6 @@
                   <div class="row">
                     <div class="col-12 col-sm-6 col-lg-3">
                       <mat-form-field appearance="fill">
-                        <div *ngIf="productComments && productComments.detailsTable"
-                             class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-                        </div>
                         <mat-label>Ingrediant</mat-label>
                         <input type="text"
                                class="form-control"
@@ -979,13 +924,6 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3 conSpace">
                       <mat-form-field class="example-full-width inputBesideSelect">
-                        <div *ngIf="productComments && productComments.detailsTable"
-                             class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-                        </div>
                         <mat-label>Concentrations</mat-label>
                         <input type="text" class="form-control" matInput
                                formControlName="concentrations"
@@ -1007,13 +945,6 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3">
                       <mat-form-field appearance="fill">
-                        <div *ngIf="productComments && productComments.detailsTable"
-                             class="InfoIconContainer">
-                                  <span class="infoIcon" tooltip="{{productComments.detailsTable}}"
-                                        placement="top">
-                                    <i class="fas fa-info-circle"></i>
-                                  </span>
-                        </div>
                         <mat-label>Function</mat-label>
                         <input type="text"
                                class="form-control"
