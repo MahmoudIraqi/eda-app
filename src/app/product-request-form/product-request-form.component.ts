@@ -72,6 +72,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Output() requestIsDraft = new EventEmitter();
   @Output() isLoadingStatus = new EventEmitter();
   @Output() errorForAttachemntRequest = new EventEmitter();
+  @Output() enableEditingForTypeOfRegistration = new EventEmitter();
   formData;
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
@@ -965,6 +966,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
 
+
         variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
         variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
 
@@ -974,14 +976,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         };
       });
 
+      this.enableEditingForTypeOfRegistration.emit(this.enableEditableFields);
       this.enableEditableFields.map(field => {
-        this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
+        if (this.regProductForAllRequestedType.get(field)) {
+          this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
 
-        this.attachmentFields.filter(file => file.id === field).length > 0 ?
-          this.attachmentFields.filter(file => file.id === field).map(item => {
-            item.required = true;
-          }) : null;
+          this.attachmentFields.filter(file => file.id === field).length > 0 ?
+            this.attachmentFields.filter(file => file.id === field).map(item => {
+              item.required = true;
+            }) : null;
+        }
       });
+    } else {
+      this.enableEditingForTypeOfRegistration.emit([]);
     }
   }
 

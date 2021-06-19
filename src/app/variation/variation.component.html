@@ -71,7 +71,8 @@
                   <div class="col-12 col-sm-9">
                     <mat-form-field appearance="fill">
                       <mat-label>Type Of License</mat-label>
-                      <mat-select [(ngModel)]="selectedRequestedType" required [disabled]="true">
+                      <mat-select [(ngModel)]="selectedRequestedType" required
+                                  [disabled]="enableEditableFields.length === 0 || !enableEditableFields.includes('typeOfRegistration')">
                         <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
                           {{option.NAME}}
                         </mat-option>
@@ -117,6 +118,7 @@
               [whichVariation]="whichVariation"
               (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"
+              (enableEditingForTypeOfRegistration)="enableFields($event)"
               (errorMessage)="showAlertMessager($event)"
               (errorMessageForAttachment)="handleError($event)"
               (isLoadingStatus)="enableLoadingForAttachment($event)"

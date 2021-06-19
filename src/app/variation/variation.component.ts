@@ -55,6 +55,7 @@ export class VariationComponent implements OnInit, OnChanges {
   companyProfileId: any;
   lookupResponse: any;
   variationID;
+  enableEditableFields = [];
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
@@ -151,6 +152,7 @@ export class VariationComponent implements OnInit, OnChanges {
 
     const data = {
       ...event,
+      typeOfRegistration: this.selectedRequestedType,
       Tracktype: this.selectedTrackType,
       isDraft: 1,
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
@@ -158,6 +160,8 @@ export class VariationComponent implements OnInit, OnChanges {
 
     this.getService.setVariationProduct(data).subscribe((res: any) => {
       this.productData = res;
+      this.selectedRequestedType = res.typeOfRegistration;
+      this.selectedTrackType = res.Tracktype;
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
@@ -170,6 +174,7 @@ export class VariationComponent implements OnInit, OnChanges {
 
     const data = {
       ...event,
+      typeOfRegistration: this.selectedRequestedType,
       Tracktype: this.selectedTrackType,
       isDraft: 0,
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
@@ -274,5 +279,15 @@ export class VariationComponent implements OnInit, OnChanges {
     } else {
       this.isLoading = false;
     }
+  }
+
+  enableFields(event) {
+    this.enableEditableFields.length > 0 ? this.enableEditableFields = [] : null;
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.enableEditableFields = event;
+      this.isLoading = false;
+    }, 200);
   }
 }
