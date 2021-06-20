@@ -630,6 +630,14 @@ body {
   text-overflow: ellipsis;
 }
 
+button span.ellipsisSpan {
+  white-space: nowrap;
+  width: 200px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .chartContainer {
   width: 100% !important;
   height: 450px;
