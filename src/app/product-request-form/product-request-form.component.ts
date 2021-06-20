@@ -340,7 +340,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   filteredOptionsForStoragePlace: Observable<LookupState[]>;
   filteredOptionsForUnitOfMeasure: Observable<LookupState[]>;
   filteredOptionsForTypeOfPackaging: Observable<LookupState[]>;
-  filteredOptionsForIngradiant: Observable<LookupState[]>;
+  // filteredOptionsForIngradiant: Observable<LookupState[]>;
   filteredOptionsForFunction: Observable<LookupState[]>;
   modalRef: BsModalRef;
   modalOptions: ModalOptions = {
@@ -464,7 +464,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   getLookupForFormArray() {
     this.IngrediantDetailsRows().controls.map((x) => {
-      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
+      // this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
       this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList);
     });
   }
@@ -1004,12 +1004,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterInsideList(lookup, value, list): LookupState[] {
-    let filterValue;
-    if (value) {
-      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
-    }
+    if (lookup === 'ingrediant') {
+      let filterValue;
+      if (value) {
+        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
+      }
 
-    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+      list.filter(option => !option.NAME.toLowerCase().includes(filterValue)).map(x => x.displayNoneStatus = true);
+      return list;
+    } else {
+      let filterValue;
+      if (value) {
+        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
+      }
+
+      return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+    }
   }
 
   convertAllNamingToId(data) {
@@ -1219,7 +1229,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   rerenderSubscribtionForClosingActionForDetailsForm(index) {
     this.getLookupForFormArray();
 
-    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant, index);
+    // this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant, index);
     this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction, index);
   }
 
@@ -1502,5 +1512,35 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
     this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
     this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+  }
+
+  getPosts(event, index) {
+    console.log('event', event);
+    let filterValue;
+    this.isLoadingStatus.emit(true);
+    this.formData.ingrediantList.map(x => x.displayNoneStatus = false);
+
+    if (event.target.value) {
+      filterValue = event.target.value.toLowerCase() ? event.target.value.toLowerCase() : '';
+
+      if (this.formData.ingrediantList.filter(option => option.NAME.toLowerCase().includes(filterValue)).length > 0) {
+        setTimeout(() => {
+          this.formData.ingrediantList.filter(option => !option.NAME.toLowerCase().includes(filterValue)).map(x => x.displayNoneStatus = true);
+          this.isLoadingStatus.emit(false);
+        }, 200);
+      } else {
+        this.IngrediantDetailsRows().controls.map((x, i) => {
+          if (i === index) {
+            if (x['controls']['ingrediant'].dirty) {
+              x['controls']['ingrediant'].setValue(null);
+            }
+          }
+        });
+
+        this.isLoadingStatus.emit(false);
+      }
+    } else {
+      this.isLoadingStatus.emit(false);
+    }
   }
 }

@@ -90,7 +90,12 @@ export class HomeContainerComponent implements OnInit {
                         this.formData.productColorList = res;
                       }, error => this.handleError(error), () => {
                         this.getService.getProductIngrediantsLookUp(1, '').subscribe((res: any) => {
-                          this.formData.ingrediantList = res;
+                          let newArrayOfData = [];
+                          res.map(item => {
+                            newArrayOfData.push({...item, displayNoneStatus: false});
+                          });
+
+                          this.formData.ingrediantList = newArrayOfData;
                         }, error => this.handleError(error), () => {
                           this.getService.getCompanyProfileLookUp(1, this.companyProfileId, '').subscribe((res: any) => {
                             this.formData.applicantList = res;

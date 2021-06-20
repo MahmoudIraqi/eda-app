@@ -903,11 +903,13 @@
                                aria-label="Ingrediant"
                                matInput
                                formControlName="ingrediant"
+                               (keyup)='getPosts($event, index)'
                                [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoIngrediant"
                                required>
                         <mat-autocomplete #autoIngrediant="matAutocomplete">
-                          <mat-option *ngFor="let option of filteredOptionsForIngradiant | async"
+                          <mat-option *ngFor="let option of formData.ingrediantList"
+                                      [ngClass]="{'displayNone': option.displayNoneStatus}"
                                       [value]="option.NAME">
                             {{option.NAME}}
                           </mat-option>
