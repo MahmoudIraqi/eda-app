@@ -217,9 +217,7 @@ export class DashboardComponent implements OnInit {
 
     this.getService.getDashboardData().subscribe((res: any) => {
       this.numberOFAllRequestObject.map(item => {
-        console.log('item', res[item.id].data.reduce((a, b) => a + b.value, 0));
         item.numberOfRequest = res[item.id].data.reduce((a, b) => a + b.value, 0) >= 0 ? res[item.id].data.reduce((a, b) => a + b.value, 0) : 0;
-        console.log('item.numberOfRequest', item.numberOfRequest);
         res[item.id].pieData.map((element, i) => {
           element.color = this.colorList[i];
         });
@@ -240,7 +238,7 @@ export class DashboardComponent implements OnInit {
     let countValue,
       current = start,
       range = end - start,
-      increment = end > start ? 1 : -1,
+      increment = end > start ? 1 : 0,
       step = Math.abs(Math.floor(duration / range)),
       timer = setInterval(() => {
         current += increment;
