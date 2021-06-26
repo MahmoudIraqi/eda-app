@@ -43,25 +43,6 @@
                   </mat-form-field>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-12">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Description</mat-label>
-                    <input type="text" class="form-control" matInput formControlName="description"
-                           placeholder="Description" required>
-                    <div
-                      *ngIf="generalEnquiriesForm.get('description').invalid && (generalEnquiriesForm.get('description').dirty || generalEnquiriesForm.get('description').touched)"
-                      class="alert alert-danger">
-                      <div
-                        *ngIf="generalEnquiriesForm.get('description').errors.required">
-                        this field is required
-                      </div>
-                      <div
-                        *ngIf="generalEnquiriesForm.get('description').errors.pattern">
-                        this field must't start with Number and must be in English
-                      </div>
-                    </div>
-                  </mat-form-field>
-                </div>
-                <div class="col-lg-4 col-sm-6 col-12">
                   <mat-form-field class="example-full-width inputBesideSelect">
                     <mat-label>Receipt Number</mat-label>
                     <input type="text" class="form-control" matInput formControlName="receiptNumber"
@@ -130,6 +111,22 @@
                       </label>
                     </div>
                   </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea class="form-control" matInput formControlName="description"
+                              maxlength="4000"
+                              placeholder="Description" required></textarea>
+                    <div
+                      *ngIf="generalEnquiriesForm.get('description').invalid && (generalEnquiriesForm.get('description').dirty || generalEnquiriesForm.get('description').touched)"
+                      class="alert alert-danger">
+                      <div
+                        *ngIf="generalEnquiriesForm.get('description').errors.required">
+                        this field is required
+                      </div>
+                    </div>
+                  </mat-form-field>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-12">
                   <div class="d-flex">

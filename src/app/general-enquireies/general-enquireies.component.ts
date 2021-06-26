@@ -29,7 +29,7 @@ export class GeneralEnquireiesComponent implements OnInit {
   attachmentFields = [
     {
       id: 'attachment',
-      name: 'Attachment',
+      name: 'Attachment & Receipt',
       fileName: '',
       required: true,
       enable: true,
@@ -72,7 +72,7 @@ export class GeneralEnquireiesComponent implements OnInit {
   getFormAsStarting() {
     this.generalEnquiriesForm = this.fb.group({
       title: this.fb.control('', Validators.required),
-      description: this.fb.control('', [Validators.required, Validators.pattern('^[a-zA-Z]+[ 0-9a-zA-Z-_*]*$')]),
+      description: this.fb.control('', Validators.required),
       receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
       receiptValue: this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]),
       attachment: this.fb.control('', Validators.required),
