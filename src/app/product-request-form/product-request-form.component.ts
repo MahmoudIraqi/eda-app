@@ -625,13 +625,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
     data.packagingTable.map((item, i) => {
-      if (this.editData.packagingTable[i]) {
+      if (this.editData && this.editData.packagingTable[i]) {
         item.volumesID = this.editData.packagingTable[i].volumesID;
       }
     });
 
     data.detailsTable.map((item, i) => {
-      if (this.editData.detailsTable[i]) {
+      if (this.editData && this.editData.detailsTable[i]) {
         item.DetailsID = this.editData.detailsTable[i].DetailsID;
         item.PRODUCT_ID = this.editData.detailsTable[i].PRODUCT_ID;
 
@@ -996,12 +996,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterLookupsFunction(whichLookup, formControlValue, list) {
-    if (formControlValue) {
-      return formControlValue.valueChanges
-        .pipe(
-          startWith(''),
-          map(state => state ? this.filterInsideList(whichLookup, state, list).slice(0, 1000) : list.slice(0, 1000))
-        );
+    if (whichLookup === 'ingrediant') {
+      if (formControlValue) {
+        return formControlValue.valueChanges
+          .pipe(
+            startWith(''),
+            map(state => state ? this.filterInsideList(whichLookup, state, list).slice(0, 1000) : list.slice(0, 1000))
+          );
+      }
+    } else {
+      if (formControlValue) {
+        return formControlValue.valueChanges
+          .pipe(
+            startWith(''),
+            map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
+          );
+      }
     }
   }
 
