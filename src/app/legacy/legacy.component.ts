@@ -43,9 +43,10 @@ export class LegacyComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   productId;
-  typeOfProcess
+  typeOfProcess;
   successSubmission: boolean = false;
   companyProfileId: any;
+  productDataAsCopy: any;
 
   constructor(private getService: FormService,
               private router: Router,
@@ -82,6 +83,7 @@ export class LegacyComponent implements OnInit {
           this.selectedRequestedType = res.typeOfRegistration;
           this.selectedIsExport = res.isExport;
           this.productData = res;
+          this.productDataAsCopy = res;
           this.isLoading = false;
         }, error => this.handleError(error));
       }
@@ -89,7 +91,17 @@ export class LegacyComponent implements OnInit {
   }
 
   getFormType(event) {
-    this.selectedFormType = event.value;
+    this.selectedFormType ? this.selectedFormType = '' : null;
+    this.isLoading = true;
+    this.productData = null;
+
+    setTimeout(() => {
+      this.selectedFormType = event.value;
+      this.productDataAsCopy.typeOfMarketing = event.value;
+      console.log('productDataAsCopy', this.productDataAsCopy);
+      this.productData = this.productDataAsCopy;
+      this.isLoading = false;
+    }, 500);
   }
 
   getRequestType(event) {
@@ -101,6 +113,7 @@ export class LegacyComponent implements OnInit {
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'legacy').subscribe((res: any) => {
       if (res.canUse) {
         this.productData = res;
+        this.selectedRequestedType = res.typeOfMarketing;
         this.isLoading = false;
       } else {
         this.handleError(res.canuseMsg);
@@ -112,15 +125,19 @@ export class LegacyComponent implements OnInit {
     this.isLoading = true;
     const newData = {
       ...this.productData,
-      ...event
+      ...event,
+      id: this.productData.id
     };
     const eventObject = convertToSpecialObjectForLegacy('save', newData);
+
+    console.log('eventObject', eventObject);
 
     this.getService.createProductRequest(eventObject).subscribe((res: any) => {
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
       this.productData = res;
+      this.productDataAsCopy = res;
       this.onClosed();
     }, error => this.handleError(error));
   }
@@ -129,7 +146,8 @@ export class LegacyComponent implements OnInit {
     this.isLoading = true;
     const newData = {
       ...this.productData,
-      ...event
+      ...event,
+      id: this.productData.id
     };
     const eventObject = convertToSpecialObjectForLegacy('submit', newData);
 

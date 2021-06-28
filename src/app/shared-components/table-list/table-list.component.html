@@ -1387,6 +1387,8 @@
     <div class="d-flex align-items-center mt-3" *ngIf="data && data.tableBody.length > 0">
       <pagination *ngIf="contentArray.length > 0"
                   [totalItems]="contentArray.length"
+                  [maxSize]="30"
+                  [rotate]="true"
                   (pageChanged)="pageChanged($event)"></pagination>
 
       <div class="colorSchema ml-auto"

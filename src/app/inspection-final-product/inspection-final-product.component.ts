@@ -170,7 +170,7 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
     this.inspectFinalProductRequest = this.fb.group({
       notificationNo: this.fb.control('', Validators.required),
       productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[A-Za-z0-9_]+[ A-Za-z0-9\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*$')]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
       typeOfNotification: this.fb.control(''),
       batchNo: this.fb.control('', Validators.required),
       productionDate: this.fb.control(''),

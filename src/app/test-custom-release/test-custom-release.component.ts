@@ -387,7 +387,7 @@ export class TestCustomReleaseComponent implements OnInit {
       productId: this.fb.control(''),
       notificationNumber: this.fb.control(''),
       productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
-      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[A-Za-z0-9_]+[ A-Za-z0-9\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*$')]),
+      productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
       manufacturingCompany: this.fb.control(''),
       manufacturingCountry: this.fb.control(''),
       batchNo: this.fb.control(''),
@@ -534,7 +534,7 @@ export class TestCustomReleaseComponent implements OnInit {
         productsInInvoice: this.fb.array([this.fb.group({
           notificationNumber: this.fb.control('', this.selectedFormType === 0 ? Validators.required : null),
           productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
-          productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^[A-Za-z0-9_]+[ A-Za-z0-9\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~]*$')]),
+          productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
           rowMaterialName: this.fb.control('', this.selectedFormType === 2 || this.selectedFormType === 3 || this.selectedFormType === 4 || this.selectedFormType === 5 ? Validators.required : null),
           packingItemName: this.fb.control('', this.selectedFormType === 6 || this.selectedFormType === 7 || this.selectedFormType === 8 ? Validators.required : null),
           manufacturingCompany: this.fb.control('', Validators.required),

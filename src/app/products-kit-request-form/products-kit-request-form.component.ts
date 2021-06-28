@@ -992,7 +992,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         productColor: this.fb.control(''),
         id: 0,
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
-        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w])*$')]),
+        productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
         shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')])]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
