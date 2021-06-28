@@ -79,6 +79,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @ViewChild('packagingModal') modalTemplate: TemplateRef<any>;
   @ViewChild('detailedModal') modalDetailedTemplate: TemplateRef<any>;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
+  @ViewChild('autoIngrediant', {static: false}) autoIngrediantInput: ElementRef;
   isDraft: boolean = false;
   detailsListTable = {
     tableHeader: ['Colour', 'Fragrance', 'Flavor', 'BarCode', 'Actions'],
@@ -414,6 +415,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
     this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
     this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
+
+    console.log('12341234', this.autoIngrediantInput); //.nativeElement.addEventListener('scroll', this.onScrollFunction(event))
   }
 
   ngOnDestroy() {
@@ -993,13 +996,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterLookupsFunction(whichLookup, formControlValue, list) {
-    if (formControlValue) {
-      return formControlValue.valueChanges
-        .pipe(
-          startWith(''),
-          debounceTime(300),
-          map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
-        );
+    if (whichLookup === 'ingrediant') {
+      if (formControlValue) {
+        return formControlValue.valueChanges
+          .pipe(
+            startWith(''),
+            map(state => state ? this.filterInsideList(whichLookup, state, list).slice(0, 1000) : list.slice(0, 1000))
+          );
+      }
+    } else {
+      if (formControlValue) {
+        return formControlValue.valueChanges
+          .pipe(
+            startWith(''),
+            map(state => state ? this.filterInsideList(whichLookup, state, list) : list.slice())
+          );
+      }
     }
   }
 
@@ -1502,5 +1514,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
     this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
     this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+  }
+
+  onScrollFunction(event) {
+
   }
 }
