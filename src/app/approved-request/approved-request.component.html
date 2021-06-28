@@ -1,7 +1,7 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="'Approved products'" [bigTitle]="true"></app-title>
+      <app-title [title]="'Registered products'" [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
       <div class="tableContainer ApprovedTable">
@@ -31,12 +31,30 @@
             </button>
           </div>
         </div>
-        <div class="row mt-2" *ngIf="typeOfApprovedList === 'approvedProductWithComment'">
+        <div class="row mt-4 subBtnContainer" *ngIf="typeOfApprovedList === 'holdProducts'">
           <div class="col-12 col-sm-6">
             <button type="button"
                     class="btn btn-primary form-control"
-                    (click)="selectApprovedProductWithCommentsType('approvedProductWithLabs')"
-                    [ngClass]="{'active': typeOfApprovedListWithComments === 'approvedProductWithLabs'}">
+                    (click)="selectApprovedHoldProductType('approvedHoldProductWithLabsComments')"
+                    [ngClass]="{'active': typeOfApprovedHoldList === 'approvedHoldProductWithLabsComments'}">
+              Approved Hold Product from Labs
+            </button>
+          </div>
+          <div class="col-12 col-sm-6">
+            <button type="button"
+                    class="btn btn-primary form-control"
+                    (click)="selectApprovedHoldProductType('approvedHoldProductWithRegComment')"
+                    [ngClass]="{'active': typeOfApprovedHoldList === 'approvedHoldProductWithRegComment'}">
+              Approved Hold Product from Registration
+            </button>
+          </div>
+        </div>
+        <div class="row mt-4 subBtnContainer" *ngIf="typeOfApprovedList === 'approvedProductWithComment'">
+          <div class="col-12 col-sm-6">
+            <button type="button"
+                    class="btn btn-primary form-control"
+                    (click)="selectApprovedProductWithCommentsType('approvedProductWithLabsComments')"
+                    [ngClass]="{'active': typeOfApprovedListWithComments === 'approvedProductWithLabsComments'}">
               Approved Product with Comments from Labs
             </button>
           </div>

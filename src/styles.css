@@ -672,6 +672,27 @@ button span.ellipsisSpan {
   color: #f00;
 }
 
+.subBtnContainer {
+  padding: 1em 20em;
+  border-top: 2px solid #e2e2e1;
+}
+
+.subBtnContainer .btn.btn-primary {
+  background: #fff;
+  border: 2px solid #161c30;
+  color: #161c30;
+}
+
+.subBtnContainer .btn.btn-primary:hover {
+  background: #161c30 !important;
+  border-color: #161c30;
+}
+
+.subBtnContainer .btn.btn-primary.active {
+  background: #161c30 !important;
+  border-color: #161c30;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {
