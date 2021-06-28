@@ -31,6 +31,10 @@ import {TrackLegacyComponent} from './track-legacy/track-legacy.component';
 import {DraftLegacyComponent} from './draft-legacy/draft-legacy.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {RejectedRequestContainerComponent} from './rejected-request-container/rejected-request-container.component';
+import {RejectNotificationComponent} from './reject-notification/reject-notification.component';
+import {RejectReNotificationComponent} from './reject-re-notification/reject-re-notification.component';
+import {RejectVariationComponent} from './reject-variation/reject-variation.component';
+import {RejectGeneralEnquiriesComponent} from './reject-general-enquiries/reject-general-enquiries.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -69,11 +73,11 @@ const routes: Routes = [
       {
         path: 'rejected-request', component: RejectedRequestContainerComponent,
         children: [
-          {path: 'registration', component: TrackRequestComponent, data: {animation: 'rejected-request'}},
-          {path: 're-registration', component: TrackReRegistrationRequestComponent, data: {animation: 'rejected-request'}},
-          {path: 'tell_do_variation', component: TrackVariationComponent, data: {animation: 'rejected-request'}},
-          {path: 'do_tell_variation', component: TrackVariationComponent, data: {animation: 'rejected-request'}},
-          {path: 'general-enquiries', component: TrackGeneralEnquiriesComponent, data: {animation: 'rejected-request'}},
+          {path: 'registration', component: RejectNotificationComponent, data: {animation: 'rejected-request'}},
+          {path: 're-registration', component: RejectReNotificationComponent, data: {animation: 'rejected-request'}},
+          {path: 'tell_do_variation', component: RejectVariationComponent, data: {animation: 'rejected-request'}},
+          {path: 'do_tell_variation', component: RejectVariationComponent, data: {animation: 'rejected-request'}},
+          {path: 'general-enquiries', component: RejectGeneralEnquiriesComponent, data: {animation: 'rejected-request'}},
         ], canActivate: [ApplicationGuard]
       },
       {

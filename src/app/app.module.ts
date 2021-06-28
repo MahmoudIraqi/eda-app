@@ -69,6 +69,10 @@ import { InsertProductForKitComponent } from './insert-product-for-kit/insert-pr
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartsComponentComponent } from './charts-component/charts-component.component';
 import { RejectedRequestContainerComponent } from './rejected-request-container/rejected-request-container.component';
+import { RejectNotificationComponent } from './reject-notification/reject-notification.component';
+import { RejectReNotificationComponent } from './reject-re-notification/reject-re-notification.component';
+import { RejectVariationComponent } from './reject-variation/reject-variation.component';
+import { RejectGeneralEnquiriesComponent } from './reject-general-enquiries/reject-general-enquiries.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +121,10 @@ import { RejectedRequestContainerComponent } from './rejected-request-container/
     DashboardComponent,
     ChartsComponentComponent,
     RejectedRequestContainerComponent,
+    RejectNotificationComponent,
+    RejectReNotificationComponent,
+    RejectVariationComponent,
+    RejectGeneralEnquiriesComponent,
   ],
   imports: [
     BrowserModule,

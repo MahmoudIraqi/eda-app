@@ -1,10 +1,10 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="'Rejected products'" [bigTitle]="true"></app-title>
+      <app-title [title]="'Rejected requests for Notification'" [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
-      <div class="tableContainer ApprovedTable">
+      <div class="tableContainer TrackTable">
         <div class="row">
           <div class="col-12 typeOfRejectedList mb-3">
             <div class="row">
@@ -27,12 +27,16 @@
             </div>
           </div>
           <div class="col-12">
-            <app-table-list [data]="rejectedListRequests" [whichTable]="'rejected'"></app-table-list>
+            <app-table-list [data]="rejectListRequests" [whichTable]="'rejectRequest'"></app-table-list>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>
