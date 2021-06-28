@@ -228,6 +228,10 @@ body {
   text-align: right;
 }
 
+.Attachments .InfoIconContainer {
+  top: 0.5em;
+}
+
 .InfoIconContainer span.infoIcon {
   margin-left: auto;
 }
@@ -642,7 +646,7 @@ body {
 
 button span.ellipsisSpan {
   white-space: nowrap;
-  width: 200px;
+  width: 80px;
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -5,13 +5,60 @@
     </div>
     <div class="col-12 mt-5">
       <div class="tableContainer ApprovedTable">
-        <app-table-list [data]="approvedListRequests" [whichTable]="'approved'"></app-table-list>
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-4">
+            <button type="button"
+                    class="btn btn-primary form-control"
+                    (click)="selectApprovedProductType('approvedProduct')"
+                    [ngClass]="{'active': typeOfApprovedList === 'approvedProduct'}">
+              Approved Product
+            </button>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <button type="button"
+                    class="btn btn-primary form-control"
+                    (click)="selectApprovedProductType('approvedProductWithComment')"
+                    [ngClass]="{'active': typeOfApprovedList === 'approvedProductWithComment'}">
+              Approved Product With Comments
+            </button>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <button type="button"
+                    class="btn btn-primary form-control"
+                    (click)="selectApprovedProductType('holdProducts')"
+                    [ngClass]="{'active': typeOfApprovedList === 'holdProducts'}">
+              Hold Products
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2" *ngIf="typeOfApprovedList === 'approvedProductWithComment'">
+          <div class="col-12 col-sm-6">
+            <button type="button"
+                    class="btn btn-primary form-control"
+                    (click)="selectApprovedProductWithCommentsType('approvedProductWithLabs')"
+                    [ngClass]="{'active': typeOfApprovedListWithComments === 'approvedProductWithLabs'}">
+              Approved Product with Comments from Labs
+            </button>
+          </div>
+          <div class="col-12 col-sm-6">
+            <button type="button"
+                    class="btn btn-primary form-control"
+                    (click)="selectApprovedProductWithCommentsType('approvedProductWithRegComment')"
+                    [ngClass]="{'active': typeOfApprovedListWithComments === 'approvedProductWithRegComment'}">
+              Approved Product With Comments from Registration
+            </button>
+          </div>
+        </div>
+        <div class="mt-3">
+          <app-table-list [data]="approvedListRequests" [whichTable]="'approved'"></app-table-list>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
   <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 

@@ -132,16 +132,52 @@ export class HeaderComponent implements OnInit {
       ]
     },
     {
+      name: 'Rejected requests',
+      link: '/rejected-request',
+      dropDownStatus: true,
+      dropdownLinks: [
+        {
+          name: 'Notification',
+          link: '/rejected-request/registration'
+        },
+        {
+          name: 'Re-Notification',
+          link: '/rejected-request/re-registration'
+
+        },
+        {
+          name: 'Tell & Do variation',
+          link: '/rejected-request/tell_do_variation'
+        },
+        {
+          name: 'Do & Tell Variation',
+          link: '/rejected-request/do_tell_variation'
+        },
+        {
+          name: 'Inspection',
+          link: '#'
+        },
+        {
+          name: 'Custom Release',
+          link: '#'
+        },
+        {
+          name: 'General Enquiries',
+          link: '/rejected-request/general-enquiries'
+        }
+      ]
+    },
+    {
       name: 'Products',
       link: '-product',
       dropDownStatus: true,
       dropdownLinks: [
         {
-          name: 'Approved products',
+          name: 'Registered products',
           link: '/approved-product'
         },
         {
-          name: 'Rejected products',
+          name: 'Blocked products',
           link: '/rejected-product',
         },
         {

@@ -12,6 +12,8 @@ export class ApprovedRequestComponent implements OnInit {
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   isLoading: boolean = false;
+  typeOfApprovedList;
+  typeOfApprovedListWithComments;
 
   constructor(private getService: FormService) {
   }
@@ -20,11 +22,11 @@ export class ApprovedRequestComponent implements OnInit {
     this.isLoading = true;
     this.getService.getApprovedProductsList().subscribe((res: any) => {
       this.approvedListRequests = {
-        tableHeader: ['Notification', 'Notification date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product','Add Batch'],
+        tableHeader: ['Notification', 'Notification date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product', 'Add Batch'],
         tableBody: res
       };
       this.isLoading = false;
-    },error => this.handleError(error));
+    }, error => this.handleError(error));
   }
 
   handleError(message) {
@@ -37,5 +39,15 @@ export class ApprovedRequestComponent implements OnInit {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  selectApprovedProductType(whichType) {
+    console.log('whichType', whichType);
+    this.typeOfApprovedList = whichType;
+  }
+
+  selectApprovedProductWithCommentsType(whichType) {
+    console.log('whichType', whichType);
+    this.typeOfApprovedListWithComments = whichType;
   }
 }

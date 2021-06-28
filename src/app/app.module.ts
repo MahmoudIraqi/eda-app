@@ -68,6 +68,7 @@ import {DraftLegacyComponent} from './draft-legacy/draft-legacy.component';
 import { InsertProductForKitComponent } from './insert-product-for-kit/insert-product-for-kit.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartsComponentComponent } from './charts-component/charts-component.component';
+import { RejectedRequestContainerComponent } from './rejected-request-container/rejected-request-container.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { ChartsComponentComponent } from './charts-component/charts-component.co
     InsertProductForKitComponent,
     DashboardComponent,
     ChartsComponentComponent,
+    RejectedRequestContainerComponent,
   ],
   imports: [
     BrowserModule,
