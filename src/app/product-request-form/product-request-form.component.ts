@@ -1001,7 +1001,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         return formControlValue.valueChanges
           .pipe(
             startWith(''),
-            map(state => state ? this.filterInsideList(whichLookup, state, list).slice(0, 1000) : list.slice(0, 1000))
+            debounceTime(30),
+            map(state => state ? this.filterInsideList(whichLookup, state, list).slice(0, 3000) : list.slice(0, 3000))
           );
       }
     } else {
