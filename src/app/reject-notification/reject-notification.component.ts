@@ -44,20 +44,20 @@ export class RejectNotificationComponent implements OnInit {
       if (whichType === 'Final') {
         this.typeOfRejectedList = 'Final';
         this.rejectListRequests = {
-          tableHeader: ['Request Number', 'Submission date', 'Type Of Notification' , 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
+          tableHeader: ['Request Number', 'Submission date', 'Type Of Notification', 'Product English name', 'Type Of Request', 'Status', 'Track Type', 'Action'],
           tableBody: this.responseForRejectedList.filter(x => !x.canAppeld)
         };
       } else if (whichType === 'Appealed') {
         this.typeOfRejectedList = 'Appealed';
         this.rejectListRequests = {
-          tableHeader: ['Request Number', 'Submission date', 'Type Of Notification' , 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
+          tableHeader: ['Request Number', 'Submission date', 'Type Of Notification', 'Product English name', 'Type Of Request', 'Status', 'Track Type', 'Action'],
           tableBody: this.responseForRejectedList.filter(x => x.canAppeld)
         };
       }
     } else {
       this.typeOfRejectedList = whichType;
       this.rejectListRequests = {
-        tableHeader: ['Request Number', 'Submission date', 'Type Of Notification' , 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
+        tableHeader: ['Request Number', 'Submission date', 'Type Of Notification', 'Product English name', 'Type Of Request', 'Status', 'Track Type', 'Action'],
         tableBody: this.responseForRejectedList
       };
     }
