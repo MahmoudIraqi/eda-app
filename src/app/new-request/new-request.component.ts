@@ -240,7 +240,7 @@ export class NewRequestComponent implements OnInit {
 
     } else if (this.selectedFormType === 5 || this.selectedFormType === 6) {
       const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 5 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
-      const newEvent = convertToSpecialObject('submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+      const newEvent = convertToSpecialObject(event.isDraft === 0 ? 'submit' : 'submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.updatingProductData = res;
