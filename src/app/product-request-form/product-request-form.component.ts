@@ -466,10 +466,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
-  getLookupForFormArray() {
+  getLookupForFormArray(index) {
     this.IngrediantDetailsRows().controls.map((x) => {
-      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList);
-      this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList);
+      this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList, index);
+      this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList, index);
     });
   }
 
@@ -996,14 +996,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
-  filterLookupsFunction(whichLookup, formControlValue, list) {
+  filterLookupsFunction(whichLookup, formControlValue, list, index?: any) {
     if (whichLookup === 'ingrediant') {
       if (formControlValue) {
         return formControlValue.valueChanges
           .pipe(
             startWith(''),
             debounceTime(30),
-            map(state => state ? this.filterInsideList(whichLookup, state, list).slice(0, 3000) : list.slice(0, 3000))
+            map(state => state ? this.filterInsideList(whichLookup, state, list, index).slice(0, 3000) : list.slice(0, 3000))
           );
       }
     } else {
@@ -1017,13 +1017,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
-  filterInsideList(lookup, value, list): LookupState[] {
-    let filterValue;
-    if (value) {
-      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
-    }
-
-    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+  filterInsideList(lookup, value, list, index?: any): LookupState[] {
+      let filterValue;
+      if (value) {
+        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
+      }
+      return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
   convertAllNamingToId(data) {
@@ -1231,7 +1230,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   rerenderSubscribtionForClosingActionForDetailsForm(index) {
-    this.getLookupForFormArray();
+    this.getLookupForFormArray(index);
 
     this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant, index);
     this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction, index);
