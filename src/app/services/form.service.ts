@@ -851,7 +851,7 @@ export class FormService {
 
       return throwError(`Error! Please login again`);
     } else {
-      return throwError(`Error! ${error.error.StatusMessage}`);
+      return throwError(`Error! ${error.error.StatusMessage ? error.error.StatusMessage : error.error}`);
     }
   }
 }

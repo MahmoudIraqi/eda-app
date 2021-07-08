@@ -336,8 +336,7 @@
                             <td>{{request.productTypeName}}</td>
                             <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
                                                    placement="right">{{request.NameEN}}</span></td>
-                            <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
-                                                   placement="right">{{request.NameAR}}</span></td>
+                            <td class="hide">{{request.flagTrackName}}</td>
                             <td class="hide">{{request.Track_type}}</td>
                             <td>
                               <span (click)="editProduct(request)">
@@ -371,8 +370,8 @@
                         <span>{{request.productTypeName}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
-                        <label class="label">Product Arabic name :</label>
-                        <span>{{request.NameAR}}</span>
+                        <label class="label">Type Of Request :</label>
+                        <span>{{request.flagTrackName}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Track Type :</label>

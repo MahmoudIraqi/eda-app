@@ -111,11 +111,18 @@ export class NewRequestComponent implements OnInit {
       if (this.productId) {
         this.isLoading = true;
         if (!this.getDraftProductData) {
-          this.getService.getProductWithProductIDList(Number(this.productId), '').subscribe((res: any) => {
+          this.getService.getProductWithProductIDList(Number(this.productId), this.typeOfProcess === 'CanBeAppealed' ? this.typeOfProcess : '').subscribe((res: any) => {
             this.selectedFormType = res.typeOfMarketing;
             this.selectedRequestedType = res.typeOfRegistration;
             this.selectedTrackType = res.Tracktype;
             this.selectedIsExport = res.isExport;
+            this.productId = res.id;
+            if (this.typeOfProcess === 'CanBeAppealed' && res.id === 0) {
+              res.receiptValue = '';
+              res.receiptNumber = '';
+              res.receipt = '';
+            }
+            console.log('res', res);
             this.updatingProductData = res;
             this.editFormIPStatus = true;
             this.isLoading = false;

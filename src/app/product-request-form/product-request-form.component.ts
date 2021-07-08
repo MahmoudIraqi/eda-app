@@ -47,6 +47,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() editFromWhere;
   @Input() getAllLookupsStatus;
   @Input() legacyStatus;
+  @Input() canBeAppealedStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
@@ -89,7 +90,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     tableHeader: ['Volumes', 'Unit of measure', 'type of packaging', 'Actions'],
     tableBody: []
   };
-  attachmentFields = [
+  attachmentFields: AttachemntObject[] = [
     {
       id: 'freeSaleDoc',
       name: 'Free Sale',
@@ -216,7 +217,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileName: '',
       fileValue: '',
       required: true,
-      enable: !this.legacyStatus ? true : false,
+      enable: !this.legacyStatus ? true : !this.canBeAppealedStatus ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
     },
@@ -1018,11 +1019,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   filterInsideList(lookup, value, list, index?: any): LookupState[] {
-      let filterValue;
-      if (value) {
-        filterValue = value.toLowerCase() ? value.toLowerCase() : '';
-      }
-      return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
+    let filterValue;
+    if (value) {
+      filterValue = value.toLowerCase() ? value.toLowerCase() : '';
+    }
+    return list.filter(option => option.NAME.toLowerCase().includes(filterValue)).map(x => x);
   }
 
   convertAllNamingToId(data) {
@@ -1520,4 +1521,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   onScrollFunction(event) {
 
   }
+}
+
+export interface AttachemntObject {
+  id: string;
+  name: string;
+  fileName: string;
+  fileValue: string;
+  required: boolean;
+  enable: boolean;
+  isCanBeAppealed?: boolean
+  attachmentTypeStatus: string;
+  loadingStatus: boolean;
 }
