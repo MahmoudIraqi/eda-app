@@ -92,6 +92,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     tableHeader: ['Volumes', 'Unit of measure', 'type of packaging', 'Actions'],
     tableBody: []
   };
+  manufacturingListTable = {
+    tableHeader: ['Manufacturing Company', 'Manufacturing Country', 'Actions'],
+    tableBody: []
+  };
   attachmentFields: AttachemntObject[] = [
     {
       id: 'freeSaleDoc',
@@ -308,8 +312,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   editDetailedRowStatus = false;
   editPackagingIndex;
   editPackagingRowStatus = false;
+  editManufacturingIndex;
+  editManufacturingRowStatus = false;
   regProductForAllRequestedType: FormGroup;
   regPackagingForProduct: FormGroup;
+  regManufacturingForProduct: FormGroup;
   regDetailedForProduct: FormGroup;
   subscription: Subscription;
   addShortNameFieldStatus = false;
@@ -328,6 +335,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   productComments;
   deletedPackagingList = [];
   deletedDetailedList = [];
+  deletedManufacturingList = [];
   deletedIdsListForIngrediant = [];
   deletedShortNameList = [];
   attachmentRequiredStatus: boolean = false;
@@ -364,6 +372,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
               private getService: FormService) {
     this.getFormAsStarting('');
     this.getPackagingFormAsStarting('');
+    this.getManufacturingFormAsStarting('');
     this.getDetailedFormAsStarting('');
   }
 
@@ -412,8 +421,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   ngAfterViewInit() {
     this._subscribeToClosingActions('productColor', this.filteredOptionsForProductColor);
-    this._subscribeToClosingActions('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
-    this._subscribeToClosingActions('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
     this._subscribeToClosingActions('licenseHolder', this.filteredOptionsForLicenseHolder);
     this._subscribeToClosingActions('countryOfLicenseHolder', this.filteredOptionsForLicenseHolderCountry);
     this._subscribeToClosingActions('physicalState', this.filteredOptionsForPhysicalState);
@@ -421,6 +428,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
     this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
     this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
+    this._subscribeToClosingActionsForManufacturingFormArray('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
+    this._subscribeToClosingActionsForManufacturingFormArray('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
   }
 
   ngOnDestroy() {
@@ -564,6 +573,33 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.openModal(this.modalTemplate);
     this.rerenderSubscribtionForClosingActionForPackagingForm();
+  }
+
+  removeManufacturingRows(i) {
+    this.regProductForAllRequestedType.get('manufacturingTable').value.splice(i, 1);
+
+    this.manufacturingListTable.tableBody = [];
+    this.regProductForAllRequestedType.get('manufacturingTable').value.map((x, i) => {
+      this.manufacturingListTable.tableBody = [...this.manufacturingListTable.tableBody, x];
+    });
+  }
+
+  deletedManufacturingIdsList(event) {
+    this.deletedManufacturingList = event;
+    this.regProductForAllRequestedType.get('deletedManufacturinglstIds').patchValue(event);
+  }
+
+  editTheManufacturingRows(event) {
+    this.editManufacturingRowStatus = true;
+    this.editManufacturingIndex = event;
+    const editRowData = this.regProductForAllRequestedType.get('manufacturingTable').value[event];
+
+    this.regManufacturingForProduct.patchValue({
+      ...editRowData
+    });
+
+    this.openModal(this.modalTemplate);
+    this.rerenderSubscribtionForClosingActionForManufacturingForm();
   }
 
   removeDetailedRows(i) {
@@ -758,6 +794,30 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
+  onSubmitForManufacturingForm() {
+    const data = this.regManufacturingForProduct.value;
+    data.manufacturingCompany = this.checkControllerValueWithListForManufacturingArray(this.formData.manufacturingCompanyList, 'manufacturingCompany', data.manufacturingCompany);
+    data.manufacturingCountry = this.checkControllerValueWithListForManufacturingArray(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
+
+    if (this.regManufacturingForProduct.valid) {
+      if (!this.editManufacturingIndex && this.editManufacturingIndex !== 0) {
+        this.regProductForAllRequestedType.value.manufacturingTable.push({...this.regManufacturingForProduct.value});
+      } else {
+        this.regProductForAllRequestedType.get('manufacturingTable').value[this.editManufacturingIndex] = this.regManufacturingForProduct.value;
+        this.editManufacturingRowStatus = false;
+        this.editManufacturingIndex = '';
+      }
+
+      this.modalRef.hide();
+
+      this.manufacturingListTable.tableBody = this.regProductForAllRequestedType.get('manufacturingTable').value;
+
+      this.getManufacturingFormAsStarting('');
+    } else {
+      this.errorMessage.emit('true');
+    }
+  }
+
   onSubmitForDetailedForm() {
     const data = this.regDetailedForProduct.value;
     data.ingrediantDetails.map((option, index) => {
@@ -801,14 +861,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
       }) : null;
 
+      this.manufacturingListTable.tableBody = [];
+      data.manufacturingTable ? data.manufacturingTable.map((x, i) => {
+        this.manufacturingListTable.tableBody = [...this.manufacturingListTable.tableBody, x];
+      }) : null;
+
       this.detailsListTable.tableBody = [];
       data.detailsTable ? data.detailsTable.map((x, i) => {
         this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
       }) : null;
 
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
-      this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
-      this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
       this.formData.licenseHolderCountryList.filter(option => option.ID === data.countryOfLicenseHolder).map(x => data.countryOfLicenseHolder = x.NAME);
@@ -819,6 +882,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       data.packagingTable ? data.packagingTable.map(x => {
         this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
         this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+      }) : null;
+      data.manufacturingTable ? data.manufacturingTable.map(x => {
+        this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
+        this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
       }) : null;
       data.detailsTable ? data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
@@ -866,8 +933,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
         shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')])]),
-        manufacturingCompany: this.fb.control(null, Validators.required),
-        manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
         licenseHolder: this.fb.control('', Validators.required),
         licenseHolderTxt: this.fb.control(''),
@@ -883,10 +948,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
+        manufacturingTable: this.fb.control([]),
         deletedShortNameList: this.fb.control([]),
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
+        deletedManufacturinglstIds: this.fb.control(null),
         freeSaleDoc: this.fb.control(''),
         GMP: this.fb.control(''),
         CoA: this.fb.control('', this.selectedRequestedType === 1 && this.selectedRequestedType === 2 ? Validators.required : null),
@@ -923,6 +990,18 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         typeOfPackaging: this.fb.control('', Validators.required),
         packagingDescription: this.fb.control(''),
         isCartonBox: this.fb.control(''),
+      });
+    }
+  }
+
+  getManufacturingFormAsStarting(data) {
+    if (data) {
+
+    } else {
+      this.regManufacturingForProduct = this.fb.group({
+        manufacturingID: this.fb.control(''),
+        manufacturingCompany: this.fb.control(null, Validators.required),
+        manufacturingCountry: this.fb.control('', Validators.required),
       });
     }
   }
@@ -1092,6 +1171,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }) : null;
   }
 
+  private _subscribeToClosingActionsForManufacturingFormArray(field, list): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    list ? list.subscribe(x => {
+      if (x.length === 0) {
+        if (this.regManufacturingForProduct.controls[field].dirty) {
+          this.regManufacturingForProduct.controls[field].setValue(null);
+        }
+      }
+    }) : null;
+  }
+
   private _subscribeToClosingActionsForDetailsFormArray(field, list, index): void {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
@@ -1170,6 +1263,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.editPackagingRowStatus = false;
   }
 
+  closeManufacturingModal() {
+    this.getManufacturingFormAsStarting('');
+    this.modalRef.hide();
+    this.editManufacturingRowStatus = false;
+  }
+
   closeDetailedForm() {
     this.getDetailedFormAsStarting('');
     this.modalRef.hide();
@@ -1213,6 +1312,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     return value;
   }
 
+  checkControllerValueWithListForManufacturingArray(list, formControlKey, formControlValue) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.NAME;
+      });
+    } else {
+      this.regManufacturingForProduct.get(formControlKey).patchValue('');
+      value = '';
+    }
+    return value;
+  }
+
   checkControllerValueWithListForDetailsArray(list, formControlKey, formControlValue, ingrediantIndex) {
     let value;
     if (list.filter(option => option.NAME === formControlValue).length > 0) {
@@ -1233,6 +1345,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
     this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
+  }
+
+  rerenderSubscribtionForClosingActionForManufacturingForm() {
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+
+    this._subscribeToClosingActionsForManufacturingFormArray('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
+    this._subscribeToClosingActionsForManufacturingFormArray('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
   }
 
   rerenderSubscribtionForClosingActionForDetailsForm(index) {
@@ -1512,8 +1632,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   setAllLookups() {
     this.filteredOptionsForProductColor = this.filterLookupsFunction('productColor', this.regProductForAllRequestedType.get('productColor'), this.formData.productColorList);
-    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
-    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
     this.filteredOptionsForLicenseHolder = this.filterLookupsFunction('licenseHolder', this.regProductForAllRequestedType.get('licenseHolder'), this.formData.licenseHolderList);
     this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction('countryOfLicenseHolder', this.regProductForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
     this.filteredOptionsForPhysicalState = this.filterLookupsFunction('physicalState', this.regProductForAllRequestedType.get('physicalState'), this.formData.physicalStateList);
@@ -1521,6 +1639,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction('storagePlace', this.regProductForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
     this.filteredOptionsForUnitOfMeasure = this.filterLookupsFunction('unitOfMeasure', this.regPackagingForProduct.get('unitOfMeasure'), this.formData.unitOfMeasureList);
     this.filteredOptionsForTypeOfPackaging = this.filterLookupsFunction('typeOfPackaging', this.regPackagingForProduct.get('typeOfPackaging'), this.formData.typeOfPackagingList);
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
   }
 
   onScrollFunction(event) {

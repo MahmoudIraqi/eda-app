@@ -715,6 +715,42 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
+            <td colspan="3" *ngIf="whichTable === 'newRequestForManufacturing'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td>{{request.manufacturingCompany}}</td>
+                          <td>{{request.manufacturingCountry}}</td>
+                          <td>
+                      <span class="mr-2" (click)="editManufacturingRowFunction(i)">
+                        <i class="fa fa-edit"></i>
+                      </span>
+                            <span (click)="removeManufacturingRowFunction(i, request.manufacturingID)">
+                        <i class="fa fa-trash"></i>
+                      </span>
+                          </td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Manufacturing Country :</label>
+                        <span>{{request.manufacturingCountry}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Manufacturing Company :</label>
+                        <span>{{request.manufacturingCompany}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
             <td colspan="6" *ngIf="whichTable === 'productsKitList'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
@@ -1349,6 +1385,21 @@
                       <table class="table table-sm tableDetailsCont">
                         <tr>
                           <td colspan="4">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="3" *ngIf="whichTable === 'newRequestForManufacturing'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="3">{{noDataStatment}}</td> <!--  -->
                         </tr>
                       </table>
                     </mat-panel-title>
