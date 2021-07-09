@@ -287,11 +287,8 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
-    debugger;
     const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
     const editFrom = this.route.snapshot.routeConfig.path;
-
-    console.log('approvedType', this.approvedType);
 
     if (editFrom === 'tell_do_variation') {
       this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}`]);

@@ -36,7 +36,6 @@ export class ApprovedRequestComponent implements OnInit {
   }
 
   selectApprovedProductType(whichType) {
-    console.log('whichType', whichType);
     this.typeOfApprovedList = whichType;
 
     if (whichType === 'approvedProduct') {
@@ -58,7 +57,6 @@ export class ApprovedRequestComponent implements OnInit {
   }
 
   selectApprovedProductWithCommentsType(whichType) {
-    console.log('whichType', whichType);
     this.typeOfApprovedListWithComments = whichType;
 
     if (whichType === 'approvedProductWithLabsComments') {
@@ -87,7 +85,6 @@ export class ApprovedRequestComponent implements OnInit {
   }
 
   selectApprovedHoldProductType(whichType) {
-    console.log('whichType', whichType);
     this.typeOfApprovedHoldList = whichType;
 
     if (whichType === 'approvedHoldProductWithLabsComments') {
