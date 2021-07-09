@@ -706,7 +706,7 @@
         <button type="button"
                 *ngIf="!approvedStatus && !reRegistrationStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
-                [disabled]="!disabledSaveButton ||(editData && editData.isCompleted) || (trackProductStatus && !editProcessInTrackedProduct)"
+                [disabled]="!disabledSaveButton ||(editData && editData.isCompleted && !canBeAppealedStatus && !canEditForApprovedProduct) || (trackProductStatus && !editProcessInTrackedProduct)"
                 (click)="saveData()">
           Save
         </button>

@@ -135,6 +135,8 @@
               [successSubmission]="successSubmission"
               [approvedStatus]="typeOfProcess === 'Approved'"
               [trackProductStatus]="typeOfProcess === 'Track'"
+              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
+              [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment'"
               [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"
               [editFromWhere]="editFormIPStatus"
