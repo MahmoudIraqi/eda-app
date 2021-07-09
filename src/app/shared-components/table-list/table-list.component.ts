@@ -287,6 +287,7 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
+    debugger;
     const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
     const editFrom = this.route.snapshot.routeConfig.path;
 
@@ -303,7 +304,7 @@ export class TableListComponent implements OnInit, OnChanges {
     } else if (editFrom === 'legacy') {
       this.router.navigate([`/legacy-form/${Number(request.OLD_PRODUCT_ID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
     } else if (editFrom === 'approved-product') {
-      this.router.navigate([`/new-request/registration/${Number(request.ID)}/${this.approvedType}`]);
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/${request.canEdit ? this.approvedType : 'approvedProduct'}`]);
     }
   }
 
