@@ -45,7 +45,7 @@ export class ApprovedRequestComponent implements OnInit {
 
       this.getService.getApprovedProductsList().subscribe((res: any) => {
         this.approvedListRequests = {
-          tableHeader: ['Notification', 'Notification date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product', 'Add Batch'],
+          tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res
         };
         this.isLoading = false;
@@ -67,7 +67,7 @@ export class ApprovedRequestComponent implements OnInit {
 
       this.getService.getApprovedProductsWithCommentsFromLabsList().subscribe((res: any) => {
         this.approvedListRequests = {
-          tableHeader: ['Notification', 'Notification date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product', 'Add Batch'],
+          tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res
         };
         this.isLoading = false;
@@ -78,7 +78,7 @@ export class ApprovedRequestComponent implements OnInit {
 
       this.getService.getApprovedProductsWithCommentsFromRegList().subscribe((res: any) => {
         this.approvedListRequests = {
-          tableHeader: ['Notification', 'Notification date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product', 'Add Batch'],
+          tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res
         };
         this.isLoading = false;
@@ -96,7 +96,7 @@ export class ApprovedRequestComponent implements OnInit {
 
       this.getService.getApprovedHoldProductsFromLabList().subscribe((res: any) => {
         this.approvedListRequests = {
-          tableHeader: ['Notification', 'Notification date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product', 'Add Batch'],
+          tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res
         };
         this.isLoading = false;
@@ -107,7 +107,7 @@ export class ApprovedRequestComponent implements OnInit {
 
       this.getService.getApprovedHoldProductsFromRegList().subscribe((res: any) => {
         this.approvedListRequests = {
-          tableHeader: ['Notification', 'Notification date', 'Product English name', 'Product Arabic name', 'Need Action', 'Update Product', 'Add Batch'],
+          tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res
         };
         this.isLoading = false;

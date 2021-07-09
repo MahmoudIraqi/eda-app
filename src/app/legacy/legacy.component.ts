@@ -98,7 +98,6 @@ export class LegacyComponent implements OnInit {
     setTimeout(() => {
       this.selectedFormType = event.value;
       this.productDataAsCopy.typeOfMarketing = event.value;
-      console.log('productDataAsCopy', this.productDataAsCopy);
       this.productData = this.productDataAsCopy;
       this.isLoading = false;
     }, 500);
@@ -129,8 +128,6 @@ export class LegacyComponent implements OnInit {
       id: this.productData.id
     };
     const eventObject = convertToSpecialObjectForLegacy('save', newData);
-
-    console.log('eventObject', eventObject);
 
     this.getService.createProductRequest(eventObject).subscribe((res: any) => {
       this.isLoading = false;

@@ -48,6 +48,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() getAllLookupsStatus;
   @Input() legacyStatus;
   @Input() canBeAppealedStatus;
+  @Input() canEditForApprovedProduct;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
@@ -374,7 +375,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.getDisabledValues();
 
-    console.log('editData', this.editData);
     this.getFormAsStarting(this.editData);
 
     this.setApplicant(this.companyProfile);
@@ -417,8 +417,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this._subscribeToClosingActions('storagePlace', this.filteredOptionsForStoragePlace);
     this._subscribeToClosingActionsForPackagingFormArray('unitOfMeasure', this.filteredOptionsForUnitOfMeasure);
     this._subscribeToClosingActionsForPackagingFormArray('typeOfPackaging', this.filteredOptionsForTypeOfPackaging);
-
-    console.log('12341234', this.autoIngrediantInput); //.nativeElement.addEventListener('scroll', this.onScrollFunction(event))
   }
 
   ngOnDestroy() {

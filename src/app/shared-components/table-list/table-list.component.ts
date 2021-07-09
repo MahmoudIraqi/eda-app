@@ -14,6 +14,7 @@ export class TableListComponent implements OnInit, OnChanges {
 
   @Input() data;
   @Input() whichTable;
+  @Input() approvedType;
   step;
   sortByForRequestNumber = [
     {
@@ -289,8 +290,7 @@ export class TableListComponent implements OnInit, OnChanges {
     const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
     const editFrom = this.route.snapshot.routeConfig.path;
 
-    console.log('isTrackProduct', isTrackProduct);
-    console.log('editFrom', editFrom);
+    console.log('approvedType', this.approvedType);
 
     if (editFrom === 'tell_do_variation') {
       this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}`]);
@@ -303,7 +303,7 @@ export class TableListComponent implements OnInit, OnChanges {
     } else if (editFrom === 'legacy') {
       this.router.navigate([`/legacy-form/${Number(request.OLD_PRODUCT_ID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
     } else if (editFrom === 'approved-product') {
-      this.router.navigate([`/new-request/registration/${Number(request.ID)}/Approved`]);
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/${this.approvedType}`]);
     }
   }
 

@@ -68,7 +68,9 @@
           </div>
         </div>
         <div class="mt-3">
-          <app-table-list [data]="approvedListRequests" [whichTable]="'approved'"></app-table-list>
+          <app-table-list [data]="approvedListRequests"
+                          [whichTable]="'approved'"
+                          [approvedType]="typeOfApprovedList === 'holdProducts'? typeOfApprovedHoldList : typeOfApprovedList === 'approvedProductWithComment'? typeOfApprovedListWithComments : typeOfApprovedList"></app-table-list>
         </div>
       </div>
     </div>

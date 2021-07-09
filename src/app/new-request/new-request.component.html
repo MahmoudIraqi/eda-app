@@ -52,7 +52,7 @@
                   <mat-select
                     (selectionChange)="getTrackType($event);"
                     [(ngModel)]="this.selectedTrackType" required
-                    [disabled]="productId && updatingProductData && updatingProductData.isDraft === 0">
+                    [disabled]="(productId && updatingProductData && updatingProductData.isDraft === 0) || typeOfProcess === 'CanBeAppealed' || updatingProductData && updatingProductData.trackCode === 'REJECT' || updatingProductData && updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData && updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData && updatingProductData.trackCode ==='REJECT_APPEAL1'">
                     <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>
@@ -79,7 +79,8 @@
               [successSubmission]="successSubmission"
               [approvedStatus]="typeOfProcess === 'Approved'"
               [trackProductStatus]="typeOfProcess === 'Track'"
-              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'"
+              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
+              [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment'"
               [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"
               [editFromWhere]="editFormIPStatus"

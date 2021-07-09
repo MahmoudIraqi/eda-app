@@ -447,10 +447,9 @@
                         <tr>
                           <td>{{request.NotificationNo}}</td>
                           <td class="hide">{{request.notificationdate | date}}</td>
+                          <td class="hide">{{request.productTypeName}}</td>
                           <td><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
                                     placement="right">{{request.NameEN}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
-                                                 placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.colorFlag ? 'Yes' : ''}}</td>
                           <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
                           <td (click)="addBatch(request.NotificationNo)"><i class="fas fa-cart-plus"></i></td>
@@ -468,13 +467,14 @@
                         <label class="label">Submission date :</label>
                         <span>{{request.SubmmittionDate}}</span>
                       </div>
+
+                      <div class="col-12 col-sm-6 col-md-3">
+                        <label class="label">Type Of Notification :</label>
+                        <span>{{request.productTypeName}}</span>
+                      </div>
                       <div class="col-12 col-sm-6 col-md-3">
                         <label class="label ">Product English name :</label>
                         <span>{{request.NameEN}}</span>
-                      </div>
-                      <div class="col-12 col-sm-6 col-md-3">
-                        <label class="label">Product Arabic name :</label>
-                        <span>{{request.NameAR}}</span>
                       </div>
                     </div>
                   </div>
