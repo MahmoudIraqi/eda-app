@@ -117,7 +117,7 @@ export class NewRequestComponent implements OnInit {
             this.selectedTrackType = res.Tracktype;
             this.selectedIsExport = res.isExport;
             this.productId = res.id;
-            if (this.typeOfProcess === 'CanBeAppealed' && res.id === 0) {
+            if ((this.typeOfProcess === 'CanBeAppealed' || this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithLabsComments') && res.id === 0) {
               res.receiptValue = '';
               res.receiptNumber = '';
               res.receipt = '';
@@ -127,7 +127,11 @@ export class NewRequestComponent implements OnInit {
             this.editFormIPStatus = true;
             this.isLoading = false;
 
-            this.getPricing('draftRequest');
+            if (res.trackCode === 'REJECT' || res.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || res.trackCode === 'REJECT_COMP_REPLY_WRONG' || res.trackCode === 'REJECT_APPEAL1') {
+              this.getPricing('Appeal');
+            } else {
+              this.getPricing('draftRequest');
+            }
             this.getProductsKitLookups('draftRequest');
           }, error => this.handleError(error));
         }
@@ -312,6 +316,9 @@ export class NewRequestComponent implements OnInit {
     } else if (fromWhere === 'draftRequest') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
       this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+    } else if (fromWhere === 'Appeal'){
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariable = 'APPEAL';
     }
 
     if (this.trackTypeVariable && this.typeOfNotificationVariable) {
