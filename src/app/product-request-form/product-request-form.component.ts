@@ -763,7 +763,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...data,
       ...this.objectForListOfVariationGroup
     };
-    if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0) {
+    if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
       this.errorMessage.emit('true');

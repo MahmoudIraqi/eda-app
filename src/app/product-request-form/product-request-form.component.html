@@ -547,8 +547,9 @@
                          *ngIf="manufacturingListTable.tableBody.length === 0 && attachmentRequiredStatus">
                       <h5>** Please add Manufacturing data</h5>
                     </div>
+                    <!-- canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false -->
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : manufacturingListTable.tableBody.length === 0? canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false : true"
                             (click)="openModal(manufacturingModal); rerenderSubscribtionForClosingActionForManufacturingForm()">
                       Add new manufacturing
                     </button>
@@ -863,7 +864,7 @@
                    aria-label="Manufacturing Country"
                    matInput
                    formControlName="manufacturingCountry"
-                   [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : legacyStatus? productFlags && !productFlags.manufacturingCompany ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingCompany ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCompany ? true : false"[readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : legacyStatus? productFlags && !productFlags.manufacturingCountry ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingCountry ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
+                   [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : legacyStatus? productFlags && !productFlags.manufacturingCountry ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingCountry ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
                    [matAutocomplete]="manufacturingCountryList" required>
             <mat-autocomplete #manufacturingCountryList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForManufacturingCountry | async"
