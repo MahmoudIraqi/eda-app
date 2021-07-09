@@ -354,6 +354,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   };
   editProcessInTrackedProduct: boolean = false;
 
+  arrayOfObservablesForIngredient: Observable<LookupState[]>[] = [];
+  arrayOfObservablesForFunction: Observable<LookupState[]>[] = [];
+
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
               private router: Router,
@@ -471,6 +474,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList, index);
       this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList, index);
     });
+
+    this.arrayOfObservablesForIngredient.push(this.filteredOptionsForIngradiant);
+    this.arrayOfObservablesForFunction.push(this.filteredOptionsForFunction);
   }
 
   // Functions for Tabs

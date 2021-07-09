@@ -354,7 +354,7 @@
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
                      placeholder="Receipt Number" required
-                     [readonly]=" reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : legacyStatus? productFlags && !productFlags.receiptNumber ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptNumber ? true : false"
+                     [readonly]=" reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : legacyStatus? productFlags && !productFlags.receiptNumber ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptNumber ? true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('receiptNumber').invalid && (regKitForAllRequestedType.get('receiptNumber').dirty || regKitForAllRequestedType.get('receiptNumber').touched)"
                 class="alert alert-danger">
