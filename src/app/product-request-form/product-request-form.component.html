@@ -24,7 +24,7 @@
               <input type="text" class="form-control" matInput formControlName="productArabicName"
                      placeholder="Product Name"
                      [required]="enableEditableFields.includes('productArabicName')? 'required': false"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : legacyStatus? productFlags && !productFlags.productArabicName ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.productArabicName ? true : false : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : legacyStatus? productFlags && !productFlags.productArabicName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productArabicName ? true : false : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
               <div
                 *ngIf="regProductForAllRequestedType.get('productArabicName').invalid && (regProductForAllRequestedType.get('productArabicName').dirty || regProductForAllRequestedType.get('productArabicName').touched)"
                 class="alert alert-danger">
@@ -51,7 +51,7 @@
               <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
                      placeholder="Product Name" required
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : legacyStatus? productFlags && !productFlags.productEnglishName ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.productEnglishName ? true : false : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : legacyStatus? productFlags && !productFlags.productEnglishName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productEnglishName ? true : false : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
               <div
                 *ngIf="regProductForAllRequestedType.get('productEnglishName').invalid && (regProductForAllRequestedType.get('productEnglishName').dirty || regProductForAllRequestedType.get('productEnglishName').touched)"
                 class="alert alert-danger">
@@ -72,7 +72,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
+                          [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -96,9 +96,9 @@
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
                            [required]="enableEditableFields.includes('shortName')? 'required': !legacyStatus ? 'required': false"
-                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.shortName ? true : false : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
-                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>
@@ -125,7 +125,7 @@
                      aria-label="Product Color"
                      matInput
                      formControlName="productColor"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : legacyStatus? productFlags && !productFlags.productColor ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.productColor ? true : false : isDraft ? false : productFlags && !productFlags.productColor ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : legacyStatus? productFlags && !productFlags.productColor ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productColor ? true : false : isDraft ? false : productFlags && !productFlags.productColor ? true : false"
                      [matAutocomplete]="productColorList" required>
               <mat-autocomplete #productColorList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForProductColor | async"
@@ -152,7 +152,7 @@
                      aria-label="Manufacturing Company"
                      matInput
                      formControlName="manufacturingCompany"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : legacyStatus? productFlags && !productFlags.manufacturingCompany ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.manufacturingCompany ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCompany ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : legacyStatus? productFlags && !productFlags.manufacturingCompany ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingCompany ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCompany ? true : false"
                      [matAutocomplete]="manufacturingCompanyList" required>
               <mat-autocomplete #manufacturingCompanyList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForManufacturingCompany | async"
@@ -187,7 +187,7 @@
                      aria-label="Manufacturing Country"
                      matInput
                      formControlName="manufacturingCountry"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : legacyStatus? productFlags && !productFlags.manufacturingCountry ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.manufacturingCountry ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : legacyStatus? productFlags && !productFlags.manufacturingCountry ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingCountry ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
                      [matAutocomplete]="manufacturingCountryList" required>
               <mat-autocomplete #manufacturingCountryList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForManufacturingCountry | async"
@@ -241,7 +241,7 @@
                      aria-label="License Holder"
                      matInput
                      formControlName="licenseHolder"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : legacyStatus? productFlags && !productFlags.licenseHolder ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.licenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.licenseHolder ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : legacyStatus? productFlags && !productFlags.licenseHolder ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.licenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.licenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderList" required>
               <mat-autocomplete #licenseHolderList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolder | async"
@@ -273,7 +273,7 @@
               <mat-label>Other License Holder</mat-label>
               <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
                      placeholder="Other License Holder"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolderTxt') : true : legacyStatus? productFlags && !productFlags.licenseHolderTxt ? true : false : isDraft ? false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.licenseHolder ? true : false : productFlags && !productFlags.licenseHolderTxt ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolderTxt') : true : legacyStatus? productFlags && !productFlags.licenseHolderTxt ? true : false : isDraft ? false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.licenseHolder ? true : false : productFlags && !productFlags.licenseHolderTxt ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
@@ -292,7 +292,7 @@
                      aria-label="Country of License Holder"
                      matInput
                      formControlName="countryOfLicenseHolder"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : legacyStatus? productFlags && !productFlags.countryOfLicenseHolder ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.countryOfLicenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.countryOfLicenseHolder ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : legacyStatus? productFlags && !productFlags.countryOfLicenseHolder ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.countryOfLicenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.countryOfLicenseHolder ? true : false"
                      [matAutocomplete]="licenseHolderCountryList" required>
               <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolderCountry | async"
@@ -323,7 +323,7 @@
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark"
                      [required]="enableEditableFields.includes('tradeMark')? 'required': false"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : legacyStatus? productFlags && !productFlags.tradeMark ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.tradeMark ? true : false : isDraft ? false : productFlags && !productFlags.tradeMark ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : legacyStatus? productFlags && !productFlags.tradeMark ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.tradeMark ? true : false : isDraft ? false : productFlags && !productFlags.tradeMark ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
@@ -341,7 +341,7 @@
                      aria-label="Physical State"
                      matInput
                      formControlName="physicalState"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalState') : true : legacyStatus? productFlags && !productFlags.physicalState ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.physicalState ? true : false : isDraft ? false : productFlags && !productFlags.physicalState ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalState') : true : legacyStatus? productFlags && !productFlags.physicalState ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.physicalState ? true : false : isDraft ? false : productFlags && !productFlags.physicalState ? true : false"
                      [matAutocomplete]="physicalStateList" required>
               <mat-autocomplete #physicalStateList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForPhysicalState | async"
@@ -373,7 +373,7 @@
               <mat-label>Other Physical State</mat-label>
               <input type="text" class="form-control" matInput formControlName="physicalStateTxt"
                      placeholder="Other Physical State"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalStateTxt') : true : legacyStatus? productFlags && !productFlags.physicalStateTxt ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.physicalStateTxt ? true : false : isDraft ? false : productFlags && !productFlags.physicalStateTxt ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('physicalStateTxt') : true : legacyStatus? productFlags && !productFlags.physicalStateTxt ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.physicalStateTxt ? true : false : isDraft ? false : productFlags && !productFlags.physicalStateTxt ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
@@ -391,7 +391,7 @@
                      aria-label="Purpose of use"
                      matInput
                      formControlName="purposeOfUse"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUse') : true : legacyStatus? productFlags && !productFlags.purposeOfUse ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.purposeOfUse ? true : false : isDraft ? false : productFlags && !productFlags.purposeOfUse ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUse') : true : legacyStatus? productFlags && !productFlags.purposeOfUse ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.purposeOfUse ? true : false : isDraft ? false : productFlags && !productFlags.purposeOfUse ? true : false"
                      [matAutocomplete]="purposeOfUseList" required>
               <mat-autocomplete #purposeOfUseList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForPurposeOfUse | async"
@@ -423,7 +423,7 @@
               <mat-label>Other Purpose of use</mat-label>
               <input type="text" class="form-control" matInput formControlName="purposeOfUseTxt"
                      placeholder="Other Purpose of use"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUseTxt') : true : legacyStatus? productFlags && !productFlags.purposeOfUseTxt ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.purposeOfUseTxt ? true : false : isDraft ? false : productFlags && !productFlags.purposeOfUseTxt ? true : false">
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('purposeOfUseTxt') : true : legacyStatus? productFlags && !productFlags.purposeOfUseTxt ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.purposeOfUseTxt ? true : false : isDraft ? false : productFlags && !productFlags.purposeOfUseTxt ? true : false">
             </mat-form-field>
           </div>
           <div class="col-lg-4 col-sm-6 col-12">
@@ -441,7 +441,7 @@
                      aria-label="Storage Place"
                      matInput
                      formControlName="storagePlace"
-                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
                      [matAutocomplete]="storagePlaceList"
                      [required]="enableEditableFields.includes('storagePlace')? 'required': selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
@@ -471,7 +471,7 @@
                   </label>
                   <mat-slider
                     class="example-margin mt-3"
-                    [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : legacyStatus? productFlags && !productFlags.shelfLife ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.shelfLife ? true : false : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
+                    [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : legacyStatus? productFlags && !productFlags.shelfLife ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shelfLife ? true : false : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
                     [max]="60"
                     [min]="0"
                     [step]="1"
@@ -491,7 +491,7 @@
                   <input type="text" class="form-control" matInput
                          [value]="regProductForAllRequestedType.get('shelfLife').value"
                          formControlName="shelfLife"
-                         [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : legacyStatus? productFlags && !productFlags.shelfLife ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.shelfLife ? true : false : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
+                         [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : legacyStatus? productFlags && !productFlags.shelfLife ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shelfLife ? true : false : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
                          (change)="setShelfValue($event)" required>
                   <span class="labelForRange">Months</span>
                   <div
@@ -516,7 +516,7 @@
               </div>
               <mat-label>Receipt Number</mat-label>
               <input type="text" class="form-control" matInput formControlName="receiptNumber"
-                     [readonly]=" reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : legacyStatus? productFlags && !productFlags.receiptNumber ? true : false : canBeAppealedStatus? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptNumber ? true : false"
+                     [readonly]=" reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : legacyStatus? productFlags && !productFlags.receiptNumber ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptNumber ? true : false"
                      placeholder="Receipt Number" required>
               <div
                 *ngIf="regProductForAllRequestedType.get('receiptNumber').invalid && (regProductForAllRequestedType.get('receiptNumber').dirty || regProductForAllRequestedType.get('receiptNumber').touched)"
@@ -543,7 +543,7 @@
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
                      (change)="getDecimalValue(regProductForAllRequestedType.get('receiptValue').value)"
-                     [readonly]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : legacyStatus? productFlags && !productFlags.receiptValue ? true : false : canBeAppealedStatus ? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptValue ? true : false"
+                     [readonly]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : legacyStatus? productFlags && !productFlags.receiptValue ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptValue ? true : false"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required>
               <div
@@ -581,7 +581,7 @@
                       <h5>** Please add packaging data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                             (click)="openModal(packagingModal); rerenderSubscribtionForClosingActionForPackagingForm()">
                       Add new packaging
                     </button>
@@ -594,9 +594,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="packagingListTable"
                               [whichTable]="'newRequestForPackaging'"
-                              (removePackagingRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? removePackagingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.packagingTable ?  null : removePackagingRows($event) : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? null : removePackagingRows($event) : isDraft ? removePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : removePackagingRows($event)"
-                              (removePackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? deletedPackagingIdsList($event) : null : null :legacyStatus?  productFlags && !productFlags.packagingTable ?  null : deletedPackagingIdsList($event) : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event) : isDraft ? deletedPackagingIdsList($event) : productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event)"
-                              (editPackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? editThePackagingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.packagingTable ?  null : editThePackagingRows($event) : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event) : isDraft ? editThePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event)"></app-table-list>
+                              (removePackagingRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? removePackagingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.packagingTable ?  null : removePackagingRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? null : removePackagingRows($event) : isDraft ? removePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : removePackagingRows($event)"
+                              (removePackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? deletedPackagingIdsList($event) : null : null :legacyStatus?  productFlags && !productFlags.packagingTable ?  null : deletedPackagingIdsList($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event) : isDraft ? deletedPackagingIdsList($event) : productFlags && !productFlags.packagingTable ? null : deletedPackagingIdsList($event)"
+                              (editPackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('packagingTable') ? editThePackagingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.packagingTable ?  null : editThePackagingRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event) : isDraft ? editThePackagingRows($event) : productFlags && !productFlags.packagingTable ? null : editThePackagingRows($event)"></app-table-list>
             </div>
           </div>
         </div>
@@ -618,7 +618,7 @@
                       <h5>** Please add detail data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                             (click)="openModal(detailedModal); rerenderSubscribtionForClosingActionForDetailsForm(0);">
                       Add new detail
                     </button>
@@ -631,9 +631,9 @@
             <div class="RequestingTable">
               <app-table-list [data]="detailsListTable"
                               [whichTable]="'newRequestForDetails'"
-                              (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? removeDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : removeDetailedRows($event) : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event)"
-                              (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? deletedDetailedIdsList($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : deletedDetailedIdsList($event) : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event)"
-                              (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? editTheDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : editTheDetailedRows($event) : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event)"></app-table-list>
+                              (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? removeDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : removeDetailedRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event)"
+                              (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? deletedDetailedIdsList($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : deletedDetailedIdsList($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event)"
+                              (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? editTheDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : editTheDetailedRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event)"></app-table-list>
             </div>
           </div>
         </div>
@@ -660,7 +660,7 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
-                       [disabled]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
+                       [disabled]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
                        [required]="field.required ? 'required' : false">
                 <div class="d-flex alert alert-danger"
                      *ngIf="(regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
@@ -745,7 +745,7 @@
             <mat-label>Volumes</mat-label>
             <input type="text" class="form-control" matInput formControlName="volumes"
                    placeholder="" required
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false">
             <div
               *ngIf="regPackagingForProduct.get('volumes').invalid && (regPackagingForProduct.get('volumes').dirty || regPackagingForProduct.get('volumes').touched)"
               class="alert alert-danger">
@@ -769,7 +769,7 @@
                    aria-label="Unit of measure"
                    matInput
                    formControlName="unitOfMeasure"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="unitOfMeasureList" required>
             <mat-autocomplete #unitOfMeasureList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForUnitOfMeasure | async"
@@ -797,7 +797,7 @@
                    aria-label="Type of Packaging"
                    matInput
                    formControlName="typeOfPackaging"
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                    [matAutocomplete]="typeOfPackagingList" required>
             <mat-autocomplete #typeOfPackagingList="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptionsForTypeOfPackaging | async"
@@ -820,7 +820,7 @@
           <mat-form-field class="example-full-width">
             <mat-label>Packaging Description</mat-label>
             <textarea matInput formControlName="packagingDescription"
-                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
+                      [disabled]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('packagingTable') : true : legacyStatus? productFlags && !productFlags.packagingTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.packagingTable ? true : false : isDraft ? false : productFlags && !productFlags.packagingTable ? true : false"
                       placeholder="Ex. It makes me feel..."></textarea>
           </mat-form-field>
         </div>
@@ -864,7 +864,7 @@
             <mat-label>Colour</mat-label>
             <input type="text" class="form-control" matInput formControlName="colour"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -873,7 +873,7 @@
             <input type="text" class="form-control" matInput
                    formControlName="fragrance"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -881,7 +881,7 @@
             <mat-label>Flavor</mat-label>
             <input type="text" class="form-control" matInput formControlName="flavor"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -889,7 +889,7 @@
             <mat-label>BarCode</mat-label>
             <input type="text" class="form-control" matInput formControlName="barCode"
                    placeholder=""
-                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                   [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
           </mat-form-field>
         </div>
         <div class="col-12 mt-2">
@@ -914,7 +914,7 @@
                                aria-label="Ingrediant"
                                matInput
                                formControlName="ingrediant"
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoIngrediant"
                                required>
                         <mat-autocomplete #autoIngrediant="matAutocomplete">
@@ -940,7 +940,7 @@
                         <input type="text" class="form-control" matInput
                                formControlName="concentrations"
                                placeholder="concentrations" required
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false">
                         <div
                           *ngIf="row.get('concentrations').invalid && (row.get('concentrations').dirty || row.get('concentrations').touched)"
                           class="alert alert-danger">
@@ -965,7 +965,7 @@
                                matInput
                                formControlName="function"
                                required
-                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
+                               [readonly]="variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                                [matAutocomplete]="autoFunction">
                         <mat-autocomplete #autoFunction="matAutocomplete">
                           <mat-option *ngFor="let option of filteredOptionsForFunction | async"

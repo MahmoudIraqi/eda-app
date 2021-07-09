@@ -52,7 +52,7 @@ export class ApprovedRequestComponent implements OnInit {
     } else if (whichType === 'approvedProductWithComment') {
       this.selectApprovedProductWithCommentsType('approvedProductWithLabsComments');
     } else if (whichType === 'holdProducts') {
-      this.selectApprovedHoldProductType('approvedHoldProductWithLabsComments');
+      this.selectApprovedHoldProductType('approvedHoldProductWithRegComment');
     }
   }
 

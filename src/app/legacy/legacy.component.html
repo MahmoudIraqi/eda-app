@@ -21,7 +21,7 @@
               <mat-form-field appearance="fill">
                 <mat-label>Type Of License</mat-label>
                 <mat-select (selectionChange)="getRequestType($event);"
-                            [(ngModel)]="selectedRequestedType" required [disabled]="true">
+                            [(ngModel)]="selectedRequestedType" required>
                   <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
                     {{option.NAME}}
                   </mat-option>

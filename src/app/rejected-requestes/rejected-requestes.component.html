@@ -1,31 +1,11 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="'Rejected products'" [bigTitle]="true"></app-title>
+      <app-title [title]="'Blocked products'" [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
       <div class="tableContainer ApprovedTable">
         <div class="row">
-          <div class="col-12 typeOfRejectedList mb-3">
-            <div class="row">
-              <div class="col-12 col-sm-6">
-                <button type="button"
-                        class="btn btn-primary form-control"
-                        (click)="selectRejectedType('Final')"
-                        [ngClass]="{'active': typeOfRejectedList === 'Final'}">
-                  Final Rejected
-                </button>
-              </div>
-              <div class="col-12 col-sm-6">
-                <button type="button"
-                        class="btn btn-primary form-control"
-                        (click)="selectRejectedType('Appealed')"
-                        [ngClass]="{'active': typeOfRejectedList === 'Appealed'}">
-                  Could be appealed
-                </button>
-              </div>
-            </div>
-          </div>
           <div class="col-12">
             <app-table-list [data]="rejectedListRequests" [whichTable]="'rejected'"></app-table-list>
           </div>

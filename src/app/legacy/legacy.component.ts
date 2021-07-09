@@ -104,7 +104,16 @@ export class LegacyComponent implements OnInit {
   }
 
   getRequestType(event) {
-    this.selectedRequestedType = event.value;
+    this.selectedRequestedType ? this.selectedRequestedType = '' : null;
+    this.isLoading = true;
+    this.productData = null;
+
+    setTimeout(() => {
+      this.selectedRequestedType = event.value;
+      this.productDataAsCopy.typeOfRegistration = event.value;
+      this.productData = this.productDataAsCopy;
+      this.isLoading = false;
+    }, 500);
   }
 
   applyProduct(NotificationNo) {

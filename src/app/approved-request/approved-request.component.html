@@ -31,24 +31,24 @@
             </button>
           </div>
         </div>
-        <div class="row mt-4 subBtnContainer" *ngIf="typeOfApprovedList === 'holdProducts'">
-          <div class="col-12 col-sm-6">
-            <button type="button"
-                    class="btn btn-primary form-control"
-                    (click)="selectApprovedHoldProductType('approvedHoldProductWithLabsComments')"
-                    [ngClass]="{'active': typeOfApprovedHoldList === 'approvedHoldProductWithLabsComments'}">
-              Approved Hold Product from Labs
-            </button>
-          </div>
-          <div class="col-12 col-sm-6">
-            <button type="button"
-                    class="btn btn-primary form-control"
-                    (click)="selectApprovedHoldProductType('approvedHoldProductWithRegComment')"
-                    [ngClass]="{'active': typeOfApprovedHoldList === 'approvedHoldProductWithRegComment'}">
-              Approved Hold Product from Registration
-            </button>
-          </div>
-        </div>
+<!--        <div class="row mt-4 subBtnContainer" *ngIf="typeOfApprovedList === 'holdProducts'">-->
+<!--          <div class="col-12 col-sm-6">-->
+<!--            <button type="button"-->
+<!--                    class="btn btn-primary form-control"-->
+<!--                    (click)="selectApprovedHoldProductType('approvedHoldProductWithLabsComments')"-->
+<!--                    [ngClass]="{'active': typeOfApprovedHoldList === 'approvedHoldProductWithLabsComments'}">-->
+<!--              Approved Hold Product from Labs-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <div class="col-12 col-sm-6">-->
+<!--            <button type="button"-->
+<!--                    class="btn btn-primary form-control"-->
+<!--                    (click)="selectApprovedHoldProductType('approvedHoldProductWithRegComment')"-->
+<!--                    [ngClass]="{'active': typeOfApprovedHoldList === 'approvedHoldProductWithRegComment'}">-->
+<!--              Approved Hold Product from Registration-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="row mt-4 subBtnContainer" *ngIf="typeOfApprovedList === 'approvedProductWithComment'">
           <div class="col-12 col-sm-6">
             <button type="button"

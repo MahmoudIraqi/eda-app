@@ -80,6 +80,7 @@
               [approvedStatus]="typeOfProcess === 'approvedProduct'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
+              [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT'))"
               [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment' || (updatingProductData && (updatingProductData.trackCode === 'APPROVE_REG_COMM' || updatingProductData.trackCode === 'APPROVE_LAB_COMM' ))"
               [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
               [editData]="updatingProductData"

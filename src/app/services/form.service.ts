@@ -551,7 +551,7 @@ export class FormService {
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=rejected&pageNo=1&pageSize=50000`, options)
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=blocked&pageNo=1&pageSize=50000`, options)
       .pipe(map((res: any) => {
           return res;
         }),
