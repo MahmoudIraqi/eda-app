@@ -246,7 +246,7 @@
               <mat-autocomplete #licenseHolderList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForLicenseHolder | async"
                             [value]="option.NAME">
-                  {{option.NAME}}<span class="tooltipContainer" tooltip="{{option.NAME}}"
+                  <span class="tooltipContainer" tooltip="{{option.NAME}}"
                                        placement="top">{{option.NAME}}</span>
                 </mat-option>
               </mat-autocomplete>
