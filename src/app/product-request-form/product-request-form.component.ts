@@ -219,7 +219,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileName: '',
       fileValue: '',
       required: true,
-      enable: !this.legacyStatus ? true : !this.canBeAppealedStatus ? true : false,
+      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : !this.canBeAppealedStatus ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
     },
@@ -229,7 +229,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileName: '',
       fileValue: '',
       required: true,
-      enable: !this.legacyStatus ? true : false,
+      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
     },
@@ -774,7 +774,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         this.editIndex = '';
       }
 
-      this.modalRef.hide();
+      this.closeDetailedForm();
 
       this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
 
@@ -850,6 +850,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         });
       }) : null;
 
+
+      if (this.canEditForApprovedProduct) {
+        data.receiptValue = '';
+        data.receiptNumber = '';
+        data.receipt = '';
+        this.attachmentFields.filter(fileID => fileID.id === 'receipt').map(y => {
+          y.fileName = '';
+          y.fileValue = '';
+        });
+      }
+
+      console.log('data', data);
+
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
@@ -879,8 +892,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         purposeOfUseTxt: this.fb.control(''),
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         shelfLife: this.fb.control(null, Validators.required),
-        receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
+        receiptNumber: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', Validators.required) : this.fb.control(''),
+        receiptValue: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         deletedShortNameList: this.fb.control([]),
@@ -1172,6 +1185,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   closeDetailedForm() {
     this.getDetailedFormAsStarting('');
+    this.arrayOfObservablesForIngredient = [];
+    this.arrayOfObservablesForFunction = [];
     this.modalRef.hide();
     this.editDetailedRowStatus = false;
   }
@@ -1370,7 +1385,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: true,
-        enable: !this.legacyStatus ? true : false,
+        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1380,7 +1395,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: true,
-        enable: !this.legacyStatus ? true : false,
+        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },

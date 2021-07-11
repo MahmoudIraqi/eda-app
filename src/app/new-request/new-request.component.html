@@ -1,7 +1,7 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="productId ? 'Edit Request for Notification':'Create request for Notification'"
+      <app-title [title]="productId ? typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject' ? 'Preview Request for Notification': 'Edit Request for Notification':'Create request for Notification'"
                  [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
@@ -77,7 +77,7 @@
               [selectedTrackType]="selectedTrackType"
               [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
-              [approvedStatus]="typeOfProcess === 'approvedProduct'"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
               [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"
@@ -110,7 +110,7 @@
               [selectedTrackType]="selectedTrackType"
               [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
-              [approvedStatus]="typeOfProcess === 'approvedProduct'"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
               [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"
@@ -137,7 +137,7 @@
               [selectedTrackType]="selectedTrackType"
               [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
-              [approvedStatus]="typeOfProcess === 'approvedProduct'"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
               [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"
