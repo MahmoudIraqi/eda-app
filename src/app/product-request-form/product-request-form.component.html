@@ -706,7 +706,7 @@
         <button type="button"
                 *ngIf="!approvedStatus && !reRegistrationStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
-                [disabled]="!disabledSaveButton ||(editData && editData.isCompleted && !canBeAppealedStatus && !canEditForApprovedProduct) || trackProductStatus"
+                [disabled]="!disabledSaveButton ||(editData && editData.isCompleted && !canBeAppealedStatus && !canEditForApprovedProduct) || trackProductStatus "
                 (click)="saveData()">
           Save
         </button>
@@ -716,9 +716,9 @@
           [disabled]="trackProductStatus && !editProcessInTrackedProduct"
           class="btn btn-primary btn-sm">
           <span
-            *ngIf="(!kitProductStatus && !reRegistrationStatus) || (kitProductStatus && editData && editData.isDraft === 0)">Submit</span>
+            *ngIf="(!kitProductStatus && !reRegistrationStatus) || (kitProductStatus && editData && editData.isDraft === 0) || canEditForApprovedProduct">Submit</span>
           <span
-            *ngIf="(kitProductStatus && editData && editData.isDraft !== 0) || (kitProductStatus && !editData)">Apply Product</span>
+            *ngIf="(kitProductStatus && editData && editData.isDraft !== 0 && !canEditForApprovedProduct) || (kitProductStatus && !editData)">Apply Product</span>
           <span *ngIf="reRegistrationStatus">Re-Notification Product</span>
         </button>
       </div>
