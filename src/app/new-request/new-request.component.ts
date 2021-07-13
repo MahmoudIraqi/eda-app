@@ -316,7 +316,7 @@ export class NewRequestComponent implements OnInit {
     } else if (fromWhere === 'draftRequest') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
       this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
-    } else if (fromWhere === 'Appeal'){
+    } else if (fromWhere === 'Appeal') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
       this.typeOfNotificationVariable = 'APPEAL';
     }

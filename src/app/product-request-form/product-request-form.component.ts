@@ -357,6 +357,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   arrayOfObservablesForIngredient: Observable<LookupState[]>[] = [];
   arrayOfObservablesForFunction: Observable<LookupState[]>[] = [];
 
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
+
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
               private router: Router,
@@ -678,6 +681,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     };
 
     this.getService.createProductRequest(newObjectData).subscribe((res: any) => {
+
       this.editData = res;
       this.getFormAsStarting(res);
       this.saveDataOutputForAttachment.emit(res.id);
@@ -687,6 +691,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFields.filter(x => x.id === fileId).map(file => {
+        file.fileName = '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
     });
   }
 
@@ -715,6 +726,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFields.filter(x => x.id === fileId).map(file => {
+        file.fileName === '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
     });
   }
 
@@ -860,8 +878,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           y.fileValue = '';
         });
       }
-
-      console.log('data', data);
 
       this.regProductForAllRequestedType.patchValue({
         ...data
@@ -1123,6 +1139,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
+
     const dataForRequest = this.convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue);
 
     this.attachmentFields.filter(x => x.id === FileID).map(y => {
@@ -1198,7 +1215,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   handleError(error) {
-    this.errorMessageForAttachment.emit(error);
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: error};
     this.isLoadingStatus.emit(false);
   }
 
@@ -1540,6 +1558,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   onScrollFunction(event) {
 
+  }
+
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
   }
 }
 

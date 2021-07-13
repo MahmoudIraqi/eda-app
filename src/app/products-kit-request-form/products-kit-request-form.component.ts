@@ -785,6 +785,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFieldsForKits.filter(x => x.id === fileId).map(file => {
+        file.fileName = '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
     });
   }
 
@@ -815,6 +822,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFieldsForKits.filter(x => x.id === fileId).map(file => {
+        file.fileName = '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
     });
   }
 
