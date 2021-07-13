@@ -70,6 +70,10 @@ export class HeaderComponent implements OnInit {
           link: '/draft-request/registration'
         },
         {
+          name: 'Re-Notification',
+          link: '/draft-request/reregistration'
+        },
+        {
           name: 'Tell & Do variation',
           link: '/draft-request/tell_do_variation'
         },

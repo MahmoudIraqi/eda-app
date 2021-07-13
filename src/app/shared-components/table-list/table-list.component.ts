@@ -297,6 +297,8 @@ export class TableListComponent implements OnInit, OnChanges {
       this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}`]);
     } else if (editFrom === 'registration') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final'? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
+    } else if (editFrom === 're-registration') {
+      this.router.navigate([`/new-request/reregistration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final'? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
     } else if (editFrom === 'legacy-products') {
       this.router.navigate([`/legacy-form/${Number(request.oldProductID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
     } else if (editFrom === 'legacy') {

@@ -35,6 +35,7 @@ import {RejectNotificationComponent} from './reject-notification/reject-notifica
 import {RejectReNotificationComponent} from './reject-re-notification/reject-re-notification.component';
 import {RejectVariationComponent} from './reject-variation/reject-variation.component';
 import {RejectGeneralEnquiriesComponent} from './reject-general-enquiries/reject-general-enquiries.component';
+import {DraftReRegistrationRequestComponent} from './draft-re-registration-request/draft-re-registration-request.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -49,6 +50,7 @@ const routes: Routes = [
           {path: 'registration', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'registration/:id/:typeOfProcess', component: NewRequestComponent, data: {animation: 'new-request'}},
           {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
+          {path: 'reregistration/:notNumber/:typeOfProcess', component: ReRegistrationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do_variation', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do_variation/:notNumber', component: VariationComponent, data: {animation: 'new-request'}},
           {path: 'do_tell_variation', component: VariationComponent, data: {animation: 'new-request'}},
@@ -84,6 +86,7 @@ const routes: Routes = [
         path: 'draft-request', component: DraftRequestsContainerComponent,
         children: [
           {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}},
+          {path: 'reregistration', component: DraftReRegistrationRequestComponent, data: {animation: 'draft-request'}},
           {path: 'tell_do_variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
           {path: 'do_tell_variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
           {path: 'legacy', component: DraftLegacyComponent, data: {animation: 'draft-request'}},

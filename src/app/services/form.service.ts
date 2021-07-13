@@ -362,6 +362,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getDraftReRegistrationRequestsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetReRegRequestData?Type=draft&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getTrackVariationRequestsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

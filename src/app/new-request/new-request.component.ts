@@ -112,6 +112,7 @@ export class NewRequestComponent implements OnInit {
         this.isLoading = true;
         if (!this.getDraftProductData) {
           this.getService.getProductWithProductIDList(Number(this.productId), this.typeOfProcess).subscribe((res: any) => {
+            debugger;
             this.selectedFormType = res.typeOfMarketing;
             this.selectedRequestedType = res.typeOfRegistration;
             this.selectedTrackType = res.Tracktype;
@@ -139,7 +140,10 @@ export class NewRequestComponent implements OnInit {
               this.getPricing('draftRequest');
             }
             this.getProductsKitLookups('draftRequest');
-          }, error => this.handleError(error));
+          }, error => {
+            console.log('err', error);
+            this.handleError(error);
+          });
         }
       }
     });
@@ -316,6 +320,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   getPricing(fromWhere) {
+    debugger;
     if (fromWhere === 'trackType') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
     } else if (fromWhere === 'typeOfNotification') {

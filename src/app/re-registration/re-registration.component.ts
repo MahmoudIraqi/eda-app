@@ -49,6 +49,8 @@ export class ReRegistrationComponent implements OnInit {
   typeOfNotificationVariable;
   companyProfileId: any;
   lookupResponse: any;
+  productNotificationNumber;
+  typeOfProcess;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
@@ -78,6 +80,22 @@ export class ReRegistrationComponent implements OnInit {
     ).subscribe(res => {
       this.formData = res.payload;
       this.isLoading = false;
+
+      this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
+      this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
+      if (this.productNotificationNumber) {
+        this.isLoading = true;
+        this.getService.getProductWithProductIDList(this.productNotificationNumber, 'renotification').subscribe((res: any) => {
+          this.NotificationNo = res.NotificationNo;
+          this.selectedFormType = res.typeOfMarketing;
+          this.selectedRequestedType = res.typeOfRegistration;
+          this.selectedIsExport = res.isExport;
+          this.selectedTrackType = res.Tracktype;
+          this.productData = res;
+
+          this.isLoading = false;
+        }, error => this.handleError(error));
+      }
     });
   }
 
@@ -104,6 +122,29 @@ export class ReRegistrationComponent implements OnInit {
         this.handleError(res.canuseMsg);
       }
     }, error => this.handleError(error));
+  }
+
+  onSave(event) {
+    debugger;
+    this.isLoading = true;
+
+    if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3 || this.productData.typeOfMarketing === 5 || this.productData.typeOfMarketing === 6) {
+      const newEvent = convertToSpecialObjectForReNotification('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
+
+      console.log('newEvent', newEvent);
+      this.getService.setReRegistrationProduct(newEvent).subscribe((res: any) => {
+        this.isLoading = false;
+        this.productData = res;
+      }, error => this.handleError(error));
+    } else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
+      const newEvent = convertToSpecialObjectForReNotification('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
+
+      this.getService.setReRegistrationKitProduct(newEvent).subscribe((res: any) => {
+        this.isLoading = false;
+        this.productData = res;
+      }, error => this.handleError(error));
+
+    }
   }
 
   onSubmit(event) {
