@@ -12,7 +12,7 @@
               <mat-label>Type Of Notification</mat-label>
               <mat-select (selectionChange)="getFormType($event);"
                           [(ngModel)]="this.selectedFormType" required
-                          [disabled]="productId || isDraftRequestStatus">
+                          [disabled]="productId || isDraftRequestStatus || typeOfProcess === 'CanBeAppealed'">
                 <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
                   {{option.NAME}}
                 </mat-option>
@@ -26,7 +26,7 @@
                   <mat-label>Type Of License</mat-label>
                   <mat-select (selectionChange)="getRequestType($event);"
                               [(ngModel)]="selectedRequestedType" required
-                              [disabled]="productId || isDraftRequestStatus">
+                              [disabled]="productId || isDraftRequestStatus || typeOfProcess === 'CanBeAppealed'">
                     <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>

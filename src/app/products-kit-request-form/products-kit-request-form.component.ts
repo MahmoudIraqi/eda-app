@@ -400,6 +400,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
+    this.getFormAsStarting('');
 
     if (this.successSubmission) {
       this.resetForms();
@@ -1005,6 +1006,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       data.receiptValue === 0 ? this.regKitForAllRequestedType.get('receiptValue').patchValue('') : null;
       // thi
     } else {
+      console.log('selectedRequestedType', this.selectedRequestedType);
+
       this.regKitForAllRequestedType = this.fb.group({
         productColor: this.fb.control(''),
         id: 0,
@@ -1045,6 +1048,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         others: this.fb.control(''),
         otherFees: this.fb.control('', Validators.required)
       });
+
+      console.log('authorizationLetter', this.regKitForAllRequestedType);
     }
   }
 

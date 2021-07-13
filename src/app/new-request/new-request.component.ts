@@ -121,6 +121,12 @@ export class NewRequestComponent implements OnInit {
               res.receiptValue = '';
               res.receiptNumber = '';
               res.receipt = '';
+              let indexOfRow;
+              res.productAttachments.filter(x => x.attachmentName === 'receipt').map(row => {
+                indexOfRow = res.productAttachments.indexOf(row);
+              });
+
+              res.productAttachments.splice(indexOfRow, 1);
             }
 
             this.updatingProductData = res;
