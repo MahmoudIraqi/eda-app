@@ -1,6 +1,6 @@
 <div *ngIf="data && data.tableBody.length > 0">
   <div
-    *ngIf="whichTable === 'track' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'|| whichTable === 'rejectRequest' || whichTable === 'batchTable' || whichTable === 'legacyOldProduct'">
+    *ngIf="whichTable === 'track' || whichTable === 'trackForReRegistration' || whichTable === 'draftForReRegistration' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'|| whichTable === 'rejectRequest' || whichTable === 'batchTable' || whichTable === 'legacyOldProduct'">
     <app-filters [filterData]="filterData"
                  [removeFilterKey]="removeFilterKey"
                  (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
@@ -244,6 +244,117 @@
                           <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
                                                  placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.Status}}</td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notification Number :</label>
+                        <span>{{request.NotificationNo}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Submission date :</label>
+                        <span>{{request.SubmmittionDate | date}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Type Of Notification :</label>
+                        <span>{{request.productTypeName}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Product English name :</label>
+                        <span>{{request.NameEN}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Product Arabic name :</label>
+                        <span>{{request.NameAR}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label ">Status :</label>
+                        <span>{{request.Status}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="7" *ngIf="whichTable === 'trackForReRegistration'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
+                                     (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td class="hide">{{request.NotificationNo}}</td>
+                          <td>{{request.SubmmittionDate | date}}</td>
+                          <td class="hide">{{request.productTypeName}}</td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                 placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                 placement="right">{{request.NameAR}}</span></td>
+                          <td>{{request.Status}}</td>
+                          <td><i (click)="editProduct(request)" class="fa fa-edit"></i></td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Notification Number :</label>
+                        <span>{{request.NotificationNo}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Submission date :</label>
+                        <span>{{request.SubmmittionDate | date}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Type Of Notification :</label>
+                        <span>{{request.productTypeName}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Product English name :</label>
+                        <span>{{request.NameEN}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Product Arabic name :</label>
+                        <span>{{request.NameAR}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label ">Status :</label>
+                        <span>{{request.Status}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="7" *ngIf="whichTable === 'draftForReRegistration'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
+                                     (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td class="hide">{{request.NotificationNo}}</td>
+                          <td>{{request.SubmmittionDate | date}}</td>
+                          <td class="hide">{{request.productTypeName}}</td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                 placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
+                                                 placement="right">{{request.NameAR}}</span></td>
+                          <td>{{request.Status}}</td>
+                          <td>
+                            <span (click)="editProduct(request)">
+                                <i class="fa fa-edit"></i>
+                              </span>
+                            <span class="ml-2" (click)="deleteProduct(request)">
+                                <i class="fa fa-trash"></i>
+                              </span>
+                          </td>
                         </tr>
                       </table>
                     </mat-panel-title>
@@ -1264,7 +1375,37 @@
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
+                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="7" *ngIf="whichTable === 'trackForReRegistration'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="7">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="7" *ngIf="whichTable === 'draftForReRegistration'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="7">{{noDataStatment}}</td> <!--  -->
                         </tr>
                       </table>
                     </mat-panel-title>
@@ -1513,7 +1654,7 @@
                   (pageChanged)="pageChanged($event)"></pagination>
 
       <div class="colorSchema ml-auto"
-           *ngIf="(whichTable === 'rejected' || whichTable === 'approved' || whichTable === 'track') && contentArray.length > 0">
+           *ngIf="(whichTable === 'rejected' || whichTable === 'approved' || whichTable === 'track' || whichTable === 'trackForReRegistration' || whichTable === 'draftForReRegistration') && contentArray.length > 0">
         <h4>Color guide for Appealed Product</h4>
         <ul>
           <li class="warning" tooltip="warning products" placement="bottom"></li>

@@ -19,7 +19,7 @@
               <div class="col-6 d-flex">
                 <button type="button"
                         class="btn btn-primary ml-auto mt-sm-4 mb-3"
-                        [disabled]="!NotificationNo"
+                        [disabled]="!NotificationNo || productNotificationNumber"
                         (click)="applyProduct(NotificationNo)">
                   Get Product
                 </button>
@@ -78,7 +78,13 @@
               [editData]="this.productData"
               [lookupsData]="formData"
               [companyProfile]="companyProfileId"
-              [reRegistrationStatus]="true"
+              [reRegistrationStatus]="typeOfProcess === 'Track' ? false : true"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
+              [trackProductStatus]="typeOfProcess === 'Track'"
+              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (productData && ( productData.trackCode === 'REJECT' || productData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || productData.trackCode === 'REJECT_COMP_REPLY_WRONG' || productData.trackCode ==='REJECT_APPEAL1'))"
+              [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (productData && ( productData.trackCode === 'HOLD_REG_COMM' || productData.trackCode === 'HOLD_LAB_COMM'))"
+              [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment' || (productData && (productData.trackCode === 'APPROVE_REG_COMM' || productData.trackCode === 'APPROVE_LAB_COMM' ))"
+              (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"
               (errorMessage)="showAlertMessager($event)"
               (isLoadingStatus)="enableLoadingForAttachment($event)"

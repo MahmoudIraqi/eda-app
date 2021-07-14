@@ -1,7 +1,7 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="productId ? 'Edit Request for Notification':'Create request for Notification'"
+      <app-title [title]="productId ? typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject' ? 'Preview Request for Notification': 'Edit Request for Notification':'Create request for Notification'"
                  [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
@@ -12,7 +12,7 @@
               <mat-label>Type Of Notification</mat-label>
               <mat-select (selectionChange)="getFormType($event);"
                           [(ngModel)]="this.selectedFormType" required
-                          [disabled]="productId || isDraftRequestStatus">
+                          [disabled]="productId || isDraftRequestStatus || typeOfProcess === 'CanBeAppealed'">
                 <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
                   {{option.NAME}}
                 </mat-option>
@@ -26,7 +26,7 @@
                   <mat-label>Type Of License</mat-label>
                   <mat-select (selectionChange)="getRequestType($event);"
                               [(ngModel)]="selectedRequestedType" required
-                              [disabled]="productId || isDraftRequestStatus">
+                              [disabled]="productId || isDraftRequestStatus || typeOfProcess === 'CanBeAppealed'">
                     <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>
@@ -77,7 +77,7 @@
               [selectedTrackType]="selectedTrackType"
               [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
-              [approvedStatus]="typeOfProcess === 'approvedProduct'"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
               [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"
@@ -109,8 +109,7 @@
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
               [selectedIsExport]="selectedIsExport"
-              [successSubmission]="successSubmission"
-              [approvedStatus]="typeOfProcess === 'approvedProduct'"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
               [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"
@@ -118,7 +117,7 @@
               [editData]="updatingProductData"
               [editFromWhere]="editFormIPStatus"
               [lookupsData]="formData"
-              [lookupForProductIds]="productsKitIds"
+
               [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"
@@ -137,7 +136,7 @@
               [selectedTrackType]="selectedTrackType"
               [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
-              [approvedStatus]="typeOfProcess === 'approvedProduct'"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
               [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"

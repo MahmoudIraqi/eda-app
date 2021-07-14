@@ -358,35 +358,35 @@ body {
 
 /* -------------------- Table ---------------------- */
 .TrackTable .table th:first-child, .TrackTable .table td:first-child {
-  width: 200px;
+  width: 10%;
 }
 
 .TrackTable .table th:nth-child(2), .TrackTable .table td:nth-child(2) {
-  width: 200px;
+  width: 10%;
 }
 
 .TrackTable .table th:nth-child(3), .TrackTable .table td:nth-child(3) {
-  width: 200px;
+  width: 20%;
 }
 
 .TrackTable .table th:nth-child(4), .TrackTable .table td:nth-child(4) {
-  width: 200px;
+  width: 20%;
 }
 
 .TrackTable .table th:nth-child(5), .TrackTable .table td:nth-child(5) {
-  width: 200px;
+  width: 13%;
 }
 
 .TrackTable .table th:nth-child(6), .TrackTable .table td:nth-child(6) {
-  width: 200px;
+  width: 12%;
 }
 
 .TrackTable .table th:nth-child(7), .TrackTable .table td:nth-child(7) {
-  width: 200px;
+  width: 13%;
 }
 
 .TrackTable .table th:nth-child(8), .TrackTable .table td:nth-child(8) {
-  width: 200px;
+  width: 12%;
 }
 
 

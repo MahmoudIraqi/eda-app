@@ -117,19 +117,31 @@ export class NewRequestComponent implements OnInit {
             this.selectedTrackType = res.Tracktype;
             this.selectedIsExport = res.isExport;
             this.productId = res.id;
-            if (this.typeOfProcess === 'CanBeAppealed' && res.id === 0) {
+            if ((this.typeOfProcess === 'CanBeAppealed' || this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithLabsComments') && res.id === 0) {
               res.receiptValue = '';
               res.receiptNumber = '';
               res.receipt = '';
+              let indexOfRow;
+              res.productAttachments.filter(x => x.attachmentName === 'receipt').map(row => {
+                indexOfRow = res.productAttachments.indexOf(row);
+              });
+
+              res.productAttachments.splice(indexOfRow, 1);
             }
 
             this.updatingProductData = res;
             this.editFormIPStatus = true;
             this.isLoading = false;
 
-            this.getPricing('draftRequest');
+            if (res.trackCode === 'REJECT' || res.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || res.trackCode === 'REJECT_COMP_REPLY_WRONG' || res.trackCode === 'REJECT_APPEAL1') {
+              this.getPricing('Appeal');
+            } else {
+              this.getPricing('draftRequest');
+            }
             this.getProductsKitLookups('draftRequest');
-          }, error => this.handleError(error));
+          }, error => {
+            this.handleError(error);
+          });
         }
       }
     });
@@ -247,7 +259,8 @@ export class NewRequestComponent implements OnInit {
 
     } else if (this.selectedFormType === 5 || this.selectedFormType === 6) {
       const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 5 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
-      const newEvent = convertToSpecialObject(event.isDraft === 0 ? 'submit' : 'submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+      const statusOfApproveWithComment = this.typeOfProcess === 'approvedProductWithLabsComments' || this.typeOfProcess === 'approvedProductWithRegComment' || (this.updatingProductData && (this.updatingProductData.trackCode === 'APPROVE_REG_COMM' || this.updatingProductData.trackCode === 'APPROVE_LAB_COMM'));
+      const newEvent = convertToSpecialObject(event.isDraft === 0 || statusOfApproveWithComment ? 'submit' : 'submitProductForKit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.updatingProductData = res;
@@ -312,6 +325,9 @@ export class NewRequestComponent implements OnInit {
     } else if (fromWhere === 'draftRequest') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
       this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
+    } else if (fromWhere === 'Appeal') {
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariable = 'APPEAL';
     }
 
     if (this.trackTypeVariable && this.typeOfNotificationVariable) {
@@ -336,6 +352,7 @@ export class NewRequestComponent implements OnInit {
     if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined && (this.typeOfNotificationVariableForKitLookups === 'REG_KIT' || this.typeOfNotificationVariableForKitLookups === 'REG_HAIR_KIT')) {
       this.getService.getProductsKitIdLookupsRequest(this.typeOfNotificationVariableForKitLookups, this.trackTypeVariableForKitLookups).subscribe((res) => {
         this.productsKitIds = res;
+        this.inputService.publish({type: 'lookupForProductsKitIds', payload: this.productsKitIds});
       }, error => {
         this.handleError(error);
       });

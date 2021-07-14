@@ -223,7 +223,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileName: '',
       fileValue: '',
       required: true,
-      enable: !this.legacyStatus ? true : !this.canBeAppealedStatus ? true : false,
+      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : !this.canBeAppealedStatus ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
     },
@@ -233,7 +233,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileName: '',
       fileValue: '',
       required: true,
-      enable: !this.legacyStatus ? true : false,
+      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
     },
@@ -365,6 +365,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   arrayOfObservablesForIngredient: Observable<LookupState[]>[] = [];
   arrayOfObservablesForFunction: Observable<LookupState[]>[] = [];
 
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
+  fileStructure;
+
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
               private router: Router,
@@ -405,7 +409,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.setAllLookups();
     // this.getLookupForFormArray();
 
+
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
+
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -518,22 +524,28 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             file.attachmentTypeStatus = 'Yes';
             this.isLoadingStatus.emit(true);
           });
-          const file = event.target.files[0];
+          this.fileStructure = event.target.files[0];
           const reader = new FileReader();
 
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(this.fileStructure);
           reader.onload = (res: any) => {
             if (this.variationFieldsStatus) {
               if (this.editData.isVariationSaved === false) {
-                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
-                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
+              }
+            } else if (this.reRegistrationStatus) {
+              if (!this.regProductForAllRequestedType.value.id) {
+                this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               }
             } else {
               if (!this.regProductForAllRequestedType.value.id) {
-                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
-                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               }
             }
           };
@@ -541,6 +553,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         } else {
           this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
             file.attachmentTypeStatus = 'No';
+            file.loadingStatus = false;
             this.isLoadingStatus.emit(false);
           });
         }
@@ -621,6 +634,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.editIndex = event;
     const editRowData = this.regProductForAllRequestedType.get('detailsTable').value[event];
 
+
+    this.openModal(this.modalDetailedTemplate);
+
+    this.rerenderSubscribtionForClosingActionForDetailsForm(0);
+
     editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
       if (i >= 1) {
         this.addIngrediantDetailsRows();
@@ -630,10 +648,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.regDetailedForProduct.patchValue({
       ...editRowData
     });
-
-    this.openModal(this.modalDetailedTemplate);
-
-    this.rerenderSubscribtionForClosingActionForDetailsForm(event);
   }
 
   //functions for IngrediantDetailsRows
@@ -714,6 +728,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     };
 
     this.getService.createProductRequest(newObjectData).subscribe((res: any) => {
+
       this.editData = res;
       this.getFormAsStarting(res);
       this.saveDataOutputForAttachment.emit(res.id);
@@ -723,6 +738,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFields.filter(x => x.id === fileId).map(file => {
+        file.fileName = '';
+        file.fileValue = '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
     });
   }
 
@@ -751,6 +774,50 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.requestId = res.id;
       return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFields.filter(x => x.id === fileId).map(file => {
+        file.fileName === '';
+        file.fileValue === '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
+    });
+  }
+
+  saveProductForAttachmentReNotification(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+    const newObjectData = {
+      ...this.editData,
+      ...allDataForSave
+    };
+
+    this.getService.setReRegistrationProduct(newObjectData).subscribe((res: any) => {
+
+      this.editData = res;
+      this.getFormAsStarting(res);
+      this.saveDataOutputForAttachment.emit(res.id);
+      this.regProductForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFields.filter(x => x.id === fileId).map(file => {
+
+        file.fileName = '';
+        file.fileValue = '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
     });
   }
 
@@ -834,7 +901,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         this.editIndex = '';
       }
 
-      this.modalRef.hide();
+      this.closeDetailedForm();
 
       this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
 
@@ -917,6 +984,17 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         });
       }) : null;
 
+
+      if (this.canEditForApprovedProduct) {
+        data.receiptValue = '';
+        data.receiptNumber = '';
+        data.receipt = '';
+        this.attachmentFields.filter(fileID => fileID.id === 'receipt').map(y => {
+          y.fileName = '';
+          y.fileValue = '';
+        });
+      }
+
       this.regProductForAllRequestedType.patchValue({
         ...data
       });
@@ -944,8 +1022,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         purposeOfUseTxt: this.fb.control(''),
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         shelfLife: this.fb.control(null, Validators.required),
-        receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
+        receiptNumber: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', Validators.required) : this.fb.control(''),
+        receiptValue: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         manufacturingTable: this.fb.control([]),
@@ -1203,6 +1281,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   setAttachmentFileFunction(requestId, FileID, FileName, id, base64Data, fileValue) {
+
     const dataForRequest = this.convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue);
 
     this.attachmentFields.filter(x => x.id === FileID).map(y => {
@@ -1271,6 +1350,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   closeDetailedForm() {
     this.getDetailedFormAsStarting('');
+    this.arrayOfObservablesForIngredient = [];
+    this.arrayOfObservablesForFunction = [];
     this.modalRef.hide();
     this.editDetailedRowStatus = false;
   }
@@ -1282,7 +1363,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   handleError(error) {
-    this.errorMessageForAttachment.emit(error);
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: error};
     this.isLoadingStatus.emit(false);
   }
 
@@ -1490,7 +1572,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: true,
-        enable: !this.legacyStatus ? true : false,
+        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1500,7 +1582,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: true,
-        enable: !this.legacyStatus ? true : false,
+        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1645,6 +1727,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   onScrollFunction(event) {
 
+  }
+
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
   }
 }
 

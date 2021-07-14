@@ -73,6 +73,7 @@ import { RejectNotificationComponent } from './reject-notification/reject-notifi
 import { RejectReNotificationComponent } from './reject-re-notification/reject-re-notification.component';
 import { RejectVariationComponent } from './reject-variation/reject-variation.component';
 import { RejectGeneralEnquiriesComponent } from './reject-general-enquiries/reject-general-enquiries.component';
+import { DraftReRegistrationRequestComponent } from './draft-re-registration-request/draft-re-registration-request.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { RejectGeneralEnquiriesComponent } from './reject-general-enquiries/reje
     RejectReNotificationComponent,
     RejectVariationComponent,
     RejectGeneralEnquiriesComponent,
+    DraftReRegistrationRequestComponent,
   ],
   imports: [
     BrowserModule,
