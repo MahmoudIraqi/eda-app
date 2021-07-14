@@ -19,7 +19,7 @@
               <div class="col-6 d-flex">
                 <button type="button"
                         class="btn btn-primary ml-auto mt-sm-4 mb-3"
-                        [disabled]="!NotificationNo"
+                        [disabled]="!NotificationNo || productNotificationNumber"
                         (click)="applyProduct(NotificationNo)">
                   Get Product
                 </button>
