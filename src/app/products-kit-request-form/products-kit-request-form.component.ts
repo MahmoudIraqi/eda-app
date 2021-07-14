@@ -400,7 +400,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    debugger
+
     this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
     this.getFormAsStarting('');
 
@@ -436,9 +436,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.filteredOptionsForLicenseHolderCountry = this.filterLookupsFunction(this.regKitForAllRequestedType.get('countryOfLicenseHolder'), this.formData.licenseHolderCountryList);
     this.filteredOptionsForStoragePlace = this.filterLookupsFunction(this.regKitForAllRequestedType.get('storagePlace'), this.formData.storagePlaceList);
 
-    debugger;
     this.regKitForAllRequestedType.valueChanges.subscribe(x => {
-      debugger;
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -813,8 +811,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       data.receiptValue === 0 ? this.regKitForAllRequestedType.get('receiptValue').patchValue('') : null;
       // thi
     } else {
-      console.log('selectedRequestedType', this.selectedRequestedType);
-
       this.regKitForAllRequestedType = this.fb.group({
         productColor: this.fb.control(''),
         id: 0,
@@ -855,8 +851,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         others: this.fb.control(''),
         otherFees: this.fb.control('', Validators.required)
       });
-
-      console.log('authorizationLetter', this.regKitForAllRequestedType);
     }
   }
 

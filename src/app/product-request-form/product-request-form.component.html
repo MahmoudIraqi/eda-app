@@ -659,7 +659,6 @@
               <div class="custom-file fileUpload mr-3" id="customFile"
                    [ngClass]="{'required': (regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'}">
                 <input type="file" class="custom-file-input" [id]="field.id"
-                       aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
                        [disabled]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
                        [required]="field.required ? 'required' : false">

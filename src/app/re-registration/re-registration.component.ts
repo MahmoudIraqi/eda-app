@@ -130,7 +130,6 @@ export class ReRegistrationComponent implements OnInit {
     if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3 || this.productData.typeOfMarketing === 5 || this.productData.typeOfMarketing === 6) {
       const newEvent = convertToSpecialObjectForReNotification('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
 
-      console.log('newEvent', newEvent);
       this.getService.setReRegistrationProduct(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.productData = res;

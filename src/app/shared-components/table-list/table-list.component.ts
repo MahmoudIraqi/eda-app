@@ -288,6 +288,7 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
+    debugger;
     const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
     const editFrom = this.route.snapshot.routeConfig.path;
 
@@ -296,9 +297,9 @@ export class TableListComponent implements OnInit, OnChanges {
     } else if (editFrom === 'do_tell_variation') {
       this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}`]);
     } else if (editFrom === 'registration') {
-      this.router.navigate([`/new-request/registration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final'? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
     } else if (editFrom === 're-registration') {
-      this.router.navigate([`/new-request/reregistration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final'? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
+      this.router.navigate([`/new-request/reregistration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
     } else if (editFrom === 'legacy-products') {
       this.router.navigate([`/legacy-form/${Number(request.oldProductID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
     } else if (editFrom === 'legacy') {

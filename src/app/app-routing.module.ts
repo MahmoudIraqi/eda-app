@@ -86,7 +86,7 @@ const routes: Routes = [
         path: 'draft-request', component: DraftRequestsContainerComponent,
         children: [
           {path: 'registration', component: DraftRequestComponent, data: {animation: 'draft-request'}},
-          {path: 'reregistration', component: DraftReRegistrationRequestComponent, data: {animation: 'draft-request'}},
+          {path: 're-registration', component: DraftReRegistrationRequestComponent, data: {animation: 'draft-request'}},
           {path: 'tell_do_variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
           {path: 'do_tell_variation', component: DraftVariationComponent, data: {animation: 'draft-request'}},
           {path: 'legacy', component: DraftLegacyComponent, data: {animation: 'draft-request'}},

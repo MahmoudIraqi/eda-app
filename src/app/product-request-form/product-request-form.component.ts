@@ -359,6 +359,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
+  fileStructure;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -371,7 +372,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    debugger;
     this.formData = {...this.lookupsData};
     this.getFormAsStarting('');
 
@@ -400,9 +400,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.setAllLookups();
     // this.getLookupForFormArray();
 
-    debugger
+
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
-      debugger
+
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {
@@ -515,22 +515,28 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             file.attachmentTypeStatus = 'Yes';
             this.isLoadingStatus.emit(true);
           });
-          const file = event.target.files[0];
+          this.fileStructure = event.target.files[0];
           const reader = new FileReader();
 
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(this.fileStructure);
           reader.onload = (res: any) => {
             if (this.variationFieldsStatus) {
               if (this.editData.isVariationSaved === false) {
-                this.saveProductForAttachmentVariation(fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
-                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
+              }
+            } else if (this.reRegistrationStatus) {
+              if (!this.regProductForAllRequestedType.value.id) {
+                this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
+              } else {
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               }
             } else {
               if (!this.regProductForAllRequestedType.value.id) {
-                this.saveProductForAttachment(fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
-                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, file.name, 0, res.target.result, attachmentValue);
+                this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               }
             }
           };
@@ -538,6 +544,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         } else {
           this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
             file.attachmentTypeStatus = 'No';
+            file.loadingStatus = false;
             this.isLoadingStatus.emit(false);
           });
         }
@@ -697,6 +704,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }, error => {
       this.attachmentFields.filter(x => x.id === fileId).map(file => {
         file.fileName = '';
+        file.fileValue = '';
         file.loadingStatus = false;
       });
 
@@ -732,6 +740,43 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }, error => {
       this.attachmentFields.filter(x => x.id === fileId).map(file => {
         file.fileName === '';
+        file.fileValue === '';
+        file.loadingStatus = false;
+      });
+
+      this.handleError(error);
+    });
+  }
+
+  saveProductForAttachmentReNotification(fileId, fileName, id, base64Data, fileValue) {
+    const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    const allDataForSave = convertToSpecialObject('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, data.id, data);
+
+    this.attachmentFields.filter(x => x.id === fileId).map(y => {
+      y.loadingStatus = true;
+    });
+
+    const newObjectData = {
+      ...this.editData,
+      ...allDataForSave
+    };
+
+    this.getService.setReRegistrationProduct(newObjectData).subscribe((res: any) => {
+
+      this.editData = res;
+      this.getFormAsStarting(res);
+      this.saveDataOutputForAttachment.emit(res.id);
+      this.regProductForAllRequestedType.patchValue({
+        id: res.id
+      });
+
+      this.requestId = res.id;
+      return this.setAttachmentFileFunction(this.requestId, fileId, fileName, id, base64Data, fileValue);
+    }, error => {
+      this.attachmentFields.filter(x => x.id === fileId).map(file => {
+
+        file.fileName = '';
+        file.fileValue = '';
         file.loadingStatus = false;
       });
 

@@ -140,7 +140,6 @@ export class NewRequestComponent implements OnInit {
             }
             this.getProductsKitLookups('draftRequest');
           }, error => {
-            console.log('err', error);
             this.handleError(error);
           });
         }
