@@ -371,6 +371,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    debugger;
     this.formData = {...this.lookupsData};
     this.getFormAsStarting('');
 
@@ -399,7 +400,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.setAllLookups();
     // this.getLookupForFormArray();
 
+    debugger
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
+      debugger
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
           if (!Object.values(x)[i]) {

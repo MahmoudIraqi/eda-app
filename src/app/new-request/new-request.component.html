@@ -109,7 +109,6 @@
               [selectedFormType]="selectedFormType"
               [selectedTrackType]="selectedTrackType"
               [selectedIsExport]="selectedIsExport"
-              [successSubmission]="successSubmission"
               [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
@@ -118,7 +117,7 @@
               [editData]="updatingProductData"
               [editFromWhere]="editFormIPStatus"
               [lookupsData]="formData"
-              [lookupForProductIds]="productsKitIds"
+
               [companyProfile]="companyProfileId"
               (saveDataOutput)="saveData($event)"
               (submitDataOutput)="onSubmit($event)"

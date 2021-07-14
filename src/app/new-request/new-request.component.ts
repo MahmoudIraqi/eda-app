@@ -112,7 +112,6 @@ export class NewRequestComponent implements OnInit {
         this.isLoading = true;
         if (!this.getDraftProductData) {
           this.getService.getProductWithProductIDList(Number(this.productId), this.typeOfProcess).subscribe((res: any) => {
-            debugger;
             this.selectedFormType = res.typeOfMarketing;
             this.selectedRequestedType = res.typeOfRegistration;
             this.selectedTrackType = res.Tracktype;
@@ -320,7 +319,6 @@ export class NewRequestComponent implements OnInit {
   }
 
   getPricing(fromWhere) {
-    debugger;
     if (fromWhere === 'trackType') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
     } else if (fromWhere === 'typeOfNotification') {
@@ -355,6 +353,7 @@ export class NewRequestComponent implements OnInit {
     if (this.trackTypeVariableForKitLookups !== undefined && this.typeOfNotificationVariableForKitLookups !== undefined && (this.typeOfNotificationVariableForKitLookups === 'REG_KIT' || this.typeOfNotificationVariableForKitLookups === 'REG_HAIR_KIT')) {
       this.getService.getProductsKitIdLookupsRequest(this.typeOfNotificationVariableForKitLookups, this.trackTypeVariableForKitLookups).subscribe((res) => {
         this.productsKitIds = res;
+        this.inputService.publish({type: 'lookupForProductsKitIds', payload: this.productsKitIds});
       }, error => {
         this.handleError(error);
       });

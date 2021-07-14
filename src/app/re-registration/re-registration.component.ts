@@ -125,7 +125,6 @@ export class ReRegistrationComponent implements OnInit {
   }
 
   onSave(event) {
-    debugger;
     this.isLoading = true;
 
     if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3 || this.productData.typeOfMarketing === 5 || this.productData.typeOfMarketing === 6) {
