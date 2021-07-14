@@ -288,7 +288,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   editProduct(request) {
-    debugger;
     const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
     const editFrom = this.route.snapshot.routeConfig.path;
 

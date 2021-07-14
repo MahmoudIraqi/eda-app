@@ -598,6 +598,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.editIndex = event;
     const editRowData = this.regProductForAllRequestedType.get('detailsTable').value[event];
 
+
+    this.openModal(this.modalDetailedTemplate);
+
+    this.rerenderSubscribtionForClosingActionForDetailsForm(0);
+
     editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
       if (i >= 1) {
         this.addIngrediantDetailsRows();
@@ -607,15 +612,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.regDetailedForProduct.patchValue({
       ...editRowData
     });
-
-    this.openModal(this.modalDetailedTemplate);
-
-    console.log('arrayOfObservablesForIngredient', this.arrayOfObservablesForIngredient);
-    editRowData.ingrediantDetails.length > 0 ? editRowData.ingrediantDetails.map((row, i) => {
-      console.log('row', row);
-      console.log('i', i);
-      this.rerenderSubscribtionForClosingActionForDetailsForm(i);
-    }) : null;
   }
 
   //functions for IngrediantDetailsRows
