@@ -610,7 +610,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.openModal(this.modalDetailedTemplate);
 
-    this.rerenderSubscribtionForClosingActionForDetailsForm(event);
+    console.log('arrayOfObservablesForIngredient', this.arrayOfObservablesForIngredient);
+    editRowData.ingrediantDetails.length > 0 ? editRowData.ingrediantDetails.map((row, i) => {
+      console.log('row', row);
+      console.log('i', i);
+      this.rerenderSubscribtionForClosingActionForDetailsForm(i);
+    }) : null;
   }
 
   //functions for IngrediantDetailsRows
