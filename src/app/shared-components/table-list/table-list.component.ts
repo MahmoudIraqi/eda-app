@@ -60,6 +60,9 @@ export class TableListComponent implements OnInit, OnChanges {
   @Output() removePackagingRowOutput = new EventEmitter();
   @Output() removePackagingRowIDs = new EventEmitter();
   @Output() editPackagingRowIDs = new EventEmitter();
+  @Output() removeManufacturingRowOutput = new EventEmitter();
+  @Output() removeManufacturingRowIDs = new EventEmitter();
+  @Output() editManufacturingRowIDs = new EventEmitter();
   @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
   @Output() removeIngrediantDetailsIDs = new EventEmitter();
   @Output() removeIngrediantRowOutput = new EventEmitter();
@@ -74,6 +77,7 @@ export class TableListComponent implements OnInit, OnChanges {
   contentArray = [];
   returnedArray: string[];
   deletedIdsListForPackaging = [];
+  deletedIdsListForManufacturing = [];
   deletedIdsListForDetailsRow = [];
   deletedIdsListForIngrediant = [];
   noDataStatment = 'There is no data ...';
@@ -164,6 +168,19 @@ export class TableListComponent implements OnInit, OnChanges {
 
   editPackagingRowFunction(i) {
     this.editPackagingRowIDs.emit(i);
+  }
+
+  removeManufacturingRowFunction(i, requestID) {
+    this.removeManufacturingRowOutput.emit(i);
+
+    if (requestID) {
+      this.deletedIdsListForManufacturing.push(requestID);
+      this.removeManufacturingRowIDs.emit(this.deletedIdsListForManufacturing);
+    }
+  }
+
+  editManufacturingRowFunction(i) {
+    this.editManufacturingRowIDs.emit(i);
   }
 
   removeIngrediantDetailsRowFunction(childIndex, i, indexRow, idRequest) {
