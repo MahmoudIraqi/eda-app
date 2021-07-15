@@ -23,7 +23,7 @@
               <mat-label>Product Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
                      placeholder="Product Name"
-                     [required]="enableEditableFields.includes('productArabicName')? 'required': false"
+                     [required]="variationMendatoryFields.includes('productArabicName')? 'required': false"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : legacyStatus? productFlags && !productFlags.productArabicName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productArabicName ? true : false : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
               <div
                 *ngIf="regProductForAllRequestedType.get('productArabicName').invalid && (regProductForAllRequestedType.get('productArabicName').dirty || regProductForAllRequestedType.get('productArabicName').touched)"
@@ -95,7 +95,7 @@
                     <mat-label>Short Name</mat-label>
                     <input type="text" class="form-control" matInput [formControlName]="i"
                            placeholder="Short Name"
-                           [required]="enableEditableFields.includes('shortName')? 'required': !legacyStatus ? 'required': false"
+                           [required]="variationMendatoryFields.includes('shortName')? 'required': !legacyStatus ? 'required': false"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
                     <button type="button"
                             [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
@@ -252,7 +252,7 @@
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark"
-                     [required]="enableEditableFields.includes('tradeMark')? 'required': false"
+                     [required]="variationMendatoryFields.includes('tradeMark')? 'required': false"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : legacyStatus? productFlags && !productFlags.tradeMark ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.tradeMark ? true : false : isDraft ? false : productFlags && !productFlags.tradeMark ? true : false">
             </mat-form-field>
           </div>
@@ -373,7 +373,7 @@
                      formControlName="storagePlace"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
                      [matAutocomplete]="storagePlaceList"
-                     [required]="enableEditableFields.includes('storagePlace')? 'required': selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
+                     [required]="variationMendatoryFields.includes('storagePlace')? 'required': selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
                             [value]="option.NAME">
@@ -490,6 +490,46 @@
               </div>
             </mat-form-field>
           </div>
+          <div class="col-12 mt-5">
+            <div class="ShortNameFieldContainer">
+              <div class="row ">
+                <div class="col-12">
+                  <div class="d-flex flex-column">
+                    <div class="row">
+                      <div class="col-12 col-sm-8">
+                        <app-title [smallTitle]="true" [title]="'Manufacturing data'"
+                                   [havingComment]="productComments && productComments.manufacturingTable"
+                                   [theCommentMessage]=" productComments && productComments.manufacturingTable ? productComments.manufacturingTable : ''"></app-title>
+                      </div>
+                      <div class="col-12 col-sm-4 ml-auto">
+                        <div class="d-flex align-items-center">
+                          <div class="hintForEmptyObject"
+                               *ngIf="manufacturingListTable.tableBody.length === 0 && attachmentRequiredStatus">
+                            <h5>** Please add Manufacturing data</h5>
+                          </div>
+                          <!-- canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false -->
+                          <button type="button" class="btn btn-primary btnForModal ml-auto"
+                                  [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : manufacturingListTable.tableBody.length === 0? canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false : true"
+                                  (click)="openModal(manufacturingModal); rerenderSubscribtionForClosingActionForManufacturingForm()">
+                            Add new manufacturing
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="RequestingTable">
+                    <app-table-list [data]="manufacturingListTable"
+                                    [whichTable]="'newRequestForManufacturing'"
+                                    (removeManufacturingRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('manufacturingTable') ? removeManufacturingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.manufacturingTable ?  null : removeManufacturingRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? null : removeManufacturingRows($event) : isDraft ? removeManufacturingRows($event) : productFlags && !productFlags.manufacturingTable ? null : removeManufacturingRows($event)"
+                                    (removeManufacturingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('manufacturingTable') ? deletedManufacturingIdsList($event) : null : null :legacyStatus?  productFlags && !productFlags.manufacturingTable ?  null : deletedManufacturingIdsList($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? null : deletedManufacturingIdsList($event) : isDraft ? deletedManufacturingIdsList($event) : productFlags && !productFlags.manufacturingTable ? null : deletedManufacturingIdsList($event)"
+                                    (editManufacturingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('manufacturingTable') ? editTheManufacturingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.manufacturingTable ?  null : editTheManufacturingRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? null : editTheManufacturingRows($event) : isDraft ? editTheManufacturingRows($event) : productFlags && !productFlags.manufacturingTable ? null : editTheManufacturingRows($event)"></app-table-list>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </tab>
@@ -531,44 +571,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-5">
-        <div class="row">
-          <div class="col-12">
-            <div class="d-flex flex-column">
-              <div class="row">
-                <div class="col-12 col-sm-8">
-                  <app-title [smallTitle]="true" [title]="'Manufacturing data'"
-                             [havingComment]="productComments && productComments.manufacturingTable"
-                             [theCommentMessage]=" productComments && productComments.manufacturingTable ? productComments.manufacturingTable : ''"></app-title>
-                </div>
-                <div class="col-12 col-sm-4 ml-auto">
-                  <div class="d-flex align-items-center">
-                    <div class="hintForEmptyObject"
-                         *ngIf="manufacturingListTable.tableBody.length === 0 && attachmentRequiredStatus">
-                      <h5>** Please add Manufacturing data</h5>
-                    </div>
-                    <!-- canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false -->
-                    <button type="button" class="btn btn-primary btnForModal ml-auto"
-                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : manufacturingListTable.tableBody.length === 0? canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false : true"
-                            (click)="openModal(manufacturingModal); rerenderSubscribtionForClosingActionForManufacturingForm()">
-                      Add new manufacturing
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="RequestingTable">
-              <app-table-list [data]="manufacturingListTable"
-                              [whichTable]="'newRequestForManufacturing'"
-                              (removePackagingRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('manufacturingTable') ? removeManufacturingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.manufacturingTable ?  null : removeManufacturingRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? null : removeManufacturingRows($event) : isDraft ? removeManufacturingRows($event) : productFlags && !productFlags.manufacturingTable ? null : removeManufacturingRows($event)"
-                              (removePackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('manufacturingTable') ? deletedManufacturingIdsList($event) : null : null :legacyStatus?  productFlags && !productFlags.manufacturingTable ?  null : deletedManufacturingIdsList($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? null : deletedManufacturingIdsList($event) : isDraft ? deletedManufacturingIdsList($event) : productFlags && !productFlags.manufacturingTable ? null : deletedManufacturingIdsList($event)"
-                              (editPackagingRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('manufacturingTable') ? editTheManufacturingRows($event) : null : null :legacyStatus?  productFlags && !productFlags.manufacturingTable ?  null : editTheManufacturingRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? null : editTheManufacturingRows($event) : isDraft ? editTheManufacturingRows($event) : productFlags && !productFlags.manufacturingTable ? null : editTheManufacturingRows($event)"></app-table-list>
-            </div>
-          </div>
-        </div>
-      </div>
+
       <div class="mt-5">
         <div class="row">
           <div class="col-12">

@@ -80,6 +80,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @ViewChild('formTabs', {static: false}) formTabs: TabsetComponent;
   @ViewChild('fileUploader', {static: false}) fileTextUploader: ElementRef;
   @ViewChild('packagingModal') modalTemplate: TemplateRef<any>;
+  @ViewChild('manufacturingModal') modalManufacturingTemplate: TemplateRef<any>;
   @ViewChild('detailedModal') modalDetailedTemplate: TemplateRef<any>;
   @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   @ViewChild('autoIngrediant', {static: false}) autoIngrediantInput: ElementRef;
@@ -368,6 +369,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
   fileStructure;
+  variationMendatoryFields = [];
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -603,15 +605,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   editTheManufacturingRows(event) {
+    console.log('event', event);
+    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType.get('manufacturingTable').value);
     this.editManufacturingRowStatus = true;
     this.editManufacturingIndex = event;
     const editRowData = this.regProductForAllRequestedType.get('manufacturingTable').value[event];
+
+    console.log('editRowData', editRowData);
 
     this.regManufacturingForProduct.patchValue({
       ...editRowData
     });
 
-    this.openModal(this.modalTemplate);
+    this.openModal(this.modalManufacturingTemplate);
     this.rerenderSubscribtionForClosingActionForManufacturingForm();
   }
 
@@ -830,6 +836,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...data,
       ...this.objectForListOfVariationGroup
     };
+    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
@@ -863,8 +870,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   onSubmitForManufacturingForm() {
     const data = this.regManufacturingForProduct.value;
+    console.log('data', data);
     data.manufacturingCompany = this.checkControllerValueWithListForManufacturingArray(this.formData.manufacturingCompanyList, 'manufacturingCompany', data.manufacturingCompany);
     data.manufacturingCountry = this.checkControllerValueWithListForManufacturingArray(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
+
+    console.log('data_AFter', data);
+    console.log('editManufacturingIndex', this.editManufacturingIndex);
 
     if (this.regManufacturingForProduct.valid) {
       if (!this.editManufacturingIndex && this.editManufacturingIndex !== 0) {
@@ -877,6 +888,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.modalRef.hide();
 
+      console.log('this.manufacturingListTable.tableBody', this.manufacturingListTable.tableBody);
       this.manufacturingListTable.tableBody = this.regProductForAllRequestedType.get('manufacturingTable').value;
 
       this.getManufacturingFormAsStarting('');
@@ -951,8 +963,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
       }) : null;
       data.manufacturingTable ? data.manufacturingTable.map(x => {
-        this.formData.manufacturingCompanyList.filter(item => item.ID === data.manufacturingCompany).map(x => data.manufacturingCompany = x.NAME);
-        this.formData.manufacturingCountryList.filter(option => option.ID === data.manufacturingCountry).map(x => data.manufacturingCountry = x.NAME);
+        this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
+        this.formData.manufacturingCountryList.filter(option => option.ID === x.manufacturingCountry).map(row => x.manufacturingCountry = row.NAME);
       }) : null;
       data.detailsTable ? data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
@@ -1146,12 +1158,20 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.enableEditingForTypeOfRegistration.emit(this.enableEditableFields);
       this.enableEditableFields.map(field => {
         if (this.regProductForAllRequestedType.get(field)) {
-          this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
+          this.variationFields.map(x => {
+            x.VARIATION_GROUP_FieldsDto.filter(x => x.CODE === field).map(row => {
+              if (row.FIELD_OPTINAL === false) {
+                this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
 
-          this.attachmentFields.filter(file => file.id === field).length > 0 ?
-            this.attachmentFields.filter(file => file.id === field).map(item => {
-              item.required = true;
-            }) : null;
+                this.attachmentFields.filter(file => file.id === field).length > 0 ?
+                  this.attachmentFields.filter(file => file.id === field).map(item => {
+                    item.required = true;
+                  }) : null;
+
+                this.variationMendatoryFields = [...this.variationMendatoryFields, field];
+              }
+            });
+          });
         }
       });
     } else {
@@ -1190,8 +1210,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   convertAllNamingToId(data) {
     data.productColor = this.checkControllerValueWithList(this.formData.productColorList, 'productColor', data.productColor);
-    data.manufacturingCompany = this.checkControllerValueWithList(this.formData.manufacturingCompanyList, 'manufacturingCompany', data.manufacturingCompany);
-    data.manufacturingCountry = this.checkControllerValueWithList(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
     data.applicant = this.checkControllerValueWithList(this.formData.applicantList, 'applicant', data.applicant);
     data.licenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderList, 'licenseHolder', data.licenseHolder);
     data.countryOfLicenseHolder = this.checkControllerValueWithList(this.formData.licenseHolderCountryList, 'countryOfLicenseHolder', data.countryOfLicenseHolder);
@@ -1202,6 +1220,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     data.packagingTable.map(x => {
       this.formData.unitOfMeasureList.filter(option => option.NAME === x.unitOfMeasure).map(item => x.unitOfMeasure = item.ID);
       this.formData.typeOfPackagingList.filter(option => option.NAME === x.typeOfPackaging).map(item => x.typeOfPackaging = item.ID);
+    });
+
+    data.manufacturingTable.map(x => {
+      this.formData.manufacturingCompanyList.filter(option => option.NAME === x.manufacturingCompany).map(item => x.manufacturingCompany = item.ID);
+      this.formData.manufacturingCountryList.filter(option => option.NAME === x.manufacturingCountry).map(item => x.manufacturingCountry = item.ID);
     });
 
     data.detailsTable.map(x => {
@@ -1396,6 +1419,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   checkControllerValueWithListForManufacturingArray(list, formControlKey, formControlValue) {
     let value;
+    debugger;
     if (list.filter(option => option.NAME === formControlValue).length > 0) {
       list.filter(option => option.NAME === formControlValue).map(x => {
         value = x.NAME;
@@ -1430,8 +1454,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   rerenderSubscribtionForClosingActionForManufacturingForm() {
-    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regProductForAllRequestedType.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
-    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
+    this.filteredOptionsForManufacturingCompany = this.filterLookupsFunction('manufacturingCompany', this.regManufacturingForProduct.get('manufacturingCompany'), this.formData.manufacturingCompanyList);
+    this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regManufacturingForProduct.get('manufacturingCountry'), this.formData.manufacturingCountryList);
 
     this._subscribeToClosingActionsForManufacturingFormArray('manufacturingCompany', this.filteredOptionsForManufacturingCompany);
     this._subscribeToClosingActionsForManufacturingFormArray('manufacturingCountry', this.filteredOptionsForManufacturingCountry);
