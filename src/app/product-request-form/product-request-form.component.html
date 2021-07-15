@@ -697,7 +697,6 @@
   </div>
 </form>
 
-
 <ng-template #packagingModal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Packaging Form</h4>
@@ -1064,5 +1063,10 @@
     </form>
   </div>
 </ng-template>
+
+<alert type="danger" class="AlertForAllRequests" dismissible="true" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
 
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

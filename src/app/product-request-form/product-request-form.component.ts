@@ -750,7 +750,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         file.fileValue = '';
         file.loadingStatus = false;
       });
-
+      // document.getElementById(fileId).attributes[0].ownerDocument.activeElement.files[0].value = '';
+      // document.getElementById(fileId).attributes[0].ownerDocument.activeElement.files[0]= {};
+      // console.log('1234', document.getElementById(fileId).attributes[0].ownerDocument.activeElement.files[0].name);
       this.handleError(error);
     });
   }
@@ -1386,6 +1388,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   handleError(error) {
+    console.log('error', error);
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: error};
     this.isLoadingStatus.emit(false);

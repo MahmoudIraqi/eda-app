@@ -38,6 +38,7 @@ export class TableListComponent implements OnInit, OnChanges {
     'Request Number': 'ID',
     'Submission date': 'SubmmittionDate',
     'Saved date': 'SubmmittionDate',
+    'Notification date': 'notificationdate',
     'Product English name': 'NameEN',
     'Product Arabic name': 'NameAR',
     'Status': 'Status',
