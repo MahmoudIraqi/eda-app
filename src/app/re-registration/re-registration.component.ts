@@ -92,7 +92,7 @@ export class ReRegistrationComponent implements OnInit {
           this.selectedIsExport = res.isExport;
           this.selectedTrackType = res.Tracktype;
           this.productData = res;
-
+          this.getPricing();
           this.isLoading = false;
         }, error => this.handleError(error));
       }
@@ -141,6 +141,9 @@ export class ReRegistrationComponent implements OnInit {
       this.getService.setReRegistrationProduct(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.productData = res;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
       }, error => this.handleError(error));
     } else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
       const newEvent = convertToSpecialObjectForReNotification('save', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
@@ -148,6 +151,9 @@ export class ReRegistrationComponent implements OnInit {
       this.getService.setReRegistrationKitProduct(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.productData = res;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
       }, error => this.handleError(error));
 
     }
@@ -231,6 +237,10 @@ export class ReRegistrationComponent implements OnInit {
     } else {
       this.isLoading = false;
     }
+  }
+
+  alertForSaveRequest() {
+    return {msg: 'You had a successful saving'};
   }
 
 }
