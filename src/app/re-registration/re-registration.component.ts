@@ -104,12 +104,20 @@ export class ReRegistrationComponent implements OnInit {
 
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'renotification').subscribe((res: any) => {
       if (res.canUse) {
+        let newAttachmentLst = [];
         res.receiptValue = '';
         res.receiptNumber = '';
         res.receipt = '';
         let indexOfReceiptAttachment;
-        res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
-        res.productAttachments.splice(indexOfReceiptAttachment, 1);
+        console.log('productAttachments', res.productAttachments);
+        res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => {
+          console.log('y', y);
+          indexOfReceiptAttachment = res.productAttachments.indexOf(y);
+          res.productAttachments.splice(indexOfReceiptAttachment, 1);
+        });
+        console.log('indexOfReceiptAttachment', indexOfReceiptAttachment);
+        console.log('productAttachments_After', res.productAttachments);
+        console.log('res_After', res);
 
         this.selectedFormType = res.typeOfMarketing;
         this.selectedRequestedType = res.typeOfRegistration;

@@ -310,9 +310,9 @@ export class TableListComponent implements OnInit, OnChanges {
     const editFrom = this.route.snapshot.routeConfig.path;
 
     if (editFrom === 'tell_do_variation') {
-      this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}`]);
+      this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
     } else if (editFrom === 'do_tell_variation') {
-      this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}`]);
+      this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
     } else if (editFrom === 'registration') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
     } else if (editFrom === 're-registration') {

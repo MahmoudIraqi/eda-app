@@ -25,7 +25,7 @@ export class TrackVariationComponent implements OnInit {
 
     this.getService.getTrackVariationRequestsList(this.whichVariation).subscribe((res: any) => {
       this.trackVariationListRequests = {
-        tableHeader: ['Notification Number', 'Submission date', 'Type Of Notification', 'Product English name', 'Product Arabic name', 'Status'],
+        tableHeader: ['Notification Number', 'Submission date', 'Type Of Notification', 'Product English name', 'Product Arabic name', 'Status', 'Action'],
         tableBody: res
       };
       this.isLoading = false;

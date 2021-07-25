@@ -33,7 +33,7 @@
             <mat-form-field appearance="fill">
               <mat-label>Variation Group Name</mat-label>
               <mat-select [(ngModel)]="typeOfVariationForProduct" multiple
-                          (selectionChange)="onSelectionChange($event)">
+                          (selectionChange)="onSelectionChange($event)" [disabled]="typeOfProcess === 'Track'">
                 <mat-option *ngFor="let topping of variationGroupList" [value]="topping">
                   {{topping.groupName}}
                   <p class="noteText">
@@ -95,7 +95,7 @@
                   <mat-label>Track Type</mat-label>
                   <mat-select
                     (selectionChange)="getTrackType($event)"
-                    [(ngModel)]="selectedTrackType" required>
+                    [(ngModel)]="selectedTrackType" required [disabled]="typeOfProcess === 'Track'">
                     <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
                       {{option.NAME}}
                     </mat-option>
@@ -113,8 +113,13 @@
               [selectedIsExport]="selectedIsExport"
               [editData]="this.productData"
               [lookupsData]="formData"
-              [variationFieldsStatus]="true"
+              [variationFieldsStatus]="typeOfProcess === 'Track' ? false : true"
               [variationFields]="variationFields"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
+              [trackProductStatus]="typeOfProcess === 'Track'"
+              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (productData && ( productData.trackCode === 'REJECT' || productData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || productData.trackCode === 'REJECT_COMP_REPLY_WRONG' || productData.trackCode ==='REJECT_APPEAL1'))"
+              [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (productData && ( productData.trackCode === 'HOLD_REG_COMM' || productData.trackCode === 'HOLD_LAB_COMM'))"
+              [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment' || (productData && (productData.trackCode === 'APPROVE_REG_COMM' || productData.trackCode === 'APPROVE_LAB_COMM' ))"
               [whichVariation]="whichVariation"
               (saveDataOutput)="onSave($event)"
               (submitDataOutput)="onSubmit($event)"

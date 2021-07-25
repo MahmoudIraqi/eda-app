@@ -56,6 +56,7 @@ export class VariationComponent implements OnInit, OnChanges {
   lookupResponse: any;
   variationID;
   enableEditableFields = [];
+  typeOfProcess;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
@@ -92,6 +93,7 @@ export class VariationComponent implements OnInit, OnChanges {
       this.isLoading = false;
 
       this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
+      this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
       if (this.productNotificationNumber) {
         this.isLoading = true;
         this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
@@ -104,7 +106,8 @@ export class VariationComponent implements OnInit, OnChanges {
           this.typeOfRegistrationForProduct = res.typeOfRegistration;
 
           this.isLoading = false;
-          this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
+          this.typeOfProcess === 'Track' ?
+            this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1) : null;
         }, error => this.handleError(error));
       }
     });

@@ -20,7 +20,7 @@ import {Observable, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 export interface LookupState {
@@ -374,6 +374,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
               private router: Router,
+              private readonly route: ActivatedRoute,
               private modalService: BsModalService,
               private getService: FormService) {
     this.getFormAsStarting('');
@@ -533,19 +534,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           reader.onload = (res: any) => {
             if (this.variationFieldsStatus) {
               if (this.editData.isVariationSaved === false) {
-                this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
+                this.handleError('Please save the request first');
+                // this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               }
             } else if (this.reRegistrationStatus) {
               if (!this.regProductForAllRequestedType.value.id) {
-                this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
+                this.handleError('Please save the request first');
+                // this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               }
             } else {
               if (!this.regProductForAllRequestedType.value.id) {
-                this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
+                this.handleError('Please save the request first');
+                // this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               }
@@ -1472,6 +1476,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   rerenderFileAttachmentList() {
+    const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
+    const variationStatusForAttachment = this.route.snapshot.routeConfig.path.split('/')[0];
+
+    console.log('this.route.snapshot.routeConfig', this.route.snapshot.routeConfig.path.split('/'));
+
     this.attachmentFields = [
       {
         id: 'freeSaleDoc',
@@ -1619,7 +1628,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false,
+        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1629,7 +1638,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false,
+        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1639,7 +1648,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false,
+        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1649,7 +1658,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false,
+        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1659,7 +1668,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false,
+        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1669,7 +1678,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false,
+        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1679,7 +1688,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus ? true : false,
+        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,
       }

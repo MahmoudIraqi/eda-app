@@ -228,7 +228,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="6" *ngIf="whichTable === 'track'">
+            <td colspan="7" *ngIf="whichTable === 'track'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
                                      (opened)="setStep(i)" hideToggle>
@@ -244,6 +244,7 @@
                           <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
                                                  placement="right">{{request.NameAR}}</span></td>
                           <td>{{request.Status}}</td>
+                          <td><i (click)="editProduct(request)" class="fa fa-edit"></i></td>
                         </tr>
                       </table>
                     </mat-panel-title>
@@ -1368,14 +1369,14 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="6" *ngIf="whichTable === 'track'">
+            <td colspan="7" *ngIf="whichTable === 'track'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                          <td colspan="7">{{noDataStatment}}</td> <!--  -->
                         </tr>
                       </table>
                     </mat-panel-title>
