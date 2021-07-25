@@ -29,7 +29,8 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-sm-6 col-12" *ngIf="variationGroupList && NotificationNo">
+          <div class="col-lg-6 col-sm-6 col-12"
+               *ngIf="variationGroupList && (NotificationNo || productData && productData.isDraft === 1)">
             <mat-form-field appearance="fill">
               <mat-label>Variation Group Name</mat-label>
               <mat-select [(ngModel)]="typeOfVariationForProduct" multiple

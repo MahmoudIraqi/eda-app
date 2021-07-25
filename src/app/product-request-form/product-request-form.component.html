@@ -72,7 +72,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
+                          [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !(enableEditableFields.includes('shortName') && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -631,7 +631,7 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
-                       [disabled]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
+                       [disabled]="field.id === 'others' ? !reRegistrationStatus && !variationFieldsStatus && !legacyStatus && !canBeAppealedStatus && !canEditForHoldApprovedProduct && !canEditForApprovedProduct && !isDraft && productFlags && !productFlags[field.id] ? true : false : reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
                        [required]="field.required ? 'required' : false">
                 <div class="d-flex alert alert-danger"
                      *ngIf="(regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
