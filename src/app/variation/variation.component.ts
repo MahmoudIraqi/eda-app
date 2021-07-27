@@ -106,8 +106,7 @@ export class VariationComponent implements OnInit, OnChanges {
           this.typeOfRegistrationForProduct = res.typeOfRegistration;
 
           this.isLoading = false;
-          this.typeOfProcess === 'Track' ?
-            this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1) : null;
+          this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1)
         }, error => this.handleError(error));
       }
     });

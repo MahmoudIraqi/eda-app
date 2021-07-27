@@ -65,11 +65,14 @@ export class ReRegistrationComponent implements OnInit {
       this.companyProfileId = res.payload;
     });
 
+    const pathInEditMode = this.route.snapshot.routeConfig.path.split('/')[0];
+
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'variablesPrices'),
       distinctUntilChanged()
     ).subscribe(res => {
-      res.payload.filter(x => x.groupName.toLowerCase() === this.route.snapshot.routeConfig.path).map(variableList => {
+      const variableGroup = pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
+      res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
         this.variablesPricingList = variableList;
       });
     });
@@ -109,23 +112,18 @@ export class ReRegistrationComponent implements OnInit {
         res.receiptNumber = '';
         res.receipt = '';
         let indexOfReceiptAttachment;
-        console.log('productAttachments', res.productAttachments);
         res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => {
-          console.log('y', y);
           indexOfReceiptAttachment = res.productAttachments.indexOf(y);
           res.productAttachments.splice(indexOfReceiptAttachment, 1);
         });
-        console.log('indexOfReceiptAttachment', indexOfReceiptAttachment);
-        console.log('productAttachments_After', res.productAttachments);
-        console.log('res_After', res);
 
         this.selectedFormType = res.typeOfMarketing;
         this.selectedRequestedType = res.typeOfRegistration;
         this.selectedIsExport = res.isExport;
         this.selectedTrackType = res.Tracktype;
-        this.getPricing();
         this.productData = res;
         this.isLoading = false;
+        this.getPricing();
       } else {
         this.handleError(res.canuseMsg);
       }

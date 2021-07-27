@@ -609,13 +609,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   editTheManufacturingRows(event) {
-    console.log('event', event);
-    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType.get('manufacturingTable').value);
     this.editManufacturingRowStatus = true;
     this.editManufacturingIndex = event;
     const editRowData = this.regProductForAllRequestedType.get('manufacturingTable').value[event];
-
-    console.log('editRowData', editRowData);
 
     this.regManufacturingForProduct.patchValue({
       ...editRowData
@@ -754,9 +750,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         file.fileValue = '';
         file.loadingStatus = false;
       });
-      // document.getElementById(fileId).attributes[0].ownerDocument.activeElement.files[0].value = '';
-      // document.getElementById(fileId).attributes[0].ownerDocument.activeElement.files[0]= {};
-      // console.log('1234', document.getElementById(fileId).attributes[0].ownerDocument.activeElement.files[0].name);
+
       this.handleError(error);
     });
   }
@@ -842,7 +836,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...data,
       ...this.objectForListOfVariationGroup
     };
-    console.log('regProductForAllRequestedType', this.regProductForAllRequestedType);
+
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
@@ -876,12 +870,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   onSubmitForManufacturingForm() {
     const data = this.regManufacturingForProduct.value;
-    console.log('data', data);
+
     data.manufacturingCompany = this.checkControllerValueWithListForManufacturingArray(this.formData.manufacturingCompanyList, 'manufacturingCompany', data.manufacturingCompany);
     data.manufacturingCountry = this.checkControllerValueWithListForManufacturingArray(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
-
-    console.log('data_AFter', data);
-    console.log('editManufacturingIndex', this.editManufacturingIndex);
 
     if (this.regManufacturingForProduct.valid) {
       if (!this.editManufacturingIndex && this.editManufacturingIndex !== 0) {
@@ -894,7 +885,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.modalRef.hide();
 
-      console.log('this.manufacturingListTable.tableBody', this.manufacturingListTable.tableBody);
       this.manufacturingListTable.tableBody = this.regProductForAllRequestedType.get('manufacturingTable').value;
 
       this.getManufacturingFormAsStarting('');
@@ -1392,7 +1382,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   handleError(error) {
-    console.log('error', error);
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: error};
     this.isLoadingStatus.emit(false);
@@ -1426,7 +1415,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   checkControllerValueWithListForManufacturingArray(list, formControlKey, formControlValue) {
     let value;
-    debugger;
+
     if (list.filter(option => option.NAME === formControlValue).length > 0) {
       list.filter(option => option.NAME === formControlValue).map(x => {
         value = x.NAME;
@@ -1478,8 +1467,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   rerenderFileAttachmentList() {
     const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
     const variationStatusForAttachment = this.route.snapshot.routeConfig.path.split('/')[0];
-
-    console.log('this.route.snapshot.routeConfig', this.route.snapshot.routeConfig.path.split('/'));
 
     this.attachmentFields = [
       {
