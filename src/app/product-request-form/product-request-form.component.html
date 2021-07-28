@@ -72,7 +72,7 @@
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !(enableEditableFields.includes('shortName') && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false : false"
+                          [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortName ? true : false : isDraft?  false : productFlags && !productFlags.shortName ? true  : false : true"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
