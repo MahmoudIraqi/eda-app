@@ -50,6 +50,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() canBeAppealedStatus;
   @Input() canEditForApprovedProduct;
   @Input() canEditForHoldApprovedProduct;
+  @Input() finalRejectedStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
@@ -1031,7 +1032,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         shelfLife: this.fb.control(null, Validators.required),
         receiptNumber: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', [Validators.required, Validators.pattern(/(\d*(\d{2}\.)|\d{1,3})/)]) : this.fb.control(''),
+        receiptValue: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', [Validators.required, Validators.pattern('^[0-9]{1,3}(,[0-9]{3})*\\.[0-9]+$')]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         manufacturingTable: this.fb.control([]),

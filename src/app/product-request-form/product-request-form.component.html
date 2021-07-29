@@ -436,7 +436,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus">
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus && !canEditForApprovedProduct">
             <mat-form-field class="example-full-width inputBesideSelect">
               <div *ngIf="productComments && productComments.receiptNumber" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptNumber}}"
@@ -462,7 +462,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus">
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus && !canEditForApprovedProduct">
             <mat-form-field class="example-full-width inputBesideSelect">
               <div *ngIf="productComments && productComments.receiptValue" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptValue}}"
@@ -631,7 +631,7 @@
                 <input type="file" class="custom-file-input" [id]="field.id"
                        aria-describedby="fileHelp"
                        (change)="onFileSelect($event, field.id)"
-                       [disabled]="field.id === 'others' ? trackProductStatus ? productFlags && !productFlags[field.id] ? true : false : false : reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
+                       [disabled]="finalRejectedStatus ? true : field.id === 'others' ? trackProductStatus ? productFlags && !productFlags[field.id] ? true : false : false : reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
                        [required]="field.required ? 'required' : false">
                 <div class="d-flex alert alert-danger"
                      *ngIf="(regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
