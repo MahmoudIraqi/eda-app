@@ -437,7 +437,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus && !canEditForApprovedProduct">
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus ">
             <mat-form-field class="example-full-width inputBesideSelect">
               <div *ngIf="productComments && productComments.receiptNumber" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptNumber}}"
@@ -463,7 +463,7 @@
               </div>
             </mat-form-field>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus && !canEditForApprovedProduct">
+          <div class="col-lg-4 col-sm-6 col-12" *ngIf="!legacyStatus">
             <mat-form-field class="example-full-width inputBesideSelect">
               <div *ngIf="productComments && productComments.receiptValue" class="InfoIconContainer">
                     <span class="infoIcon" tooltip="{{productComments.receiptValue}}"
@@ -473,7 +473,7 @@
               </div>
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
-                     (change)="getDecimalValue(regProductForAllRequestedType.get('receiptValue').value)"
+                     (change)="getDecimalValue(regProductForAllRequestedType.get('receiptValue').value, '')"
                      [readonly]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : legacyStatus? productFlags && !productFlags.receiptValue ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptValue ? true : false"
                      formControlName="receiptValue"
                      placeholder="Receipt Value" required>

@@ -583,7 +583,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   editThePackagingRows(event) {
-    debugger;
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
     const editRowData = this.regProductForAllRequestedType.get('packagingTable').value[event];
@@ -847,7 +846,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmitForPackagingForm() {
-    debugger
     const data = this.regPackagingForProduct.value;
     data.unitOfMeasure = this.checkControllerValueWithListForPackaginArray(this.formData.unitOfMeasureList, 'unitOfMeasure', data.unitOfMeasure);
     data.typeOfPackaging = this.checkControllerValueWithListForPackaginArray(this.formData.typeOfPackagingList, 'typeOfPackaging', data.typeOfPackaging);
@@ -860,7 +858,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           ...this.regProductForAllRequestedType.get('packagingTable').value[this.editManufacturingIndex],
           ...this.regPackagingForProduct.value
         };
-        console.log('regProductForAllRequestedType', this.regProductForAllRequestedType.value);
+
         this.editPackagingRowStatus = false;
         this.editPackagingIndex = '';
       }
@@ -1004,15 +1002,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }) : null;
 
 
-      if (this.canEditForApprovedProduct) {
-        data.receiptValue = '';
-        data.receiptNumber = '';
-        data.receipt = '';
-        this.attachmentFields.filter(fileID => fileID.id === 'receipt').map(y => {
-          y.fileName = '';
-          y.fileValue = '';
-        });
-      }
+      // if (this.canEditForApprovedProduct) {
+      //   data.receiptValue = '';
+      //   data.receiptNumber = '';
+      //   data.receipt = '';
+      //   this.attachmentFields.filter(fileID => fileID.id === 'receipt').map(y => {
+      //     y.fileName = '';
+      //     y.fileValue = '';
+      //   });
+      // }
 
       this.regProductForAllRequestedType.patchValue({
         ...data
@@ -1043,8 +1041,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         purposeOfUseTxt: this.fb.control(''),
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         shelfLife: this.fb.control(null, Validators.required),
-        receiptNumber: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]) : this.fb.control(''),
+        receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         manufacturingTable: this.fb.control([]),
