@@ -699,7 +699,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   addShortName() {
     this.removeShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')]));
+      this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')]));
     } else {
       this.addShortNameFieldStatus = true;
 
@@ -816,7 +816,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         id: 0,
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
-        shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')])]),
+        shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')])]),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
         applicant: this.fb.control('', Validators.required),
@@ -827,7 +827,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         shelfLife: this.fb.control(null, Validators.required),
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern('^[0-9]{1,3}(,[0-9]{3})*\\.[0-9]+$')]) : this.fb.control(''),
+        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]) : this.fb.control(''),
         ProductsForKit: this.fb.control([]),
         deletedProductIdLists: this.fb.control(null),
         freeSaleDoc: this.fb.control(''),

@@ -179,7 +179,7 @@ export class InspectionFinalProductComponent implements OnInit, OnChanges {
       UOM: this.fb.control(''),
       visitLocation: this.fb.control(''),
       receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern('^[0-9]{1,3}(,[0-9]{3})*\\.[0-9]+$')]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]),
       factoryAnalysisCertificate: this.fb.control(''),
       receipt: this.fb.control(''),
     });

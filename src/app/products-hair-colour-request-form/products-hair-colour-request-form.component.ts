@@ -1003,7 +1003,7 @@ export class ProductsHairColourRequestFormComponent implements OnInit, OnChanges
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         shelfLife: this.fb.control(null, Validators.required),
         receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern('^[0-9]{1,3}(,[0-9]{3})*\\.[0-9]+$')]) : this.fb.control(''),
+        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         deletedIngredientsIds: this.fb.control(null),

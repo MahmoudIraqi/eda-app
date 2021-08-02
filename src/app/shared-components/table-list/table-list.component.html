@@ -562,7 +562,7 @@
                           <td class="hide">{{request.productTypeName}}</td>
                           <td><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
                                     placement="right">{{request.NameEN}}</span></td>
-                          <td>{{request.colorFlag ? 'Yes' : ''}}</td>
+                          <td>{{request.UnFlagStatus}}</td>
                           <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
                           <td (click)="addBatch(request.NotificationNo)"><i class="fas fa-cart-plus"></i></td>
                         </tr>
@@ -587,6 +587,10 @@
                       <div class="col-12 col-sm-6 col-md-3">
                         <label class="label ">Product English name :</label>
                         <span>{{request.NameEN}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-3">
+                        <label class="label ">Need Action :</label>
+                        <span>{{request.UnFlagStatus}}</span>
                       </div>
                     </div>
                   </div>

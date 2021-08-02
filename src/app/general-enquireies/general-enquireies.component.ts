@@ -74,7 +74,7 @@ export class GeneralEnquireiesComponent implements OnInit {
       title: this.fb.control('', Validators.required),
       description: this.fb.control('', Validators.required),
       receiptNumber: this.fb.control('', Validators.required), //[Validators.required, Validators.pattern('^[a-zA-Z][0-9a-zA-Z]*$')]
-      receiptValue: this.fb.control('', [Validators.required, Validators.pattern('^[0-9]{1,3}(,[0-9]{3})*\\.[0-9]+$')]),
+      receiptValue: this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]),
       attachment: this.fb.control('', Validators.required),
     });
   }

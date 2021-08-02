@@ -461,7 +461,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   addShortName() {
     this.addShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')]));
+      this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')]));
     } else {
       this.addShortNameFieldStatus = true;
 
@@ -583,6 +583,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   editThePackagingRows(event) {
+    debugger;
     this.editPackagingRowStatus = true;
     this.editPackagingIndex = event;
     const editRowData = this.regProductForAllRequestedType.get('packagingTable').value[event];
@@ -846,6 +847,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmitForPackagingForm() {
+    debugger
     const data = this.regPackagingForProduct.value;
     data.unitOfMeasure = this.checkControllerValueWithListForPackaginArray(this.formData.unitOfMeasureList, 'unitOfMeasure', data.unitOfMeasure);
     data.typeOfPackaging = this.checkControllerValueWithListForPackaginArray(this.formData.typeOfPackagingList, 'typeOfPackaging', data.typeOfPackaging);
@@ -854,7 +856,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       if (!this.editPackagingIndex && this.editPackagingIndex !== 0) {
         this.regProductForAllRequestedType.value.packagingTable.push({...this.regPackagingForProduct.value});
       } else {
-        this.regProductForAllRequestedType.get('packagingTable').value[this.editPackagingIndex] = this.regPackagingForProduct.value;
+        this.regProductForAllRequestedType.get('packagingTable').value[this.editPackagingIndex] = {
+          ...this.regProductForAllRequestedType.get('packagingTable').value[this.editManufacturingIndex],
+          ...this.regPackagingForProduct.value
+        };
+        console.log('regProductForAllRequestedType', this.regProductForAllRequestedType.value);
         this.editPackagingRowStatus = false;
         this.editPackagingIndex = '';
       }
@@ -879,7 +885,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       if (!this.editManufacturingIndex && this.editManufacturingIndex !== 0) {
         this.regProductForAllRequestedType.value.manufacturingTable.push({...this.regManufacturingForProduct.value});
       } else {
-        this.regProductForAllRequestedType.get('manufacturingTable').value[this.editManufacturingIndex] = this.regManufacturingForProduct.value;
+        this.regProductForAllRequestedType.get('manufacturingTable').value[this.editManufacturingIndex] = {
+          ...this.regProductForAllRequestedType.get('manufacturingTable').value[this.editManufacturingIndex],
+          ...this.regManufacturingForProduct.value
+        };
         this.editManufacturingRowStatus = false;
         this.editManufacturingIndex = '';
       }
@@ -969,6 +978,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
         });
       }) : null;
+      // data.receiptValue ? this.getDecimalValue(data.receiptValue, '') : null;
 
       this.regProductForAllRequestedType.valueChanges.subscribe(x => {
         for (let i = 0; i < Object.values(x).length; i++) {
@@ -1013,13 +1023,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       });
 
       data.receiptValue === 0 ? this.regProductForAllRequestedType.get('receiptValue').patchValue('') : null;
+
+      // data.receiptValue ? this.getDecimalValue(data.receiptValue, 'edit') : null;
     } else {
       this.regProductForAllRequestedType = this.fb.group({
         productColor: this.fb.control(''),
         id: 0,
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
-        shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^\u0621-\u064A]|[\\b\\w]*){1,4}$')])]),
+        shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')])]),
         applicant: this.fb.control('', Validators.required),
         licenseHolder: this.fb.control('', Validators.required),
         licenseHolderTxt: this.fb.control(''),
@@ -1032,7 +1044,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         shelfLife: this.fb.control(null, Validators.required),
         receiptNumber: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', [Validators.required, Validators.pattern('^[0-9]{1,3}(,[0-9]{3})*\\.[0-9]+$')]) : this.fb.control(''),
+        receiptValue: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]) : this.fb.control(''),
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         manufacturingTable: this.fb.control([]),
@@ -1114,7 +1126,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
-  getDecimalValue(value) {
+  getDecimalValue(value, fromWhere) {
     this.regProductForAllRequestedType.patchValue({
       receiptValue: this.number.transform(this.regProductForAllRequestedType.get('receiptValue').value, '1.2-2')
     }, {emitEvent: false});
