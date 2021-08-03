@@ -859,6 +859,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           ...this.regPackagingForProduct.value
         };
 
+        console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType.get('packagingTable').value);
+
         this.editPackagingRowStatus = false;
         this.editPackagingIndex = '';
       }
@@ -1091,6 +1093,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     } else {
       this.regPackagingForProduct = this.fb.group({
+        APPWORKS_GUID: null,
+        APPWORKS_ID: null,
         volumesID: this.fb.control(''),
         volumes: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
         unitOfMeasure: this.fb.control('', Validators.required),
@@ -1106,6 +1110,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     } else {
       this.regManufacturingForProduct = this.fb.group({
+        APPWORKS_GUID: null,
+        APPWORKS_ID: null,
         manufacturingID: this.fb.control(''),
         manufacturingCompany: this.fb.control(null, Validators.required),
         manufacturingCountry: this.fb.control('', Validators.required),
@@ -1118,6 +1124,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     } else {
       this.regDetailedForProduct = this.fb.group({
+        APPWORKS_GUID: null,
+        APPWORKS_ID: null,
         DetailsID: this.fb.control(''),
         PRODUCT_ID: this.fb.control(''),
         colour: this.fb.control(''),
@@ -1125,6 +1133,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         flavor: this.fb.control(''),
         barCode: this.fb.control(''),
         ingrediantDetails: this.fb.array([this.fb.group({
+          APPWORKS_GUID: null,
+          APPWORKS_ID: null,
           Ingredient_ID: this.fb.control(''),
           ingrediant: this.fb.control('', Validators.required),
           concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
