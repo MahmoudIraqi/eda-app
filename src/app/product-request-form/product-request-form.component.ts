@@ -939,21 +939,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         }
       }) : data.shortName = [];
 
-      this.packagingListTable.tableBody = [];
-      data.packagingTable ? data.packagingTable.map((x, i) => {
-        this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
-      }) : null;
-
-      this.manufacturingListTable.tableBody = [];
-      data.manufacturingTable ? data.manufacturingTable.map((x, i) => {
-        this.manufacturingListTable.tableBody = [...this.manufacturingListTable.tableBody, x];
-      }) : null;
-
-      this.detailsListTable.tableBody = [];
-      data.detailsTable ? data.detailsTable.map((x, i) => {
-        this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
-      }) : null;
-
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
       this.formData.licenseHolderList.filter(option => option.ID === data.licenseHolder).map(x => data.licenseHolder = x.NAME);
@@ -965,6 +950,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       data.packagingTable ? data.packagingTable.map(x => {
         this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
         this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
+      }) : null;
+      data.manufacturingTable ? data.manufacturingTable.map(x => {
+        this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
+        this.formData.manufacturingCountryList.filter(option => option.ID === x.manufacturingCountry).map(row => x.manufacturingCountry = row.NAME);
       }) : null;
       data.manufacturingTable ? data.manufacturingTable.map(x => {
         this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
@@ -1000,6 +989,27 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           y.fileValue = file.Id;
         });
       }) : null;
+
+      this.packagingListTable.tableBody = [];
+      setTimeout(() => {
+        data.packagingTable ? data.packagingTable.map((x, i) => {
+          this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
+        }) : null;
+      }, 500);
+
+      this.manufacturingListTable.tableBody = [];
+      setTimeout(() => {
+        data.manufacturingTable ? data.manufacturingTable.map((x, i) => {
+          this.manufacturingListTable.tableBody = [...this.manufacturingListTable.tableBody, x];
+        }) : null;
+      }, 500);
+
+      this.detailsListTable.tableBody = [];
+      setTimeout(() => {
+        data.detailsTable ? data.detailsTable.map((x, i) => {
+          this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
+        }) : null;
+      }, 500);
 
 
       // if (this.canEditForApprovedProduct) {
