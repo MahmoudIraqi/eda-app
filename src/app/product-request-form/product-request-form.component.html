@@ -67,12 +67,12 @@
             </mat-form-field>
           </div>
           <div class="col-12 mt-3 mb-3">
-            <div class="ShortNameFieldContainer" formArrayName="shortName">
+            <div class="ShortNameFieldContainer" formArrayName="shortNameTable">
               <div class="row">
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
-                          [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortName ? true : false : isDraft?  false : productFlags && !productFlags.shortName ? true  : false : true"
+                          [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false : true"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
@@ -84,22 +84,23 @@
                   you can't add more than 10 fields
                 </div>
                 <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
-                  <mat-form-field class="example-full-width">
-                    <div *ngIf="productComments && productComments.shortName"
+                  <mat-form-field class="example-full-width" [formGroupName]="i">
+                    <div *ngIf="productComments && productComments.shortNameTable"
                          class="InfoIconContainer">
-                      <span class="infoIcon" tooltip="{{productComments['shortName']}}"
+                      <span class="infoIcon" tooltip="{{productComments['shortNameTable']}}"
                             placement="top">
                         <i class="fas fa-info-circle"></i>
                       </span>
                     </div>
                     <mat-label>Short Name</mat-label>
-                    <input type="text" class="form-control" matInput [formControlName]="i"
+                    <input type="text" class="form-control" matInput
                            placeholder="Short Name"
+                           formControlName="shortName"
                            [maxLength]="30"
-                           [required]="variationMendatoryFields.includes('shortName')? 'required': !legacyStatus ? 'required': false"
-                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
+                           [required]="variationMendatoryFields.includes('shortNameTable')? 'required': !legacyStatus ? 'required': false"
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortNameTable ? true : false : isDraft ? false : productFlags && !productFlags.shortNameTable ? true : false">
                     <button type="button"
-                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortName ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortName ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
+                            [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortNameTable ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortNameTable ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>

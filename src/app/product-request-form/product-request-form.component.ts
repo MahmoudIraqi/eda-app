@@ -455,13 +455,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   // Functions for Short name array
   get ShortName(): FormArray {
-    return this.regProductForAllRequestedType.get('shortName') as FormArray;
+    return this.regProductForAllRequestedType.get('shortNameTable') as FormArray;
   }
 
   addShortName() {
     this.addShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
-      this.ShortName.push(this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')]));
+      this.ShortName.push(this.fb.group({
+        id: null,
+        APPWORKS_ID: null,
+        APPWORKS_GUID: null,
+        shortName: this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')]),
+        accepted: false
+      }));
     } else {
       this.addShortNameFieldStatus = true;
 
@@ -475,8 +481,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (this.ShortName.value.length > 1) {
       this.removeShortNameFieldStatus = false;
 
-      this.deletedShortNameList.push(this.ShortName.value[i]);
-      this.regProductForAllRequestedType.get('deletedShortNameList').patchValue(this.deletedShortNameList);
+      this.deletedShortNameList.push(this.ShortName.value[i].id);
+      this.regProductForAllRequestedType.get('deletedShortNameids').patchValue(this.deletedShortNameList);
 
       this.ShortName.removeAt(i);
     } else {
@@ -1044,7 +1050,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         id: 0,
         productArabicName: this.fb.control('', Validators.pattern('^[\u0621-\u064A]+[ 0-9\u0621-\u064A-_*]*$')),
         productEnglishName: this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[^.\\s]|[^\u0621-\u064A]|[\\b\\w\\s])*$')]),
-        shortName: this.legacyStatus ? this.fb.array([this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$'))]) : this.fb.array([this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')])]),
+        shortNameTable: this.fb.array([this.fb.group({
+          id: null,
+          APPWORKS_ID: null,
+          APPWORKS_GUID: null,
+          shortName: this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')]),
+          accepted: false
+        })]),
         applicant: this.fb.control('', Validators.required),
         licenseHolder: this.fb.control('', Validators.required),
         licenseHolderTxt: this.fb.control(''),
@@ -1061,7 +1073,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         packagingTable: this.fb.control([]),
         detailsTable: this.fb.control([]),
         manufacturingTable: this.fb.control([]),
-        deletedShortNameList: this.fb.control([]),
+        deletedShortNameids: this.fb.control([]),
         deletedIngredientsIds: this.fb.control(null),
         deletedProductDetailsIds: this.fb.control(null),
         deletedpacklstIds: this.fb.control(null),
