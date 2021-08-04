@@ -183,6 +183,17 @@ export class NewRequestComponent implements OnInit {
     }, 500);
   }
 
+  getIsExportingType(event) {
+    const x = this.selectedRequestedType;
+    this.selectedRequestedType ? this.selectedRequestedType = '' : null;
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.selectedRequestedType = x;
+      this.isLoading = false;
+    }, 500);
+  }
+
   getRequestId(event) {
     this.requestId = event;
   }

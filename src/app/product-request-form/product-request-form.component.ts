@@ -673,6 +673,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   addIngrediantDetailsRows() {
     this.IngrediantDetailsRows().push(this.fb.group({
+      APPWORKS_GUID: null,
+      APPWORKS_ID: null,
       Ingredient_ID: this.fb.control(''),
       ingrediant: this.fb.control('', Validators.required),
       concentrations: this.fb.control('', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),

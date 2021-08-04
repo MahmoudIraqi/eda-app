@@ -1,8 +1,9 @@
 <div class="whiteContainer">
   <div class="row">
     <div class="col-12">
-      <app-title [title]="productId ? typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject' ? 'Preview Request for Notification': 'Edit Request for Notification':'Create request for Notification'"
-                 [bigTitle]="true"></app-title>
+      <app-title
+        [title]="productId ? typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject' ? 'Preview Request for Notification': 'Edit Request for Notification':'Create request for Notification'"
+        [bigTitle]="true"></app-title>
     </div>
     <div class="col-12 mt-5">
       <div class="formTable">
@@ -37,6 +38,7 @@
                 <section class="example-section mt-4">
                   <mat-checkbox class="example-margin"
                                 [(ngModel)]="selectedIsExport"
+                                (change)="getIsExportingType($event)"
                                 [disabled]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 ? false : true">
                     Export only
                   </mat-checkbox>
