@@ -542,7 +542,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             if (this.variationFieldsStatus) {
               if (this.editData.isVariationSaved === false) {
                 this.handleError('Please save the request first');
-                this.getFormAsStarting(this.editData);
+                this.editData ? this.getFormAsStarting(this.editData) : null;
                 // this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -550,7 +550,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             } else if (this.reRegistrationStatus) {
               if (!this.regProductForAllRequestedType.value.id) {
                 this.handleError('Please save the request first');
-                this.getFormAsStarting(this.editData);
+                this.editData ? this.getFormAsStarting(this.editData) : null;
                 // this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -558,7 +558,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             } else {
               if (!this.regProductForAllRequestedType.value.id) {
                 this.handleError('Please save the request first');
-                this.getFormAsStarting(this.editData);
+                this.editData ? this.getFormAsStarting(this.editData) : null;
                 // this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -944,11 +944,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.isDraft = data.isDraft === 1;
       this.requestIsDraft.emit(data.isDraft === 1);
 
-      data.shortName ? data.shortName.map((X, i) => {
-        if (data.shortName.length > 1 && i < data.shortName.length - 1) {
+      data.shortNameTable ? data.shortNameTable.map((X, i) => {
+        if (data.shortNameTable.length > 1 && i < data.shortNameTable.length - 1) {
           this.addShortName();
         }
-      }) : data.shortName = [];
+      }) : data.shortNameTable = [];
 
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
