@@ -542,7 +542,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             if (this.variationFieldsStatus) {
               if (this.editData.isVariationSaved === false) {
                 this.handleError('Please save the request first');
-                this.editData ? this.getFormAsStarting(this.editData) : null;
+
+                const newAttachmentObject = {
+                  ...this.editData,
+                  ...this.regProductForAllRequestedType.value,
+                };
+                this.editData ? this.getFormAsStarting(newAttachmentObject) : null;
                 // this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -550,7 +555,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             } else if (this.reRegistrationStatus) {
               if (!this.regProductForAllRequestedType.value.id) {
                 this.handleError('Please save the request first');
-                this.editData ? this.getFormAsStarting(this.editData) : null;
+                const newAttachmentObject = {
+                  ...this.editData,
+                  ...this.regProductForAllRequestedType.value,
+                };
+                this.editData ? this.getFormAsStarting(newAttachmentObject) : null;
                 // this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -558,7 +567,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             } else {
               if (!this.regProductForAllRequestedType.value.id) {
                 this.handleError('Please save the request first');
-                this.editData ? this.getFormAsStarting(this.editData) : null;
+                const newAttachmentObject = {
+                  ...this.editData,
+                  ...this.regProductForAllRequestedType.value,
+                };
+                this.editData ? this.getFormAsStarting(newAttachmentObject) : null;
                 // this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -655,8 +668,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     // this.rerenderSubscribtionForClosingActionForDetailsForm(event);
 
+    editRowData.ingrediantDetails.length === 1 ? this.rerenderSubscribtionForClosingActionForDetailsForm(0) : null;
+
     editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
-      i === 0 ? this.rerenderSubscribtionForClosingActionForDetailsForm(0) : null;
       if (i >= 1) {
         this.addIngrediantDetailsRows();
       }
@@ -688,6 +702,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   removeIngrediantDetailsRows(index) {
     this.IngrediantDetailsRows().removeAt(index);
     this.arrayOfObservablesForIngredient.splice(index, 1);
+    this.arrayOfObservablesForFunction.splice(index, 1);
     if (this.IngrediantDetailsRows().length === 0) {
       this.addIngrediantDetailsRows();
     }
@@ -1506,8 +1521,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   rerenderSubscribtionForClosingActionForDetailsForm(index) {
     this.getLookupForFormArray(index);
 
-    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant, index);
-    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction, index);
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.arrayOfObservablesForIngredient[index], index);
+    this._subscribeToClosingActionsForDetailsFormArray('function', this.arrayOfObservablesForFunction[index], index);
   }
 
   rerenderFileAttachmentList() {
