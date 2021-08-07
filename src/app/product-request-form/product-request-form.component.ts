@@ -338,8 +338,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   deletedPackagingList = [];
   deletedDetailedList = [];
   deletedManufacturingList = [];
-  deletedIdsListForIngrediant = [];
   deletedShortNameList = [];
+  deletedIdsListForIngrediant = [];
   attachmentRequiredStatus: boolean = false;
   requestId;
   objectForListOfVariationGroup: any;
@@ -857,10 +857,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmit() {
+    let newObjectForData;
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    const newObjectForData = {
+    newObjectForData = {
       ...this.editData,
       ...data,
       ...this.objectForListOfVariationGroup
@@ -869,7 +870,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
-      this.errorMessage.emit('true');
+      // this.errorMessage.emit('true');
+      this.handleError('please complete the required values which marked with *');
+      this.getFormAsStarting(newObjectForData);
     }
   }
 
