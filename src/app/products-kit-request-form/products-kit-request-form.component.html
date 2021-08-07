@@ -2,11 +2,11 @@
       [formGroup]="regKitForAllRequestedType"
       (ngSubmit)="onSubmit()" novalidate>
   <tabset type="pills" #formTabs>
-    <tab heading="Products fields">
+    <tab heading="Kit Details">
       <div class="mt-5">
         <div class="row">
           <div class="col-12">
-            <app-title [smallTitle]="true" [title]="'Notification Product Request'"></app-title>
+            <app-title [smallTitle]="true" [title]="'Kit Details'"></app-title>
           </div>
         </div>
         <div class="row mt-3">
@@ -19,9 +19,9 @@
                   <i class="fas fa-info-circle"></i>
                 </span>
               </div>
-              <mat-label>Product Name (Arabic)</mat-label>
+              <mat-label>Kit Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
-                     placeholder="Product Name"
+                     placeholder="Kit Name"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : legacyStatus? productFlags && !productFlags.productArabicName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productArabicName ? true : false : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('productArabicName').invalid && (regKitForAllRequestedType.get('productArabicName').dirty || regKitForAllRequestedType.get('productArabicName').touched)"
@@ -46,9 +46,9 @@
                   <i class="fas fa-info-circle"></i>
                 </span>
               </div>
-              <mat-label>Product Name (English)</mat-label>
+              <mat-label>Kit Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
-                     placeholder="Product Name" required
+                     placeholder="Kit Name" required
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : legacyStatus? productFlags && !productFlags.productEnglishName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productEnglishName ? true : false : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('productEnglishName').invalid && (regKitForAllRequestedType.get('productEnglishName').dirty || regKitForAllRequestedType.get('productEnglishName').touched)"
@@ -68,7 +68,7 @@
             <div class="ShortNameFieldContainer" formArrayName="shortNameTable">
               <div class="row">
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
-                  <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
+                  <app-title [title]="'Short Name Group'" [smallTitle]="true"></app-title>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
                           [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false : true"
                           (click)="addShortName()">
@@ -117,11 +117,11 @@
                   <i class="fas fa-info-circle"></i>
                 </span>
               </div>
-              <mat-label>Product Color</mat-label>
+              <mat-label>Kit Color</mat-label>
               <input type="text"
                      class="form-control"
-                     placeholder="Product Color"
-                     aria-label="Product Color"
+                     placeholder="Kit Color"
+                     aria-label="Kit Color"
                      matInput
                      formControlName="productColor"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : legacyStatus? productFlags && !productFlags.productColor ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productColor ? true : false : isDraft ? false : productFlags && !productFlags.productColor ? true : false"
@@ -270,6 +270,7 @@
                      matInput
                      formControlName="storagePlace"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
+                     [required]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false"
                      [matAutocomplete]="storagePlaceList">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
@@ -430,13 +431,13 @@
         </div>
       </div>
     </tab>
-    <tab heading="Product Group fields">
+    <tab heading="Products In Kit">
       <div class="mt-5">
         <div class="row">
           <div class="col-12">
-            <app-title [smallTitle]="true" [title]="'Product Group Form'"></app-title>
+            <app-title [smallTitle]="true" [title]="'Products In Kit'"></app-title>
           </div>
-          <div class="col-12">
+          <div class="col-12 mt-2">
             <div class="row">
               <div class="col-12 p-0">
                 <div class="detailsTable">

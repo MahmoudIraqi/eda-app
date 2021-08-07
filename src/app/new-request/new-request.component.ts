@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, FormGroupDirective, FormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {InputService} from '../services/input.service';
 import {CurrencyPipe} from '@angular/common';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -71,8 +72,18 @@ export class NewRequestComponent implements OnInit {
   getDraftProductData: boolean = false;
   isDraftRequestStatus;
   dataInAnyError: any;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-xl packagingModal',
+  };
+  @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute, private router: Router,
+  constructor(private getService: FormService,
+              private readonly route: ActivatedRoute,
+              private router: Router,
+              private modalService: BsModalService,
               private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
@@ -257,10 +268,8 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.successSubmission = true;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
-        this.onClosed();
+        this.openModal(this.modalDetailedTemplate);
       }, error => this.handleError(error));
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
       const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
@@ -271,10 +280,8 @@ export class NewRequestComponent implements OnInit {
       this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.successSubmission = true;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
-        this.onClosed();
+        this.openModal(this.modalDetailedTemplate);
       }, error => this.handleError(error));
 
     } else if (this.selectedFormType === 5 || this.selectedFormType === 6) {
@@ -286,10 +293,8 @@ export class NewRequestComponent implements OnInit {
         this.updatingProductData = res;
         this.editFormIPStatus = false;
         this.isLoading = false;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSaveRequest();
         this.emptyTheTopField();
-        this.onClosed();
+        this.openModal(this.modalDetailedTemplate);
       }, error => this.handleError(error));
     }
   }
@@ -413,5 +418,13 @@ export class NewRequestComponent implements OnInit {
 
   isDraftRequest(event) {
     this.isDraftRequestStatus = event;
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closeSuccessSubmissionModal() {
+    this.modalRef.hide();
   }
 }
