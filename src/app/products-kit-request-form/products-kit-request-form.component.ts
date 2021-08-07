@@ -1190,7 +1190,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   handleError(message) {
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: message};
-    this.isLoading = false;
+    this.isLoadingStatus.emit(false);
     this.appliedProductStatus = false;
   }
 
