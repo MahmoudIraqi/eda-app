@@ -149,12 +149,12 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   removeDetailsRowFunction(i, requestID) {
-    this.removeDetailsRowOutput.emit(i);
-
     if (requestID) {
       this.deletedIdsListForDetailsRow.push(requestID);
       this.removeDetailsRowIDs.emit(this.deletedIdsListForDetailsRow);
     }
+
+    this.removeDetailsRowOutput.emit(i);
   }
 
   removePackagingRowFunction(i, requestID) {

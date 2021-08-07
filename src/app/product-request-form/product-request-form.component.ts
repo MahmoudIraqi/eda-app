@@ -653,9 +653,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.openModal(this.modalDetailedTemplate);
 
-    this.rerenderSubscribtionForClosingActionForDetailsForm(0);
+    // this.rerenderSubscribtionForClosingActionForDetailsForm(event);
 
     editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
+      i === 0 ? this.rerenderSubscribtionForClosingActionForDetailsForm(0) : null;
       if (i >= 1) {
         this.addIngrediantDetailsRows();
       }
@@ -686,6 +687,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   removeIngrediantDetailsRows(index) {
     this.IngrediantDetailsRows().removeAt(index);
+    this.arrayOfObservablesForIngredient.splice(index, 1);
     if (this.IngrediantDetailsRows().length === 0) {
       this.addIngrediantDetailsRows();
     }
@@ -870,8 +872,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           ...this.regPackagingForProduct.value
         };
 
-        console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType.get('packagingTable').value);
-
         this.editPackagingRowStatus = false;
         this.editPackagingIndex = '';
       }
@@ -968,10 +968,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
         this.formData.manufacturingCountryList.filter(option => option.ID === x.manufacturingCountry).map(row => x.manufacturingCountry = row.NAME);
       }) : null;
-      data.manufacturingTable ? data.manufacturingTable.map(x => {
-        this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
-        this.formData.manufacturingCountryList.filter(option => option.ID === x.manufacturingCountry).map(row => x.manufacturingCountry = row.NAME);
-      }) : null;
       data.detailsTable ? data.detailsTable.map(x => {
         x.ingrediantDetails.map(y => {
           this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
@@ -1003,22 +999,24 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         });
       }) : null;
 
-      this.packagingListTable.tableBody = [];
+
       setTimeout(() => {
+        this.packagingListTable.tableBody = [];
         data.packagingTable ? data.packagingTable.map((x, i) => {
           this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
         }) : null;
       }, 500);
 
-      this.manufacturingListTable.tableBody = [];
       setTimeout(() => {
+        this.manufacturingListTable.tableBody = [];
         data.manufacturingTable ? data.manufacturingTable.map((x, i) => {
           this.manufacturingListTable.tableBody = [...this.manufacturingListTable.tableBody, x];
         }) : null;
       }, 500);
 
-      this.detailsListTable.tableBody = [];
+
       setTimeout(() => {
+        this.detailsListTable.tableBody = [];
         data.detailsTable ? data.detailsTable.map((x, i) => {
           this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
         }) : null;

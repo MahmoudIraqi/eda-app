@@ -70,6 +70,7 @@ export class NewRequestComponent implements OnInit {
   editFormIPStatus: boolean = false;
   getDraftProductData: boolean = false;
   isDraftRequestStatus;
+  dataInAnyError: any;
 
   constructor(private getService: FormService, private readonly route: ActivatedRoute, private router: Router,
               private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -210,6 +211,8 @@ export class NewRequestComponent implements OnInit {
         isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
       };
 
+      this.dataInAnyError = newEventObject;
+
       this.getService.createProductRequest(newEventObject).subscribe((res: any) => {
         this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct = res.id : this.saveResponseDataForRegisterColorantProduct = res.id;
         this.updatingProductData = res;
@@ -227,6 +230,8 @@ export class NewRequestComponent implements OnInit {
         ...newEvent,
         isDraft: this.updatingProductData && (this.updatingProductData.isDraft || this.updatingProductData.isDraft === 0) ? this.updatingProductData.isDraft : 1
       };
+
+      this.dataInAnyError = newEventObject;
 
       this.getService.createProductKitRequest(newEventObject).subscribe((res: any) => {
         this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct = res.id : this.saveResponseDataForRegisterColorantKitProduct = res.id;
@@ -247,6 +252,8 @@ export class NewRequestComponent implements OnInit {
       const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 1 ? this.saveResponseDataForRegisterProduct ? this.saveResponseDataForRegisterProduct : null : this.saveResponseDataForRegisterColorantProduct ? this.saveResponseDataForRegisterColorantProduct : null);
       const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
 
+      this.dataInAnyError = newEvent;
+
       this.getService.createProductRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
         this.successSubmission = true;
@@ -258,6 +265,8 @@ export class NewRequestComponent implements OnInit {
     } else if (this.selectedFormType === 2 || this.selectedFormType === 4) {
       const id = Number(this.productId ? this.productId : event.id ? event.id : this.selectedFormType === 2 ? this.saveResponseDataForRegisterKitProduct ? this.saveResponseDataForRegisterKitProduct : null : this.saveResponseDataForRegisterColorantKitProduct ? this.saveResponseDataForRegisterColorantKitProduct : null);
       const newEvent = convertToSpecialObject('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, id, event);
+
+      this.dataInAnyError = newEvent;
 
       this.getService.createProductKitRequest(newEvent).subscribe((res: any) => {
         this.isLoading = false;
@@ -326,6 +335,7 @@ export class NewRequestComponent implements OnInit {
     this.isLoading = false;
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: error};
+    this.updatingProductData = this.dataInAnyError;
   }
 
   getPricing(fromWhere) {
