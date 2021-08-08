@@ -1423,12 +1423,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getPackagingFormAsStarting('');
     this.modalRef.hide();
     this.editPackagingRowStatus = false;
+    this.editPackagingIndex = '';
   }
 
   closeManufacturingModal() {
     this.getManufacturingFormAsStarting('');
     this.modalRef.hide();
     this.editManufacturingRowStatus = false;
+    this.editManufacturingIndex = '';
   }
 
   closeDetailedForm() {
@@ -1437,6 +1439,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.arrayOfObservablesForFunction = [];
     this.modalRef.hide();
     this.editDetailedRowStatus = false;
+    this.editIndex = '';
   }
 
   checkValue(formControl, list, form) {
