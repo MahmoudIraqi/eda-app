@@ -495,6 +495,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getLookupForFormArray(index) {
+    console.log('index', index);
     this.IngrediantDetailsRows().controls.map((x) => {
       this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList, index);
       this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList, index);
@@ -502,6 +503,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.arrayOfObservablesForIngredient.push(this.filteredOptionsForIngradiant);
     this.arrayOfObservablesForFunction.push(this.filteredOptionsForFunction);
+
+    console.log('arrayOfObservablesForIngredient', this.arrayOfObservablesForIngredient);
+    console.log('arrayOfObservablesForIngredient.length', this.arrayOfObservablesForIngredient.length);
   }
 
   // Functions for Tabs
@@ -668,7 +672,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     // this.rerenderSubscribtionForClosingActionForDetailsForm(event);
 
-    editRowData.ingrediantDetails.length === 1 ? this.rerenderSubscribtionForClosingActionForDetailsForm(0) : null;
+    this.rerenderSubscribtionForClosingActionForDetailsForm(0);
 
     editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
       if (i >= 1) {
