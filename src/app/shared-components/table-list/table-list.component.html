@@ -640,7 +640,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="5" *ngIf="whichTable === 'rejected'">
+            <td colspan="8" *ngIf="whichTable === 'rejected'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
                                      (opened)="setStep(i)" hideToggle>
@@ -649,12 +649,15 @@
                       <table class="table table-sm tableDetailsCont">
                         <tr>
                           <td>{{request.NotificationNo}}</td>
-                          <td class="hide">{{request.SubmmittionDate | date}}</td>
-                          <td><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
-                                    placement="right">{{request.NameEN}}</span></td>
-                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameAR}}"
-                                                 placement="right">{{request.NameAR}}</span></td>
-                          <td>{{request.actionStatus}} <strong>{{request.ID}}</strong></td>
+                          <td>{{request.SubmmittionDate | date}}</td>
+                          <td class="hide">{{request.productTypeName}}</td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
+                                                 placement="right">{{request.NameEN}}</span></td>
+                          <td class="hide"><span class="ellipsisSpan" tooltip="{{request.flagName}}"
+                                                 placement="right">{{request.flagName}}</span></td>
+                          <td>{{request.Status}}</td>
+                          <td class="hide">{{request.Track_type}}</td>
+                          <td><i (click)="editProduct(request)" class="fa fa-edit"></i></td>
                         </tr>
                       </table>
                     </mat-panel-title>
@@ -665,17 +668,29 @@
                         <label class="label">Notification number :</label>
                         <span>{{request.NotificationNo}}</span>
                       </div>
-                      <div class="col-12 col-sm-6 col-md-3">
+                      <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Submission date :</label>
-                        <span>{{request.SubmmittionDate}}</span>
+                        <span>{{request.SubmmittionDate | date}}</span>
                       </div>
-                      <div class="col-12 col-sm-6 col-md-3">
-                        <label class="label ">Product English name :</label>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Type Of Notification :</label>
+                        <span>{{request.productTypeName}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Product English name :</label>
                         <span>{{request.NameEN}}</span>
                       </div>
-                      <div class="col-12 col-sm-6 col-md-3">
-                        <label class="label">Product Arabic name :</label>
-                        <span>{{request.NameAR}}</span>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Type Of Request :</label>
+                        <span>{{request.flagName}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label ">Status :</label>
+                        <span>{{request.Status}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Track Type :</label>
+                        <span>{{request.Track_type}}</span>
                       </div>
                     </div>
                   </div>
@@ -1493,14 +1508,14 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="5" *ngIf="whichTable === 'rejected'">
+            <td colspan="8" *ngIf="whichTable === 'rejected'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td colspan="5">{{noDataStatment}}</td> <!--  -->
+                          <td colspan="8">{{noDataStatment}}</td> <!--  -->
                         </tr>
                       </table>
                     </mat-panel-title>

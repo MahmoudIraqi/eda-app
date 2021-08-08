@@ -322,6 +322,8 @@ export class TableListComponent implements OnInit, OnChanges {
       this.router.navigate([`/legacy-form/${Number(request.OLD_PRODUCT_ID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
     } else if (editFrom === 'approved-product') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}/${request.canEdit ? this.approvedType : 'approvedProduct'}`]);
+    } else if (editFrom === 'rejected-product') {
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/FinalReject`]);
     }
   }
 

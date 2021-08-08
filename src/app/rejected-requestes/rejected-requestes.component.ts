@@ -20,7 +20,7 @@ export class RejectedRequestesComponent implements OnInit {
     this.isLoading = true;
     this.getService.getRejectedProductsList().subscribe((res: any) => {
       this.rejectedListRequests = {
-        tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Need Action'],
+        tableHeader: ['Notification', 'Submission date', 'Type Of Notification', 'Product English name', 'Type Of Request', 'Status', 'Track Type', 'Action'],
         tableBody: res
       };
       this.isLoading = false;
