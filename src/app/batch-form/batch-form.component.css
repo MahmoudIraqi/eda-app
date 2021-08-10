@@ -69,9 +69,11 @@ tab-pane .row > div:nth-child(n + 4) {
 .ShortNameFieldContainer {
   position: relative;
   width: 100%;
-  background: #eee;
-  border-radius: 10px 10px 0 10px;
-  padding: 2em;
+  background: #ffffff;
+  border-radius: 10px 0 10px 10px;
+  border: 1.5px solid #ffffff;
+  padding: 1em;
+  box-shadow: 0 0 5px #c28a30;
 }
 
 .ShortNameFieldContainer .close {
@@ -291,10 +293,12 @@ input[type=file] {
 }
 
 .getProductArea {
-  background: #f9f9f9;
+  background: #ffffff;
   border-radius: 10px 0 10px 10px;
-  padding: 0.5em 1em;
+  border: 1.5px solid #ffffff;
+  padding: 1em;
   width: 100%;
+  box-shadow: 0 0 5px #c28a30;
 }
 
 .getNewProductArea {
@@ -304,7 +308,7 @@ input[type=file] {
   width: 100%;
 }
 
-.btnSubmit{
+.btnSubmit {
   margin-top: 2.7em;
 }
 
@@ -312,15 +316,17 @@ input[type=file] {
 
 
 /* -------------------------- Responsive --------------------- */
-@media only screen and (max-width: 1000px){
-  .conSpace{
+@media only screen and (max-width: 1000px) {
+  .conSpace {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
-  .inputBesideSelect .mat-form-field-infix{
+
+  .inputBesideSelect .mat-form-field-infix {
     padding: 0 !important;
   }
 }
+
 @media only screen and (max-width: 640px) {
   .buttonContainer .btn-primary {
     width: 100%;

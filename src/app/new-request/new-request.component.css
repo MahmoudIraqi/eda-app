@@ -65,9 +65,11 @@ form > .row > div:nth-child(n + 4), form > tabset .row > div:nth-child(n + 4) {
 .ShortNameFieldContainer {
   position: relative;
   width: 100%;
-  background: #eee;
-  border-radius: 10px 10px 0 10px;
-  padding: 2em;
+  background: #ffffff;
+  border-radius: 10px 0 10px 10px;
+  border: 1.5px solid #ffffff;
+  padding: 1em;
+  box-shadow: 0 0 5px #c28a30;
 }
 
 .ShortNameFieldContainer .close {
@@ -287,17 +289,21 @@ input[type=file] {
 }
 
 .getProductArea {
-  background: #f9f9f9;
+  background: #ffffff;
   border-radius: 10px 0 10px 10px;
-  padding: 0.5em 1em;
+  border: 1.5px solid #ffffff;
+  padding: 1em;
   width: 100%;
+  box-shadow: 0 0 5px #c28a30;
 }
 
 .getNewProductArea {
-  background: #f9f9f9;
+  background: #ffffff;
   border-radius: 10px 0 10px 10px;
-  padding: 3em;
+  border: 1.5px solid #ffffff;
+  padding: 1em;
   width: 100%;
+  box-shadow: 0 0 5px #c28a30;
 }
 
 /* ------------------------ Attachments ---------------------- */

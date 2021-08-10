@@ -109,7 +109,8 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12" *ngIf="selectedFormType === 3 || selectedFormType === 6">
+          <div class="col-lg-4 col-sm-6 col-12"
+               *ngIf="selectedFormType === 3 || selectedFormType === 4 || selectedFormType === 6">
             <mat-form-field appearance="fill">
               <div *ngIf="productComments && productComments.productColor" class="InfoIconContainer">
                 <span class="infoIcon" tooltip="{{productComments.productColor}}"
@@ -548,7 +549,7 @@
         <button type="button"
                 *ngIf="!approvedStatus && !reRegistrationStatus && !legacyStatus"
                 class="btn btn-primary btn-sm mr-3 bottomButtons"
-                [disabled]="!disabledSaveButton || (trackProductStatus && !editProcessInTrackedProduct)"
+                [disabled]="!disabledSaveButton ||(editData && editData.isCompleted && !canBeAppealedStatus && !canEditForApprovedProduct) || trackProductStatus"
                 (click)="saveData()">
           Save
         </button>
