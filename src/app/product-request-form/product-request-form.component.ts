@@ -495,7 +495,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   getLookupForFormArray(index) {
-    console.log('index', index);
     this.IngrediantDetailsRows().controls.map((x) => {
       this.filteredOptionsForIngradiant = this.filterLookupsFunction('ingrediant', x.get('ingrediant'), this.formData.ingrediantList, index);
       this.filteredOptionsForFunction = this.filterLookupsFunction('function', x.get('function'), this.formData.functionList, index);
@@ -503,9 +502,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.arrayOfObservablesForIngredient.push(this.filteredOptionsForIngradiant);
     this.arrayOfObservablesForFunction.push(this.filteredOptionsForFunction);
-
-    console.log('arrayOfObservablesForIngredient', this.arrayOfObservablesForIngredient);
-    console.log('arrayOfObservablesForIngredient.length', this.arrayOfObservablesForIngredient.length);
   }
 
   // Functions for Tabs

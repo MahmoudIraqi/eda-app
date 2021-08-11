@@ -413,7 +413,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   addShortName() {
-    debugger;
     this.addShortNameFieldStatus = false;
     if (this.ShortName.length < 10) {
       this.ShortName.push(this.fb.group({
@@ -610,7 +609,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.submitDataOutput.emit(newObjectForData);
     } else {
       this.handleError('please complete the required values which marked with *');
-      console.log('newObjectForData', newObjectForData);
       this.getFormAsStarting(newObjectForData);
     }
   }
@@ -877,8 +875,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       //   });
       // }
 
-      console.log('data', data);
-
       this.regKitForAllRequestedType.patchValue({
         ...data
       });
@@ -965,6 +961,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   applyProduct(event) {
+    event.status = 'Registered';
     if (event.status === 'Registered') {
       this.isLoading = true;
       this.appliedProductStatus = false;
