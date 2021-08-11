@@ -336,14 +336,14 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
               private getServices: FormService,
               private modalService: BsModalService,
               private number: DecimalPipe) {
-    this.getFormAsStarting('');
+    this.getFormAsStarting('', '');
     this.getManufacturingFormAsStarting('');
   }
 
   ngOnChanges(changes: SimpleChanges) {
 
     this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
-    this.getFormAsStarting('');
+    this.getFormAsStarting('', '');
 
     if (this.successSubmission) {
       this.resetForms();
@@ -355,7 +355,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     // this.lookupForProductIdsInputForChildComponents = this.lookupForProductIds;
 
-    this.getFormAsStarting(this.editData);
+    this.getFormAsStarting(this.editData, '');
 
     this.setApplicant(this.companyProfile);
 
@@ -502,7 +502,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
                   ...this.editData,
                   ...this.regKitForAllRequestedType.value,
                 };
-                this.editData ? this.getFormAsStarting(newAttachmentObject) : null;
+                this.editData ? this.getFormAsStarting(newAttachmentObject, 'errorOfAttachment') : null;
                 // this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regKitForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -514,7 +514,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
                   ...this.editData,
                   ...this.regKitForAllRequestedType.value,
                 };
-                this.editData ? this.getFormAsStarting(newAttachmentObject) : null;
+                this.editData ? this.getFormAsStarting(newAttachmentObject, 'errorOfAttachment') : null;
                 // this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regKitForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -526,7 +526,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
                   ...this.editData,
                   ...this.regKitForAllRequestedType.value,
                 };
-                this.editData ? this.getFormAsStarting(newAttachmentObject) : null;
+                this.editData ? this.getFormAsStarting(newAttachmentObject, 'errorOfAttachment') : null;
                 // this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regKitForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -609,7 +609,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.submitDataOutput.emit(newObjectForData);
     } else {
       this.handleError('please complete the required values which marked with *');
-      this.getFormAsStarting(newObjectForData);
+      this.getFormAsStarting(newObjectForData, 'errorOfSubmit');
     }
   }
 
@@ -629,7 +629,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.getServices.createProductRequest(newObjectData).subscribe((res: any) => {
 
       this.editData = res;
-      this.getFormAsStarting(res);
+      this.getFormAsStarting(res, '');
       this.saveDataOutputForAttachment.emit(res.id);
       this.regKitForAllRequestedType.patchValue({
         id: res.id
@@ -666,7 +666,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     this.getServices.setVariationProduct(newObject).subscribe((res: any) => {
       this.editData = res;
-      this.getFormAsStarting(res);
+      this.getFormAsStarting(res, '');
       this.regKitForAllRequestedType.patchValue({
         id: res.id
       });
@@ -700,7 +700,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.getServices.setReRegistrationProduct(newObjectData).subscribe((res: any) => {
 
       this.editData = res;
-      this.getFormAsStarting(res);
+      this.getFormAsStarting(res, '');
       this.saveDataOutputForAttachment.emit(res.id);
       this.regKitForAllRequestedType.patchValue({
         id: res.id
@@ -784,17 +784,19 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     });
   }
 
-  getFormAsStarting(data) {
+  getFormAsStarting(data, fromWhere) {
     if (data) {
       this.setAllLookups();
       this.isDraft = data.isDraft === 1;
       this.requestIsDraft.emit(data.isDraft === 1);
 
-      data.shortNameTable ? data.shortNameTable.map((X, i) => {
-        if (data.shortNameTable.length > 1 && i < data.shortNameTable.length - 1) {
-          this.addShortName();
-        }
-      }) : data.shortNameTable = [];
+      if (!fromWhere) {
+        data.shortNameTable ? data.shortNameTable.map((X, i) => {
+          if (data.shortNameTable.length > 1 && i < data.shortNameTable.length - 1) {
+            this.addShortName();
+          }
+        }) : data.shortNameTable = [];
+      }
 
       this.allProductsInKit.tableBody = [];
       data.ProductsForKit && data.ProductsForKit.length > 0 ? data.ProductsForKit.map((product, i) => {
@@ -1120,7 +1122,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   }
 
   resetForms() {
-    this.getFormAsStarting('');
+    this.getFormAsStarting('', '');
   }
 
   getDisabledValues() {
