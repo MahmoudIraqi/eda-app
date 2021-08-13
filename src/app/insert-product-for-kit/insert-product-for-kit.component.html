@@ -17,6 +17,7 @@
         <mat-form-field class="example-full-width">
           <mat-label>Product Notification Number</mat-label>
           <input type="text" class="form-control" matInput
+                 [readonly]="trackProductStatus ? true : canBeAppealedStatus ? true : canEditForHoldApprovedProduct ? true : canEditForApprovedProduct? true : false"
                  [(ngModel)]="notificationNoField"
                  placeholder="">
         </mat-form-field>

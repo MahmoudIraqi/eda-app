@@ -200,7 +200,8 @@
         Thank you for submission
       </h3>
       <h3>
-        your request id is <b>{{dataInAnyError.id}}</b>
+        Your request {{dataInAnyError.NotificationNo ? 'Notification Number' : 'id'}} is
+        <b>{{ dataInAnyError.NotificationNo ? dataInAnyError.NotificationNo : dataInAnyError.id}}</b>
       </h3>
     </div>
   </div>
