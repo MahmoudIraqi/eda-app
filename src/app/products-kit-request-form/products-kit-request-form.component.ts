@@ -605,7 +605,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       ...this.objectForListOfVariationGroup
     };
 
-    if (this.regKitForAllRequestedType.valid && this.allProductsInKit.tableBody.length > 0) {
+    if (this.regKitForAllRequestedType.valid && this.allProductsInKit.tableBody.length > 0 && this.regKitForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
       this.handleError('please complete the required values which marked with *');
