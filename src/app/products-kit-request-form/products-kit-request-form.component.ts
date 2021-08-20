@@ -968,7 +968,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.isLoading = true;
       this.appliedProductStatus = false;
       if (this.allProductsInKit.tableBody.filter(product => product.NotificationNo === event.notificationNumberOrId).length === 0) {
-        console.log('123123', this.selectedFormType);
         this.getServices.getProductWithNotificationNumberList(event.notificationNumberOrId, this.selectedFormType === 2 ? 'kit' : 'hairkit').subscribe((res: any) => {
           if (res) {
             if (res.canUse) {

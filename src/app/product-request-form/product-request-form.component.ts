@@ -485,7 +485,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType.get('deletedShortNameids').patchValue(this.deletedShortNameList);
 
       this.ShortName.removeAt(i);
-      console.log('this.shortName', this.ShortName);
     } else {
       this.removeShortNameFieldStatus = true;
 
@@ -736,14 +735,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }
     });
 
-    console.log('data', data);
     const newObjectForData = {
       ...this.editData,
       ...data,
       ...this.objectForListOfVariationGroup
     };
-
-    console.log('newObjectForData', newObjectForData);
 
     this.saveDataOutput.emit(newObjectForData);
   }
@@ -874,7 +870,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
-      // this.errorMessage.emit('true');
       this.handleError('please complete the required values which marked with *');
       this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
     }
@@ -1226,6 +1221,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         if (this.regProductForAllRequestedType.get(field)) {
           this.variationFields.map(x => {
             x.VARIATION_GROUP_FieldsDto.filter(x => x.CODE === field).map(row => {
+              row.CODE === 'productColor' ? row.FIELD_OPTINAL = true : null;
               if (row.FIELD_OPTINAL === false) {
                 this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
 
