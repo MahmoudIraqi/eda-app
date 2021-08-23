@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {FormService} from '../services/form.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-reject-variation',
@@ -7,9 +10,56 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RejectVariationComponent implements OnInit {
 
-  constructor() { }
+  rejectedVariationListRequests;
+  alertNotificationStatus: boolean = false;
+  alertNotification: any;
+  alertErrorNotificationStatus: boolean = false;
+  alertErrorNotification: any;
+  isLoading: boolean = false;
+  whichVariation;
 
-  ngOnInit(): void {
+  constructor(private getService: FormService, private route: ActivatedRoute,
+              private modalService: BsModalService) {
   }
 
+  ngOnInit(): void {
+    this.isLoading = true;
+
+    this.whichVariation = this.route.snapshot.routeConfig.path;
+
+    this.getVariationRejectList();
+  }
+
+  handleError(message) {
+    this.alertErrorNotificationStatus = true;
+    this.alertErrorNotification = {msg: message};
+    this.isLoading = false;
+  }
+
+  onClosedErrorAlert() {
+    setTimeout(() => {
+      this.alertErrorNotificationStatus = false;
+    }, 2000);
+  }
+
+  getVariationRejectList() {
+    this.getService.getRejectedVariationProductsList(this.whichVariation).subscribe((res: any) => {
+      this.rejectedVariationListRequests = {
+        tableHeader: ['Notification No', 'Saved date', 'Type Of Notification', 'Product English name', 'Product Arabic name', 'Action'],
+        tableBody: res
+      };
+      this.isLoading = false;
+    }, error => this.handleError(error));
+  }
+
+  alertForSubmitRequest() {
+    return {msg: 'You had a successful Delete'};
+  }
+
+  onClosed() {
+    setTimeout(() => {
+      this.alertNotificationStatus = false;
+    }, 2000);
+  }
 }
+

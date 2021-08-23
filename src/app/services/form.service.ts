@@ -376,6 +376,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getRejectedReRegistrationRequestsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetReRegRequestData?Type=reject&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getTrackVariationRequestsList(whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -566,6 +580,20 @@ export class FormService {
     const options = {headers};
 
     return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=draft&variationTypeID=${whichVariation === 'do_tell_variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getRejectedVariationProductsList(whichVariation) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetVariationRequestData?Type=reject&variationTypeID=${whichVariation === 'do_tell_variation' ? 4 : 3}&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),

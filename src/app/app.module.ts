@@ -65,15 +65,15 @@ import {LegacyComponent} from './legacy/legacy.component';
 import {LegacyProductsComponent} from './legacy-products/legacy-products.component';
 import {TrackLegacyComponent} from './track-legacy/track-legacy.component';
 import {DraftLegacyComponent} from './draft-legacy/draft-legacy.component';
-import { InsertProductForKitComponent } from './insert-product-for-kit/insert-product-for-kit.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ChartsComponentComponent } from './charts-component/charts-component.component';
-import { RejectedRequestContainerComponent } from './rejected-request-container/rejected-request-container.component';
-import { RejectNotificationComponent } from './reject-notification/reject-notification.component';
-import { RejectReNotificationComponent } from './reject-re-notification/reject-re-notification.component';
-import { RejectVariationComponent } from './reject-variation/reject-variation.component';
-import { RejectGeneralEnquiriesComponent } from './reject-general-enquiries/reject-general-enquiries.component';
-import { DraftReRegistrationRequestComponent } from './draft-re-registration-request/draft-re-registration-request.component';
+import {InsertProductForKitComponent} from './insert-product-for-kit/insert-product-for-kit.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {ChartsComponentComponent} from './charts-component/charts-component.component';
+import {RejectedRequestContainerComponent} from './rejected-request-container/rejected-request-container.component';
+import {RejectNotificationComponent} from './reject-notification/reject-notification.component';
+import {RejectReNotificationComponent} from './reject-re-notification/reject-re-notification.component';
+import {RejectVariationComponent} from './reject-variation/reject-variation.component';
+import {RejectGeneralEnquiriesComponent} from './reject-general-enquiries/reject-general-enquiries.component';
+import {DraftReRegistrationRequestComponent} from './draft-re-registration-request/draft-re-registration-request.component';
 
 @NgModule({
   declarations: [
