@@ -211,12 +211,4 @@ export class LegacyComponent implements OnInit {
       this.isLoading = false;
     }
   }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, this.modalOptions);
-  }
-
-  closeSuccessSubmissionModal() {
-    this.modalRef.hide();
-  }
 }
