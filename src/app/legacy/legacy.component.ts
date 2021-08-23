@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {convertToSpecialObjectForLegacy} from '../../utils/formDataFunction';
@@ -210,5 +210,13 @@ export class LegacyComponent implements OnInit {
     } else {
       this.isLoading = false;
     }
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closeSuccessSubmissionModal() {
+    this.modalRef.hide();
   }
 }

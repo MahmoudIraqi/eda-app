@@ -1,9 +1,10 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
 import {InputService} from '../services/input.service';
 import {CurrencyPipe} from '@angular/common';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-variation',
@@ -57,8 +58,17 @@ export class VariationComponent implements OnInit, OnChanges {
   variationID;
   enableEditableFields = [];
   typeOfProcess;
+  dataInAnyError: any;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-xl packagingModal',
+  };
+  @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
+  constructor(private getService: FormService,
+              private modalService: BsModalService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnChanges(): void {
@@ -106,7 +116,7 @@ export class VariationComponent implements OnInit, OnChanges {
           this.typeOfRegistrationForProduct = res.typeOfRegistration;
 
           this.isLoading = false;
-          this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1)
+          this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
         }, error => this.handleError(error));
       }
     });
@@ -182,12 +192,12 @@ export class VariationComponent implements OnInit, OnChanges {
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
 
+    this.dataInAnyError = data;
+
     this.getService.setVariationProduct(data).subscribe((res: any) => {
       this.isLoading = false;
-      this.alertNotificationStatus = true;
-      this.alertNotification = this.alertForSubmitRequest();
       this.emptyTheTopField();
-      this.onClosed();
+      this.openModal(this.modalDetailedTemplate);
     }, error => this.handleError(error));
   }
 
@@ -291,5 +301,13 @@ export class VariationComponent implements OnInit, OnChanges {
       this.enableEditableFields = event;
       this.isLoading = false;
     }, 200);
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closeSuccessSubmissionModal() {
+    this.modalRef.hide();
   }
 }
