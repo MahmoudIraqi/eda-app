@@ -80,6 +80,7 @@
               [selectedIsExport]="selectedIsExport"
               [successSubmission]="successSubmission"
               [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
+              [enableManufacturingInTrackOfVariationStatus]="enableManufacturingInTrackOfVariation"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
               [finalRejectedStatus]="typeOfProcess === 'FinalReject' || (updatingProductData && updatingProductData.trackCode === 'REJECT_APPEAL2')"

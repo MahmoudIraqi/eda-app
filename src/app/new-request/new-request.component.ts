@@ -57,6 +57,7 @@ export class NewRequestComponent implements OnInit {
   saveResponseDataForRegisterColorantKitProduct;
   productId;
   typeOfProcess;
+  enableManufacturingInTrackOfVariation;
   updatingProductData: any;
   requestId;
   estimatedValue;
@@ -113,6 +114,7 @@ export class NewRequestComponent implements OnInit {
 
     this.productId = this.route.snapshot.paramMap.get('id');
     this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
+    this.enableManufacturingInTrackOfVariation = this.route.snapshot.paramMap.get('enableManufacturing');
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'allLookups'),
       distinctUntilChanged()

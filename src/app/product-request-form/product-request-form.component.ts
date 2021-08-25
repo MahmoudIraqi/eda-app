@@ -43,6 +43,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() successSubmission;
   @Input() approvedStatus;
   @Input() trackProductStatus;
+  @Input() enableManufacturingInTrackOfVariationStatus;
   @Input() editData;
   @Input() editFromWhere;
   @Input() getAllLookupsStatus;
@@ -1217,6 +1218,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       });
 
       this.enableEditingForTypeOfRegistration.emit(this.enableEditableFields);
+      console.log('enableEditableFields', this.enableEditableFields);
       this.enableEditableFields.map(field => {
         if (this.regProductForAllRequestedType.get(field)) {
           this.variationFields.map(x => {
