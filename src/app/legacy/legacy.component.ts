@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {convertToSpecialObjectForLegacy} from '../../utils/formDataFunction';

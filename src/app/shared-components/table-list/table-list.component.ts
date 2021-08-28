@@ -149,12 +149,12 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   removeDetailsRowFunction(i, requestID) {
-    this.removeDetailsRowOutput.emit(i);
-
     if (requestID) {
       this.deletedIdsListForDetailsRow.push(requestID);
       this.removeDetailsRowIDs.emit(this.deletedIdsListForDetailsRow);
     }
+
+    this.removeDetailsRowOutput.emit(i);
   }
 
   removePackagingRowFunction(i, requestID) {
@@ -309,9 +309,9 @@ export class TableListComponent implements OnInit, OnChanges {
     const editFrom = this.route.snapshot.routeConfig.path;
 
     if (editFrom === 'tell_do_variation') {
-      this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
+      this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? 'FinalReject' : 'Request'}/${isTrackProduct === 'track-request' ? true : false}`]);
     } else if (editFrom === 'do_tell_variation') {
-      this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
+      this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? 'FinalReject' : 'Request'}/${isTrackProduct === 'track-request' ? true : false}`]);
     } else if (editFrom === 'registration') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
     } else if (editFrom === 're-registration') {
@@ -322,6 +322,8 @@ export class TableListComponent implements OnInit, OnChanges {
       this.router.navigate([`/legacy-form/${Number(request.OLD_PRODUCT_ID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
     } else if (editFrom === 'approved-product') {
       this.router.navigate([`/new-request/registration/${Number(request.ID)}/${request.canEdit ? this.approvedType : 'approvedProduct'}`]);
+    } else if (editFrom === 'rejected-product') {
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/FinalReject`]);
     }
   }
 

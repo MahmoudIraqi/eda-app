@@ -9,6 +9,10 @@ export class InsertProductForKitComponent implements OnInit, OnChanges {
 
   @Input() legacyStatus;
   @Input() reRegistrationStatus;
+  @Input() trackProductStatus;
+  @Input() canBeAppealedStatus;
+  @Input() canEditForHoldApprovedProduct;
+  @Input() canEditForApprovedProduct;
   @Input() variationFieldsStatus;
   @Input() variationFields;
   @Input() lookupsData;

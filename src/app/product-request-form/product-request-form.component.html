@@ -3,11 +3,11 @@
       (ngSubmit)="onSubmit()" novalidate xmlns="http://www.w3.org/1999/html"
       autocomplete="off">
   <tabset class="tabs" type="pills" #formTabs>
-    <tab heading="Products fields">
+    <tab heading="Product Details">
       <div class="mt-5">
         <div class="row">
           <div class="col-12">
-            <app-title [smallTitle]="true" [title]="'Notification Product Request'"></app-title>
+            <app-title [smallTitle]="true" [title]="'Product Details'"></app-title>
           </div>
         </div>
         <div class="row mt-3">
@@ -511,7 +511,7 @@
                           </div>
                           <!-- canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false -->
                           <button type="button" class="btn btn-primary btnForModal ml-auto"
-                                  [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : manufacturingListTable.tableBody.length === 0? canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false : true"
+                                  [disabled]="reRegistrationStatus ? true : variationFieldsStatus || enableManufacturingInTrackOfVariationStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : manufacturingListTable.tableBody.length === 0? canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false : true"
                                   (click)="openModal(manufacturingModal); rerenderSubscribtionForClosingActionForManufacturingForm()">
                             Add new manufacturing
                           </button>
@@ -535,7 +535,7 @@
         </div>
       </div>
     </tab>
-    <tab heading="Details fields">
+    <tab heading="Packaging/Ingredient Data">
       <div class="mt-5">
         <div class="row">
           <div class="col-12">
@@ -580,7 +580,7 @@
             <div class="d-flex flex-column">
               <div class="row">
                 <div class="col-12 col-sm-8">
-                  <app-title [smallTitle]="true" [title]="'Details data'"
+                  <app-title [smallTitle]="true" [title]="'Ingredients data'"
                              [havingComment]="productComments && productComments.detailsTable"
                              [theCommentMessage]="productComments && productComments.detailsTable ? productComments.detailsTable : ''"></app-title>
                 </div>
@@ -588,12 +588,12 @@
                   <div class="d-flex align-items-center">
                     <div class="hintForEmptyObject"
                          *ngIf="detailsListTable.tableBody.length === 0 && attachmentRequiredStatus">
-                      <h5>** Please add detail data</h5>
+                      <h5>** Please add ingredient data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"
                             [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('detailsTable') : true : legacyStatus? productFlags && !productFlags.detailsTable ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? true : false : isDraft ? false : productFlags && !productFlags.detailsTable ? true : false"
                             (click)="openModal(detailedModal); rerenderSubscribtionForClosingActionForDetailsForm(0);">
-                      Add new detail
+                      Add new ingredient
                     </button>
                   </div>
                 </div>
@@ -666,7 +666,7 @@
               type="button"
               class="btn btn-primary btn-sm mr-3 bottomButtons "
               (click)="backToNextTab()">
-        Back Forward
+        Back
       </button>
       <div class="ml-md-auto ">
         <button *ngIf="!formTabs.tabs[2].active"
@@ -702,7 +702,8 @@
 <ng-template #packagingModal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Packaging Form</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="closePackagingModal()">
+    <button type="button" class="close pull-right" aria-label="Close"
+            (click)="closePackagingModal()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -821,7 +822,8 @@
 <ng-template #manufacturingModal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Manufacturing Form</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="closeManufacturingModal()">
+    <button type="button" class="close pull-right" aria-label="Close"
+            (click)="closeManufacturingModal()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -903,8 +905,9 @@
 </ng-template>
 <ng-template #detailedModal>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Detail Form</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="closeDetailedForm()">
+    <h4 class="modal-title pull-left">Ingredient Form</h4>
+    <button type="button" class="close pull-right" aria-label="Close"
+            (click)="closeDetailedForm()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -953,7 +956,7 @@
               <div class="col-12 d-flex">
                 <button type="button" class="btn btn-primary ml-auto"
                         (click)="addIngrediantDetailsRows()">
-                  Add ingredient
+                  Add detail
                 </button>
               </div>
               <div class="col-12 mt-1" *ngFor="let row of IngrediantDetailsRows().controls; let index=index"
@@ -1042,7 +1045,7 @@
                     <div class="col-12 col-sm-6 col-lg-3 d-flex">
                       <button type="button" class=" btn btn-primary btn-sm ml-auto mt-4 mb-4"
                               (click)="removeIngrediantDetailsRows(index); deletedIngrediantIdsList(row)">
-                        Delete ingredient
+                        Delete detail
                       </button>
                     </div>
                   </div>
@@ -1057,8 +1060,8 @@
           <button
             type="submit"
             class="btn btn-primary btn-sm">
-            <span *ngIf="!this.editDetailedRowStatus">Add Detail</span>
-            <span *ngIf="this.editDetailedRowStatus">Edit Detail</span>
+            <span *ngIf="!this.editDetailedRowStatus">Add Ingredient</span>
+            <span *ngIf="this.editDetailedRowStatus">Edit Ingredient</span>
           </button>
         </div>
       </div>

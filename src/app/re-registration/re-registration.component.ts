@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormService} from '../services/form.service';
 import {convertToSpecialObject, convertToSpecialObjectForReNotification} from '../../utils/formDataFunction';
 import {InputService} from '../services/input.service';
 import {CurrencyPipe} from '@angular/common';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-re-registration',
@@ -52,7 +53,20 @@ export class ReRegistrationComponent implements OnInit {
   productNotificationNumber;
   typeOfProcess;
 
-  constructor(private getService: FormService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
+  dataInAnyError: any;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-xl packagingModal',
+  };
+  @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
+
+  constructor(private getService: FormService,
+              private readonly route: ActivatedRoute,
+              private router: Router,
+              private modalService: BsModalService,
+              private inputService: InputService, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
@@ -163,22 +177,22 @@ export class ReRegistrationComponent implements OnInit {
     if (this.productData.typeOfMarketing === 1 || this.productData.typeOfMarketing === 3) {
       const newEvent = convertToSpecialObjectForReNotification('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
 
+      this.dataInAnyError = newEvent;
+
       this.getService.setReRegistrationProduct(newEvent).subscribe((res: any) => {
         this.isLoading = false;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
-        this.onClosed();
+        this.openModal(this.modalDetailedTemplate);
       }, error => this.handleError(error));
     } else if (this.productData.typeOfMarketing === 2 || this.productData.typeOfMarketing === 4) {
       const newEvent = convertToSpecialObjectForReNotification('submit', this.selectedFormType, this.selectedRequestedType, this.selectedIsExport, this.selectedTrackType, this.productData.id, this.productData.NotificationNo, event);
 
+      this.dataInAnyError = newEvent;
+
       this.getService.setReRegistrationKitProduct(newEvent).subscribe((res: any) => {
         this.isLoading = false;
-        this.alertNotificationStatus = true;
-        this.alertNotification = this.alertForSubmitRequest();
         this.emptyTheTopField();
-        this.onClosed();
+        this.openModal(this.modalDetailedTemplate);
       }, error => this.handleError(error));
 
     }
@@ -241,4 +255,11 @@ export class ReRegistrationComponent implements OnInit {
     return {msg: 'You had a successful saving'};
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closeSuccessSubmissionModal() {
+    this.modalRef.hide();
+  }
 }

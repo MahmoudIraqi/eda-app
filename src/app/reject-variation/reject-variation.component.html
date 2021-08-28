@@ -1,1 +1,26 @@
-<p>reject-variation works!</p>
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title
+        [title]="'Reject requests  ' + (whichVariation === 'tell_do_variation'? 'Tell & Do variation' : 'Do & Tell Variation')"
+        [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="tableContainer TrackTable">
+        <app-table-list [data]="rejectedVariationListRequests"
+                        [whichTable]="'draftVariation'"></app-table-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

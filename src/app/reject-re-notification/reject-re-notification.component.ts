@@ -21,7 +21,7 @@ export class RejectReNotificationComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.getService.getRejectRequestsListForReRegistration().subscribe((res: any) => {
+    this.getService.getRejectedReRegistrationRequestsList().subscribe((res: any) => {
       this.responseForRejectedList = res;
       this.selectRejectedType('Final');
       this.isLoading = false;

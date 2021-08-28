@@ -43,6 +43,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() successSubmission;
   @Input() approvedStatus;
   @Input() trackProductStatus;
+  @Input() enableManufacturingInTrackOfVariationStatus;
   @Input() editData;
   @Input() editFromWhere;
   @Input() getAllLookupsStatus;
@@ -305,7 +306,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       fileName: '',
       fileValue: '',
       required: false,
-      enable: this.variationFieldsStatus ? true : false,
+      enable: true,
       attachmentTypeStatus: '',
       loadingStatus: false,
     }
@@ -338,8 +339,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   deletedPackagingList = [];
   deletedDetailedList = [];
   deletedManufacturingList = [];
-  deletedIdsListForIngrediant = [];
   deletedShortNameList = [];
+  deletedIdsListForIngrediant = [];
   attachmentRequiredStatus: boolean = false;
   requestId;
   objectForListOfVariationGroup: any;
@@ -378,7 +379,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
               private readonly route: ActivatedRoute,
               private modalService: BsModalService,
               private getService: FormService) {
-    this.getFormAsStarting('');
+    this.getFormAsStarting('', '');
     this.getPackagingFormAsStarting('');
     this.getManufacturingFormAsStarting('');
     this.getDetailedFormAsStarting('');
@@ -386,7 +387,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     this.formData = {...this.lookupsData};
-    this.getFormAsStarting('');
+    this.getFormAsStarting('', '');
 
     if (this.successSubmission) {
       this.resetForms();
@@ -396,7 +397,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.getDisabledValues();
 
-    this.getFormAsStarting(this.editData);
+    this.getFormAsStarting(this.editData, '');
 
     this.setApplicant(this.companyProfile);
 
@@ -542,7 +543,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             if (this.variationFieldsStatus) {
               if (this.editData.isVariationSaved === false) {
                 this.handleError('Please save the request first');
-                this.editData ? this.getFormAsStarting(this.editData) : null;
+
+                const newAttachmentObject = {
+                  ...this.editData,
+                  ...this.regProductForAllRequestedType.value,
+                };
+                this.editData ? this.getFormAsStarting(newAttachmentObject, 'errorOfAttachment') : null;
                 // this.saveProductForAttachmentVariation(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -550,7 +556,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             } else if (this.reRegistrationStatus) {
               if (!this.regProductForAllRequestedType.value.id) {
                 this.handleError('Please save the request first');
-                this.editData ? this.getFormAsStarting(this.editData) : null;
+                const newAttachmentObject = {
+                  ...this.editData,
+                  ...this.regProductForAllRequestedType.value,
+                };
+                this.editData ? this.getFormAsStarting(newAttachmentObject, 'errorOfAttachment') : null;
                 // this.saveProductForAttachmentReNotification(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -558,7 +568,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
             } else {
               if (!this.regProductForAllRequestedType.value.id) {
                 this.handleError('Please save the request first');
-                this.editData ? this.getFormAsStarting(this.editData) : null;
+                const newAttachmentObject = {
+                  ...this.editData,
+                  ...this.regProductForAllRequestedType.value,
+                };
+                this.editData ? this.getFormAsStarting(newAttachmentObject, 'errorOfAttachment') : null;
                 // this.saveProductForAttachment(fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
               } else {
                 this.setAttachmentFileFunction(this.regProductForAllRequestedType.value.id, fileControlName, this.fileStructure.name, 0, res.target.result, attachmentValue);
@@ -653,6 +667,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.openModal(this.modalDetailedTemplate);
 
+    // this.rerenderSubscribtionForClosingActionForDetailsForm(event);
+
     this.rerenderSubscribtionForClosingActionForDetailsForm(0);
 
     editRowData.ingrediantDetails.length > 1 ? editRowData.ingrediantDetails.map((row, i) => {
@@ -686,6 +702,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
   removeIngrediantDetailsRows(index) {
     this.IngrediantDetailsRows().removeAt(index);
+    this.arrayOfObservablesForIngredient.splice(index, 1);
+    this.arrayOfObservablesForFunction.splice(index, 1);
     if (this.IngrediantDetailsRows().length === 0) {
       this.addIngrediantDetailsRows();
     }
@@ -748,7 +766,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getService.createProductRequest(newObjectData).subscribe((res: any) => {
 
       this.editData = res;
-      this.getFormAsStarting(res);
+      this.getFormAsStarting(res, '');
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
@@ -785,7 +803,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     this.getService.setVariationProduct(newObject).subscribe((res: any) => {
       this.editData = res;
-      this.getFormAsStarting(res);
+      this.getFormAsStarting(res, '');
       this.regProductForAllRequestedType.patchValue({
         id: res.id
       });
@@ -819,7 +837,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getService.setReRegistrationProduct(newObjectData).subscribe((res: any) => {
 
       this.editData = res;
-      this.getFormAsStarting(res);
+      this.getFormAsStarting(res, '');
       this.saveDataOutputForAttachment.emit(res.id);
       this.regProductForAllRequestedType.patchValue({
         id: res.id
@@ -840,10 +858,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmit() {
+    let newObjectForData;
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
 
-    const newObjectForData = {
+    newObjectForData = {
       ...this.editData,
       ...data,
       ...this.objectForListOfVariationGroup
@@ -852,7 +871,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
-      this.errorMessage.emit('true');
+      this.handleError('please complete the required values which marked with *');
+      this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
     }
   }
 
@@ -869,8 +889,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           ...this.regProductForAllRequestedType.get('packagingTable').value[this.editManufacturingIndex],
           ...this.regPackagingForProduct.value
         };
-
-        console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType.get('packagingTable').value);
 
         this.editPackagingRowStatus = false;
         this.editPackagingIndex = '';
@@ -940,17 +958,19 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
-  getFormAsStarting(data) {
+  getFormAsStarting(data, fromWhere) {
     if (data) {
       this.setAllLookups();
       this.isDraft = data.isDraft === 1;
       this.requestIsDraft.emit(data.isDraft === 1);
 
-      data.shortNameTable ? data.shortNameTable.map((X, i) => {
-        if (data.shortNameTable.length > 1 && i < data.shortNameTable.length - 1) {
-          this.addShortName();
-        }
-      }) : data.shortNameTable = [];
+      if (!fromWhere) {
+        data.shortNameTable ? data.shortNameTable.map((X, i) => {
+          if (data.shortNameTable.length > 1 && i < data.shortNameTable.length - 1) {
+            this.addShortName();
+          }
+        }) : data.shortNameTable = [];
+      }
 
       this.formData.productColorList.filter(item => item.ID === data.productColor).map(x => data.productColor = x.NAME);
       this.formData.applicantList.filter(option => option.ID === data.applicant).map(x => data.applicant = x.NAME);
@@ -963,10 +983,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       data.packagingTable ? data.packagingTable.map(x => {
         this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
         this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-      }) : null;
-      data.manufacturingTable ? data.manufacturingTable.map(x => {
-        this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
-        this.formData.manufacturingCountryList.filter(option => option.ID === x.manufacturingCountry).map(row => x.manufacturingCountry = row.NAME);
       }) : null;
       data.manufacturingTable ? data.manufacturingTable.map(x => {
         this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
@@ -1003,22 +1019,24 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         });
       }) : null;
 
-      this.packagingListTable.tableBody = [];
+
       setTimeout(() => {
+        this.packagingListTable.tableBody = [];
         data.packagingTable ? data.packagingTable.map((x, i) => {
           this.packagingListTable.tableBody = [...this.packagingListTable.tableBody, x];
         }) : null;
       }, 500);
 
-      this.manufacturingListTable.tableBody = [];
       setTimeout(() => {
+        this.manufacturingListTable.tableBody = [];
         data.manufacturingTable ? data.manufacturingTable.map((x, i) => {
           this.manufacturingListTable.tableBody = [...this.manufacturingListTable.tableBody, x];
         }) : null;
       }, 500);
 
-      this.detailsListTable.tableBody = [];
+
       setTimeout(() => {
+        this.detailsListTable.tableBody = [];
         data.detailsTable ? data.detailsTable.map((x, i) => {
           this.detailsListTable.tableBody = [...this.detailsListTable.tableBody, x];
         }) : null;
@@ -1168,7 +1186,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   resetForms() {
-    this.getFormAsStarting('');
+    this.getFormAsStarting('', '');
   }
 
   setShelfValue(event) {
@@ -1200,10 +1218,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       });
 
       this.enableEditingForTypeOfRegistration.emit(this.enableEditableFields);
+      console.log('enableEditableFields', this.enableEditableFields);
       this.enableEditableFields.map(field => {
         if (this.regProductForAllRequestedType.get(field)) {
           this.variationFields.map(x => {
             x.VARIATION_GROUP_FieldsDto.filter(x => x.CODE === field).map(row => {
+              row.CODE === 'productColor' ? row.FIELD_OPTINAL = true : null;
               if (row.FIELD_OPTINAL === false) {
                 this.regProductForAllRequestedType.get(field).setValidators(Validators.required);
 
@@ -1407,12 +1427,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.getPackagingFormAsStarting('');
     this.modalRef.hide();
     this.editPackagingRowStatus = false;
+    this.editPackagingIndex = '';
   }
 
   closeManufacturingModal() {
     this.getManufacturingFormAsStarting('');
     this.modalRef.hide();
     this.editManufacturingRowStatus = false;
+    this.editManufacturingIndex = '';
   }
 
   closeDetailedForm() {
@@ -1421,6 +1443,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.arrayOfObservablesForFunction = [];
     this.modalRef.hide();
     this.editDetailedRowStatus = false;
+    this.editIndex = '';
   }
 
   checkValue(formControl, list, form) {
@@ -1508,8 +1531,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   rerenderSubscribtionForClosingActionForDetailsForm(index) {
     this.getLookupForFormArray(index);
 
-    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.filteredOptionsForIngradiant, index);
-    this._subscribeToClosingActionsForDetailsFormArray('function', this.filteredOptionsForFunction, index);
+    this._subscribeToClosingActionsForDetailsFormArray('ingrediant', this.arrayOfObservablesForIngredient[index], index);
+    this._subscribeToClosingActionsForDetailsFormArray('function', this.arrayOfObservablesForFunction[index], index);
   }
 
   rerenderFileAttachmentList() {
@@ -1663,7 +1686,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
+        enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1673,7 +1696,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
+        enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1683,7 +1706,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
+        enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1693,7 +1716,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
+        enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1703,7 +1726,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
+        enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1713,7 +1736,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
+        enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
       },
@@ -1723,7 +1746,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         fileName: '',
         fileValue: '',
         required: false,
-        enable: this.variationFieldsStatus || variationStatusForAttachment === 'tell_do_variation' || variationStatusForAttachment === 'do_tell_variation' ? true : false,
+        enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
       }
