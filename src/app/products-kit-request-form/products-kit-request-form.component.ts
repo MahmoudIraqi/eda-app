@@ -401,7 +401,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
   ngOnChanges(changes: SimpleChanges) {
 
-    this.formData = {productStatusList: ['Registered', 'New'], ...this.lookupsData};
+    this.formData = {productStatusList: ['Registered'], ...this.lookupsData};
     this.getFormAsStarting('');
 
     if (this.successSubmission) {

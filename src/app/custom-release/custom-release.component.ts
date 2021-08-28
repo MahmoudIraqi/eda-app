@@ -11,6 +11,17 @@ import {convertToSpecialObject} from '../../utils/formDataFunction';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {InputService} from '../services/input.service';
 
+interface DataGroup {
+ 
+  Label: string;
+  fieldsType: FieldsType[];
+}
+interface FieldsType {
+  ID: number;
+  NAME: string;
+}
+
+
 @Component({
   selector: 'app-custom-release',
   templateUrl: './custom-release.component.html',
@@ -19,24 +30,28 @@ import {InputService} from '../services/input.service';
 export class CustomReleaseComponent implements OnInit {
 
   customReleaseForm: FormGroup;
-  formData = {
-    fieldsType: [
-      {
-        ID: 0,
-        NAME: 'Final Products'
-      },
-      {
-        ID: 1,
-        NAME: 'Samples'
-      },
-      {
-        ID: 2,
-        NAME: 'Registered products for internal use'
-      },
-      {
-        ID: 3,
-        NAME: 'Registered products for export'
-      },
+
+  /************************************************* */
+  DataGroups: DataGroup[] = [
+    {
+      Label: 'Products',
+      fieldsType: [
+              { ID: 0, NAME: 'Final Products'},
+      {ID: 1,NAME: 'Samples'},
+      
+      ]
+    },
+    {
+      Label: '',
+      fieldsType:
+      [
+      {ID: 2,NAME: 'Registered products for internal use' }
+    ]
+      
+    },
+    {
+      Label: 'row materials',
+      fieldsType: [
       {
         ID: 4,
         NAME: 'Importers of raw materials'
@@ -49,6 +64,12 @@ export class CustomReleaseComponent implements OnInit {
         ID: 6,
         NAME: 'Importing articles for the production of registered or listed products for local circulation'
       },
+      ]
+    },
+    {
+      Label: 'Fire',
+     
+      fieldsType: [
       {
         ID: 7,
         NAME: 'Importing cosmetic production for export only (not registered or listed)'
@@ -57,7 +78,51 @@ export class CustomReleaseComponent implements OnInit {
         ID: 8,
         NAME: 'Importing samples for production requirements'
       },
-    ],
+      ]
+    }
+  ]
+  /***********************************************************************************88 */
+  formData = {
+    
+     
+    // fieldsType: [
+    //   {
+    //     ID: 0,
+    //     NAME: 'Final Products'
+    //   },
+    //   {
+    //     ID: 1,
+    //     NAME: 'Samples'
+    //   },
+    //   {
+    //     ID: 2,
+    //     NAME: 'Registered products for internal use'
+    //   },
+    //   {
+    //     ID: 3,
+    //     NAME: 'Registered products for export'
+    //   },
+    //   {
+    //     ID: 4,
+    //     NAME: 'Importers of raw materials'
+    //   },
+    //   {
+    //     ID: 5,
+    //     NAME: 'Import samples of raw materials'
+    //   },
+    //   {
+    //     ID: 6,
+    //     NAME: 'Importing articles for the production of registered or listed products for local circulation'
+    //   },
+    //   {
+    //     ID: 7,
+    //     NAME: 'Importing cosmetic production for export only (not registered or listed)'
+    //   },
+    //   {
+    //     ID: 8,
+    //     NAME: 'Importing samples for production requirements'
+    //   },
+    // ],
     importReasonList: [
       {
         ID: 0,

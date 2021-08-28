@@ -79,6 +79,8 @@ export class NewRequestComponent implements OnInit {
     this.isLoading = true;
 
 
+    
+
     this.inputService.getInput$().pipe(
       filter(x => x.type === 'CompanyId'),
       distinctUntilChanged()
@@ -107,7 +109,7 @@ export class NewRequestComponent implements OnInit {
     ).subscribe(res => {
       this.formData = res.payload;
       this.isLoading = false;
-
+//////////////////////////////////////////////////////////////////Eraqiiiiiiiiiiiii 
       if (this.productId) {
         this.isLoading = true;
         if (!this.getDraftProductData) {
@@ -197,7 +199,7 @@ export class NewRequestComponent implements OnInit {
   getRequestId(event) {
     this.requestId = event;
   }
-
+////////////////////////////////////// eraqqqqiiiiiii
   saveData(event) {
     this.isLoading = true;
 
