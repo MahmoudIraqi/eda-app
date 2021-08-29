@@ -108,6 +108,19 @@ export class ReRegistrationComponent implements OnInit {
           this.selectedRequestedType = res.typeOfRegistration;
           this.selectedIsExport = res.isExport;
           this.selectedTrackType = res.Tracktype;
+
+          if ((this.typeOfProcess === 'CanBeAppealed' || this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithLabsComments') && res.id === 0) {
+            res.receiptValue = '';
+            res.receiptNumber = '';
+            res.receipt = '';
+            let indexOfRow;
+            res.productAttachments.filter(x => x.attachmentName === 'receipt').map(row => {
+              indexOfRow = res.productAttachments.indexOf(row);
+            });
+
+            res.productAttachments.splice(indexOfRow, 1);
+          }
+
           this.productData = res;
           this.getPricing();
           this.isLoading = false;
