@@ -221,26 +221,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       loadingStatus: false,
     },
     {
-      id: 'receipt',
-      name: 'receipt',
-      fileName: '',
-      fileValue: '',
-      required: true,
-      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : !this.canBeAppealedStatus ? true : false,
-      attachmentTypeStatus: '',
-      loadingStatus: false,
-    },
-    {
-      id: 'otherFees',
-      name: 'otherFees',
-      fileName: '',
-      fileValue: '',
-      required: true,
-      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : false,
-      attachmentTypeStatus: '',
-      loadingStatus: false,
-    },
-    {
       id: 'factoryLicense',
       name: 'Factory license',
       fileName: '',
@@ -309,7 +289,27 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       enable: true,
       attachmentTypeStatus: '',
       loadingStatus: false,
-    }
+    },
+    {
+      id: 'receipt',
+      name: 'receipt',
+      fileName: '',
+      fileValue: '',
+      required: true,
+      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : !this.canBeAppealedStatus ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
+      id: 'otherFees',
+      name: 'otherFees',
+      fileName: '',
+      fileValue: '',
+      required: true,
+      enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : false,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
   ];
   editIndex;
   editDetailedRowStatus = false;
@@ -1661,26 +1661,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         loadingStatus: false,
       },
       {
-        id: 'receipt',
-        name: 'receipt',
-        fileName: '',
-        fileValue: '',
-        required: true,
-        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
-        id: 'otherFees',
-        name: 'otherFees',
-        fileName: '',
-        fileValue: '',
-        required: true,
-        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
-        attachmentTypeStatus: '',
-        loadingStatus: false,
-      },
-      {
         id: 'factoryLicense',
         name: 'Factory license',
         fileName: '',
@@ -1749,7 +1729,27 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
-      }
+      },
+      {
+        id: 'receipt',
+        name: 'receipt',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
+      {
+        id: 'otherFees',
+        name: 'otherFees',
+        fileName: '',
+        fileValue: '',
+        required: true,
+        enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
+        attachmentTypeStatus: '',
+        loadingStatus: false,
+      },
     ];
   }
 
