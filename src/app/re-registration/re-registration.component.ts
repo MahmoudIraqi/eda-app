@@ -109,7 +109,7 @@ export class ReRegistrationComponent implements OnInit {
           this.selectedIsExport = res.isExport;
           this.selectedTrackType = res.Tracktype;
 
-          if ((this.typeOfProcess === 'CanBeAppealed' || this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithLabsComments') && res.id === 0) {
+          if (this.typeOfProcess === 'CanBeAppealed' || this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithLabsComments') {
             res.receiptValue = '';
             res.receiptNumber = '';
             res.receipt = '';
