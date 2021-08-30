@@ -843,6 +843,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  deleteAttachmentFileByID(requestID, attachmentName, attachementId) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Request/DeleteAttach?RequestId=${requestID}&attachmentName=${attachmentName}&attachmentId=${attachementId}`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

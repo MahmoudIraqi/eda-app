@@ -244,6 +244,27 @@ input[type=file] {
   color: #c28a30;
 }
 
+.custom-file-delete-Button {
+  position: absolute;
+  z-index: 1000;
+  background: #f00;
+  border: none;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: rgb(118, 118, 118);
+  border-right: 1px solid #fff;
+  height: 100%;
+  right: 10.3em;
+  color: #fff;
+  padding: 0.5em 1em;
+}
+
+.custom-file-delete-Button:hover {
+  background: transparent;
+  border-left: 2px solid #f00;
+  color: #f00;
+}
+
 /* -------------------- Button Container ---------------------------- */
 .buttonContainer {
   margin-top: 3em;

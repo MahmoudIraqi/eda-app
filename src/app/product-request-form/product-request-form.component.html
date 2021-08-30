@@ -650,8 +650,12 @@
                 <label class="custom-file-label" [for]="field.id">
                   {{field.fileName ? field.fileName : 'Choose file'}}
                 </label>
-                <button type="button" class="custom-file-download-Button" (click)="downloadFile(field.id)"
-                        [disabled]="!regProductForAllRequestedType.value.id">Download
+                <button type="button" class="custom-file-download-Button" *ngIf="field.fileValue"
+                        (click)="downloadFile(field.id)">Download
+                </button>
+                <button type="button" class="custom-file-delete-Button" *ngIf="field.fileValue"
+                        (click)="DeleteFile(field)">
+                  <i class="fas fa-trash"></i>
                 </button>
               </div>
             </div>

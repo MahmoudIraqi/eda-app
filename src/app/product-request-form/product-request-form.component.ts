@@ -1392,6 +1392,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
   }
 
+  DeleteFile(File) {
+    console.log('File', File);
+    this.getService.deleteAttachmentFileByID(this.regProductForAllRequestedType.value.id, File.fileName, File.fileValue).subscribe((res: any) => {
+      console.log('res', res);
+    }, error => this.handleError(error));
+  }
+
   convertDataForAttachmentRequestBody(requestId, FileID, FileName, id, base64Data, fileValue) {
     return {
       RequestId: this.regProductForAllRequestedType.value.id ? this.regProductForAllRequestedType.value.id : this.requestId,
