@@ -466,7 +466,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         id: null,
         APPWORKS_ID: null,
         APPWORKS_GUID: null,
-        shortName: this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')]),
+        shortName: this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~])*$')]),
         accepted: false
       }));
     } else {
@@ -1074,7 +1074,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           id: null,
           APPWORKS_ID: null,
           APPWORKS_GUID: null,
-          shortName: this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s])*$')]),
+          shortName: this.legacyStatus ? this.fb.control('', Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~])*$')) : this.fb.control('', [Validators.required, Validators.pattern('^(?:\\b\\w\\S+\\b[\\s][^\u0621-\u064A]|[\\b\\w\\s\\!\\"\\#\\$\\%\\&\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\>\\=\\?\\@\\[\\]\\{\\}\\\\\\\\\\^\\_\\`\\~])*$')]),
           accepted: false
         })]),
         applicant: this.fb.control('', Validators.required),
@@ -1118,7 +1118,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         shelfLifeAttachment: this.fb.control(''),
         letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
-        otherFees: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        otherFees: !this.legacyStatus && !this.variationFieldsStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
       });
     }
   }
