@@ -1394,14 +1394,14 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   DeleteFile(File) {
-    this.isLoading = true;
+    this.isLoadingStatus.emit(true);
     this.getService.deleteAttachmentFileByID(this.regProductForAllRequestedType.value.id, File.fileName, File.fileValue).subscribe((res: any) => {
       this.attachmentFields.filter(item => item.fileValue === File.fileValue).map(element => {
         element.fileValue = '';
         element.fileName = '';
 
         this.regProductForAllRequestedType.controls[element.id].patchValue('');
-        this.isLoading = false;
+        this.isLoadingStatus.emit(false);
       });
     }, error => this.handleError(error));
   }
