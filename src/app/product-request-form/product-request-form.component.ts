@@ -22,6 +22,7 @@ import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {element} from 'protractor';
 
 export interface LookupState {
   ID: number;
@@ -1393,9 +1394,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   DeleteFile(File) {
-    console.log('File', File);
+    this.isLoading = true;
     this.getService.deleteAttachmentFileByID(this.regProductForAllRequestedType.value.id, File.fileName, File.fileValue).subscribe((res: any) => {
-      console.log('res', res);
+      this.attachmentFields.filter(item => item.fileValue === File.fileValue).map(element => {
+        element.fileValue = '';
+        element.fileName = '';
+
+        this.regProductForAllRequestedType.controls[element.id].patchValue('');
+        this.isLoading = false;
+      });
     }, error => this.handleError(error));
   }
 
