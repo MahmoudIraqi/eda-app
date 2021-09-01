@@ -869,6 +869,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...this.objectForListOfVariationGroup
     };
 
+    console.log('this.regProductForAllRequestedType', this.regProductForAllRequestedType);
+
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       this.submitDataOutput.emit(newObjectForData);
     } else {
@@ -1107,7 +1109,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         reference: this.fb.control(''),
         methodOfAnalysis: this.fb.control(''),
         specificationsOfFinishedProduct: this.fb.control('', Validators.required),
-        receipt: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        receipt: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', Validators.required) : this.fb.control(''),
         authorizationLetter: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
         manufacturingContract: this.fb.control('', this.selectedRequestedType === 8 ? Validators.required : null),
         storageContract: this.fb.control(''),
@@ -1119,7 +1121,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         shelfLifeAttachment: this.fb.control(''),
         letterOfVariationFromLicenseHolder: this.fb.control(''),
         others: this.fb.control(''),
-        otherFees: !this.legacyStatus && !this.variationFieldsStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        otherFees: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
       });
     }
   }
