@@ -1022,7 +1022,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         });
       }) : null;
 
-
       setTimeout(() => {
         this.packagingListTable.tableBody = [];
         data.packagingTable ? data.packagingTable.map((x, i) => {
