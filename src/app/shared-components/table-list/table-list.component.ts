@@ -99,6 +99,16 @@ export class TableListComponent implements OnInit, OnChanges {
               x.oldNotificationNo = x.oldNotificationNo ? x.oldNotificationNo.toString() : '';
             });
           }
+
+          if (this.whichTable === 'notificationList') {
+            this.data.tableBody.sort((a, b) => (a.notification_time > b.notification_time) ? -1 : 1);
+            // this.data.tableBody.sort((a, b) => (a.requestID > b.requestID) ? -1 : 1);
+            this.data.tableBody.map(x => {
+              x.ID = x.ID ? x.ID.toString() : null;
+              x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
+              x.oldNotificationNo = x.oldNotificationNo ? x.oldNotificationNo.toString() : '';
+            });
+          }
           if (this.whichTable === 'batchTable') {
             this.data.tableBody.map(x => {
               x.productID = x.productID.toString();
