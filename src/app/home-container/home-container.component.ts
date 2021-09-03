@@ -4,6 +4,7 @@ import {routerTransitionSlide} from 'src/app/animation/routable.animations';
 import {FormService} from '../services/form.service';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {InputService} from '../services/input.service';
+import {Observable, interval} from 'rxjs';
 
 @Component({
   selector: 'app-home-container',
@@ -41,6 +42,9 @@ export class HomeContainerComponent implements OnInit {
   unseenCount;
 
   constructor(private inputService: InputService, private getService: FormService) {
+    interval(10000).subscribe(x => { // will execute every 30 seconds
+      this.getNotificationNumber();
+    });
   }
 
   ngOnInit(): void {
@@ -108,12 +112,6 @@ export class HomeContainerComponent implements OnInit {
                                 this.isLoading = false;
 
                                 this.inputService.publish({type: 'allLookups', payload: this.formData});
-
-                                this.getService.getNotificationLogsList().subscribe((res: any) => {
-                                  this.isLoading = false;
-
-                                  this.unseenCount = res.filter(x => !x.f_seen).map(list => list).length;
-                                }, error => this.handleError(error));
                               });
                             });
                           });
@@ -151,5 +149,13 @@ export class HomeContainerComponent implements OnInit {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 10000);
+  }
+
+  getNotificationNumber() {
+    this.getService.getNotificationLogsList().subscribe((res: any) => {
+      this.isLoading = false;
+
+      this.unseenCount = res.filter(x => !x.f_seen).map(list => list).length;
+    }, error => this.handleError(error));
   }
 }
