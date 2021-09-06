@@ -348,6 +348,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getRejectedGeneralEnquiriesList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/InqueryData?Type=reject&pageSize=5000&pageNo=1`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getTrackReRegistrationRequestsList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',

@@ -1,1 +1,20 @@
-<p>reject-general-enquiries works!</p>
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'Rejected request for General Enquiries'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="tableContainer TrackTable">
+        <app-table-list [data]="RejectedGeneralEnquiresListRequests"
+                        [whichTable]="'trackGeneralEnquiries'"></app-table-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
