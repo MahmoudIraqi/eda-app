@@ -1108,13 +1108,14 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="6" *ngIf="whichTable === 'notificationList'">
+            <td colspan="7" *ngIf="whichTable === 'notificationList'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm notificationListTable">
                         <tr>
+                          <td>{{request.request_id}}</td>
                           <td>{{request.notification_no}}</td>
                           <td><span class="ellipsisSpan" tooltip="{{request.comments}}"
                                     placement="right">{{request.comments}}</span></td>
@@ -1598,14 +1599,14 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="6" *ngIf="whichTable === 'notificationList'">
+            <td colspan="7" *ngIf="whichTable === 'notificationList'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" hideToggle>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       <table class="table table-sm tableDetailsCont">
                         <tr>
-                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                          <td colspan="7">{{noDataStatment}}</td> <!--  -->
                         </tr>
                       </table>
                     </mat-panel-title>
