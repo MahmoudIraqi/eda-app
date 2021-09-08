@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormService} from '../services/form.service';
+import {convertFromStringToArrayWithCommaSeparator} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-approved-request',
@@ -92,6 +93,9 @@ export class ApprovedRequestComponent implements OnInit {
       this.approvedListRequests = null;
 
       this.getService.getApprovedHoldProductsFromLabList().subscribe((res: any) => {
+        res.map(item => {
+          item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
+        });
         this.approvedListRequests = {
           tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res
@@ -103,6 +107,9 @@ export class ApprovedRequestComponent implements OnInit {
       this.approvedListRequests = null;
 
       this.getService.getApprovedHoldProductsFromRegList().subscribe((res: any) => {
+        res.map(item => {
+          item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
+        });
         this.approvedListRequests = {
           tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res

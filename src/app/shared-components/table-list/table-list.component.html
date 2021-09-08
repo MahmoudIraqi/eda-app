@@ -702,7 +702,6 @@
                         <label class="label">Submission date :</label>
                         <span>{{request.SubmmittionDate}}</span>
                       </div>
-
                       <div class="col-12 col-sm-6 col-md-3">
                         <label class="label">Type Of Notification :</label>
                         <span>{{request.productTypeName}}</span>
@@ -715,6 +714,14 @@
                         <label class="label ">Need Action :</label>
                         <span>{{request.UnFlagStatus}}</span>
                       </div>
+                      <!--                      <div class="col-12">-->
+                      <!--                        <label class="label">Reject Reasons :</label>-->
+                      <!--                        <ol>-->
+                      <!--                          <li *ngFor="let item of request.RejectionResons">-->
+                      <!--                            <span>{{item}}</span>-->
+                      <!--                          </li>-->
+                      <!--                        </ol>-->
+                      <!--                      </div>-->
                     </div>
                   </div>
                 </mat-expansion-panel>
@@ -814,6 +821,14 @@
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Track Type :</label>
                         <span>{{request.Track_type}}</span>
+                      </div>
+                      <div class="col-12">
+                        <label class="label">Reject Reasons :</label>
+                        <ol>
+                          <li *ngFor="let item of request.RejectionResons">
+                            <span>{{item}}</span>
+                          </li>
+                        </ol>
                       </div>
                     </div>
                   </div>
