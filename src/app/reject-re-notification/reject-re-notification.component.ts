@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormService} from '../services/form.service';
+import {convertFromStringToArrayWithCommaSeparator} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-reject-re-notification',
@@ -22,6 +23,9 @@ export class RejectReNotificationComponent implements OnInit {
     this.isLoading = true;
 
     this.getService.getRejectedReRegistrationRequestsList().subscribe((res: any) => {
+      res.map(item => {
+        item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
+      });
       this.responseForRejectedList = res;
       this.selectRejectedType('Final');
       this.isLoading = false;

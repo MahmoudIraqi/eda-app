@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormService} from '../services/form.service';
+import {convertFromStringToArrayWithCommaSeparator} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-reject-general-enquiries',
@@ -19,6 +20,9 @@ export class RejectGeneralEnquiriesComponent implements OnInit {
     this.isLoading = true;
 
     this.getService.getRejectedGeneralEnquiriesList().subscribe((res: any) => {
+      res.map(item => {
+        item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
+      });
       this.RejectedGeneralEnquiresListRequests = {
         tableHeader: ['Request Number', 'Submission date', 'Title', 'Status', 'Submission Date'],
         tableBody: res

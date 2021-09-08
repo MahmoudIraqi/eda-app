@@ -2,6 +2,7 @@ import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute} from '@angular/router';
+import {convertFromStringToArrayWithCommaSeparator} from '../../utils/formDataFunction';
 
 @Component({
   selector: 'app-reject-variation',
@@ -44,6 +45,9 @@ export class RejectVariationComponent implements OnInit {
 
   getVariationRejectList() {
     this.getService.getRejectedVariationProductsList(this.whichVariation).subscribe((res: any) => {
+      res.map(item => {
+        item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
+      });
       this.rejectedVariationListRequests = {
         tableHeader: ['Notification No', 'Saved date', 'Type Of Notification', 'Product English name', 'Product Arabic name', 'Action'],
         tableBody: res

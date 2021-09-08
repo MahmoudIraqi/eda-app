@@ -48,3 +48,7 @@ export const convertToSpecialObjectForReNotification = (WhichForm, typeOfMarketi
     isCompleted: WhichForm === 'submitProductForKit' && (typeOfMarketing === 5 || typeOfMarketing === 6) ? true : false
   };
 };
+
+export const convertFromStringToArrayWithCommaSeparator = (value) => {
+  return value?.split(',');
+};
