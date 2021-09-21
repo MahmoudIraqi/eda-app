@@ -96,7 +96,7 @@
   </div>
 </div>
 
-<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+<alert type="success" dismissible="true" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
   <strong>Thank You</strong> <br> {{alertNotification.msg}}
 </alert>
 
