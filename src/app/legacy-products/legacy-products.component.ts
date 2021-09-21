@@ -20,7 +20,7 @@ export class LegacyProductsComponent implements OnInit {
     this.isLoading = true;
     this.getService.getApprovedLegacyProductsList().subscribe((res: any) => {
       this.approvedLegacyListRequests = {
-        tableHeader: ['Notification', 'Submission date', 'Product English name', 'Product Arabic name', 'Update Product','Add Batch'],
+        tableHeader: ['Old Notification', 'Submission date', 'Legacy Product English name', 'Legacy Product Arabic name', 'Update Product','Add Batch'],
         tableBody: res
       };
       this.isLoading = false;
