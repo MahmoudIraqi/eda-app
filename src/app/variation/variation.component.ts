@@ -66,6 +66,7 @@ export class VariationComponent implements OnInit, OnChanges {
     class: 'modal-xl packagingModal',
   };
   @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
+  enableManufacturingInTrackOfVariation;
 
   constructor(private getService: FormService,
               private modalService: BsModalService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -104,6 +105,7 @@ export class VariationComponent implements OnInit, OnChanges {
 
       this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
       this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
+      this.enableManufacturingInTrackOfVariation = this.route.snapshot.paramMap.get('enableManufacturing');
       if (this.productNotificationNumber) {
         this.isLoading = true;
         this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
@@ -150,7 +152,7 @@ export class VariationComponent implements OnInit, OnChanges {
         res.receipt = '';
         let indexOfReceiptAttachment;
         res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
-        res.productAttachments.splice(indexOfReceiptAttachment, 1);
+        indexOfReceiptAttachment ? res.productAttachments.splice(indexOfReceiptAttachment, 1) : null;
 
         this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
       } else {

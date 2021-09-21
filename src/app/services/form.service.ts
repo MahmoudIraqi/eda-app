@@ -651,7 +651,6 @@ export class FormService {
 
     return this.http.get(`${this.apiBaseUrl}Product/GetProductByProductID?ID=${productID}&type=${typeParameter}`, options)
       .pipe(map((res: any) => {
-          debugger;
           return res;
         }),
         catchError(this.handleError));

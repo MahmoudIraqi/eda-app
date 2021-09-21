@@ -118,7 +118,7 @@ export class ReRegistrationComponent implements OnInit {
               indexOfRow = res.productAttachments.indexOf(row);
             });
 
-            res.productAttachments.splice(indexOfRow, 1);
+            indexOfRow ? res.productAttachments.splice(indexOfRow, 1) : null;
           }
 
           this.productData = res;

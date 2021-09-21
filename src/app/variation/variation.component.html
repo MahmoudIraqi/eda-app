@@ -116,6 +116,7 @@
               [lookupsData]="formData"
               [variationFieldsStatus]="typeOfProcess === 'Track' ? false : true"
               [variationFields]="variationFields"
+              [enableManufacturingInTrackOfVariationStatus]="enableManufacturingInTrackOfVariation"
               [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
               [trackProductStatus]="typeOfProcess === 'Track'"
               [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (productData && ( productData.trackCode === 'REJECT' || productData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || productData.trackCode === 'REJECT_COMP_REPLY_WRONG' || productData.trackCode ==='REJECT_APPEAL1'))"
