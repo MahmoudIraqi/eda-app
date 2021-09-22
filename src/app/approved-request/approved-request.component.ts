@@ -44,6 +44,7 @@ export class ApprovedRequestComponent implements OnInit {
       this.approvedListRequests = null;
 
       this.getService.getApprovedProductsList().subscribe((res: any) => {
+        debugger;
         this.approvedListRequests = {
           tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
           tableBody: res

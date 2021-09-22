@@ -73,6 +73,7 @@ export class LegacyComponent implements OnInit {
       distinctUntilChanged()
     ).subscribe(res => {
       this.formData = res.payload;
+      this.formData.formType = [...this.formData.formType.filter(item => item.CODE === 'REG_PRODUCT' || item.CODE === 'REG_HAIR_PRODUCT')];
       this.isLoading = false;
 
       if (this.productId) {
@@ -82,6 +83,7 @@ export class LegacyComponent implements OnInit {
           this.selectedFormType = res.typeOfMarketing;
           this.selectedRequestedType = res.typeOfRegistration;
           this.selectedIsExport = res.isExport;
+          this.selectedTrackType = res.TrackType;
           this.productData = res;
           this.productDataAsCopy = res;
           this.isLoading = false;
