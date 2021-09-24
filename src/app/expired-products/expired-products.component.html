@@ -1,0 +1,18 @@
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title [title]="'Expired products'" [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="tableContainer ApprovedTable">
+        <div class="row">
+          <div class="col-12">
+            <app-table-list [data]="expiredListRequests" [whichTable]="'expired'"></app-table-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

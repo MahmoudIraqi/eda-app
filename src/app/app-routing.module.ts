@@ -36,6 +36,7 @@ import {RejectReNotificationComponent} from './reject-re-notification/reject-re-
 import {RejectVariationComponent} from './reject-variation/reject-variation.component';
 import {RejectGeneralEnquiriesComponent} from './reject-general-enquiries/reject-general-enquiries.component';
 import {DraftReRegistrationRequestComponent} from './draft-re-registration-request/draft-re-registration-request.component';
+import {ExpiredProductsComponent} from './expired-products/expired-products.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -52,9 +53,17 @@ const routes: Routes = [
           {path: 'reregistration', component: ReRegistrationComponent, data: {animation: 'new-request'}},
           {path: 'reregistration/:notNumber/:typeOfProcess', component: ReRegistrationComponent, data: {animation: 'new-request'}},
           {path: 'tell_do_variation', component: VariationComponent, data: {animation: 'new-request'}},
-          {path: 'tell_do_variation/:notNumber/:typeOfProcess/:enableManufacturing', component: VariationComponent, data: {animation: 'new-request'}},
+          {
+            path: 'tell_do_variation/:notNumber/:typeOfProcess/:enableManufacturing',
+            component: VariationComponent,
+            data: {animation: 'new-request'}
+          },
           {path: 'do_tell_variation', component: VariationComponent, data: {animation: 'new-request'}},
-          {path: 'do_tell_variation/:notNumber/:typeOfProcess/:enableManufacturing', component: VariationComponent, data: {animation: 'new-request'}},
+          {
+            path: 'do_tell_variation/:notNumber/:typeOfProcess/:enableManufacturing',
+            component: VariationComponent,
+            data: {animation: 'new-request'}
+          },
           {path: 'custom-release', component: CustomReleaseComponent, data: {animation: 'new-request'}},
           {path: 'custom-release2', component: TestCustomReleaseComponent, data: {animation: 'new-request'}},
           {path: 'inspection', component: InspectionComponent, data: {animation: 'new-request'}},
@@ -109,6 +118,12 @@ const routes: Routes = [
         path: 'rejected-product',
         component: RejectedRequestesComponent,
         data: {animation: 'rejected-request'},
+        canActivate: [ApplicationGuard]
+      },
+      {
+        path: 'expired-products',
+        component: ExpiredProductsComponent,
+        data: {animation: 'expired-products'},
         canActivate: [ApplicationGuard]
       },
       {

@@ -185,6 +185,10 @@ export class HeaderComponent implements OnInit {
           link: '/rejected-product',
         },
         {
+          name: 'Expired products',
+          link: '/expired-products',
+        },
+        {
           name: 'Legacy',
           link: '/legacy-products',
         }

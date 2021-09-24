@@ -629,6 +629,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getExpiredProductsList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=expired&pageNo=1&pageSize=50000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getProductWithNotificationNumberList(notificationNumber, typeParameter) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
