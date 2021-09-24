@@ -693,6 +693,26 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     });
   }
 
+  copyDetailedRowInput(event) {
+    console.log('event', event);
+
+    this.openModal(this.modalDetailedTemplate);
+
+    // this.rerenderSubscribtionForClosingActionForDetailsForm(event);
+
+    this.rerenderSubscribtionForClosingActionForDetailsForm(0);
+
+    event.ingrediantDetails.length > 1 ? event.ingrediantDetails.map((row, i) => {
+      if (i >= 1) {
+        this.addIngrediantDetailsRows();
+      }
+    }) : null;
+
+    this.regDetailedForProduct.patchValue({
+      ...event
+    });
+  }
+
   //functions for IngrediantDetailsRows
   IngrediantDetailsRows(): FormArray {
     return this.regDetailedForProduct.get('ingrediantDetails') as FormArray;
@@ -1863,9 +1883,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   validationForShortNames() {
-    console.log('1234', this.ShortName.value);
-
-    const shortNamesList = ['1234', '1234'];
+    const shortNamesList = this.ShortName.value.map(item => item.shortName);
+    console.log('shortNamesList', shortNamesList);
 
     this.getService.validateShortNames(shortNamesList).subscribe(res => {
       console.log('res', res);

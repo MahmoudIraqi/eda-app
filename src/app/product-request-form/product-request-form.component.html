@@ -71,11 +71,11 @@
               <div class="row">
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
-<!--                  <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"-->
-<!--                          [disabled]="reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false"-->
-<!--                          (click)="validationForShortNames()">-->
-<!--                    Validation Short Name-->
-<!--                  </button>-->
+                  <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
+                          [disabled]="reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false"
+                          (click)="validationForShortNames()">
+                    Validation Short Name
+                  </button>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-2 mt-3 mt-sm-0 addBtn"
                           [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false : true"
                           (click)="addShortName()">
@@ -611,6 +611,7 @@
                               [whichTable]="'newRequestForDetails'"
                               (removeDetailsRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? removeDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : removeDetailedRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event) : isDraft ? removeDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : removeDetailedRows($event)"
                               (removeDetailsRowIDs)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? deletedDetailedIdsList($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : deletedDetailedIdsList($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event) : isDraft ? deletedDetailedIdsList($event) : productFlags && !productFlags.detailsTable ? null : deletedDetailedIdsList($event)"
+                              (copyDetailedRowOutput)="copyDetailedRowInput($event)"
                               (editDetailedRowOutput)="reRegistrationStatus ? null : variationFieldsStatus ? this.variationFields.length > 0 ? enableEditableFields.includes('detailsTable') ? editTheDetailedRows($event) : null : null :legacyStatus?   productFlags && !productFlags.detailsTable ?  null : editTheDetailedRows($event) : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event) : isDraft ? editTheDetailedRows($event) : productFlags && !productFlags.detailsTable ? null : editTheDetailedRows($event)"></app-table-list>
             </div>
           </div>

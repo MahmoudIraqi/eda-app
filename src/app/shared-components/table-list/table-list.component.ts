@@ -78,6 +78,7 @@ export class TableListComponent implements OnInit, OnChanges {
   @Output() editIngrediantRowOutput = new EventEmitter();
   @Output() removeProductFromKit = new EventEmitter();
   @Output() editDetailedRowOutput = new EventEmitter();
+  @Output() copyDetailedRowOutput = new EventEmitter();
   @Output() seenNotification = new EventEmitter();
   @Output() editProductInInvoicesRows = new EventEmitter();
   @Output() removeProductInInvoicesRows = new EventEmitter();
@@ -212,6 +213,11 @@ export class TableListComponent implements OnInit, OnChanges {
 
   removeIngrediantDetailsRows(index) {
     this.removeIngrediantRowOutput.emit(index);
+  }
+
+  copyDetailsRowFunction(index, row) {
+    console.log('row', row);
+    this.copyDetailedRowOutput.emit(row);
   }
 
   editIngrediantDetailsRows(index) {
