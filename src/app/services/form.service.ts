@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class FormService {
   private _isLoggedIn: boolean;
   apiBaseUrl = environment.apiURL;
+  compareBaseUrl = environment.compareURL;
   Token;
 
   // loginAPIURL = environment.loginAPIURL;
@@ -804,6 +805,22 @@ export class FormService {
     const JSONData = JSON.stringify(event);
 
     return this.http.post(`${this.apiBaseUrl}product/CustomRelease`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  validateShortNames(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    const JSONData = JSON.stringify(event);
+
+    return this.http.post(`${this.compareBaseUrl}`, JSONData, options)
       .pipe(map((res: any) => {
           return res;
         }),

@@ -71,7 +71,12 @@
               <div class="row">
                 <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
-                  <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
+<!--                  <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"-->
+<!--                          [disabled]="reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false"-->
+<!--                          (click)="validationForShortNames()">-->
+<!--                    Validation Short Name-->
+<!--                  </button>-->
+                  <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-2 mt-3 mt-sm-0 addBtn"
                           [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false : true"
                           (click)="addShortName()">
                     Add Short Name
@@ -638,7 +643,7 @@
                 <div class="d-flex alert alert-danger"
                      *ngIf="(regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
                   <div class="ml-auto mr-2" *ngIf="field.attachmentTypeStatus === 'No'">
-                    this file must be as PDF and less than 2MB.
+                    this file must be as PDF and less than 5MB.
                   </div>
                   <div class="ml-auto"
                        *ngIf="regProductForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus">
@@ -653,11 +658,11 @@
                 <button type="button" class="custom-file-download-Button" *ngIf="field.fileValue"
                         (click)="downloadFile(field.id)">Download
                 </button>
-<!--                <button type="button" class="custom-file-delete-Button" *ngIf="field.fileValue"-->
-<!--                        [disabled]="finalRejectedStatus ? true : field.id === 'others' || field.id === 'reference' ? trackProductStatus ? productFlags && !productFlags[field.id] ? true : false : false : reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"-->
-<!--                        (click)="DeleteFile(field)">-->
-<!--                  <i class="fas fa-trash"></i>-->
-<!--                </button>-->
+                <!--                <button type="button" class="custom-file-delete-Button" *ngIf="field.fileValue"-->
+                <!--                        [disabled]="finalRejectedStatus ? true : field.id === 'others' || field.id === 'reference' ? trackProductStatus ? productFlags && !productFlags[field.id] ? true : false : false : reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? field.id === 'receipt'? false : productFlags && !productFlags[field.id] ? true : false : canEditForApprovedProduct? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"-->
+                <!--                        (click)="DeleteFile(field)">-->
+                <!--                  <i class="fas fa-trash"></i>-->
+                <!--                </button>-->
               </div>
             </div>
           </div>

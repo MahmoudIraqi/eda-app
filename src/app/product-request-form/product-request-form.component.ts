@@ -536,7 +536,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     if (this.attachmentFields.filter(x => x.loadingStatus === true).length === 0) {
       if (event.target.files.length > 0) {
-        if (event.target.files[0].type === 'application/pdf' && event.target.files[0].size <= 2000000) {
+        if (event.target.files[0].type === 'application/pdf' && event.target.files[0].size <= 5000000) {
           this.attachmentFields.filter(x => x.id === fileControlName).map(y => {
             y.fileName = event.target.value.split(/(\\|\/)/g).pop();
             attachmentValue = y.fileValue;
@@ -1860,6 +1860,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
     }, 2000);
+  }
+
+  validationForShortNames() {
+    console.log('1234', this.ShortName.value);
+
+    const shortNamesList = ['1234', '1234'];
+
+    this.getService.validateShortNames(shortNamesList).subscribe(res => {
+      console.log('res', res);
+    });
   }
 }
 

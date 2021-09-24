@@ -32,7 +32,7 @@
               <section class="example-section mt-4">
                 <mat-checkbox class="example-margin"
                               [(ngModel)]="selectedIsExport"
-                              [disabled]="true">
+                              [disabled]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? false : true">
                   Export only
                 </mat-checkbox>
               </section>
