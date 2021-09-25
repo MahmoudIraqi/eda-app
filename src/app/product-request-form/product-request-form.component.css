@@ -101,6 +101,20 @@ input:active, input:focus {
   font-weight: 600;
 }
 
+.ShortNameFieldContainer .validationShortNameContainer {
+  position: absolute;
+  top: 1.7rem;
+  right: 5rem;
+  font-size: 16px;
+  color: #f00;
+  opacity: 1;
+  font-weight: 600;
+}
+
+.ShortNameFieldContainer .validationShortNameContainer .fa-check-circle {
+  color: green;
+}
+
 /* --------------------------- range input styling ------------------------------- */
 input[type=range] {
   -webkit-appearance: none;

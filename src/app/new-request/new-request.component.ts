@@ -80,6 +80,7 @@ export class NewRequestComponent implements OnInit {
     class: 'modal-xl packagingModal',
   };
   @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
+  variableValueOfNaming;
 
   constructor(private getService: FormService,
               private readonly route: ActivatedRoute,
@@ -109,6 +110,13 @@ export class NewRequestComponent implements OnInit {
       res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
         this.variablesPricingList = variableList;
       });
+
+      res.payload.filter(item => item.groupName === 'NAMING').map(element => element.LKUPVARIABLESDto.filter(variable => variable.varCode === 'SHORT_NAME_RATIO').map(result => {
+        this.inputService.publish({
+          type: 'valueOfNaming',
+          payload: result.variableValue
+        });
+      }));
     });
 
 

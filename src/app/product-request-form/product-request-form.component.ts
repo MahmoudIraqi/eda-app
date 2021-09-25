@@ -12,17 +12,18 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {convertToSpecialObject, formDataClass} from '../../utils/formDataFunction';
 import {Observable, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map, startWith} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 import {element} from 'protractor';
+import {InputService} from '../services/input.service';
 
 export interface LookupState {
   ID: number;
@@ -383,11 +384,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   alertErrorNotification: any;
   fileStructure;
   variationMendatoryFields = [];
+  variableValueOfNaming;
+  shortNameValuesList;
+  shortNamingValidationList = [];
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
               private router: Router,
               private readonly route: ActivatedRoute,
+              private inputService: InputService,
               private modalService: BsModalService,
               private getService: FormService) {
     this.getFormAsStarting('', '');
@@ -425,6 +430,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.setAllLookups();
     // this.getLookupForFormArray();
 
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'valueOfNaming'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.variableValueOfNaming = res.payload;
+    });
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
 
@@ -899,8 +910,15 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...this.objectForListOfVariationGroup
     };
 
+    this.validationForShortNames();
+
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
-      this.submitDataOutput.emit(newObjectForData);
+      if (this.shortNamingValidationList.length > 0 && !this.shortNamingValidationList.includes(false)) {
+        this.submitDataOutput.emit(newObjectForData);
+      } else {
+        this.handleError('please Check the short-name values');
+        this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
+      }
     } else {
       this.handleError('please complete the required values which marked with *');
       this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
@@ -1087,9 +1105,9 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         ...data
       });
 
-      data.productAttachments.map((x, i) => {
+      data.productAttachments ? data.productAttachments.map((x, i) => {
         this.regProductForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
-      });
+      }) : null;
 
       data.receiptValue === 0 ? this.regProductForAllRequestedType.get('receiptValue').patchValue('') : null;
 
@@ -1499,6 +1517,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: error};
     this.isLoadingStatus.emit(false);
+    this.isLoading = false;
   }
 
   checkControllerValueWithList(list, formControlKey, formControlValue) {
@@ -1883,12 +1902,29 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   validationForShortNames() {
-    const shortNamesList = this.ShortName.value.map(item => item.shortName);
-    console.log('shortNamesList', shortNamesList);
 
-    this.getService.validateShortNames(shortNamesList).subscribe(res => {
-      console.log('res', res);
-    });
+    this.isLoading = true;
+    this.shortNamingValidationList = [];
+    const dummyRes = [{
+      OriginalWord: 'Mahmoud',
+      mergedScore: 85,
+      orthoScore: 71,
+      phoneticScore: 67,
+      words: null
+    }];
+    this.shortNameValuesList = this.ShortName.value.map(item => item.shortName ? item.shortName : null);
+
+    if (this.shortNameValuesList.length > 0) {
+      this.getService.validateShortNames(this.shortNameValuesList).subscribe(res => {
+        res.map(item => {
+          this.shortNamingValidationList.push(item.mergedScore < this.variableValueOfNaming);
+        });
+
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else {
+      this.handleError('Please add shortname First');
+    }
   }
 }
 
