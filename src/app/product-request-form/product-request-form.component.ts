@@ -910,15 +910,16 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...this.objectForListOfVariationGroup
     };
 
-    this.validationForShortNames();
+    // this.validationForShortNames();
 
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
-      if (this.shortNamingValidationList.length > 0 && !this.shortNamingValidationList.includes(false)) {
-        this.submitDataOutput.emit(newObjectForData);
-      } else {
-        this.handleError('please Check the short-name values');
-        this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
-      }
+      // if (this.shortNamingValidationList.length > 0 && !this.shortNamingValidationList.includes(false)) {
+      //   this.submitDataOutput.emit(newObjectForData);
+      // } else {
+      //   this.handleError('please Check the short-name values');
+      //   this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
+      // }
+      this.submitDataOutput.emit(newObjectForData);
     } else {
       this.handleError('please complete the required values which marked with *');
       this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
