@@ -47,6 +47,7 @@ export class LegacyComponent implements OnInit {
   successSubmission: boolean = false;
   companyProfileId: any;
   productDataAsCopy: any;
+  newForType: any;
 
   constructor(private getService: FormService,
               private router: Router,
@@ -73,7 +74,7 @@ export class LegacyComponent implements OnInit {
       distinctUntilChanged()
     ).subscribe(res => {
       this.formData = res.payload;
-      this.formData.formType = [...this.formData.formType.filter(item => item.CODE === 'REG_PRODUCT' || item.CODE === 'REG_HAIR_PRODUCT')];
+      this.newForType = [...this.formData.formType.filter(item => item.CODE === 'REG_PRODUCT' || item.CODE === 'REG_HAIR_PRODUCT')];
       this.isLoading = false;
 
       if (this.productId) {

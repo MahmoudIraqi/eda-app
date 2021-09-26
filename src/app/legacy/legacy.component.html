@@ -9,7 +9,7 @@
           <mat-form-field appearance="fill">
             <mat-label>Type Of Notification</mat-label>
             <mat-select (selectionChange)="getFormType($event);" [(ngModel)]="this.selectedFormType" required>
-              <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
+              <mat-option *ngFor="let option of newForType" [value]="option.ID">
                 {{option.NAME}}
               </mat-option>
             </mat-select>
