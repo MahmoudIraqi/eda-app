@@ -187,7 +187,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       name: 'Authorization Letter',
       fileName: '',
       fileValue: '',
-      required: !this.legacyStatus ? this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false : false,
+      required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
       enable: true,
       attachmentTypeStatus: '',
       loadingStatus: false,
@@ -307,7 +307,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       name: 'otherFees',
       fileName: '',
       fileValue: '',
-      required: true,
+      required: !this.variationFieldsStatus ? true : false,
       enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
@@ -705,7 +705,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   copyDetailedRowInput(event) {
-    console.log('event', event);
 
     this.openModal(this.modalDetailedTemplate);
 
@@ -1157,7 +1156,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         specificationsOfFinishedProduct: this.fb.control(''),
         receipt: !this.legacyStatus && !this.canEditForApprovedProduct ? this.fb.control('', Validators.required) : this.fb.control(''),
         authorizationLetter: this.fb.control('', this.selectedRequestedType === 1 || this.selectedRequestedType === 2 || this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 5 || this.selectedRequestedType === 6 ? Validators.required : null),
-        manufacturingContract: this.fb.control('', this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
+        manufacturingContract: this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? this.fb.control('', Validators.required) : this.fb.control(''),
         storageContract: this.fb.control(''),
         factoryLicense: this.fb.control(''),
         manufacturingAssignment: this.fb.control(''),
@@ -1688,7 +1687,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         name: 'Authorization Letter',
         fileName: '',
         fileValue: '',
-        required: !this.legacyStatus ? this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false : false,
+        required: this.selectedRequestedType !== 7 && this.selectedRequestedType !== 8 && this.selectedRequestedType !== 9 ? true : false,
         enable: true,
         attachmentTypeStatus: '',
         loadingStatus: false,
@@ -1808,7 +1807,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         name: 'otherFees',
         fileName: '',
         fileValue: '',
-        required: true,
+        required: !this.variationFieldsStatus ? true : false,
         enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,

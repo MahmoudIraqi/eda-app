@@ -216,7 +216,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   copyDetailsRowFunction(index, row) {
-    console.log('row', row);
     this.copyDetailedRowOutput.emit(row);
   }
 

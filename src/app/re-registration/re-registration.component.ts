@@ -102,7 +102,7 @@ export class ReRegistrationComponent implements OnInit {
       this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
       if (this.productNotificationNumber) {
         this.isLoading = true;
-        this.getService.getProductWithProductIDList(this.productNotificationNumber, 'renotification').subscribe((res: any) => {
+        this.getService.getProductWithProductIDList(this.productNotificationNumber, this.typeOfProcess).subscribe((res: any) => {
           this.NotificationNo = res.NotificationNo;
           this.selectedFormType = res.typeOfMarketing;
           this.selectedRequestedType = res.typeOfRegistration;
