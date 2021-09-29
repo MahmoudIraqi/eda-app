@@ -19,7 +19,7 @@ export class ExpiredProductsComponent implements OnInit {
     this.isLoading = true;
     this.getService.getExpiredProductsList().subscribe((res: any) => {
       this.expiredListRequests = {
-        tableHeader: ['Notification', 'Submission date', 'Type Of Notification', 'Product English name', 'Type Of Request', 'Status', 'Track Type', 'Action'],
+        tableHeader: ['Notification', 'Submission date', 'Expired date', 'Type Of Notification', 'Product English name', 'Type Of Request', 'Status', 'Track Type', 'Action'],
         tableBody: res
       };
       this.isLoading = false;

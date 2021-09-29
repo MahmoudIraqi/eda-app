@@ -42,6 +42,7 @@ export class TableListComponent implements OnInit, OnChanges {
     'Notification time': 'notification_time',
     'Request Type Name': 'requestTypeName',
     'Notification id': 'notification_no',
+    'Expired date': 'expirationDate',
     'Notification comment': 'comments',
     'Product Name': 'productName',
     'Product English name': 'NameEN',

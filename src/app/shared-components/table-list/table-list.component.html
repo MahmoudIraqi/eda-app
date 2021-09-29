@@ -1,6 +1,6 @@
 <div *ngIf="data && data.tableBody.length > 0">
   <div
-    *ngIf="whichTable === 'track' || whichTable === 'trackForReRegistration' || whichTable === 'draftForReRegistration' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'|| whichTable === 'rejectRequest' || whichTable === 'batchTable' || whichTable === 'legacyOldProduct'">
+    *ngIf="whichTable === 'track' || whichTable === 'expired' || whichTable === 'trackForReRegistration' || whichTable === 'draftForReRegistration' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'|| whichTable === 'rejectRequest' || whichTable === 'batchTable' || whichTable === 'legacyOldProduct'">
     <app-filters [filterData]="filterData"
                  [removeFilterKey]="removeFilterKey"
                  (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
@@ -835,7 +835,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="8" *ngIf="whichTable === 'expired'">
+            <td colspan="9" *ngIf="whichTable === 'expired'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer {{request.colorFlag}}" [expanded]="step === i"
                                      (opened)="setStep(i)" hideToggle>
@@ -845,6 +845,7 @@
                         <tr>
                           <td>{{request.NotificationNo}}</td>
                           <td>{{request.SubmmittionDate | date}}</td>
+                          <td>{{request.expirationDate | date}}</td>
                           <td class="hide">{{request.productTypeName}}</td>
                           <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
                                                  placement="right">{{request.NameEN}}</span></td>
@@ -866,6 +867,10 @@
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Submission date :</label>
                         <span>{{request.SubmmittionDate | date}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Expired date :</label>
+                        <span>{{request.expirationDate | date}}</span>
                       </div>
                       <div class="col-12 col-sm-6 col-md-4">
                         <label class="label">Type Of Notification :</label>
@@ -1722,7 +1727,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
-            <td colspan="8" *ngIf="whichTable === 'expired'">
+            <td colspan="9" *ngIf="whichTable === 'expired'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" hideToggle>
                   <mat-expansion-panel-header>
