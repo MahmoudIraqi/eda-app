@@ -307,7 +307,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       name: 'otherFees',
       fileName: '',
       fileValue: '',
-      required: !this.variationFieldsStatus ? true : false,
+      required: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus ? true : false,
       enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
@@ -705,21 +705,33 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   copyDetailedRowInput(event) {
+    const newRow = {
+      colour: event.colour,
+      fragrance: event.fragrance,
+      flavor: event.flavor,
+      barCode: event.barCode,
+      ingrediantDetails: event.ingrediantDetails.map(row => {
+        return {
+          ingrediant: row.ingrediant,
+          concentrations: row.concentrations,
+          function: row.function
+        };
+      })
+    };
+
 
     this.openModal(this.modalDetailedTemplate);
 
-    // this.rerenderSubscribtionForClosingActionForDetailsForm(event);
-
     this.rerenderSubscribtionForClosingActionForDetailsForm(0);
 
-    event.ingrediantDetails.length > 1 ? event.ingrediantDetails.map((row, i) => {
+    newRow.ingrediantDetails.length > 1 ? newRow.ingrediantDetails.map((row, i) => {
       if (i >= 1) {
         this.addIngrediantDetailsRows();
       }
     }) : null;
 
     this.regDetailedForProduct.patchValue({
-      ...event
+      ...newRow
     });
   }
 
@@ -1807,7 +1819,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         name: 'otherFees',
         fileName: '',
         fileValue: '',
-        required: !this.variationFieldsStatus ? true : false,
+        required: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus ? true : false,
         enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,

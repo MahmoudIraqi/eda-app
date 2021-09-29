@@ -113,12 +113,13 @@ export class ReRegistrationComponent implements OnInit {
             res.receiptValue = '';
             res.receiptNumber = '';
             res.receipt = '';
-            let indexOfRow;
-            res.productAttachments.filter(x => x.attachmentName === 'receipt').map(row => {
-              indexOfRow = res.productAttachments.indexOf(row);
-            });
+            res.otherFees = '';
 
-            indexOfRow ? res.productAttachments.splice(indexOfRow, 1) : null;
+            let indexOfReceiptRow;
+            res.productAttachments.filter(x => x.attachmentName === 'receipt').map(row => {
+              indexOfReceiptRow = res.productAttachments.indexOf(row);
+            });
+            indexOfReceiptRow ? res.productAttachments.splice(indexOfReceiptRow, 1) : null;
           }
 
           this.productData = res;
@@ -138,11 +139,19 @@ export class ReRegistrationComponent implements OnInit {
         res.receiptValue = '';
         res.receiptNumber = '';
         res.receipt = '';
-        let indexOfReceiptAttachment;
-        res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => {
-          indexOfReceiptAttachment = res.productAttachments.indexOf(y);
-          res.productAttachments.splice(indexOfReceiptAttachment, 1);
+        res.otherFees = '';
+
+        let indexOfReceiptRow;
+        res.productAttachments.filter(x => x.attachmentName === 'receipt').map(row => {
+          indexOfReceiptRow = res.productAttachments.indexOf(row);
         });
+        indexOfReceiptRow ? res.productAttachments.splice(indexOfReceiptRow, 1) : null;
+
+        let indexOfOtherFeesRow;
+        res.productAttachments.filter(x => x.attachmentName === 'otherFees').map(row => {
+          indexOfOtherFeesRow = res.productAttachments.indexOf(row);
+        });
+        indexOfOtherFeesRow ? res.productAttachments.splice(indexOfOtherFeesRow, 1) : null;
 
         this.selectedFormType = res.typeOfMarketing;
         this.selectedRequestedType = res.typeOfRegistration;

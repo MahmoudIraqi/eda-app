@@ -49,7 +49,7 @@ export class RejectVariationComponent implements OnInit {
         item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
       });
       this.rejectedVariationListRequests = {
-        tableHeader: ['Notification No', 'Saved date', 'Type Of Notification', 'Product English name', 'Product Arabic name', 'Action'],
+        tableHeader: ['Notification No', 'Request Id', 'Saved date', 'Type Of Notification', 'Product English name', 'Product Arabic name', 'Action'],
         tableBody: res
       };
       this.isLoading = false;

@@ -75,6 +75,10 @@
           <div class="col-12 mt-5"
                *ngIf="productData && (productData.typeOfMarketing === 1 || productData.typeOfMarketing === 3 || productData.typeOfMarketing === 5 || productData.typeOfMarketing === 6)">
             <app-product-request-form
+              [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
+              [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
               [editData]="this.productData"
               [lookupsData]="formData"
               [companyProfile]="companyProfileId"
