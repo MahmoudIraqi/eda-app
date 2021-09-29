@@ -386,6 +386,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   variationMendatoryFields = [];
   variableValueOfNaming;
   shortNameValuesList;
+  longNameValue;
+  longNameValueStatus: boolean = false;
   shortNamingValidationList = [];
 
   constructor(private fb: FormBuilder,
@@ -1936,6 +1938,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       }, error => this.handleError(error));
     } else {
       this.handleError('Please add shortname First');
+    }
+  }
+
+  validationForLong(event) {
+    this.longNameValueStatus = true;
+    this.isLoading = true;
+
+
+    if (event) {
+      this.getService.validateLongNames(event).subscribe(res => {
+        this.longNameValue = res;
+
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else {
+      this.handleError('Please change the English name');
     }
   }
 }

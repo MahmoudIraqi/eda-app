@@ -834,7 +834,23 @@ export class FormService {
 
     const JSONData = JSON.stringify(event);
 
-    return this.http.post(`${this.compareBaseUrl}`, JSONData, options)
+    return this.http.post(`${this.compareBaseUrl}EDAComparer/PostSimilarStringList`, JSONData, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  validateLongNames(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    // const JSONData = JSON.stringify(event);
+
+    return this.http.post(`${this.compareBaseUrl}LongTradeName/IsuniqueTradeName`, event, options)
       .pipe(map((res: any) => {
           return res;
         }),

@@ -51,7 +51,15 @@
               <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
                      placeholder="Product Name" required
+                     (blur)="validationForLong(regProductForAllRequestedType.get('productEnglishName').value)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : legacyStatus? productFlags && !productFlags.productEnglishName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productEnglishName ? true : false : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
+              <div class="validationShortNameContainer" *ngIf="longNameValueStatus">
+                <p>
+                  <i class="fas fa-info-circle" tooltip="the value is not valid" placement="top"
+                     *ngIf="!longNameValue"></i>
+                  <i class="fas fa-check-circle" *ngIf="longNameValue"></i>
+                </p>
+              </div>
               <div
                 *ngIf="regProductForAllRequestedType.get('productEnglishName').invalid && (regProductForAllRequestedType.get('productEnglishName').dirty || regProductForAllRequestedType.get('productEnglishName').touched)"
                 class="alert alert-danger">
@@ -98,7 +106,8 @@
                   <div class="validationShortNameContainer"
                        *ngIf="shortNamingValidationList.length > 0">
                     <p>
-                      <i class="fas fa-info-circle" *ngIf="shortNamingValidationList[i] === false"></i>
+                      <i class="fas fa-info-circle" tooltip="the value is not valid" placement="top"
+                         *ngIf="shortNamingValidationList[i] === false"></i>
                       <i class="fas fa-check-circle" *ngIf="shortNamingValidationList[i] === true"></i>
                     </p>
                   </div>
