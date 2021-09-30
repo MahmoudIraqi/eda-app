@@ -57,6 +57,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;
   @Input() variationFields;
+  @Input() isVariationStatus;
   @Input() whichVariation;
   @Input() lookupsData;
   @Input() manufacturingCompanyList;
@@ -307,7 +308,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       name: 'otherFees',
       fileName: '',
       fileValue: '',
-      required: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus ? true : false,
+      required: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus && !this.isVariationStatus ? true : false,
       enable: !this.legacyStatus || !this.canEditForApprovedProduct ? true : false,
       attachmentTypeStatus: '',
       loadingStatus: false,
@@ -1181,7 +1182,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         letterOfVariationFromLicenseHolder: this.fb.control(''),
         registrationLicense: this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
         others: this.fb.control(''),
-        otherFees: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
+        otherFees: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus && !this.isVariationStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
       });
     }
   }
@@ -1821,7 +1822,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         name: 'otherFees',
         fileName: '',
         fileValue: '',
-        required: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus ? true : false,
+        required: !this.legacyStatus && !this.canEditForApprovedProduct && !this.variationFieldsStatus && !this.isVariationStatus ? true : false,
         enable: !this.legacyStatus && !this.canEditForApprovedProduct ? true : false,
         attachmentTypeStatus: '',
         loadingStatus: false,

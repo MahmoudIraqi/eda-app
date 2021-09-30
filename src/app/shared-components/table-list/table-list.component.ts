@@ -52,6 +52,7 @@ export class TableListComponent implements OnInit, OnChanges {
     'Status': 'Status',
     'Track Type': 'Track_type',
     'Notification': 'NotificationNo',
+    'Notification Number': 'NotificationNo',
     'Old Notification': 'oldNotificationNo',
     'Batch Number': 'batchNumber',
     'Production Date': 'productionDate',

@@ -28,6 +28,7 @@
           <div class="col-12 mt-5" *ngIf="selectedFormType || selectedFormType === 0">
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="customReleaseForm"
+                  (keydown.enter)="$event.preventDefault()"
                   (ngSubmit)="onSubmit()" novalidate xmlns="http://www.w3.org/1999/html">
               <tabset class="tabs" type="pills" #formTabs>
                 <tab heading="Invoice fields">

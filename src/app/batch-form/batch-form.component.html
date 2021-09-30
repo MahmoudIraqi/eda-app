@@ -9,6 +9,7 @@
           <div class="col-12">
             <form class="mt-2" name="form" class="example-form" method="post"
                   [formGroup]="batchForm"
+                  (keydown.enter)="$event.preventDefault()"
                   (ngSubmit)="onSubmit()" novalidate>
               <div class="row">
                 <div class="col-6">

@@ -1,5 +1,6 @@
 <form class="mt-2" name="form" class="example-form" method="post"
       [formGroup]="inspectFinalProductRequest"
+      (keydown.enter)="$event.preventDefault()"
       (ngSubmit)="onSubmit()" novalidate xmlns="http://www.w3.org/1999/html">
   <tabset class="tabs" type="pills" #formTabs>
     <tab heading="Inspection fields">

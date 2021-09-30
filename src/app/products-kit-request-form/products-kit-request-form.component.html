@@ -1,5 +1,6 @@
 <form class="mt-2" name="form" class="example-form" method="post"
       [formGroup]="regKitForAllRequestedType"
+      (keydown.enter)="$event.preventDefault()"
       (ngSubmit)="onSubmit()" novalidate>
   <tabset type="pills" #formTabs>
     <tab heading="Kit Details">
@@ -579,6 +580,7 @@
   <div class="modal-body">
     <form class="mt-2" name="manufactForm" class="example-form" method="post"
           [formGroup]="regManufacturingForProduct"
+          (keydown.enter)="$event.preventDefault()"
           (ngSubmit)="onSubmitForManufacturingForm()" novalidate xmlns="http://www.w3.org/1999/html"
           autocomplete="off">
       <div class="row">

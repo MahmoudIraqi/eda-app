@@ -67,6 +67,7 @@ export class VariationComponent implements OnInit, OnChanges {
   };
   @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
   enableManufacturingInTrackOfVariation;
+  isVariation: boolean = false;
 
   constructor(private getService: FormService,
               private modalService: BsModalService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -106,6 +107,8 @@ export class VariationComponent implements OnInit, OnChanges {
       this.productNotificationNumber = this.route.snapshot.paramMap.get('notNumber');
       this.typeOfProcess = this.route.snapshot.paramMap.get('typeOfProcess');
       this.enableManufacturingInTrackOfVariation = this.route.snapshot.paramMap.get('enableManufacturing');
+      this.isVariation = this.route.snapshot.routeConfig.path.split('/')[0] === 'tell_do_variation' || this.route.snapshot.routeConfig.path.split('/')[0] === 'do_tell_variation';
+
       if (this.productNotificationNumber) {
         this.isLoading = true;
         this.getService.getProductWithProductIDList(this.productNotificationNumber, '').subscribe((res: any) => {
