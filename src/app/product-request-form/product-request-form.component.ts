@@ -12,6 +12,7 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
+import {environment} from '../../environments/environment';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
@@ -390,6 +391,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   longNameValue;
   longNameValueStatus: boolean = false;
   shortNamingValidationList = [];
+
+  compareAPIUrl = environment.compareURL;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -1927,7 +1930,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (this.shortNameValuesList.length > 0) {
       const xHttp = new XMLHttpRequest();
       let dataAsObservable;
-      xHttp.open('POST', 'http://107.180.75.165:2020/compare/api/EDAComparer/PostSimilarStringList');
+      xHttp.open('POST', `${this.compareAPIUrl}EDAComparer/PostSimilarStringList`);
       xHttp.setRequestHeader('Content-type', 'application/json');
 
       xHttp.onload = (res: any) => {
@@ -1959,7 +1962,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     if (event) {
       const xHttp = new XMLHttpRequest();
       let dataAsObservable;
-      xHttp.open('POST', 'http://107.180.75.165:2020/compare/api/LongTradeName/IsuniqueTradeName');
+      xHttp.open('POST', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName`);
       xHttp.setRequestHeader('Content-type', 'application/json');
 
       xHttp.onload = (res: any) => {
