@@ -111,9 +111,16 @@ export class NewRequestComponent implements OnInit {
         this.variablesPricingList = variableList;
       });
 
-      res.payload.filter(item => item.groupName === 'NAMING').map(element => element.LKUPVARIABLESDto.filter(variable => variable.varCode === 'SHORT_NAME_RATIO').map(result => {
+      res.payload.filter(item => item.groupName === 'NAMING').map(element => element.LKUPVARIABLESDto.filter(variable => variable.varCode === 'SHORT_NAME_MAX_RATIO').map(result => {
         this.inputService.publish({
           type: 'valueOfNaming',
+          payload: result.variableValue
+        });
+      }));
+
+      res.payload.filter(item => item.groupName === 'NAMING').map(element => element.LKUPVARIABLESDto.filter(variable => variable.varCode === 'EN_NAME_RATIO').map(result => {
+        this.inputService.publish({
+          type: 'valueOfEnglishNaming',
           payload: result.variableValue
         });
       }));

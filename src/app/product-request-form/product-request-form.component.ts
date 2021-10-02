@@ -17,7 +17,7 @@ import {TabsetComponent} from 'ngx-bootstrap/tabs';
 import {DecimalPipe} from '@angular/common';
 import {convertToSpecialObject, formDataClass} from '../../utils/formDataFunction';
 import {Observable, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
+import {catchError, debounceTime, distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormService} from '../services/form.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -917,6 +917,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     let newObjectForData;
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
+    const statusOfTypeOfReg = this.selectedRequestedType === 5 || this.selectedRequestedType === 6 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9;
 
     newObjectForData = {
       ...this.editData,
@@ -924,16 +925,18 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       ...this.objectForListOfVariationGroup
     };
 
-    // this.validationForShortNames();
-
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
-      // if (this.shortNamingValidationList.length > 0 && !this.shortNamingValidationList.includes(false)) {
-      //   this.submitDataOutput.emit(newObjectForData);
-      // } else {
-      //   this.handleError('please Check the short-name values');
-      //   this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
-      // }
-      this.submitDataOutput.emit(newObjectForData);
+      if (this.longNameValue) {
+        if (!statusOfTypeOfReg || (statusOfTypeOfReg && this.shortNamingValidationList.length > 0 && !this.shortNamingValidationList.includes(false))) {
+          this.submitDataOutput.emit(newObjectForData);
+        } else {
+          this.handleError('Please validate the short-names first');
+          this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
+        }
+      } else {
+        this.handleError('Please check the long validation first');
+        this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
+      }
     } else {
       this.handleError('please complete the required values which marked with *');
       this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
@@ -1917,26 +1920,32 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   validationForShortNames() {
-
     this.isLoading = true;
     this.shortNamingValidationList = [];
-    const dummyRes = [{
-      OriginalWord: 'Mahmoud',
-      mergedScore: 85,
-      orthoScore: 71,
-      phoneticScore: 67,
-      words: null
-    }];
     this.shortNameValuesList = this.ShortName.value.map(item => item.shortName ? item.shortName : null);
 
     if (this.shortNameValuesList.length > 0) {
-      this.getService.validateShortNames(this.shortNameValuesList).subscribe(res => {
-        res.map(item => {
+      const xHttp = new XMLHttpRequest();
+      let dataAsObservable;
+      xHttp.open('POST', 'http://107.180.75.165:2020/compare/api/EDAComparer/PostSimilarStringList');
+      xHttp.setRequestHeader('Content-type', 'application/json');
+
+      xHttp.onload = (res: any) => {
+        dataAsObservable = JSON.parse(res.currentTarget?.response);
+
+        dataAsObservable.map(item => {
           this.shortNamingValidationList.push(item.mergedScore < this.variableValueOfNaming);
         });
 
         this.isLoading = false;
-      }, error => this.handleError(error));
+      };
+
+      xHttp.onerror = (error) => {
+        this.handleError(xHttp.onerror);
+      };
+
+      const newObjectBody = `${JSON.stringify(this.shortNameValuesList)}`;
+      xHttp.send(newObjectBody);
     } else {
       this.handleError('Please add shortname First');
     }
@@ -1948,11 +1957,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
 
     if (event) {
-      this.getService.validateLongNames(event).subscribe(res => {
-        this.longNameValue = res;
+      const xHttp = new XMLHttpRequest();
+      let dataAsObservable;
+      xHttp.open('POST', 'http://107.180.75.165:2020/compare/api/LongTradeName/IsuniqueTradeName');
+      xHttp.setRequestHeader('Content-type', 'application/json');
 
+      xHttp.onload = (res: any) => {
+        this.longNameValue = JSON.parse(res.currentTarget?.response);
         this.isLoading = false;
-      }, error => this.handleError(error));
+      };
+
+      xHttp.onerror = (error) => {
+        this.handleError(xHttp.onerror);
+      };
+
+      const newObjectBody = JSON.stringify(event);
+      xHttp.send(newObjectBody);
     } else {
       this.handleError('Please change the English name');
     }

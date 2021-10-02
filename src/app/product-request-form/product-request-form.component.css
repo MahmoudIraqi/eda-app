@@ -101,6 +101,25 @@ input:active, input:focus {
   font-weight: 600;
 }
 
+.validationShortNameContainer {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  font-size: 16px;
+  color: #f00;
+  opacity: 1;
+  font-weight: 600;
+}
+
+.validationShortNameContainer p {
+  position: relative;
+  z-index: 100;
+}
+
+.validationShortNameContainer .fa-check-circle {
+  color: green;
+}
+
 .ShortNameFieldContainer .validationShortNameContainer {
   position: absolute;
   top: 1.7rem;
@@ -109,10 +128,6 @@ input:active, input:focus {
   color: #f00;
   opacity: 1;
   font-weight: 600;
-}
-
-.ShortNameFieldContainer .validationShortNameContainer .fa-check-circle {
-  color: green;
 }
 
 /* --------------------------- range input styling ------------------------------- */

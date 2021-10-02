@@ -68,6 +68,7 @@ export class VariationComponent implements OnInit, OnChanges {
   @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
   enableManufacturingInTrackOfVariation;
   isVariation: boolean = false;
+  isDraftStatus: boolean = false;
 
   constructor(private getService: FormService,
               private modalService: BsModalService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -182,6 +183,8 @@ export class VariationComponent implements OnInit, OnChanges {
       this.isLoading = false;
       this.alertNotificationStatus = true;
       this.alertNotification = this.alertForSaveRequest();
+      this.isDraftStatus = true;
+
       this.onClosed();
     }, error => this.handleError(error));
   }

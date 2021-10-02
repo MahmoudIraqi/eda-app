@@ -734,6 +734,21 @@ button span.ellipsisSpan {
   border-color: #161c30;
 }
 
+
+.modalContainer h2 {
+  text-align: center;
+  color: #4ad295;
+}
+
+.modalContainer h2 span {
+  font-size: 32px;
+}
+
+.modalContainer h3 {
+  text-align: center;
+  color: #161c30;
+}
+
 /* ----------------------- responsive -------------------------- */
 @media only screen and (min-width: 1025px) {
   .paddingLeftRight {

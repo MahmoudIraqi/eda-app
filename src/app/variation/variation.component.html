@@ -34,7 +34,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Variation Group Name</mat-label>
               <mat-select [(ngModel)]="typeOfVariationForProduct" multiple
-                          (selectionChange)="onSelectionChange($event)" [disabled]="typeOfProcess === 'Track'">
+                          (selectionChange)="onSelectionChange($event)"
+                          [disabled]="typeOfProcess === 'Track' || typeOfProcess === 'Request' || isDraftStatus">
                 <mat-option *ngFor="let topping of variationGroupList" [value]="topping">
                   {{topping.groupName}}
                   <p class="noteText">

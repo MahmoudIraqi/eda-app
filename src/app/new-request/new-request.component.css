@@ -310,18 +310,3 @@ input[type=file] {
 .Attachments .row > div:nth-child(n+4) {
   margin-top: 1.5em !important;
 }
-
-
-.modalContainer h2 {
-  text-align: center;
-  color: #4ad295;
-}
-
-.modalContainer h2 span {
-  font-size: 32px;
-}
-
-.modalContainer h3 {
-  text-align: center;
-  color: #161c30;
-}
