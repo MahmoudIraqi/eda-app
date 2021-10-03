@@ -380,6 +380,13 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   ngOnInit(): void {
     this.setAllLookups();
 
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'valueOfNaming'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.variableValueOfNaming = res.payload;
+    });
+
     this.regKitForAllRequestedType.valueChanges.subscribe(x => {
       for (let i = 0; i < Object.values(x).length; i++) {
         if (typeof Object.values(x)[i] !== 'object') {
