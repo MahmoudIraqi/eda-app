@@ -47,10 +47,18 @@
                   <i class="fas fa-info-circle"></i>
                 </span>
               </div>
-              <mat-label>Kit Name (English)</mat-label>
+              <mat-label>Product Name (English)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productEnglishName"
-                     placeholder="Kit Name" required
+                     placeholder="Product Name" required
+                     (blur)="validationForLong(regKitForAllRequestedType.get('productEnglishName').value)"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : legacyStatus? productFlags && !productFlags.productEnglishName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productEnglishName ? true : false : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
+              <div class="validationShortNameContainer" *ngIf="longNameValueStatus">
+                <p>
+                  <i class="fas fa-info-circle" tooltip="the value is not valid" placement="auto"
+                     *ngIf="!longNameValue"></i>
+                  <i class="fas fa-check-circle" *ngIf="longNameValue"></i>
+                </p>
+              </div>
               <div
                 *ngIf="regKitForAllRequestedType.get('productEnglishName').invalid && (regKitForAllRequestedType.get('productEnglishName').dirty || regKitForAllRequestedType.get('productEnglishName').touched)"
                 class="alert alert-danger">
@@ -68,13 +76,24 @@
           <div class="col-12 mt-3 mb-3">
             <div class="ShortNameFieldContainer" formArrayName="shortNameTable">
               <div class="row">
-                <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
+                <div class="col-12 d-flex align-items-center justify-content-center flex-column flex-sm-row">
                   <app-title [title]="'Short Name Group'" [smallTitle]="true"></app-title>
+                  <div class="hintForEmptyObject"
+                       *ngIf="attachmentRequiredStatus && shortNamingValidationList.length > 0 && shortNamingValidationList.includes(false)">
+                    <h5>** Please change invalid short name values</h5>
+                  </div>
                   <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
                           [disabled]="(selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9) ? reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false : true"
                           (click)="addShortName()">
                     Add Short Name
                   </button>
+                  <button type="button" class="btn btn-primary btn-sm mb-3 mt-3 mt-sm-0 addBtn ml-sm-2"
+                          *ngIf="selectedRequestedType === 5 ||selectedRequestedType === 6 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9"
+                          [disabled]="reRegistrationStatus ?  true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct?  productFlags && !productFlags.shortNameTable ? true : false : isDraft?  false : productFlags && !productFlags.shortNameTable ? true  : false"
+                          (click)="validationForShortNames()">
+                    Validation Short Name
+                  </button>
+
                 </div>
                 <div *ngIf="removeShortNameFieldStatus" class="alert alert-danger RelativeAlert">
                   you must have at least one field
@@ -83,6 +102,14 @@
                   you can't add more than 10 fields
                 </div>
                 <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
+                  <div class="validationShortNameContainer"
+                       *ngIf="shortNamingValidationList.length > 0">
+                    <p>
+                      <i class="fas fa-info-circle" tooltip="the value is not valid" placement="auto"
+                         *ngIf="shortNamingValidationList[i] === false"></i>
+                      <i class="fas fa-check-circle" *ngIf="shortNamingValidationList[i] === true"></i>
+                    </p>
+                  </div>
                   <mat-form-field class="example-full-width" [formGroupName]="i">
                     <div *ngIf="productComments && productComments.shortNameTable"
                          class="InfoIconContainer">
@@ -95,6 +122,7 @@
                     <input type="text" class="form-control" matInput
                            placeholder="Short Name"
                            formControlName="shortName"
+                           (ngModelChange)="removeAllValidationLst()"
                            [maxLength]="30"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortNameTable ? true : false : isDraft ? false : productFlags && !productFlags.shortNameTable ? true : false">
                     <button type="button"
@@ -102,8 +130,14 @@
                             (click)="removeShortName(i)"
                             class="close">Remove
                     </button>
+
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
                       This Field must not be arabic and must be four words
+                    </div>
+                    <div
+                      *ngIf="ShortName.controls[i].invalid && (ShortName.controls[i].dirty || ShortName.controls[i].touched)"
+                      class="alert alert-danger">
+                      This Field is required
                     </div>
                   </mat-form-field>
                 </div>

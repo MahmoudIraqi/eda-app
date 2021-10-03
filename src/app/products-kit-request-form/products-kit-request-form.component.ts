@@ -21,6 +21,7 @@ import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {convertToSpecialObject} from '../../utils/formDataFunction';
 import {InputService} from '../services/input.service';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {environment} from '../../environments/environment';
 
 export interface LookupState {
   ID: number;
@@ -331,6 +332,14 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     class: 'modal-xl packagingModal',
   };
 
+  variableValueOfNaming;
+  shortNameValuesList;
+  longNameValue;
+  longNameValueStatus: boolean = false;
+  shortNamingValidationList = [];
+
+  compareAPIUrl = environment.compareURL;
+
   constructor(private fb: FormBuilder,
               private inputService: InputService,
               private getServices: FormService,
@@ -439,6 +448,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       this.regKitForAllRequestedType.get('deletedShortNameids').patchValue(this.deletedShortNameList);
 
       this.ShortName.removeAt(i);
+      this.shortNamingValidationList.length > 0 ? this.shortNamingValidationList.splice(i, 1) : null;
     } else {
       this.removeShortNameFieldStatus = true;
 
@@ -598,6 +608,9 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     let newObjectForData;
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regKitForAllRequestedType.value);
+    const statusOfTypeOfReg = this.selectedRequestedType === 5 || this.selectedRequestedType === 6 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9;
+    const validationLongNameStatus = !(this.reRegistrationStatus ? true : this.variationFieldsStatus ? this.variationFields.length > 0 ? !this.enableEditableFields.includes('productEnglishName') : true : this.legacyStatus ? true : this.canBeAppealedStatus || this.canEditForApprovedProduct || this.canEditForHoldApprovedProduct ? this.productFlags && !this.productFlags.productEnglishName ? true : false : this.isDraft ? false : this.productFlags && !this.productFlags.productEnglishName ? true : false);
+    const validationShortNameStatus = !(this.reRegistrationStatus ? true : this.variationFieldsStatus ? this.variationFields.length > 0 ? !this.enableEditableFields.includes('shortNameTable') : true : this.legacyStatus ? true : this.canBeAppealedStatus || this.canEditForApprovedProduct || this.canEditForHoldApprovedProduct ? this.productFlags && !this.productFlags.shortNameTable ? true : false : this.isDraft ? false : this.productFlags && !this.productFlags.shortNameTable ? true : false);
 
     newObjectForData = {
       ...this.editData,
@@ -606,7 +619,17 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     };
 
     if (this.regKitForAllRequestedType.valid && this.allProductsInKit.tableBody.length > 0 && this.regKitForAllRequestedType.get('manufacturingTable').value.length > 0) {
-      this.submitDataOutput.emit(newObjectForData);
+      if (!validationLongNameStatus || (validationLongNameStatus && this.longNameValue)) {
+        if ((!statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.length === this.ShortName.length && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
+          this.submitDataOutput.emit(newObjectForData);
+        } else {
+          this.handleError('Please validate the short-names first');
+          this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
+        }
+      } else {
+        this.handleError('Please check the long validation first');
+        this.getFormAsStarting(newObjectForData, 'errorOfAttachment');
+      }
     } else {
       this.handleError('please complete the required values which marked with *');
       this.getFormAsStarting(newObjectForData, 'errorOfSubmit');
@@ -1499,5 +1522,73 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.getManufacturingFormAsStarting('');
     this.modalRef.hide();
     this.editManufacturingRowStatus = false;
+  }
+
+  validationForShortNames() {
+    this.isLoading = true;
+    this.shortNamingValidationList = [];
+    this.shortNameValuesList = this.ShortName.value.map(item => item.shortName ? item.shortName : null);
+
+    if (this.shortNameValuesList.length > 0) {
+      const xHttp = new XMLHttpRequest();
+      let dataAsObservable;
+      xHttp.open('POST', `${this.compareAPIUrl}EDAComparer/PostSimilarStringList`);
+      xHttp.setRequestHeader('Content-type', 'application/json');
+
+      xHttp.onload = (res: any) => {
+        dataAsObservable = JSON.parse(res.currentTarget?.response);
+
+        dataAsObservable.map(item => {
+          this.shortNamingValidationList.push(item.mergedScore < this.variableValueOfNaming);
+        });
+
+        this.isLoading = false;
+      };
+
+      xHttp.onerror = (error) => {
+        this.handleError(xHttp.onerror);
+      };
+
+      const newObjectBody = `${JSON.stringify(this.shortNameValuesList)}`;
+      xHttp.send(newObjectBody);
+    } else {
+      this.handleError('Please add shortname First');
+    }
+  }
+
+  removeAllValidationLst() {
+    this.shortNamingValidationList = [];
+  }
+
+  validationForLong(event) {
+    const validationLongNameStatus = !(this.reRegistrationStatus ? true : this.variationFieldsStatus ? this.variationFields.length > 0 ? !this.enableEditableFields.includes('productEnglishName') : true : this.legacyStatus ? true : this.canBeAppealedStatus || this.canEditForApprovedProduct || this.canEditForHoldApprovedProduct ? this.productFlags && !this.productFlags.productEnglishName ? true : false : this.isDraft ? false : this.productFlags && !this.productFlags.productEnglishName ? true : false);
+
+    if (validationLongNameStatus) {
+      if (event) {
+        this.isLoading = true;
+        this.longNameValueStatus = true;
+        const xHttp = new XMLHttpRequest();
+        let dataAsObservable;
+        xHttp.open('POST', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName`);
+        xHttp.setRequestHeader('Content-type', 'application/json');
+
+        xHttp.onload = (res: any) => {
+          this.longNameValue = JSON.parse(res.currentTarget?.response);
+          this.isLoading = false;
+        };
+
+        xHttp.onerror = (error) => {
+          this.handleError(xHttp.onerror);
+        };
+
+        const newObjectBody = JSON.stringify(event);
+        xHttp.send(newObjectBody);
+      } else {
+        this.handleError('Please change the English name');
+      }
+    } else {
+      this.isLoading = false;
+      return;
+    }
   }
 }
