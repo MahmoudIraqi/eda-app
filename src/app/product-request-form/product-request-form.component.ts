@@ -921,6 +921,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.attachmentRequiredStatus = true;
     const data = this.convertAllNamingToId(this.regProductForAllRequestedType.value);
     const statusOfTypeOfReg = this.selectedRequestedType === 5 || this.selectedRequestedType === 6 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9;
+    const validationLongNameStatus = !(this.reRegistrationStatus ? true : this.variationFieldsStatus ? this.variationFields.length > 0 ? !this.enableEditableFields.includes('productEnglishName') : true : this.legacyStatus ? true : this.canBeAppealedStatus || this.canEditForApprovedProduct || this.canEditForHoldApprovedProduct ? this.productFlags && !this.productFlags.productEnglishName ? true : false : this.isDraft ? false : this.productFlags && !this.productFlags.productEnglishName ? true : false);
+    const validationShortNameStatus = !(this.reRegistrationStatus ? true : this.variationFieldsStatus ? this.variationFields.length > 0 ? !this.enableEditableFields.includes('shortNameTable') : true : this.legacyStatus ? true : this.canBeAppealedStatus || this.canEditForApprovedProduct || this.canEditForHoldApprovedProduct ? this.productFlags && !this.productFlags.shortNameTable ? true : false : this.isDraft ? false : this.productFlags && !this.productFlags.shortNameTable ? true : false);
 
     newObjectForData = {
       ...this.editData,
@@ -929,8 +931,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     };
 
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
-      if (this.longNameValue) {
-        if (!statusOfTypeOfReg || (statusOfTypeOfReg && this.shortNamingValidationList.length > 0 && !this.shortNamingValidationList.includes(false))) {
+      if (!validationLongNameStatus || (validationLongNameStatus && this.longNameValue)) {
+        if ((!statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
           this.submitDataOutput.emit(newObjectForData);
         } else {
           this.handleError('Please validate the short-names first');

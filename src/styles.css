@@ -280,6 +280,10 @@ body {
   border-right-color: #c28a30;
 }
 
+.bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
+  border-left-color: #c28a30;
+}
+
 /*.detailsTable .mat-form-field-wrapper {*/
 /*  padding-bottom: 0em !important;*/
 /*}*/

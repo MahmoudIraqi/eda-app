@@ -56,7 +56,7 @@
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : legacyStatus? productFlags && !productFlags.productEnglishName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productEnglishName ? true : false : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
               <div class="validationShortNameContainer" *ngIf="longNameValueStatus">
                 <p>
-                  <i class="fas fa-info-circle" tooltip="the value is not valid" placement="top"
+                  <i class="fas fa-info-circle" tooltip="the value is not valid" placement="auto"
                      *ngIf="!longNameValue"></i>
                   <i class="fas fa-check-circle" *ngIf="longNameValue"></i>
                 </p>
@@ -107,7 +107,7 @@
                   <div class="validationShortNameContainer"
                        *ngIf="shortNamingValidationList.length > 0">
                     <p>
-                      <i class="fas fa-info-circle" tooltip="the value is not valid" placement="top"
+                      <i class="fas fa-info-circle" tooltip="the value is not valid" placement="auto"
                          *ngIf="shortNamingValidationList[i] === false"></i>
                       <i class="fas fa-check-circle" *ngIf="shortNamingValidationList[i] === true"></i>
                     </p>
