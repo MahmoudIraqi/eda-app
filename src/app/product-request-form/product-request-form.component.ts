@@ -514,6 +514,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.regProductForAllRequestedType.get('deletedShortNameids').patchValue(this.deletedShortNameList);
 
       this.ShortName.removeAt(i);
+      this.shortNamingValidationList.length > 0 ? this.shortNamingValidationList.splice(i, 1) : null;
     } else {
       this.removeShortNameFieldStatus = true;
 
@@ -932,7 +933,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       if (!validationLongNameStatus || (validationLongNameStatus && this.longNameValue)) {
-        if ((!statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
+        if ((!statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.length === this.ShortName.length && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
           this.submitDataOutput.emit(newObjectForData);
         } else {
           this.handleError('Please validate the short-names first');
@@ -1956,30 +1957,39 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     }
   }
 
+  removeAllValidationLst() {
+    this.shortNamingValidationList = [];
+  }
+
   validationForLong(event) {
-    this.longNameValueStatus = true;
-    this.isLoading = true;
+    const validationLongNameStatus = !(this.reRegistrationStatus ? true : this.variationFieldsStatus ? this.variationFields.length > 0 ? !this.enableEditableFields.includes('productEnglishName') : true : this.legacyStatus ? true : this.canBeAppealedStatus || this.canEditForApprovedProduct || this.canEditForHoldApprovedProduct ? this.productFlags && !this.productFlags.productEnglishName ? true : false : this.isDraft ? false : this.productFlags && !this.productFlags.productEnglishName ? true : false);
 
+    if (validationLongNameStatus) {
+      if (event) {
+        this.isLoading = true;
+        this.longNameValueStatus = true;
+        const xHttp = new XMLHttpRequest();
+        let dataAsObservable;
+        xHttp.open('POST', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName`);
+        xHttp.setRequestHeader('Content-type', 'application/json');
 
-    if (event) {
-      const xHttp = new XMLHttpRequest();
-      let dataAsObservable;
-      xHttp.open('POST', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName`);
-      xHttp.setRequestHeader('Content-type', 'application/json');
+        xHttp.onload = (res: any) => {
+          this.longNameValue = JSON.parse(res.currentTarget?.response);
+          this.isLoading = false;
+        };
 
-      xHttp.onload = (res: any) => {
-        this.longNameValue = JSON.parse(res.currentTarget?.response);
-        this.isLoading = false;
-      };
+        xHttp.onerror = (error) => {
+          this.handleError(xHttp.onerror);
+        };
 
-      xHttp.onerror = (error) => {
-        this.handleError(xHttp.onerror);
-      };
-
-      const newObjectBody = JSON.stringify(event);
-      xHttp.send(newObjectBody);
+        const newObjectBody = JSON.stringify(event);
+        xHttp.send(newObjectBody);
+      } else {
+        this.handleError('Please change the English name');
+      }
     } else {
-      this.handleError('Please change the English name');
+      this.isLoading = false;
+      return;
     }
   }
 }

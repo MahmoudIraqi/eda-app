@@ -124,6 +124,7 @@
                     <input type="text" class="form-control" matInput
                            placeholder="Short Name"
                            formControlName="shortName"
+                           (ngModelChange)="removeAllValidationLst()"
                            [maxLength]="30"
                            [required]="variationMendatoryFields.includes('shortNameTable')? 'required': !legacyStatus ? 'required': false"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortNameTable ? true : false : isDraft ? false : productFlags && !productFlags.shortNameTable ? true : false">
