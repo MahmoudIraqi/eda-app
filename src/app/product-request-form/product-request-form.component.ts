@@ -1915,10 +1915,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.filteredOptionsForManufacturingCountry = this.filterLookupsFunction('manufacturingCountry', this.regProductForAllRequestedType.get('manufacturingCountry'), this.formData.manufacturingCountryList);
   }
 
-  onScrollFunction(event) {
-
-  }
-
   onClosedErrorAlert() {
     setTimeout(() => {
       this.alertErrorNotificationStatus = false;
@@ -1929,6 +1925,11 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
     this.isLoading = true;
     this.shortNamingValidationList = [];
     this.shortNameValuesList = this.ShortName.value.map(item => item.shortName ? item.shortName : null);
+
+    const dataObject = {
+      companyCode: this.companyProfile,
+      wordList: this.shortNameValuesList
+    };
 
     if (this.shortNameValuesList.length > 0) {
       const xHttp = new XMLHttpRequest();
@@ -1948,9 +1949,10 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       xHttp.onerror = (error) => {
         this.handleError(xHttp.onerror);
+        this.isLoading = false;
       };
 
-      const newObjectBody = `${JSON.stringify(this.shortNameValuesList)}`;
+      const newObjectBody = JSON.stringify(dataObject);
       xHttp.send(newObjectBody);
     } else {
       this.handleError('Please add shortname First');

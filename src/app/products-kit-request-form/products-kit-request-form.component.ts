@@ -1536,6 +1536,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     this.shortNamingValidationList = [];
     this.shortNameValuesList = this.ShortName.value.map(item => item.shortName ? item.shortName : null);
 
+    const dataObject = {
+      companyCode: this.companyProfile,
+      wordList: this.shortNameValuesList
+    };
+
     if (this.shortNameValuesList.length > 0) {
       const xHttp = new XMLHttpRequest();
       let dataAsObservable;
@@ -1554,9 +1559,10 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
       xHttp.onerror = (error) => {
         this.handleError(xHttp.onerror);
+        this.isLoading = false;
       };
 
-      const newObjectBody = `${JSON.stringify(this.shortNameValuesList)}`;
+      const newObjectBody = JSON.stringify(dataObject);
       xHttp.send(newObjectBody);
     } else {
       this.handleError('Please add shortname First');
