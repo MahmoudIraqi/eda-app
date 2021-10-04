@@ -933,7 +933,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
     if (this.regProductForAllRequestedType.valid && this.regProductForAllRequestedType.get('packagingTable').value.length > 0 && this.regProductForAllRequestedType.get('detailsTable').value.length > 0 && this.regProductForAllRequestedType.get('manufacturingTable').value.length > 0) {
       if (!validationLongNameStatus || (validationLongNameStatus && this.longNameValue)) {
-        if ((!statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.length === this.ShortName.length && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
+        if (!statusOfTypeOfReg || (statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.length === this.ShortName.length && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
           this.submitDataOutput.emit(newObjectForData);
         } else {
           this.handleError('Please validate the short-names first');

@@ -627,7 +627,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     if (this.regKitForAllRequestedType.valid && this.allProductsInKit.tableBody.length > 0 && this.regKitForAllRequestedType.get('manufacturingTable').value.length > 0) {
       if (!validationLongNameStatus || (validationLongNameStatus && this.longNameValue)) {
-        if ((!statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.length === this.ShortName.length && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
+        if (!statusOfTypeOfReg || (statusOfTypeOfReg && !validationShortNameStatus) || (statusOfTypeOfReg && validationShortNameStatus && this.shortNamingValidationList.length > 0 && this.shortNamingValidationList.length === this.ShortName.length && this.shortNamingValidationList.filter(item => item).length === this.shortNamingValidationList.length)) {
           this.submitDataOutput.emit(newObjectForData);
         } else {
           this.handleError('Please validate the short-names first');
