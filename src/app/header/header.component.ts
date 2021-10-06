@@ -200,7 +200,7 @@ export class HeaderComponent implements OnInit {
       dropDownStatus: true,
       dropdownLinks: [
         {
-          name: 'Manufacturing Company',
+          name: 'Manufacturing company / license holder',
           link: '/admin/manufacturing-company'
         },
         {
