@@ -1,6 +1,6 @@
 <div *ngIf="data && data.tableBody.length > 0">
   <div
-    *ngIf="whichTable === 'track' || whichTable === 'expired' || whichTable === 'trackForReRegistration' || whichTable === 'draftForReRegistration' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'|| whichTable === 'rejectRequest' || whichTable === 'batchTable' || whichTable === 'legacyOldProduct'">
+    *ngIf="whichTable === 'track' || whichTable === 'expired' || whichTable === 'trackForReRegistration' || whichTable === 'draftForReRegistration' || whichTable === 'rejectVariation' || whichTable === 'draftVariation' || whichTable === 'draft' || whichTable === 'approved' || whichTable === 'rejected'|| whichTable === 'trackRequest'|| whichTable === 'rejectRequest' || whichTable === 'batchTable' || whichTable === 'legacyOldProduct' || whichTable === 'draftLegacyRequest' || whichTable === 'trackLegacyRequest'">
     <app-filters [filterData]="filterData"
                  [removeFilterKey]="removeFilterKey"
                  (selectedFilteredData)="setTheFilteredData($event)"></app-filters>
