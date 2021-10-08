@@ -54,6 +54,7 @@ export class TableListComponent implements OnInit, OnChanges {
     'Notification': 'NotificationNo',
     'Notification Number': 'NotificationNo',
     'Old Notification': 'oldNotificationNo',
+    'Old Notification Number': 'oldNotificationNo',
     'Batch Number': 'batchNumber',
     'Production Date': 'productionDate',
     'Expiration Date': 'expirationDate',

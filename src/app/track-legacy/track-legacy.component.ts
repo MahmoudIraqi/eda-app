@@ -21,7 +21,7 @@ export class TrackLegacyComponent implements OnInit {
     this.getService.getTrackLegacyProductsList().subscribe((res: any) => {
 
       this.tackLegacyListRequests = {
-        tableHeader: ['Notification Number', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
+        tableHeader: ['Old Notification Number', 'Submission date', 'Product English name', 'Product Arabic name', 'Status', 'Track Type', 'Action'],
         tableBody: res
       };
       this.isLoading = false;

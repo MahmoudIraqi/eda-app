@@ -21,7 +21,7 @@ export class DraftLegacyComponent implements OnInit {
     this.getService.getDraftLegacyProductsList().subscribe((res: any) => {
 
       this.draftLegacyListRequests = {
-        tableHeader: ['Notification Number', 'Saved date', 'Product English name', 'Track Type', 'Action'],
+        tableHeader: ['Old Notification Number', 'Saved date', 'Product English name', 'Track Type', 'Action'],
         tableBody: res
       };
       this.isLoading = false;
