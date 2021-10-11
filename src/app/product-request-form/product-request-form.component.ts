@@ -1971,8 +1971,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
         this.isLoading = true;
         this.longNameValueStatus = true;
         const xHttp = new XMLHttpRequest();
-        let dataAsObservable;
-        xHttp.open('GET', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName?TradeName=${event}&TradeCode=${this.editData ? this.editData.productId : 0}`);
+        let dataAsObject;
+        xHttp.open('POST', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName`);
         xHttp.setRequestHeader('Content-type', 'application/json');
 
         xHttp.onload = (res: any) => {
@@ -1984,8 +1984,13 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
           this.handleError(xHttp.onerror);
         };
 
-        const newObjectBody = JSON.stringify(event);
-        xHttp.send();
+        dataAsObject = {
+          TradeName: event,
+          TradeCode: this.editData ? this.editData.productId : 0
+        };
+
+        const newObjectBody = JSON.stringify(dataAsObject);
+        xHttp.send(newObjectBody);
       } else {
         this.handleError('Please change the English name');
       }
