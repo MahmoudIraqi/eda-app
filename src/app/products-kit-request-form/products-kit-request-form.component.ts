@@ -1582,7 +1582,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         this.longNameValueStatus = true;
         const xHttp = new XMLHttpRequest();
         let dataAsObservable;
-        xHttp.open('POST', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName`);
+        xHttp.open('GET', `${this.compareAPIUrl}LongTradeName/IsuniqueTradeName?TradeName=${event}&TradeCode=${this.editData ? this.editData.productId : 0}`);
         xHttp.setRequestHeader('Content-type', 'application/json');
 
         xHttp.onload = (res: any) => {
@@ -1595,7 +1595,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         };
 
         const newObjectBody = JSON.stringify(event);
-        xHttp.send(newObjectBody);
+        xHttp.send();
       } else {
         this.handleError('Please change the English name');
       }

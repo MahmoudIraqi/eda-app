@@ -105,7 +105,7 @@ form > .row > div:nth-child(n + 4) {
   font-weight: 600;
 }
 
-.validationShortNameContainer {
+.validationShortNameContainer d{
   position: absolute;
   top: 1rem;
   right: 0;
