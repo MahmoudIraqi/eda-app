@@ -503,6 +503,20 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  getApprovedProductsWithCommentsFromVariationList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=flagVariation&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   getApprovedHoldProductsFromLabList() {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -525,6 +539,20 @@ export class FormService {
     const options = {headers};
 
     return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=holdReg&pageNo=1&pageSize=5000`, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
+  getApprovedHoldProductsFromVariationList() {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/GetNotificationList?Type=holdVariation&pageNo=1&pageSize=5000`, options)
       .pipe(map((res: any) => {
           return res;
         }),

@@ -82,6 +82,17 @@ export class ApprovedRequestComponent implements OnInit {
         };
         this.isLoading = false;
       }, error => this.handleError(error));
+    } else if (whichType === 'approvedProductWithVariationComment') {
+      this.isLoading = true;
+      this.approvedListRequests = null;
+
+      this.getService.getApprovedProductsWithCommentsFromVariationList().subscribe((res: any) => {
+        this.approvedListRequests = {
+          tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
+          tableBody: res
+        };
+        this.isLoading = false;
+      }, error => this.handleError(error));
     }
   }
 
@@ -107,6 +118,20 @@ export class ApprovedRequestComponent implements OnInit {
       this.approvedListRequests = null;
 
       this.getService.getApprovedHoldProductsFromRegList().subscribe((res: any) => {
+        res.map(item => {
+          item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
+        });
+        this.approvedListRequests = {
+          tableHeader: ['Notification', 'Notification date', 'Type of Notification', 'Product English name', 'Need Action', 'Update Product', 'Add Batch'],
+          tableBody: res
+        };
+        this.isLoading = false;
+      }, error => this.handleError(error));
+    } else if (whichType === 'approvedHoldProductWithVariationComments') {
+      this.isLoading = true;
+      this.approvedListRequests = null;
+
+      this.getService.getApprovedHoldProductsFromVariationList().subscribe((res: any) => {
         res.map(item => {
           item.RejectionResons = convertFromStringToArrayWithCommaSeparator(item.RejectionResons);
         });
