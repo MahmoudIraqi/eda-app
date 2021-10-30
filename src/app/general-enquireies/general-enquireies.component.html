@@ -98,7 +98,7 @@
                       <div class="d-flex alert alert-danger"
                            *ngIf="(generalEnquiriesForm.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
                         <div class="ml-auto" *ngIf="field.attachmentTypeStatus === 'No'">
-                          this file must be as PDF
+                          this file must be as PDF and less than 5MB.
                         </div>
                         <div class="ml-auto"
                              *ngIf="generalEnquiriesForm.get(field.id).invalid && attachmentRequiredStatus">

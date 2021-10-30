@@ -82,7 +82,7 @@ export class GeneralEnquireiesComponent implements OnInit {
   onFileSelect(event, fileControlName) {
     this.attachmentFields.filter(x => x.id === fileControlName).map(y => y.fileName = event.target.value.split(/(\\|\/)/g).pop());
     if (event.target.files.length > 0) {
-      if (event.target.files[0].type === 'application/pdf') {
+      if (event.target.files[0].type === 'application/pdf' && event.target.files[0].size <= 5000000) {
         this.attachmentFields.filter(x => x.id === fileControlName).map(file => {
           file.fileName = event.target.value.split(/(\\|\/)/g).pop();
           file.attachmentTypeStatus = 'Yes';
