@@ -625,7 +625,7 @@
                 <div class="col-12 col-sm-4 ml-auto">
                   <div class="d-flex align-items-center">
                     <div class="hintForEmptyObject"
-                         *ngIf="detailsListTable.tableBody.length === 0 && attachmentRequiredStatus">
+                         *ngIf="detailsListTable?.tableBody.length === 0 && attachmentRequiredStatus">
                       <h5>** Please add ingredient data</h5>
                     </div>
                     <button type="button" class="btn btn-primary btnForModal ml-auto"

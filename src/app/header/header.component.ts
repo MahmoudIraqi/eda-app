@@ -47,14 +47,6 @@ export class HeaderComponent implements OnInit {
           link: '/new-request/inspection'
         },
         {
-          name: 'Custom Release',
-          link: '/new-request/custom-release'
-        },
-        {
-          name: 'Custom Release2',
-          link: '/new-request/custom-release2'
-        },
-        {
           name: 'General Enquiries',
           link: '/new-request/general-enquiries'
         }
@@ -83,10 +75,6 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Inspection',
-          link: '#'
-        },
-        {
-          name: 'Custom Release',
           link: '#'
         },
         {
@@ -119,10 +107,6 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Inspection',
-          link: '#'
-        },
-        {
-          name: 'Custom Release',
           link: '#'
         },
         {
@@ -159,10 +143,6 @@ export class HeaderComponent implements OnInit {
         },
         {
           name: 'Inspection',
-          link: '#'
-        },
-        {
-          name: 'Custom Release',
           link: '#'
         },
         {
@@ -214,6 +194,7 @@ export class HeaderComponent implements OnInit {
       ]
     },
   ];
+
   alertNotificationStatus: boolean = false;
   alertNotification: any;
   alertErrorNotificationStatus: boolean = false;
@@ -264,3 +245,13 @@ export class HeaderComponent implements OnInit {
     this.isLoading = false;
   }
 }
+
+// new request -> Custom Release
+// {
+//   name: 'Custom Release',
+//     link: '/new-request/custom-release'
+// },
+// {
+//   name: 'Custom Release2',
+//     link: '/new-request/custom-release2'
+// },

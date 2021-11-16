@@ -5,6 +5,7 @@ import {InputService} from '../services/input.service';
 import {CurrencyPipe} from '@angular/common';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {element} from 'protractor';
 
 @Component({
   selector: 'app-variation',
@@ -69,6 +70,7 @@ export class VariationComponent implements OnInit, OnChanges {
   enableManufacturingInTrackOfVariation;
   isVariation: boolean = false;
   isDraftStatus: boolean = false;
+  checkedVariationList = [];
 
   constructor(private getService: FormService,
               private modalService: BsModalService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -120,6 +122,7 @@ export class VariationComponent implements OnInit, OnChanges {
           this.selectedTrackType = res.Tracktype;
           this.productData = res;
           this.typeOfRegistrationForProduct = res.typeOfRegistration;
+          this.inputService.publish({type: 'historyOfDataForVariation', payload: JSON.stringify(res)});
 
           this.isLoading = false;
           this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
@@ -142,12 +145,14 @@ export class VariationComponent implements OnInit, OnChanges {
   applyProduct(NotificationNo) {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
+      console.log('res', res);
       if (res.canUse) {
         this.selectedFormType = res.typeOfMarketing;
         this.selectedRequestedType = res.typeOfRegistration;
         this.selectedIsExport = res.isExport;
         this.selectedTrackType = res.Tracktype;
         this.productData = res;
+        this.inputService.publish({type: 'historyOfDataForVariation', payload: JSON.stringify(res)});
         this.typeOfRegistrationForProduct = res.typeOfRegistration;
         this.isLoading = false;
 
@@ -229,6 +234,8 @@ export class VariationComponent implements OnInit, OnChanges {
   onSelectionChange(event) {
     this.variationFields = event.value;
     this.getPricing();
+
+    this.checkTheCheckedValuesInVariationGroup(event.value);
   }
 
   alertForSaveRequest() {
@@ -317,5 +324,28 @@ export class VariationComponent implements OnInit, OnChanges {
 
   closeSuccessSubmissionModal() {
     this.modalRef.hide();
+  }
+
+  checkTheCheckedValuesInVariationGroup(value) {
+    let removeCheckedListFromVariationGroup;
+    let checkedVariationGroupNameList;
+    let listOfUnavailableFields = [];
+    let fieldOfCheckedVariationGroup = [];
+
+    checkedVariationGroupNameList = value?.map(item => item.groupName);
+
+    if (this.checkedVariationList.length > 0 && this.checkedVariationList.length > value?.length) {
+      value.map(item => {
+        this.checkedVariationList.filter(row => row.groupName !== item.groupName && !checkedVariationGroupNameList.includes(row.groupName)).map(element => removeCheckedListFromVariationGroup = element.VARIATION_GROUP_FieldsDto);
+      });
+
+      value.map(curr => !fieldOfCheckedVariationGroup.includes(curr) ? curr.VARIATION_GROUP_FieldsDto.map(item => fieldOfCheckedVariationGroup.push(item.CODE)) : null);
+
+      removeCheckedListFromVariationGroup.map(row => !fieldOfCheckedVariationGroup.includes(row.CODE) ? listOfUnavailableFields.push(row.CODE) : null);
+
+      this.inputService.publish({type: 'listOfUnavailableFields', payload: listOfUnavailableFields});
+    }
+
+    this.checkedVariationList = value;
   }
 }

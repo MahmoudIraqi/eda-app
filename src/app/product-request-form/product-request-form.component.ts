@@ -393,6 +393,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   shortNamingValidationList = [];
 
   compareAPIUrl = environment.compareURL;
+  historyData: any;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -441,6 +442,22 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       distinctUntilChanged()
     ).subscribe(res => {
       this.variableValueOfNaming = res.payload;
+    });
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'listOfUnavailableFields'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      console.log('res', res.payload);
+      this.restoreTheOldData(res.payload);
+    });
+
+    this.inputService.getInput$().pipe(
+      filter(x => x.type === 'historyOfDataForVariation'),
+      distinctUntilChanged()
+    ).subscribe(res => {
+      this.historyData = res.payload;
+      console.log('historyData', this.historyData);
     });
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
@@ -1998,6 +2015,28 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.isLoading = false;
       return;
     }
+  }
+
+  restoreTheOldData(listOfFields) {
+    const data = JSON.parse(this.historyData);
+    listOfFields?.map(item => {
+      switch (item) {
+        case ('detailsTable'):
+          this.regProductForAllRequestedType.get('detailsTable').patchValue(data[item]);
+          this.detailsListTable.tableBody = this.regProductForAllRequestedType.get('detailsTable').value;
+          break;
+        case ('manufacturingTable'):
+          this.regManufacturingForProduct.patchValue(data[item]);
+          break;
+        case('packagingTable'):
+          this.regPackagingForProduct.patchValue(data[item]);
+          break;
+        default:
+          this.regProductForAllRequestedType.get(item).patchValue(data[item]);
+      }
+
+      console.log('12341234', this.regProductForAllRequestedType.value);
+    });
   }
 }
 

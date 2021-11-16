@@ -49,6 +49,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
   @Input() canBeAppealedStatus;
   @Input() canEditForApprovedProduct;
   @Input() canEditForHoldApprovedProduct;
+  @Input() enableManufacturingInTrackOfVariationStatus;
+  @Input() isVariationStatus;
   @Input() finalRejectedStatus;
   @Input() reRegistrationStatus;
   @Input() variationFieldsStatus;

@@ -50,15 +50,7 @@
           </div>
         </div>
         <div class="row mt-4 subBtnContainer" *ngIf="typeOfApprovedList === 'approvedProductWithComment'">
-          <div class="col-12 col-sm-4">
-            <button type="button"
-                    class="btn btn-primary form-control"
-                    (click)="selectApprovedProductWithCommentsType('approvedProductWithLabsComments')"
-                    [ngClass]="{'active': typeOfApprovedListWithComments === 'approvedProductWithLabsComments'}">
-              Approved Product with Comments from Labs
-            </button>
-          </div>
-          <div class="col-12 col-sm-4">
+          <div class="col-12 col-sm-6">
             <button type="button"
                     class="btn btn-primary form-control"
                     (click)="selectApprovedProductWithCommentsType('approvedProductWithRegComment')"
@@ -66,7 +58,7 @@
               Approved Product With Comments from Registration
             </button>
           </div>
-          <div class="col-12 col-sm-4">
+          <div class="col-12 col-sm-6">
             <button type="button"
                     class="btn btn-primary form-control"
                     (click)="selectApprovedProductWithCommentsType('approvedProductWithVariationComment')"
