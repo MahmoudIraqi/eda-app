@@ -71,6 +71,7 @@ export class VariationComponent implements OnInit, OnChanges {
   isVariation: boolean = false;
   isDraftStatus: boolean = false;
   checkedVariationList = [];
+  selectedVariationGroupStatus: boolean;
 
   constructor(private getService: FormService,
               private modalService: BsModalService, private readonly route: ActivatedRoute, private inputService: InputService, private currencyPipe: CurrencyPipe) {
@@ -145,7 +146,6 @@ export class VariationComponent implements OnInit, OnChanges {
   applyProduct(NotificationNo) {
     this.isLoading = true;
     this.getService.getProductWithNotificationNumberList(NotificationNo, 'variation').subscribe((res: any) => {
-      console.log('res', res);
       if (res.canUse) {
         this.selectedFormType = res.typeOfMarketing;
         this.selectedRequestedType = res.typeOfRegistration;
@@ -168,6 +168,15 @@ export class VariationComponent implements OnInit, OnChanges {
         this.handleError(res.canuseMsg);
       }
     }, error => this.handleError(error));
+  }
+
+  applyVariationGroup() {
+    this.variationFields = this.typeOfVariationForProduct;
+    this.getPricing();
+
+    this.checkTheCheckedValuesInVariationGroup(this.typeOfVariationForProduct);
+
+    this.selectedVariationGroupStatus = true;
   }
 
   onSave(event) {

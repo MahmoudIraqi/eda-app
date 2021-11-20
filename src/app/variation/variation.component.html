@@ -31,21 +31,34 @@
           </div>
           <div class="col-lg-6 col-sm-6 col-12"
                *ngIf="variationGroupList && (NotificationNo || productData && productData.isDraft === 1)">
-            <mat-form-field appearance="fill">
-              <mat-label>Variation Group Name</mat-label>
-              <mat-select [(ngModel)]="typeOfVariationForProduct" multiple
-                          (selectionChange)="onSelectionChange($event)"
-                          [disabled]="typeOfProcess === 'Track' || typeOfProcess === 'Request' || isDraftStatus">
-                <mat-option *ngFor="let topping of variationGroupList" [value]="topping">
-                  {{topping.groupName}}
-                  <p class="noteText">
-                    ( <span *ngFor="let field of topping.VARIATION_GROUP_FieldsDto; let i = index">
+            <div class="backgroundContainer">
+              <div class="row">
+                <div class="col-12 col-sm-9">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Variation Group Name</mat-label>
+                    <mat-select [(ngModel)]="typeOfVariationForProduct" multiple
+                                [disabled]="typeOfProcess === 'Track' || typeOfProcess === 'Request' || isDraftStatus || selectedVariationGroupStatus">
+                      <mat-option *ngFor="let topping of variationGroupList" [value]="topping">
+                        {{topping.groupName}}
+                        <p class="noteText">
+                          ( <span *ngFor="let field of topping.VARIATION_GROUP_FieldsDto; let i = index">
                       {{field.FIELD_NAME}} <i *ngIf="(topping.VARIATION_GROUP_FieldsDto.length -1) !== i">,</i>
                     </span> )
-                  </p>
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+                        </p>
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-12 col-sm-3 d-flex">
+                  <button type="button"
+                          class="btn btn-primary ml-auto mt-sm-4 mb-3"
+                          [disabled]="!typeOfVariationForProduct || typeOfVariationForProduct.length === 0 || selectedVariationGroupStatus"
+                          (click)="applyVariationGroup()">
+                    Apply variation group
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-lg-2 col-sm-6 col-12">
             <mat-form-field class="example-full-width">

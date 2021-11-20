@@ -99,8 +99,6 @@ export class TableListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('data', this.data);
-
     if (this.data) {
       if (this.data.tableBody.length > 0) {
         if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {

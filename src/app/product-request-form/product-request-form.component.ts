@@ -393,7 +393,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   shortNamingValidationList = [];
 
   compareAPIUrl = environment.compareURL;
-  historyData: any;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -442,22 +441,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       distinctUntilChanged()
     ).subscribe(res => {
       this.variableValueOfNaming = res.payload;
-    });
-
-    this.inputService.getInput$().pipe(
-      filter(x => x.type === 'listOfUnavailableFields'),
-      distinctUntilChanged()
-    ).subscribe(res => {
-      console.log('res', res.payload);
-      this.restoreTheOldData(res.payload);
-    });
-
-    this.inputService.getInput$().pipe(
-      filter(x => x.type === 'historyOfDataForVariation'),
-      distinctUntilChanged()
-    ).subscribe(res => {
-      this.historyData = res.payload;
-      console.log('historyData', this.historyData);
     });
 
     this.regProductForAllRequestedType.valueChanges.subscribe(x => {
@@ -1023,14 +1006,12 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
   }
 
   onSubmitForDetailedForm() {
-    debugger;
     const data = this.regDetailedForProduct.value;
     data.ingrediantDetails.map((option, index) => {
       option.ingrediant = this.checkControllerValueWithListForDetailsArray(this.formData.ingrediantList, 'ingrediant', option.ingrediant, index);
       option.function = this.checkControllerValueWithListForDetailsArray(this.formData.functionList, 'function', option.function, index);
     });
 
-    console.log('regDetailedForProduct', this.regDetailedForProduct);
     if (this.regDetailedForProduct.valid) {
       if (!this.editIndex && this.editIndex !== 0) {
         this.regProductForAllRequestedType.value.detailsTable.push({...this.regDetailedForProduct.value});
@@ -2017,48 +1998,6 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
       this.isLoading = false;
       return;
     }
-  }
-
-  restoreTheOldData(listOfFields) {
-    const data = JSON.parse(this.historyData);
-    listOfFields?.map(item => {
-      if (item === 'detailsTable') {
-        data[item] ? data[item].map((x, i) => {
-          x.ingrediantDetails.map(y => {
-            this.formData.ingrediantList.filter(option => option.ID === y.ingrediant).map(item => y.ingrediant = item.NAME);
-            this.formData.functionList.filter(option => option.ID === y.function).map(item => y.function = item.NAME);
-          });
-        }) : null;
-
-        data[item].map((element, i) => {
-          this.editIndex = i;
-          this.regDetailedForProduct.patchValue({...element});
-          this.onSubmitForDetailedForm();
-        });
-      } else if (item === 'manufacturingTable') {
-        data[item] ? data[item].map(x => {
-          this.formData.manufacturingCompanyList.filter(item => item.ID === x.manufacturingCompany).map(row => x.manufacturingCompany = row.NAME);
-          this.formData.manufacturingCountryList.filter(option => option.ID === x.manufacturingCountry).map(row => x.manufacturingCountry = row.NAME);
-        }) : null;
-
-        data[item].map((element, i) => {
-          this.editManufacturingIndex = i;
-          this.regManufacturingForProduct.patchValue({...element});
-          this.onSubmitForManufacturingForm();
-        });
-      } else if (item === 'packagingTable') {
-        data[item] ? data[item].map(x => {
-          this.formData.unitOfMeasureList.filter(option => option.ID === x.unitOfMeasure).map(item => x.unitOfMeasure = item.NAME);
-          this.formData.typeOfPackagingList.filter(option => option.ID === x.typeOfPackaging).map(item => x.typeOfPackaging = item.NAME);
-        }) : null;
-
-        data[item].map((element, i) => {
-          this.editPackagingIndex = i;
-          this.regPackagingForProduct.patchValue({...element});
-          this.onSubmitForPackagingForm();
-        });
-      }
-    });
   }
 }
 
