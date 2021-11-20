@@ -1,3 +1,6 @@
+#push command 
+git push https://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@github.com/MahmoudIraqi/eda-app.git
+
 # EdaApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.5.

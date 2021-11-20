@@ -43,10 +43,6 @@ export class HeaderComponent implements OnInit {
           link: '/new-request/do_tell_variation'
         },
         {
-          name: 'Inspection',
-          link: '/new-request/inspection'
-        },
-        {
           name: 'General Enquiries',
           link: '/new-request/general-enquiries'
         }
@@ -72,10 +68,6 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Do & Tell Variation',
           link: '/draft-request/do_tell_variation'
-        },
-        {
-          name: 'Inspection',
-          link: '#'
         },
         {
           name: 'Legacy',
@@ -104,10 +96,6 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Do & Tell Variation',
           link: '/track-request/do_tell_variation'
-        },
-        {
-          name: 'Inspection',
-          link: '#'
         },
         {
           name: 'General Enquiries',
@@ -140,10 +128,6 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Do & Tell Variation',
           link: '/rejected-request/do_tell_variation'
-        },
-        {
-          name: 'Inspection',
-          link: '#'
         },
         {
           name: 'General Enquiries',
@@ -254,4 +238,8 @@ export class HeaderComponent implements OnInit {
 // {
 //   name: 'Custom Release2',
 //     link: '/new-request/custom-release2'
+// },
+// {
+//   name: 'Inspection',
+//     link: '/new-request/inspection'
 // },
