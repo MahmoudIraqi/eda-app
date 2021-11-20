@@ -2,6 +2,7 @@
       [formGroup]="regKitForAllRequestedType"
       (keydown.enter)="$event.preventDefault()"
       (ngSubmit)="onSubmit()" novalidate>
+  variationFieldsStatus: {{variationFieldsStatus}}
   <tabset type="pills" #formTabs>
     <tab heading="Kit Details">
       <div class="mt-5">
@@ -23,6 +24,7 @@
               <mat-label>Kit Name (Arabic)</mat-label>
               <input type="text" class="form-control" matInput formControlName="productArabicName"
                      placeholder="Kit Name"
+                     [required]="variationMendatoryFields.includes('productArabicName')? 'required': false"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : legacyStatus? productFlags && !productFlags.productArabicName ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.productArabicName ? true : false : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
               <div
                 *ngIf="regKitForAllRequestedType.get('productArabicName').invalid && (regKitForAllRequestedType.get('productArabicName').dirty || regKitForAllRequestedType.get('productArabicName').touched)"
@@ -77,7 +79,7 @@
             <div class="ShortNameFieldContainer" formArrayName="shortNameTable">
               <div class="row">
                 <div class="col-12 d-flex align-items-center justify-content-center flex-column flex-sm-row">
-                  <app-title [title]="'Short Name Group'" [smallTitle]="true"></app-title>
+                  <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
                   <div class="hintForEmptyObject"
                        *ngIf="attachmentRequiredStatus && shortNamingValidationList.length > 0 && shortNamingValidationList.includes(false)">
                     <h5>** Please change invalid short name values</h5>
@@ -124,6 +126,7 @@
                            formControlName="shortName"
                            (ngModelChange)="removeAllValidationLst()"
                            [maxLength]="30"
+                           [required]="variationMendatoryFields.includes('shortNameTable')? 'required': !legacyStatus ? 'required': false"
                            [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortNameTable ? true : false : isDraft ? false : productFlags && !productFlags.shortNameTable ? true : false">
                     <button type="button"
                             [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortNameTable') : true : legacyStatus? true : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.shortNameTable ? true : false : (isDraft && (selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9)) ? false : productFlags && !productFlags.shortNameTable ? true : (selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) ? true : false"
@@ -133,6 +136,9 @@
 
                     <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
                       This Field must not be arabic and must be four words
+                    </div>
+                    <div *ngIf="ShortName.controls[i].errors?.phonaticsValidator" class="alert alert-danger">
+                      This value is match with other. Please change it
                     </div>
                     <div
                       *ngIf="ShortName.controls[i].invalid && (ShortName.controls[i].dirty || ShortName.controls[i].touched)"
@@ -287,6 +293,7 @@
               <mat-label>Trade Mark</mat-label>
               <input type="text" class="form-control" matInput formControlName="tradeMark"
                      placeholder="Trade Mark"
+                     [required]="variationMendatoryFields.includes('tradeMark')? 'required': false"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : legacyStatus? productFlags && !productFlags.tradeMark ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.tradeMark ? true : false : isDraft ? false : productFlags && !productFlags.tradeMark ? true : false">
             </mat-form-field>
           </div>
@@ -306,8 +313,8 @@
                      matInput
                      formControlName="storagePlace"
                      [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
-                     [required]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false"
-                     [matAutocomplete]="storagePlaceList">
+                     [matAutocomplete]="storagePlaceList"
+                     [required]="variationMendatoryFields.includes('storagePlace')? 'required': selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
               <mat-autocomplete #storagePlaceList="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
                             [value]="option.NAME">
@@ -443,7 +450,7 @@
                           </div>
                           <!-- canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false -->
                           <button type="button" class="btn btn-primary btnForModal ml-auto"
-                                  [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : manufacturingListTable.tableBody.length === 0? canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false : true"
+                                  [disabled]="reRegistrationStatus ? true : variationFieldsStatus || enableManufacturingInTrackOfVariationStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingTable') : true : legacyStatus? productFlags && !productFlags.manufacturingTable ? true : false : manufacturingListTable.tableBody.length === 0? canBeAppealedStatus || canEditForApprovedProduct || canEditForHoldApprovedProduct? productFlags && !productFlags.manufacturingTable ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingTable ? true : false : true"
                                   (click)="openModal(manufacturingModal); rerenderSubscribtionForClosingActionForManufacturingForm()">
                             Add new manufacturing
                           </button>
@@ -467,7 +474,7 @@
         </div>
       </div>
     </tab>
-    <tab heading="Products In Kit">
+    <tab heading="Products In Kit" [disabled]="variationFieldsStatus ? 'disabled':''">
       <div class="mt-5">
         <div class="row">
           <div class="col-12">

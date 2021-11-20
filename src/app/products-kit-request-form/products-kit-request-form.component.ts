@@ -333,7 +333,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     keyboard: false,
     class: 'modal-xl packagingModal',
   };
-
+  variationMendatoryFields = [];
   variableValueOfNaming;
   shortNameValuesList;
   longNameValue;
@@ -362,9 +362,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     this.rerenderFileAttachmentList();
 
+    console.log('variationFields', this.variationFields);
     this.getDisabledValues();
-
-    // this.lookupForProductIdsInputForChildComponents = this.lookupForProductIds;
 
     this.getFormAsStarting(this.editData, '');
 
@@ -1162,8 +1161,11 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
     let variaionGroupFieldsCodeList = [];
     if (this.variationFields && this.variationFields.length > 0) {
       this.enableEditableFields = [];
+      this.rerenderFileAttachmentList();
+
       this.variationFields.map(x => {
         this.enableEditableFields = [...this.enableEditableFields, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
+
 
         variaionGroupCodeList = [...variaionGroupCodeList, x.Code];
         variaionGroupFieldsCodeList = [...variaionGroupFieldsCodeList, ...x.VARIATION_GROUP_FieldsDto.map(x => x.CODE)];
@@ -1173,6 +1175,29 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
           variationFields: variaionGroupFieldsCodeList,
         };
       });
+
+      this.enableEditingForTypeOfRegistration.emit(this.enableEditableFields);
+      this.enableEditableFields.map(field => {
+        if (this.regKitForAllRequestedType.get(field)) {
+          this.variationFields.map(x => {
+            x.VARIATION_GROUP_FieldsDto.filter(x => x.CODE === field).map(row => {
+              row.CODE === 'productColor' ? row.FIELD_OPTINAL = true : null;
+              if (row.FIELD_OPTINAL === false) {
+                this.regKitForAllRequestedType.get(field).setValidators(Validators.required);
+
+                this.attachmentFieldsForKits.filter(file => file.id === field).length > 0 ?
+                  this.attachmentFieldsForKits.filter(file => file.id === field).map(item => {
+                    item.required = true;
+                  }) : null;
+
+                this.variationMendatoryFields = [...this.variationMendatoryFields, field];
+              }
+            });
+          });
+        }
+      });
+    } else {
+      this.enableEditingForTypeOfRegistration.emit([]);
     }
   }
 

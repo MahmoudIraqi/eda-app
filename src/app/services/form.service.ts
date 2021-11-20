@@ -790,6 +790,22 @@ export class FormService {
         catchError(this.handleError));
   }
 
+  setVariationKitProduct(event) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    event = JSON.stringify(event);
+
+    return this.http.post(`${this.apiBaseUrl}product/VariationKitRequest`, event, options)
+      .pipe(map((res: any) => {
+          return res;
+        }),
+        catchError(this.handleError));
+  }
+
   setManufacturingCompany(event) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -913,14 +929,14 @@ export class FormService {
         catchError(this.handleError));
   }
 
-  getVariationRequiredFields(typeOfRegistrationId, whichVariation) {
+  getVariationRequiredFields(typeOfRegistrationId, whichVariation, whichForm) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Token': this.Token
     });
     const options = {headers};
 
-    return this.http.get(`${this.apiBaseUrl}Lookups/variationgroups?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}`, options)
+    return this.http.get(`${this.apiBaseUrl}Lookups/variationgroups?regTypeID=${typeOfRegistrationId}&variatonTypeId=${whichVariation}&type=${whichForm}`, options)
       .pipe(map((res: any) => {
           return res;
         }),

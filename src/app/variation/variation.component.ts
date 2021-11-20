@@ -126,7 +126,7 @@ export class VariationComponent implements OnInit, OnChanges {
           this.inputService.publish({type: 'historyOfDataForVariation', payload: JSON.stringify(res)});
 
           this.isLoading = false;
-          this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
+          this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1, this.selectedFormType === 1 || this.selectedFormType === 3 ? 'product' : 'kit');
         }, error => this.handleError(error));
       }
     });
@@ -163,7 +163,7 @@ export class VariationComponent implements OnInit, OnChanges {
         res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
         indexOfReceiptAttachment ? res.productAttachments.splice(indexOfReceiptAttachment, 1) : null;
 
-        this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1);
+        this.getVariationRequiredFields(this.typeOfRegistrationForProduct, this.whichVariation === 'do_tell_variation' ? 2 : 1, this.selectedFormType === 1 || this.selectedFormType === 3 ? 'product' : 'kit');
       } else {
         this.handleError(res.canuseMsg);
       }
@@ -173,8 +173,6 @@ export class VariationComponent implements OnInit, OnChanges {
   applyVariationGroup() {
     this.variationFields = this.typeOfVariationForProduct;
     this.getPricing();
-
-    this.checkTheCheckedValuesInVariationGroup(this.typeOfVariationForProduct);
 
     this.selectedVariationGroupStatus = true;
   }
@@ -190,17 +188,31 @@ export class VariationComponent implements OnInit, OnChanges {
       LKUP_REQ_TYPE_ID: this.whichVariation === 'do_tell_variation' ? 4 : 3
     };
 
-    this.getService.setVariationProduct(data).subscribe((res: any) => {
-      this.productData = res;
-      this.selectedRequestedType = res.typeOfRegistration;
-      this.selectedTrackType = res.Tracktype;
-      this.isLoading = false;
-      this.alertNotificationStatus = true;
-      this.alertNotification = this.alertForSaveRequest();
-      this.isDraftStatus = true;
+    if (data.typeOfMarketing === 1 || data.typeOfMarketing === 3) {
+      this.getService.setVariationProduct(data).subscribe((res: any) => {
+        this.productData = res;
+        this.selectedRequestedType = res.typeOfRegistration;
+        this.selectedTrackType = res.Tracktype;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.isDraftStatus = true;
 
-      this.onClosed();
-    }, error => this.handleError(error));
+        this.onClosed();
+      }, error => this.handleError(error));
+    } else if (data.typeOfMarketing === 2 || data.typeOfMarketing === 4) {
+      this.getService.setVariationKitProduct(data).subscribe((res: any) => {
+        this.productData = res;
+        this.selectedRequestedType = res.typeOfRegistration;
+        this.selectedTrackType = res.Tracktype;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSaveRequest();
+        this.isDraftStatus = true;
+
+        this.onClosed();
+      }, error => this.handleError(error));
+    }
   }
 
   onSubmit(event) {
@@ -216,17 +228,25 @@ export class VariationComponent implements OnInit, OnChanges {
 
     this.dataInAnyError = data;
 
-    this.getService.setVariationProduct(data).subscribe((res: any) => {
-      this.isLoading = false;
-      this.emptyTheTopField();
-      this.openModal(this.modalDetailedTemplate);
-    }, error => this.handleError(error));
+    if (data.typeOfMarketing === 1 || data.typeOfMarketing === 3) {
+      this.getService.setVariationProduct(data).subscribe((res: any) => {
+        this.isLoading = false;
+        this.emptyTheTopField();
+        this.openModal(this.modalDetailedTemplate);
+      }, error => this.handleError(error));
+    } else if (data.typeOfMarketing === 2 || data.typeOfMarketing === 4) {
+      this.getService.setVariationKitProduct(data).subscribe((res: any) => {
+        this.isLoading = false;
+        this.emptyTheTopField();
+        this.openModal(this.modalDetailedTemplate);
+      }, error => this.handleError(error));
+    }
   }
 
-  getVariationRequiredFields(typeOfRegistration, whichVariation) {
+  getVariationRequiredFields(typeOfRegistration, whichVariation, typeOfForm) {
     this.isLoading = true;
 
-    this.getService.getVariationRequiredFields(typeOfRegistration, whichVariation).subscribe((res: any) => {
+    this.getService.getVariationRequiredFields(typeOfRegistration, whichVariation, typeOfForm).subscribe((res: any) => {
       this.variationGroupList = res;
       this.isLoading = false;
 
@@ -352,6 +372,7 @@ export class VariationComponent implements OnInit, OnChanges {
 
       removeCheckedListFromVariationGroup.map(row => !fieldOfCheckedVariationGroup.includes(row.CODE) ? listOfUnavailableFields.push(row.CODE) : null);
 
+      console.log('listOfUnavailableFields', listOfUnavailableFields);
       this.inputService.publish({type: 'listOfUnavailableFields', payload: listOfUnavailableFields});
     }
 
