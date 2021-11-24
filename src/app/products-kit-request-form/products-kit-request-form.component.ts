@@ -362,7 +362,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
     this.rerenderFileAttachmentList();
 
-    console.log('variationFields', this.variationFields);
     this.getDisabledValues();
 
     this.getFormAsStarting(this.editData, '');

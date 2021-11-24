@@ -973,7 +973,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.getPackagingFormAsStarting('');
     } else {
-      this.errorMessage.emit('true');
+      this.alertErrorNotificationStatus = true;
+      this.alertErrorNotification = {msg: 'please complete the required values which marked with *'};
     }
   }
 
@@ -1001,7 +1002,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.getManufacturingFormAsStarting('');
     } else {
-      this.errorMessage.emit('true');
+      this.alertErrorNotificationStatus = true;
+      this.alertErrorNotification = {msg: 'please complete the required values which marked with *'};
     }
   }
 
@@ -1027,7 +1029,8 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
       this.getDetailedFormAsStarting('');
     } else {
-      this.errorMessage.emit('true');
+      this.alertErrorNotificationStatus = true;
+      this.alertErrorNotification = {msg: 'please complete the required values which marked with *'};
     }
   }
 
@@ -1986,7 +1989,7 @@ export class ProductRequestFormComponent implements OnInit, OnChanges, AfterView
 
         dataAsObject = {
           TradeName: event,
-          TradeCode: this.editData ? this.editData.productId : 0
+          TradeCode: this.editData ? this.editData.oldProductID : -1
         };
 
         const newObjectBody = JSON.stringify(dataAsObject);

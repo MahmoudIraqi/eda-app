@@ -372,7 +372,6 @@ export class VariationComponent implements OnInit, OnChanges {
 
       removeCheckedListFromVariationGroup.map(row => !fieldOfCheckedVariationGroup.includes(row.CODE) ? listOfUnavailableFields.push(row.CODE) : null);
 
-      console.log('listOfUnavailableFields', listOfUnavailableFields);
       this.inputService.publish({type: 'listOfUnavailableFields', payload: listOfUnavailableFields});
     }
 

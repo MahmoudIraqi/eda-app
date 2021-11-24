@@ -51,7 +51,7 @@ export class ApprovedRequestComponent implements OnInit {
         this.isLoading = false;
       }, error => this.handleError(error));
     } else if (whichType === 'approvedProductWithComment') {
-      this.selectApprovedProductWithCommentsType('approvedProductWithLabsComments');
+      this.selectApprovedProductWithCommentsType('approvedProductWithRegComment');
     } else if (whichType === 'holdProducts') {
       this.selectApprovedHoldProductType('approvedHoldProductWithRegComment');
     }

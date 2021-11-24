@@ -146,7 +146,7 @@ export class NewRequestComponent implements OnInit {
             this.selectedTrackType = res.Tracktype;
             this.selectedIsExport = res.isExport;
             this.productId = res.id;
-            if ((this.typeOfProcess === 'CanBeAppealed' || this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithLabsComments') && res.id === 0) {
+            if ((this.typeOfProcess === 'CanBeAppealed' || this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithLabsComments' || this.typeOfProcess === 'approvedHoldProductWithVariationComments') && res.id === 0) {
               res.receiptValue = '';
               res.receiptNumber = '';
               res.receipt = '';
