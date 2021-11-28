@@ -1622,7 +1622,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
 
         dataAsObject = {
           TradeName: event,
-          TradeCode: this.editData ? this.editData.productId : 0
+          TradeCode: this.editData ? this.editData.oldProductID : -1
         };
 
         const newObjectBody = JSON.stringify(dataAsObject);
