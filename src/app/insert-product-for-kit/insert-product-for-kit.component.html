@@ -1,23 +1,11 @@
 <div class="row p-0 mt-4">
-  <!--  <div class="col-6 col-sm-6">-->
-  <!--    <mat-form-field appearance="fill">-->
-  <!--      <mat-label>Product Status</mat-label>-->
-  <!--      <mat-select [(ngModel)]="productStatusField" *ngIf="lookupsData"-->
-  <!--                  [disabled]="disabledStatusForField">-->
-  <!--        <mat-option *ngFor='let type of lookupsData.productStatusList'-->
-  <!--                    [value]="type">-->
-  <!--          {{type}}-->
-  <!--        </mat-option>-->
-  <!--      </mat-select>-->
-  <!--    </mat-form-field>-->
-  <!--  </div>-->
-  <div class="col-12 col-sm-6"> <!-- *ngIf="productStatusField === 'Registered'" -->
+  <div class="col-12 col-sm-6">
     <div class="row">
       <div class="col-6">
         <mat-form-field class="example-full-width">
           <mat-label>Product Notification Number</mat-label>
           <input type="text" class="form-control" matInput
-                 [readonly]="trackProductStatus ? true : canBeAppealedStatus ? true : canEditForHoldApprovedProduct ? true : canEditForApprovedProduct? true : false"
+                 [readonly]="variationFieldsStatus ? true : trackProductStatus ? true : canBeAppealedStatus ? true : canEditForHoldApprovedProduct ? true : canEditForApprovedProduct? true : false"
                  [(ngModel)]="notificationNoField"
                  placeholder="">
         </mat-form-field>

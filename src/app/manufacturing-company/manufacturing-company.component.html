@@ -121,4 +121,29 @@
   <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
 </alert>
 
+<ng-template #successSubmissionModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Successful Submission</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeSuccessSubmissionModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="modalContainer">
+      <h2>
+        <span>
+          <i class="fas fa-check-circle"></i>
+        </span>
+      </h2>
+      <h3>
+        Thank you for submission
+      </h3>
+      <h3>
+        Your request id is
+        <b>{{dataInAnyError.ID}}</b>
+      </h3>
+    </div>
+  </div>
+</ng-template>
+
 <app-loader-component [loadingStatus]="isLoading"></app-loader-component>

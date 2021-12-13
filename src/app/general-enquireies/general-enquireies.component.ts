@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {LookupState} from '../product-request-form/product-request-form.component';
@@ -8,6 +8,7 @@ import {distinctUntilChanged, filter, map, startWith} from 'rxjs/operators';
 import {CurrencyPipe, DecimalPipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {InputService} from '../services/input.service';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-general-enquireies',
@@ -39,6 +40,15 @@ export class GeneralEnquireiesComponent implements OnInit {
   errorMessage: boolean = false;
   attachmentRequiredStatus: boolean = false;
   variablesPricingList: any;
+  modalRef: BsModalRef;
+  modalOptions: ModalOptions = {
+    backdrop: 'static',
+    keyboard: false,
+    class: 'modal-xl packagingModal',
+  };
+  @ViewChild('successSubmissionModal') modalDetailedTemplate: TemplateRef<any>;
+  successSubmission: boolean = false;
+  dataInAnyError: any;
 
   constructor(private getService: FormService,
               private fb: FormBuilder,
@@ -46,6 +56,7 @@ export class GeneralEnquireiesComponent implements OnInit {
               private router: Router,
               private inputService: InputService,
               private number: DecimalPipe,
+              private modalService: BsModalService,
               private currencyPipe: CurrencyPipe) {
     this.getFormAsStarting();
   }
@@ -109,15 +120,19 @@ export class GeneralEnquireiesComponent implements OnInit {
   onSubmit() {
     this.isLoading = true;
     this.attachmentRequiredStatus = true;
+    this.successSubmission = false;
     const data = this.generalEnquiriesForm.value;
 
     if (this.generalEnquiriesForm.valid) {
       this.getService.setGeneralEnquiries(data).subscribe((res: any) => {
+        this.dataInAnyError = res;
         this.isLoading = false;
         this.alertNotificationStatus = true;
         this.alertNotification = this.alertForSubmitRequest();
         this.resetForms();
         this.onClosed();
+        this.successSubmission = true;
+        this.openModal(this.modalDetailedTemplate);
       }, error => this.handleError(error));
     } else {
       this.handleError('please complete the required values which marked with *');
@@ -158,5 +173,13 @@ export class GeneralEnquireiesComponent implements OnInit {
     this.attachmentFields.map(x => {
       x.fileName = '';
     });
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalOptions);
+  }
+
+  closeSuccessSubmissionModal() {
+    this.modalRef.hide();
   }
 }
