@@ -128,10 +128,6 @@ export class HeaderComponent implements OnInit {
         {
           name: 'Do & Tell Variation',
           link: '/rejected-request/do_tell_variation'
-        },
-        {
-          name: 'General Enquiries',
-          link: '/rejected-request/general-enquiries'
         }
       ]
     },
