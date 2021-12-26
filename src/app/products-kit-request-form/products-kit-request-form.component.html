@@ -412,6 +412,7 @@
               </div>
               <mat-label>Receipt Value</mat-label>
               <input type="text" class="form-control" matInput
+                     pattern="^(\d{1,3}(,\d{3})|\d)*(\.\d+)?$"
                      (change)="getDecimalValue(regKitForAllRequestedType.get('receiptValue').value, '')"
                      [readonly]="reRegistrationStatus ? false : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : legacyStatus? productFlags && !productFlags.receiptValue ? true : false : canBeAppealedStatus || canEditForHoldApprovedProduct? false : canEditForApprovedProduct? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptValue ? true : false"
                      formControlName="receiptValue"

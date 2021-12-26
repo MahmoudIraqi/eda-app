@@ -907,6 +907,8 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       //   });
       // }
 
+
+      data.receiptValue = null;
       this.regKitForAllRequestedType.patchValue({
         ...data
       });
@@ -914,10 +916,6 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
       data.productAttachments.map((x, i) => {
         this.regKitForAllRequestedType.get(`${x.attachmentName}`).patchValue(x.Id);
       });
-
-      data.receiptValue === 0 ? this.regKitForAllRequestedType.get('receiptValue').patchValue('') : null;
-
-      // data.receiptValue ? this.getDecimalValue(data.receiptValue, 'edit') : null;
     } else {
       this.regKitForAllRequestedType = this.fb.group({
         productColor: this.fb.control(''),
@@ -939,7 +937,7 @@ export class ProductsKitRequestFormComponent implements OnInit, OnChanges, After
         shelfLife: this.fb.control(null, Validators.required),
         storagePlace: this.fb.control('', this.selectedRequestedType === 3 || this.selectedRequestedType === 4 || this.selectedRequestedType === 7 || this.selectedRequestedType === 8 || this.selectedRequestedType === 9 ? Validators.required : null),
         receiptNumber: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
-        receiptValue: !this.legacyStatus ? this.fb.control('', [Validators.required, Validators.pattern('^(\\d{1,3}(,\\d{3})|\\d)*(\\.\\d+)?$')]) : this.fb.control(''),
+        receiptValue: !this.legacyStatus ? this.fb.control('', Validators.required) : this.fb.control(''),
         manufacturingTable: this.fb.control([]),
         deletedManufacturinglstIds: this.fb.control(null),
         deletedShortNameids: this.fb.control([]),

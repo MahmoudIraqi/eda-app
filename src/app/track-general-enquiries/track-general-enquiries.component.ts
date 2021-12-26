@@ -20,7 +20,7 @@ export class TrackGeneralEnquiriesComponent implements OnInit {
 
     this.getService.getTrackGeneralEnquiriesList().subscribe((res: any) => {
       this.trackGeneralEnquiresListRequests = {
-        tableHeader: ['Request Number', 'Submission date', 'Title', 'Status', 'Submission Date'],
+        tableHeader: ['Request Number', 'Submission date', 'Title', 'Status', 'Description'],
         tableBody: res
       };
       this.isLoading = false;

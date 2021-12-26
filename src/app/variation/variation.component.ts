@@ -156,9 +156,9 @@ export class VariationComponent implements OnInit, OnChanges {
         this.typeOfRegistrationForProduct = res.typeOfRegistration;
         this.isLoading = false;
 
-        res.receiptValue = '';
-        res.receiptNumber = '';
-        res.receipt = '';
+        res.receiptValue = null;
+        res.receiptNumber = null;
+        res.receipt = null;
         let indexOfReceiptAttachment;
         res.productAttachments.filter(x => x.attachmentName === 'receipt').map(y => indexOfReceiptAttachment = res.productAttachments.indexOf(y));
         indexOfReceiptAttachment ? res.productAttachments.splice(indexOfReceiptAttachment, 1) : null;

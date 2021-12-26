@@ -141,7 +141,6 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
 
     this.isLoading = true;
     this.getService.setManufacturingCompany(data).subscribe((res: any) => {
-      debugger;
       this.dataInAnyError = res;
       this.isLoading = false;
       this.alertNotificationStatus = true;
