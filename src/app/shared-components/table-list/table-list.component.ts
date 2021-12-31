@@ -364,7 +364,7 @@ export class TableListComponent implements OnInit, OnChanges {
     } else if (editFrom === 're-registration') {
       this.removeDraftProduct.emit(Number(request.ID));
     } else if (editFrom === 'legacy') {
-      this.removeDraftProduct.emit(Number(request.OLD_PRODUCT_ID));
+      this.removeDraftProduct.emit(Number(request.ID));
     }
 
 

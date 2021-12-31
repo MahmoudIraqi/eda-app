@@ -984,6 +984,18 @@ export class FormService {
       catchError(this.handleError));
   }
 
+  deleteDraftProductLegacyRequest(requestId) {
+    const headers = new HttpHeaders({
+      'Token': this.Token
+    });
+    const options = {headers};
+
+    return this.http.get(`${this.apiBaseUrl}Product/DeleteByRequestId?requestId=${requestId}&type=legacydraft`, options).pipe(map((res: any) => {
+        return res;
+      }),
+      catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 401) {
       setTimeout(() => {
