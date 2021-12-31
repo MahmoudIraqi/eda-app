@@ -65,7 +65,6 @@ const routes: Routes = [
             data: {animation: 'new-request'}
           },
           {path: 'custom-release', component: CustomReleaseComponent, data: {animation: 'new-request'}},
-          {path: 'custom-release2', component: TestCustomReleaseComponent, data: {animation: 'new-request'}},
           {path: 'inspection', component: InspectionComponent, data: {animation: 'new-request'}},
           {path: 'general-enquiries', component: GeneralEnquireiesComponent, data: {animation: 'new-request'}},
         ], canActivate: [ApplicationGuard]
