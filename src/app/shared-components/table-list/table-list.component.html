@@ -1298,6 +1298,196 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </td>
+            <td colspan="6" *ngIf="whichTable === 'invoiceList'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td>{{request.invoiceNo}}</td>
+                          <td>{{request.invoiceDate | date}}</td>
+                          <td>{{request.invoiceValue | number}}</td>
+                          <td>{{request.countryOfOrigin}}</td>
+                          <td>{{request.currency}}</td>
+                          <td>
+                            <span>
+                              <i class="fa fa-trash"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detailsContainer pt-4">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Invoice No :</label>
+                        <span>{{request.invoiceNo}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">With in Included :</label>
+                        <span>{{request.withinIncluded}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label ">Invoice Value :</label>
+                        <span>{{request.invoiceValue}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">invoiceDate :</label>
+                        <span>{{request.invoiceDate | date}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Country Of Origin :</label>
+                        <span>{{request.countryOfOrigin}}</span>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <label class="label">Currency :</label>
+                        <span>{{request.currency}}</span>
+                      </div>
+
+<!--                      <div class="col-12 mt-4" *ngIf="request.detailsTable.length > 0">-->
+<!--                        <div class="row">-->
+<!--                          <div class="col-12">-->
+<!--                            <app-title [title]="'Product Details Table'" [smallTitle]="true"></app-title>-->
+<!--                          </div>-->
+<!--                          <div class="col-12 mt-3">-->
+<!--                            <div class="table-responsive">-->
+<!--                              <table class="table table-sm table-ordered">-->
+<!--                                <tr class="headerRow">-->
+<!--                                  <th>-->
+<!--                                    Colour-->
+<!--                                    <span (click)="sortBy(sortStatus, request)">-->
+<!--                            <i class="fa fa-sort"></i>-->
+<!--                          </span>-->
+<!--                                  </th>-->
+<!--                                  <th>-->
+<!--                                    Fragrance-->
+<!--                                    <span (click)="sortBy(sortStatus, request)">-->
+<!--                            <i class="fa fa-sort"></i>-->
+<!--                          </span>-->
+<!--                                  </th>-->
+<!--                                  <th>-->
+<!--                                    Flavor-->
+<!--                                    <span (click)="sortBy(sortStatus, request)">-->
+<!--                                <i class="fa fa-sort"></i>-->
+<!--                              </span>-->
+<!--                                  </th>-->
+<!--                                  <th>-->
+<!--                                    BarCode-->
+<!--                                    <span (click)="sortBy(sortStatus, request)">-->
+<!--                                <i class="fa fa-sort"></i>-->
+<!--                              </span>-->
+<!--                                  </th>-->
+<!--                                </tr>-->
+<!--                                <tr *ngFor="let requestDetails of request.detailsTable; let index = index">-->
+<!--                                  <td colspan="5">-->
+<!--                                    <mat-accordion>-->
+<!--                                      <mat-expansion-panel class="areaContainer" [expanded]="false" hideToggle>-->
+<!--                                        <mat-expansion-panel-header class="insidePanelHeader">-->
+<!--                                          <mat-panel-title>-->
+<!--                                            <table class="table table-sm tableDetailsCont">-->
+<!--                                              <tr>-->
+<!--                                                <td>{{requestDetails.colour}}</td>-->
+<!--                                                <td>{{requestDetails.fragrance}}</td>-->
+<!--                                                <td>{{requestDetails.flavor}}</td>-->
+<!--                                                <td>{{requestDetails.barCode}}</td>-->
+<!--                                              </tr>-->
+<!--                                            </table>-->
+<!--                                          </mat-panel-title>-->
+<!--                                        </mat-expansion-panel-header>-->
+<!--                                        <div class="detailsContainer pt-4">-->
+<!--                                          <div class="row">-->
+<!--                                            <div class="col-12 col-sm-6 col-md-4">-->
+<!--                                              <label class="label">Colour :</label>-->
+<!--                                              <span>{{requestDetails.colour}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="col-12 col-sm-6 col-md-4">-->
+<!--                                              <label class="label">Fragrance :</label>-->
+<!--                                              <span>{{requestDetails.fragrance}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="col-12 col-sm-6 col-md-4">-->
+<!--                                              <label class="label ">Flavor :</label>-->
+<!--                                              <span>{{requestDetails.flavor}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="col-12 col-sm-6 col-md-4">-->
+<!--                                              <label class="label">BarCode :</label>-->
+<!--                                              <span>{{requestDetails.barCode}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="col-12 mt-4"-->
+<!--                                                 *ngIf="requestDetails.ingrediantDetails.length > 0">-->
+<!--                                              <div class="row">-->
+<!--                                                <div class="col-12">-->
+<!--                                                  <app-title [title]="'Ingrediant Table'"-->
+<!--                                                             [smallTitle]="true"></app-title>-->
+<!--                                                </div>-->
+<!--                                                <div class="col-12 mt-3">-->
+<!--                                                  <div class="table-responsive">-->
+<!--                                                    <table class="table table-sm table-ordered">-->
+<!--                                                      <tr class="headerRow">-->
+<!--                                                        <th>-->
+<!--                                                          Ingrediant-->
+<!--                                                          <span (click)="sortBy(sortStatus, request)">-->
+<!--                                                      <i class="fa fa-sort"></i>-->
+<!--                                                    </span>-->
+<!--                                                        </th>-->
+<!--                                                        <th>-->
+<!--                                                          Concentrations-->
+<!--                                                          <span (click)="sortBy(sortStatus, request)">-->
+<!--                                                      <i class="fa fa-sort"></i>-->
+<!--                                                    </span>-->
+<!--                                                        </th>-->
+<!--                                                        <th>-->
+<!--                                                          Function-->
+<!--                                                          <span (click)="sortBy(sortStatus, request)">-->
+<!--                                                      <i class="fa fa-sort"></i>-->
+<!--                                                    </span>-->
+<!--                                                        </th>-->
+<!--                                                      </tr>-->
+<!--                                                      <tr-->
+<!--                                                        *ngFor="let requestDetailsIngrediant of requestDetails.ingrediantDetails; let indexChild = index">-->
+<!--                                                        <td colspan="3">-->
+<!--                                                          <mat-accordion>-->
+<!--                                                            <mat-expansion-panel class="areaContainer"-->
+<!--                                                                                 [expanded]="false"-->
+<!--                                                                                 hideToggle-->
+<!--                                                                                 disabled="true">-->
+<!--                                                              <mat-expansion-panel-header class="insidePanelHeader">-->
+<!--                                                                <mat-panel-title>-->
+<!--                                                                  <table class="table table-sm tableDetailsCont">-->
+<!--                                                                    <tr>-->
+<!--                                                                      <td>{{requestDetailsIngrediant.ingrediant}}</td>-->
+<!--                                                                      <td>{{requestDetailsIngrediant.concentrations}}</td>-->
+<!--                                                                      <td>{{requestDetailsIngrediant.function}}</td>-->
+<!--                                                                    </tr>-->
+<!--                                                                  </table>-->
+<!--                                                                </mat-panel-title>-->
+<!--                                                              </mat-expansion-panel-header>-->
+<!--                                                            </mat-expansion-panel>-->
+<!--                                                          </mat-accordion>-->
+<!--                                                        </td>-->
+<!--                                                      </tr>-->
+<!--                                                    </table>-->
+<!--                                                  </div>-->
+<!--                                                </div>-->
+<!--                                              </div>-->
+<!--                                            </div>-->
+<!--                                          </div>-->
+<!--                                        </div>-->
+<!--                                      </mat-expansion-panel>-->
+<!--                                    </mat-accordion>-->
+<!--                                  </td>-->
+<!--                                </tr>-->
+<!--                              </table>-->
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
             <td colspan="2" *ngIf="whichTable === 'manufacturing'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
@@ -1810,6 +2000,21 @@
               </mat-accordion>
             </td>
             <td colspan="6" *ngIf="whichTable === 'productsKitList'">
+              <mat-accordion>
+                <mat-expansion-panel class="areaContainer" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <table class="table table-sm tableDetailsCont">
+                        <tr>
+                          <td colspan="6">{{noDataStatment}}</td> <!--  -->
+                        </tr>
+                      </table>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </td>
+            <td colspan="6" *ngIf="whichTable === 'invoiceList'">
               <mat-accordion>
                 <mat-expansion-panel class="areaContainer" hideToggle>
                   <mat-expansion-panel-header>

@@ -65,6 +65,18 @@ tab-pane .row > div:nth-child(n + 4) {
   font-size: 14px;
 }
 
+.invoiceContainer {
+  background: #f7f7f7;
+  padding: 2rem;
+  border-radius: 10px 0 10px 10px;
+}
+
+.itemsContainer {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px 0 10px 10px;
+}
+
 /*  ------------------------------ Short Name Field Container --------------- */
 .ShortNameFieldContainer {
   position: relative;
@@ -313,15 +325,17 @@ input[type=file] {
 
 
 /* -------------------------- Responsive --------------------- */
-@media only screen and (max-width: 1000px){
-  .conSpace{
+@media only screen and (max-width: 1000px) {
+  .conSpace {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
-  .inputBesideSelect .mat-form-field-infix{
+
+  .inputBesideSelect .mat-form-field-infix {
     padding: 0 !important;
   }
 }
+
 @media only screen and (max-width: 640px) {
   .buttonContainer .btn-primary {
     width: 100%;
