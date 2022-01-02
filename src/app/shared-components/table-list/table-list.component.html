@@ -207,7 +207,14 @@
                             <td class="hide"><span class="ellipsisSpan" tooltip="{{request.NameEN}}"
                                                    placement="right">{{request.NameEN}}</span></td>
                             <td class="hide">{{request.Track_type}}</td>
-                            <td (click)="editProduct(request)"><i class="fa fa-edit"></i></td>
+                            <td>
+                              <span (click)="editProduct(request)">
+                                <i class="fa fa-edit"></i>
+                              </span>
+                              <span class="ml-2" (click)="deleteProduct(request)">
+                                <i class="fa fa-trash"></i>
+                              </span>
+                            </td>
                           </tr>
                         </table>
                       </div>
@@ -743,7 +750,7 @@
                       <table class="table table-sm tableDetailsCont">
                         <tr>
                           <td>{{request.oldNotificationNo}}</td>
-                          <td class="hide">{{request.dueDate | date}}</td>
+                          <td class="hide">{{request.Drug_registration_date | date}}</td>
                           <td><span class="ellipsisSpan" tooltip="{{request.productEnglishName}}"
                                     placement="right">{{request.productEnglishName}}</span></td>
                           <td class="hide"><span class="ellipsisSpan" tooltip="{{request.productArabicName}}"
