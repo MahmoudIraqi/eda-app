@@ -24,6 +24,7 @@ export class CustomReleaseComponent implements OnInit {
   alertNotification: any;
   alertErrorNotificationStatus: boolean = false;
   alertErrorNotification: any;
+  @ViewChildren(MatAutocompleteTrigger) triggerCollection: QueryList<MatAutocompleteTrigger>;
   modalRef: BsModalRef;
   modalOptions: ModalOptions = {
     backdrop: 'static',
@@ -37,16 +38,99 @@ export class CustomReleaseComponent implements OnInit {
   @ViewChild('itemsStepsTabs', {static: false}) itemsStepsTabs: TabsetComponent;
   activeTabIndex;
   regCustomReleaseForm: FormGroup;
+  regInvoicesForm: FormGroup;
+  regItemsForm: FormGroup;
   filteredOptionsForRequestedReleaseType: Observable<LookupState[]>;
   filteredOptionsForCustomPortName: Observable<LookupState[]>;
   filteredOptionsForMeasureUnitList: Observable<LookupState[]>;
   filteredOptionsForCountryOfOrigin: Observable<LookupState[]>;
   filteredOptionsForCurrency: Observable<LookupState[]>;
+  filteredOptionsForManufacturingCompany: Observable<LookupState[]>;
+  filteredOptionsForManufacturingCountry: Observable<LookupState[]>;
+  filteredOptionsForUOM: Observable<LookupState[]>;
   formData = {
     manufacturingCompanyList: [],
     manufacturingCountryList: [],
     applicantList: [],
     unitOfMeasureList: [],
+    itemTypeList: [
+      {
+        id: 'finishedProduct',
+        name: 'Finished Product'
+      },
+      {
+        id: 'premix',
+        name: 'Premix'
+      },
+      {
+        id: 'rawMaterials',
+        name: 'Raw materials'
+      },
+      {
+        id: 'packagingMaterial',
+        name: 'Packaging Material'
+      },
+    ],
+    importReasonList: {
+      finishedProduct: [
+        {
+          id: 'registeredProduct',
+          name: 'Registered product',
+          showNotificationNoInput: true,
+        },
+        {
+          id: 'samplesFinishedProduct',
+          name: 'Samples finished product',
+          showNotificationNoInput: false,
+        },
+      ],
+      premix: [
+        {
+          id: 'Premix',
+          name: 'Premix',
+          showNotificationNoInput: true,
+        }
+      ],
+      rawMaterials: [
+        {
+          id: 'localProducts',
+          name: 'Local Products',
+          showNotificationNoInput: true,
+        },
+        {
+          id: 'exportationProducts',
+          name: 'Exportation Products',
+          showNotificationNoInput: true,
+        },
+        {
+          id: 'importers',
+          name: 'Importers',
+          showNotificationNoInput: false,
+        },
+        {
+          id: 'RDSamples',
+          name: 'R&D Samples',
+          showNotificationNoInput: false,
+        }
+      ],
+      packagingMaterial: [
+        {
+          id: 'localProducts',
+          name: 'Local Products',
+          showNotificationNoInput: true,
+        },
+        {
+          id: 'exportation',
+          name: 'Exportation',
+          showNotificationNoInput: true,
+        },
+        {
+          id: 'samplesOfPackagingMaterials',
+          name: 'Samples of Packaging Materials',
+          showNotificationNoInput: false,
+        }
+      ],
+    }
   };
   attachmentFields: AttachemntObject[] = [
     {
@@ -112,12 +196,74 @@ export class CustomReleaseComponent implements OnInit {
       loadingStatus: false,
     }
   ];
+  ItemAttachmentFields: AttachemntObject[] = [
+    {
+      id: 'certificateOfOrigin',
+      name: 'Certificate Of Origin',
+      fileName: '',
+      fileValue: '',
+      required: false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
+      id: 'companyManufactureRelationship',
+      name: 'Company Manufacture Relationship',
+      fileName: '',
+      fileValue: '',
+      required: false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
+      id: 'legalizedHealthCertificate',
+      name: 'legalized Health Certificate',
+      fileName: '',
+      fileValue: '',
+      required: false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
+      id: 'coa',
+      name: 'COA',
+      fileName: '',
+      fileValue: '',
+      required: false,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+    {
+      id: 'coc',
+      name: 'COC',
+      fileName: '',
+      fileValue: '',
+      required: true,
+      enable: true,
+      attachmentTypeStatus: '',
+      loadingStatus: false,
+    },
+  ];
   fileStructure;
   attachmentRequiredStatus: boolean = false;
   invoiceListTable = {
     tableHeader: ['Invoice no.', 'Invoice Date', 'Invoice Value', 'Country Of Origin', 'Currency', 'Actions'],
     tableBody: []
   };
+  itemListTable = {
+    tableHeader: ['Invoice no.', 'Invoice Date', 'Invoice Value', 'Country Of Origin', 'Currency', 'Actions'],
+    tableBody: []
+  };
+  invoiceContainerDisplayStatus: boolean = false;
+  itemContainerDisplayStatus: boolean = false;
+  itemType;
+  importReason;
+  showNotificationNoStatus: boolean = false;
+  notificationNo;
 
   constructor(private fb: FormBuilder,
               private number: DecimalPipe,
@@ -127,6 +273,8 @@ export class CustomReleaseComponent implements OnInit {
               private modalService: BsModalService,
               private getService: FormService) {
     this.getFormAsStarting('', '');
+    this.getInvoicesFormAsStarting('', '');
+    this.getItemsFormAsStarting('', '');
   }
 
   ngOnInit(): void {
@@ -134,7 +282,87 @@ export class CustomReleaseComponent implements OnInit {
       filter(x => x.type === 'allLookups'),
       distinctUntilChanged()
     ).subscribe(res => {
-      this.formData = res.payload;
+      this.formData = {
+        ...res.payload,
+        itemTypeList: [
+          {
+            id: 'finishedProduct',
+            name: 'Finished Product'
+          },
+          {
+            id: 'premix',
+            name: 'Premix'
+          },
+          {
+            id: 'rawMaterials',
+            name: 'Raw materials'
+          },
+          {
+            id: 'packagingMaterial',
+            name: 'Packaging Material'
+          },
+        ],
+        importReasonList: {
+          finishedProduct: [
+            {
+              id: 'registeredProduct',
+              name: 'Registered product',
+              showNotificationNoInput: true,
+            },
+            {
+              id: 'samplesFinishedProduct',
+              name: 'Samples finished product',
+              showNotificationNoInput: false,
+            },
+          ],
+          premix: [
+            {
+              id: 'Premix',
+              name: 'Premix',
+              showNotificationNoInput: true,
+            }
+          ],
+          rawMaterials: [
+            {
+              id: 'localProducts',
+              name: 'Local Products',
+              showNotificationNoInput: true,
+            },
+            {
+              id: 'exportationProducts',
+              name: 'Exportation Products',
+              showNotificationNoInput: true,
+            },
+            {
+              id: 'importers',
+              name: 'Importers',
+              showNotificationNoInput: false,
+            },
+            {
+              id: 'RDSamples',
+              name: 'R&D Samples',
+              showNotificationNoInput: false,
+            }
+          ],
+          packagingMaterial: [
+            {
+              id: 'localProducts',
+              name: 'Local Products',
+              showNotificationNoInput: true,
+            },
+            {
+              id: 'exportation',
+              name: 'Exportation',
+              showNotificationNoInput: true,
+            },
+            {
+              id: 'samplesOfPackagingMaterials',
+              name: 'Samples of Packaging Materials',
+              showNotificationNoInput: false,
+            }
+          ],
+        }
+      };
       this.isLoading = false;
     });
 
@@ -269,43 +497,6 @@ export class CustomReleaseComponent implements OnInit {
     }, {emitEvent: false});
   }
 
-  //functions for InvoiceDetailsRows
-  InvoicesDetailsRows(): FormArray {
-    return this.regCustomReleaseForm.get('invoiceDetails') as FormArray;
-  }
-
-  addInvoicesDetailsRows() {
-    this.InvoicesDetailsRows().push(this.fb.group({
-      invoiceNo: this.fb.control('', Validators.required),
-      withinIncluded: this.fb.control(false),
-      invoiceValue: this.fb.control('', Validators.required),
-      invoiceDate: this.fb.control(null, Validators.required),
-      countryOfOrigin: this.fb.control('', Validators.required),
-      currency: this.fb.control('', Validators.required),
-      itemDetails: this.fb.array([this.fb.group({})]),
-      invoice: this.fb.control('', Validators.required),
-    }));
-  }
-
-  removeInvoicesDetailsRows(index) {
-    this.InvoicesDetailsRows().removeAt(index);
-  }
-
-  ItemDetailsRow(invoiceIndex: number): FormArray {
-    return this.InvoicesDetailsRows().at(invoiceIndex).get('itemDetails') as FormArray;
-  }
-
-  addItemDetailsRow(invoiceIndex: number) {
-    this.ItemDetailsRow(invoiceIndex).push(this.fb.group({
-      a: this.fb.control(''),
-      b: this.fb.control(''),
-    }));
-  }
-
-  removeItemDetailsRow(invoiceIndex: number, index: number) {
-    this.ItemDetailsRow(invoiceIndex).removeAt(index);
-  }
-
   getFormAsStarting(data, fromWhere) {
     if (data) {
     } else {
@@ -325,19 +516,7 @@ export class CustomReleaseComponent implements OnInit {
         receiptNumber: this.fb.control('', Validators.required),
         groupNumber: this.fb.control('', Validators.required),
         receiptValue: this.fb.control('', Validators.required),
-        invoiceDetails: this.fb.array([this.fb.group({
-          invoiceNo: this.fb.control('', Validators.required),
-          withinIncluded: this.fb.control(false),
-          invoiceValue: this.fb.control('', Validators.required),
-          invoiceDate: this.fb.control(null, Validators.required),
-          countryOfOrigin: this.fb.control('', Validators.required),
-          currency: this.fb.control('', Validators.required),
-          itemDetails: this.fb.array([this.fb.group({
-            a: this.fb.control(''),
-            b: this.fb.control(''),
-          })]),
-          invoice: this.fb.control('', Validators.required),
-        })]),
+        invoiceDetails: [],
         bolPolicy: this.fb.control('', Validators.required),
         packingList: this.fb.control('', Validators.required),
         receipt: this.fb.control('', Validators.required),
@@ -347,10 +526,75 @@ export class CustomReleaseComponent implements OnInit {
     }
   }
 
+  getInvoicesFormAsStarting(data, fromWhere) {
+    if (data) {
+    } else {
+      this.regInvoicesForm = this.fb.group({
+        id: 0,
+        invoiceNo: this.fb.control('', Validators.required),
+        withinIncluded: this.fb.control(false),
+        invoiceValue: this.fb.control('', Validators.required),
+        invoiceDate: this.fb.control(null, Validators.required),
+        countryOfOrigin: this.fb.control('', Validators.required),
+        currency: this.fb.control('', Validators.required),
+        itemDetails: [],
+        invoice: this.fb.control('', Validators.required),
+      });
+    }
+  }
+
+  getItemsFormAsStarting(data, fromWhere) {
+    if (data) {
+    } else {
+      this.regItemsForm = this.fb.group({
+        id: 0,
+        itemType: this.fb.control(''),
+        importReason: this.fb.control(''),
+        NotificationNo: this.fb.control(''),
+        shortName: this.fb.control(''),
+        ProductEnglishName: this.fb.control(''),
+        flagType: this.fb.control(''),
+        manufacturingCompany: this.fb.control(''),
+        manufacturingCountry: this.fb.control(''),
+        batchNo: this.fb.control(''),
+        quantity: this.fb.control(''),
+        uom: this.fb.control(''),
+        certificateOfOrigin: this.fb.control(''),
+        companyManufactureRelationship: this.fb.control(''),
+        legalizedHealthCertificate: this.fb.control(''),
+        coa: this.fb.control(''),
+        coc: this.fb.control(''),
+        premixName: this.fb.control(''),
+        sourceOfRawMaterial: this.fb.control(''),
+        ingredient: this.fb.control(''),
+        concentration: this.fb.control(''),
+        function: this.fb.control(''),
+        materialSafetyDataSheet: this.fb.control(''),
+        sourceOfRawMaterialAttach: this.fb.control(''),
+        declarationOfChemicalTreatment: this.fb.control(''),
+        compositionOfPremixColorsFromManufacturer: this.fb.control(''),
+        approvalOfThePublicSecurityAuthority: this.fb.control(''),
+        delegationForImportation: this.fb.control(''),
+        supplyOrder: this.fb.control(''),
+        rawMaterialName: this.fb.control(''),
+        declarationOfFreeOfSalmonella: this.fb.control(''),
+        packingItemName: this.fb.control(''),
+      });
+    }
+  }
+
   saveData() {
   }
 
   onSubmit() {
+  }
+
+  onSubmitInvoices() {
+    this.hideInvoiceContainer();
+  }
+
+  onSubmitItems() {
+    this.hideItemContainer();
   }
 
   onClosed() {
@@ -373,5 +617,33 @@ export class CustomReleaseComponent implements OnInit {
     this.alertErrorNotificationStatus = true;
     this.alertErrorNotification = {msg: error};
     this.isLoading = false;
+  }
+
+  showInvoiceContainer() {
+    this.invoiceContainerDisplayStatus = true;
+  }
+
+  showItemContainer() {
+    this.itemContainerDisplayStatus = true;
+  }
+
+  hideInvoiceContainer() {
+    this.invoiceContainerDisplayStatus = false;
+  }
+
+  hideItemContainer() {
+    this.itemContainerDisplayStatus = false;
+  }
+
+  getTheSelectedValueForImportedReason(itemType, event) {
+    debugger;
+    console.log('formData', this.formData);
+    this.formData.importReasonList[itemType].filter(item => item.id === event.value).map(res => {
+      this.showNotificationNoStatus = res.showNotificationNoInput;
+    });
+  }
+
+  applyProduct(notificationNumber) {
+
   }
 }

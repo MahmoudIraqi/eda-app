@@ -1,5 +1,74 @@
-.formTable {
-  margin-left: 5.5%;
+.formTableContainer {
+  padding-left: 5.5%;
+  position: relative;
+}
+
+.invoiceFormContainer {
+  position: fixed;
+  padding: 3rem;
+  width: 75%;
+  display: block;
+  top: calc((100vh - 850px) / 2);
+  left: 12.5%;
+  height: 850px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #c28a30;
+  border-radius: 10px 0 10px 10px;
+  z-index: 101;
+}
+
+.itemsFormContainer {
+  position: fixed;
+  padding: 3rem;
+  width: 75%;
+  display: block;
+  top: calc((100vh - 680px) / 2);
+  left: 12.5%;
+  height: 680px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #c28a30;
+  border-radius: 10px 0 10px 10px;
+  z-index: 103;
+}
+
+.close {
+  position: absolute;
+  right: -1rem;
+  top: -2rem;
+  font-size: 18px;
+  color: #f00;
+}
+
+.close:hover {
+  color: #f00;
+}
+
+.overlay {
+  pointer-events: inherit;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  background: #161c30;
+  opacity: 0.4;
+  z-index: 100;
+}
+
+.overlay2 {
+  pointer-events: inherit;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  background: #161c30;
+  opacity: 0.4;
+  z-index: 102;
 }
 
 select, input, textarea {
@@ -320,9 +389,6 @@ input[type=file] {
   padding: 3em;
   width: 100%;
 }
-
-/* ------------------------ Attachments ---------------------- */
-
 
 /* -------------------------- Responsive --------------------- */
 @media only screen and (max-width: 1000px) {

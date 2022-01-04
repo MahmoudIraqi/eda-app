@@ -228,6 +228,10 @@ body {
   text-align: right;
 }
 
+.borderTop {
+  border-top: 1px solid #d7d7d7;
+}
+
 .Attachments .InfoIconContainer {
   top: 0.5em;
 }
@@ -328,10 +332,21 @@ body {
 }
 
 /* ------------------------------------ Tabs ----------------------------------- */
+.nav-pills {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .nav-pills .nav-item {
   width: 32%;
   margin-right: 2%;
   text-align: center;
+}
+
+.formTable .nav-pills .nav-item, .invoiceFormContainer .nav-pills .nav-item, .itemsFormContainer .nav-pills .nav-item {
+  width: 49%;
 }
 
 .nav-pills .nav-item:last-child {
