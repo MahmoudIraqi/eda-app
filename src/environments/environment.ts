@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://107.180.75.165:2020/edaapi/api/',
-  compareURL: 'http://107.180.75.165:2020/compare/api/',
+  apiURL: 'http://82.201.223.6:2020/edaapi/api/',
+  compareURL: 'http://82.201.223.6:2020/compare/api/',
   // loginAPIURL: 'http://107.180.75.165:9067/api/Login/Comp'
 
   // loginAPIURL: 'http://196.46.22.220/APICompanyToken/api/Login/Comp'  // with CORS error
