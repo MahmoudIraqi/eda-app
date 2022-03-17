@@ -1,0 +1,13 @@
+.noteText {
+  display: inline-block;
+  font-size: 12px;
+  color: #bbbbbb;
+  margin-left: 1em;
+}
+
+
+.backgroundContainer {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px 10px 0px 10px;
+}

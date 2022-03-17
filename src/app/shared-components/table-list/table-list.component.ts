@@ -1,0 +1,390 @@
+import {Component, OnInit, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {MatInputModule} from '@angular/material/input';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PageChangedEvent} from 'ngx-bootstrap/pagination';
+import {Observable} from 'rxjs';
+import {InputService} from '../../services/input.service';
+
+@Component({
+  selector: 'app-table-list',
+  templateUrl: './table-list.component.html',
+  styleUrls: ['./table-list.component.css']
+})
+export class TableListComponent implements OnInit, OnChanges {
+
+  @Input() data;
+  @Input() whichTable;
+  @Input() approvedType;
+  @Input() rejectedType;
+  step;
+  sortByForRequestNumber = [
+    {
+      id: 'descending',
+      value: 'Descending '
+    },
+    {
+      id: 'ascending',
+      value: 'Ascending '
+    }
+  ];
+  dataAfterFilters = [];
+  filterData = {
+    filterKey: []
+  };
+  filterRow = [];
+  keyForFilter;
+  keyWordsForFilter;
+  staticFilterKey = {
+    'Request Number': 'ID',
+    'Submission date': 'SubmmittionDate',
+    'Saved date': 'SubmmittionDate',
+    'Notification date': 'notificationdate',
+    'Notification time': 'notification_time',
+    'Request Type Name': 'requestTypeName',
+    'Notification id': 'notification_no',
+    'Expired date': 'expirationDate',
+    'Notification comment': 'comments',
+    'Product Name': 'productName',
+    'Product English name': 'NameEN',
+    'Legacy Product English name': 'productEnglishName',
+    'Product Arabic name': 'NameAR',
+    'Legacy Product Arabic name': 'productArabicName',
+    'Status': 'Status',
+    'Track Type': 'Track_type',
+    'Notification': 'NotificationNo',
+    'Notification Number': 'NotificationNo',
+    'Old Notification': 'oldNotificationNo',
+    'Old Notification Number': 'oldNotificationNo',
+    'Batch Number': 'batchNumber',
+    'Production Date': 'productionDate',
+    'Expiration Date': 'expirationDate',
+    'Type Of Notification': 'productTypeName',
+  };
+  sortStatus = false;
+  alertNotificationStatus: boolean = false;
+
+  filteredData: Observable<any[]>;
+
+
+  @Input() removeFilterKey;
+  @Output() removeDetailsRowOutput = new EventEmitter();
+  @Output() removeDetailsRowIDs = new EventEmitter();
+  @Output() removePackagingRowOutput = new EventEmitter();
+  @Output() removePackagingRowIDs = new EventEmitter();
+  @Output() editPackagingRowIDs = new EventEmitter();
+  @Output() removeManufacturingRowOutput = new EventEmitter();
+  @Output() removeManufacturingRowIDs = new EventEmitter();
+  @Output() editManufacturingRowIDs = new EventEmitter();
+  @Output() removeIngrediantDetailsRowOutput = new EventEmitter();
+  @Output() removeIngrediantDetailsIDs = new EventEmitter();
+  @Output() removeIngrediantRowOutput = new EventEmitter();
+  @Output() editIngrediantRowOutput = new EventEmitter();
+  @Output() removeProductFromKit = new EventEmitter();
+  @Output() editDetailedRowOutput = new EventEmitter();
+  @Output() copyDetailedRowOutput = new EventEmitter();
+  @Output() seenNotification = new EventEmitter();
+  @Output() editProductInInvoicesRows = new EventEmitter();
+  @Output() removeProductInInvoicesRows = new EventEmitter();
+  @Output() removeDraftProduct = new EventEmitter();
+
+  contentArray = [];
+  returnedArray: string[];
+  deletedIdsListForPackaging = [];
+  deletedIdsListForManufacturing = [];
+  deletedIdsListForDetailsRow = [];
+  deletedIdsListForIngrediant = [];
+  noDataStatment = 'There is no data ...';
+
+  constructor(private router: Router, private route: ActivatedRoute, private inputService: InputService) {
+  }
+
+  ngOnChanges() {
+    if (this.data) {
+      if (this.data.tableBody.length > 0) {
+        if (this.whichTable !== 'newRequestForDetails' && this.whichTable !== 'newRequestForPackaging' && this.whichTable !== 'productsKitList' && this.whichTable !== 'newIngrediantTable' && this.whichTable !== 'newProductForInvoice') {
+          if (this.whichTable !== 'manufacturing' && this.whichTable !== 'batchTable' && this.whichTable !== 'notificationList') {
+            this.data.tableBody.sort((a, b) => a.notificationdate ? (a.notificationdate > b.notificationdate) ? -1 : 1 : (a.SubmmittionDate > b.SubmmittionDate) ? -1 : 1);
+            // this.data.tableBody.sort((a, b) => (a.requestID > b.requestID) ? -1 : 1);
+            this.data.tableBody.map(x => {
+              x.ID = x.ID ? x.ID.toString() : null;
+              x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
+              x.oldNotificationNo = x.oldNotificationNo ? x.oldNotificationNo.toString() : '';
+            });
+          }
+
+          if (this.whichTable === 'notificationList') {
+            this.data.tableBody.sort((a, b) => (a.notification_time > b.notification_time) ? -1 : 1);
+            // this.data.tableBody.sort((a, b) => (a.requestID > b.requestID) ? -1 : 1);
+            this.data.tableBody.map(x => {
+              x.ID = x.ID ? x.ID.toString() : null;
+              x.NotificationNo = x.NotificationNo ? x.NotificationNo.toString() : '';
+              x.oldNotificationNo = x.oldNotificationNo ? x.oldNotificationNo.toString() : '';
+            });
+          }
+          if (this.whichTable === 'batchTable') {
+            this.data.tableBody.map(x => {
+              x.productID = x.productID.toString();
+            });
+          }
+          const tableColumnID = Object.keys(this.data.tableBody[0]).map((x, i) => x);
+          this.filterData.filterKey = [];
+
+          this.data.tableHeader.map((x, i) => {
+            if (this.staticFilterKey[this.data.tableHeader[i]]) {
+
+              this.filterData.filterKey.push({
+                name: this.data.tableHeader[i],
+                id: this.staticFilterKey[this.data.tableHeader[i]]
+              });
+            }
+          });
+
+          this.contentArray = new Array(this.data.tableBody.length).fill('');
+          this.contentArray = this.contentArray.map((v: string, i: number) => this.data.tableBody[i]);
+          this.returnedArray = this.contentArray.slice(0, 10);
+        }
+      }
+    }
+  }
+
+  ngOnInit(): void {
+  }
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  sortBy(status, columnName) {
+    this.contentArray = [];
+    this.returnedArray = [];
+
+    this.sortStatus = !status;
+    if (!this.sortStatus) {
+      this.data.tableBody = this.data.tableBody.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() > b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
+    } else if (this.sortStatus) {
+      this.data.tableBody = this.data.tableBody.sort((a, b) => (a[this.staticFilterKey[columnName]].toLowerCase() < b[this.staticFilterKey[columnName]].toLowerCase()) ? 1 : -1);
+    }
+
+    this.contentArray = new Array(this.data.tableBody.length).fill('');
+    this.contentArray = this.contentArray.map((v: string, i: number) => this.data.tableBody[i]);
+    this.returnedArray = this.contentArray.slice(0, 10);
+  }
+
+  removeDetailsRowFunction(i, requestID) {
+    if (requestID) {
+      this.deletedIdsListForDetailsRow.push(requestID);
+      this.removeDetailsRowIDs.emit(this.deletedIdsListForDetailsRow);
+    }
+
+    this.removeDetailsRowOutput.emit(i);
+  }
+
+  removePackagingRowFunction(i, requestID) {
+    this.removePackagingRowOutput.emit(i);
+
+    if (requestID) {
+      this.deletedIdsListForPackaging.push(requestID);
+      this.removePackagingRowIDs.emit(this.deletedIdsListForPackaging);
+    }
+  }
+
+  editPackagingRowFunction(i) {
+    this.editPackagingRowIDs.emit(i);
+  }
+
+  removeManufacturingRowFunction(i, requestID) {
+    this.removeManufacturingRowOutput.emit(i);
+
+    if (requestID) {
+      this.deletedIdsListForManufacturing.push(requestID);
+      this.removeManufacturingRowIDs.emit(this.deletedIdsListForManufacturing);
+    }
+  }
+
+  editManufacturingRowFunction(i) {
+    this.editManufacturingRowIDs.emit(i);
+  }
+
+  removeIngrediantDetailsRowFunction(childIndex, i, indexRow, idRequest) {
+    this.removeIngrediantDetailsRowOutput.emit({childIndex, indexRow, i});
+
+    if (idRequest) {
+      this.deletedIdsListForIngrediant.push(idRequest);
+      this.removeIngrediantDetailsIDs.emit(this.deletedIdsListForIngrediant);
+    }
+  }
+
+  removeIngrediantDetailsRows(index) {
+    this.removeIngrediantRowOutput.emit(index);
+  }
+
+  copyDetailsRowFunction(index, row) {
+    this.copyDetailedRowOutput.emit(row);
+  }
+
+  editIngrediantDetailsRows(index) {
+    this.editIngrediantRowOutput.emit(index);
+  }
+
+  removeProductInInvoicesRowsFunction(index) {
+    this.removeProductInInvoicesRows.emit(index);
+  }
+
+  editProductInInvoicesRowsFunction(index) {
+    this.editProductInInvoicesRows.emit(index);
+  }
+
+  removeProductFromKitFunction(index) {
+    this.removeProductFromKit.emit(index);
+  }
+
+  editDetailedRowFunction(i) {
+    this.editDetailedRowOutput.emit(i);
+  }
+
+  setTheFilteredData(event) {
+    if (event.keyForFilter.id) {
+      if (event.filterRow.length > 0) {
+        if (event.keyWordsForFilter) {
+          if (event.keyForFilter.id === 'SubmmittionDate' || event.keyForFilter.id === 'productionDate' || event.keyForFilter.id === 'expirationDate') {
+            this.dataAfterFilters.map(x => x[event.keyForFilter.id] = new Date(x[event.keyForFilter.id]).toDateString());
+            if (this.dataAfterFilters.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString()).length > 0) {
+              this.dataAfterFilters = this.dataAfterFilters.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString());
+            } else {
+              this.showAlertForFailedAlert();
+            }
+          } else {
+            if (this.dataAfterFilters.filter(x => x[event.keyForFilter.id] && x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase())).length > 0) {
+              this.dataAfterFilters = this.dataAfterFilters.filter(x => x[event.keyForFilter.id] && x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase()));
+            } else {
+              this.showAlertForFailedAlert();
+            }
+          }
+        } else {
+          event.filterRow.map((x, i) => {
+            if (i === 0) {
+              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate' || this.staticFilterKey[x.columnName] === 'productionDate' || this.staticFilterKey[x.columnName] === 'expirationDate') {
+                this.data.tableBody.map(y => y[this.staticFilterKey[x.columnName]] = new Date(y[this.staticFilterKey[x.columnName]]).toDateString());
+                if (this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString()).length > 0) {
+                  this.dataAfterFilters = this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString());
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              } else {
+                if (this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] && y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase())).length > 0) {
+                  this.dataAfterFilters = this.data.tableBody.filter(y => y[this.staticFilterKey[x.columnName]] && y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase()));
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              }
+            } else {
+              if (this.staticFilterKey[x.columnName] === 'SubmmittionDate' || this.staticFilterKey[x.columnName] === 'productionDate' || this.staticFilterKey[x.columnName] === 'expirationDate') {
+                this.dataAfterFilters.map(y => y[this.staticFilterKey[x.columnName]] = new Date(y[this.staticFilterKey[x.columnName]]).toDateString());
+                if (this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString()).length > 0) {
+                  this.dataAfterFilters = this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] === x.keyword.toDateString());
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              } else {
+                if (this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] && y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase())).length > 0) {
+                  this.dataAfterFilters = this.dataAfterFilters.filter(y => y[this.staticFilterKey[x.columnName]] && y[this.staticFilterKey[x.columnName]].toLowerCase().includes(x.keyword.toLowerCase()));
+                } else {
+                  this.showAlertForFailedAlert();
+                }
+              }
+            }
+          });
+        }
+      } else {
+        if (event.keyWordsForFilter) {
+          if (event.keyForFilter.id === 'SubmmittionDate' || event.keyForFilter.id === 'productionDate' || event.keyForFilter.id === 'expirationDate') {
+            this.data.tableBody.map(x => x[event.keyForFilter.id] = new Date(x[event.keyForFilter.id]).toDateString());
+            if (this.data.tableBody.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString()).length > 0) {
+              this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id] === event.keyWordsForFilter.toDateString());
+            } else {
+              this.showAlertForFailedAlert();
+            }
+          } else {
+            if (this.data.tableBody.filter(x => x[event.keyForFilter.id] && x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase())).length > 0) {
+              this.dataAfterFilters = this.data.tableBody.filter(x => x[event.keyForFilter.id] && x[event.keyForFilter.id].toLowerCase().includes(event.keyWordsForFilter.toLowerCase()));
+            } else {
+              this.showAlertForFailedAlert();
+            }
+          }
+        } else {
+          this.dataAfterFilters = [];
+        }
+      }
+    }
+
+    this.contentArray = new Array(this.dataAfterFilters.length > 0 ? this.dataAfterFilters.length : this.data.tableBody.length).fill('');
+    this.contentArray = this.contentArray.map((v: string, i: number) => this.dataAfterFilters.length > 0 ? this.dataAfterFilters[i] : this.data.tableBody[i]);
+    this.returnedArray = this.contentArray.slice(0, 10);
+  }
+
+  showAlertForFailedAlert() {
+    this.alertNotificationStatus = true;
+
+    setTimeout(() => {
+      this.alertNotificationStatus = false;
+    }, 3000);
+  }
+
+  editProduct(request) {
+    const isTrackProduct = this.route.snapshot.routeConfig.data.animation;
+    const editFrom = this.route.snapshot.routeConfig.path;
+
+    if (editFrom === 'tell_do_variation') {
+      this.router.navigate([`/new-request/tell_do_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? 'FinalReject' : 'Request'}/${isTrackProduct === 'track-request' ? true : false}`]);
+    } else if (editFrom === 'do_tell_variation') {
+      this.router.navigate([`/new-request/do_tell_variation/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? 'FinalReject' : 'Request'}/${isTrackProduct === 'track-request' ? true : false}`]);
+    } else if (editFrom === 'registration') {
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
+    } else if (editFrom === 're-registration') {
+      this.router.navigate([`/new-request/reregistration/${Number(request.ID)}/${isTrackProduct === 'track-request' ? 'Track' : isTrackProduct === 'rejected-request' ? this.rejectedType === 'Final' ? 'FinalReject' : 'CanBeAppealed' : 'Request'}`]);
+    } else if (editFrom === 'legacy-products') {
+      this.router.navigate([`/legacy-form/${Number(request.oldProductID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
+    } else if (editFrom === 'legacy') {
+      this.router.navigate([`/legacy-form/${Number(request.OLD_PRODUCT_ID)}/${isTrackProduct === 'track-request' ? 'Track' : 'Request'}`]);
+    } else if (editFrom === 'approved-product') {
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/${request.canEdit ? this.approvedType : 'approvedProduct'}`]);
+    } else if (editFrom === 'rejected-product') {
+      this.router.navigate([`/new-request/registration/${Number(request.ID)}/FinalReject`]);
+    }
+  }
+
+  deleteProduct(request) {
+    const editFrom = this.route.snapshot.routeConfig.path;
+    if (editFrom === 'tell_do_variation') {
+      this.removeDraftProduct.emit(request);
+    } else if (editFrom === 'do_tell_variation') {
+      this.removeDraftProduct.emit(request);
+    } else if (editFrom === 'registration') {
+      this.removeDraftProduct.emit(Number(request.ID));
+    } else if (editFrom === 're-registration') {
+      this.removeDraftProduct.emit(Number(request.ID));
+    } else if (editFrom === 'legacy') {
+      this.removeDraftProduct.emit(Number(request.ID));
+    }
+
+
+    this.dataAfterFilters = [];
+
+    this.removeFilterKey = true;
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    const startItem = (event.page - 1) * event.itemsPerPage;
+    const endItem = event.page * event.itemsPerPage;
+    this.returnedArray = this.contentArray.slice(startItem, endItem);
+  }
+
+  addBatch(notificationNumber) {
+    this.inputService.publish({type: 'NotificationNumber', payload: notificationNumber});
+    this.router.navigateByUrl('/admin/adding-batch');
+  }
+
+  seenNotificationFunction(id) {
+    this.seenNotification.emit(id);
+  }
+}

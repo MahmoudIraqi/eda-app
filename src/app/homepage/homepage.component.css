@@ -1,0 +1,232 @@
+.contentContainer {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4em;
+}
+
+.contentContainer h1 {
+  font-size: 45px;
+  color: #161c30;
+  text-align: center;
+  margin-bottom: 1em;
+  font-weight: bolder;
+}
+
+.contentContainer p {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 3em;
+  font-weight: 600;
+}
+
+.btnList {
+  list-style-type: none;
+  text-align: center;
+}
+
+.btnList li {
+  display: block;
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btnList li .btn-group {
+  width: 100%;
+}
+
+.btnList li .ButtonContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  border: 3px solid #c28a30;
+  margin-bottom: 1.5em;
+  border-radius: 10px 0px 10px 10px;
+  -webkit-transition: ease-out 1s;
+  -moz-transition: ease-out 1s;
+  transition: ease-out 1s;
+}
+
+.btnList li .ButtonContainer span.icon {
+  text-align: left;
+  padding: 1em 0.7em;
+  background: #c28a30;
+  border-right: 1px solid transparent;
+  border-radius: 5px 0px 0px 5px;
+  line-height: 1;
+}
+
+.btnList li .ButtonContainer span i:before {
+  font-size: 40px;
+  color: #fff;
+  margin-left: 0px;
+}
+
+.btnList li .ButtonContainer span.title {
+  text-align: left;
+  padding-left: 2em;
+  color: #fff;
+  font-weight: bold;
+}
+
+.btnList li .ButtonContainer:hover {
+  background: #c28a30;
+  border-color: #fff;
+  text-decoration: none;
+  box-shadow: inset 600px 0 0 0 #c28a30;
+}
+
+.btnList li .ButtonContainer:hover span.icon {
+  background: #fff;
+}
+
+.btnList li .ButtonContainer:hover span i:before {
+  color: #c28a30;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  min-width: 200px;
+  right: 0;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content ul {
+  transform: translate(201px, -130px) !important;
+  padding: 0.5em;
+  border-radius: 10px 0px 10px 10px !important;
+  border: 1px solid #fff;
+  background: rgba(255,255,255,0.5);
+}
+
+.dropdown-content ul li {
+  list-style-type: none;
+  width: 100%;
+  border-radius: 10px 0px 10px 10px;
+  border: 1px solid #c28a30;
+  margin-top: 0.2em;
+  background: #fff;
+}
+
+.dropdown-content ul li:first-child {
+  margin-top: 0em;
+}
+
+.dropdown-content ul li a {
+  color: #000000;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
+
+.dropdown-content ul li a:hover {
+  color: #fff;
+}
+
+.dropdown-content a:hover, .dropdown-item.active, .dropdown-item:active {
+  background-color: #a06731 !important;
+  color: #fff !important;
+  border-radius: 10px 0px 10px 10px !important;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #92918e;
+}
+
+/*--------------------------------responsive--------------------------*/
+@media only screen and (max-width: 1024px) {
+  .contentContainer {
+    width: 95%;
+  }
+}
+
+@media only screen and (max-width: 812px) {
+  .contentContainer {
+    width: 100%;
+  }
+
+  .contentContainer h1 {
+    font-size: 35px;
+  }
+
+  .contentContainer p {
+    font-size: 16px;
+  }
+
+  .btnList li {
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .btnList li {
+    margin-left: 0;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .contentContainer h1 {
+    font-size: 30px;
+  }
+
+  .contentContainer p {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .contentContainer {
+    padding: 2em;
+  }
+
+  .contentContainer h1 {
+    font-size: 24px;
+  }
+
+  .contentContainer p {
+    font-size: 14px;
+  }
+
+  .btnList li {
+    width: 65%;
+  }
+
+  .dropdown-content ul li a {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .btn-group {
+    display: block;
+  }
+
+  .btnList li {
+    width: 100%;
+  }
+
+  .btn-group .dropdown-content {
+    /*position: relative;*/
+    width: 100%;
+  }
+
+  .btn-group .dropdown-content ul {
+    transform: translate(0, -1.5em) !important;
+    position: relative;
+    width: 100%;
+  }
+}

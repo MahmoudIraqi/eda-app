@@ -1,0 +1,565 @@
+<form class="mt-2" name="form" class="example-form" method="post"
+      [formGroup]="regColourKitForAllRequestedType"
+      (ngSubmit)="onSubmit()" novalidate>
+  <tabset type="pills" #formTabs>
+    <tab heading="Products fields">
+      <div class="mt-5">
+        <div class="row">
+          <div class="col-12">
+            <app-title [smallTitle]="true" [title]="'Notification Hair Colorant Kit Request'"></app-title>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-6">
+            <mat-form-field class="example-full-width">
+              <mat-label>Product Name (Arabic)</mat-label>
+              <input type="text" class="form-control" matInput formControlName="productArabicName"
+                     placeholder="Product Name"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productArabicName') : true : legacyStatus? productFlags && !productFlags.productArabicName ? true : false : isDraft ? false : productFlags && !productFlags.productArabicName ? true : false">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field class="example-full-width">
+              <mat-label>Product Name (English)</mat-label>
+              <input type="text" class="form-control" matInput formControlName="productEnglishName"
+                     placeholder="Product Name" required
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productEnglishName') : true : legacyStatus? productFlags && !productFlags.productEnglishName ? true : false : isDraft ? false : productFlags && !productFlags.productEnglishName ? true : false">
+
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('productEnglishName').invalid && (regColourKitForAllRequestedType.get('productEnglishName').dirty || regColourKitForAllRequestedType.get('productEnglishName').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('productEnglishName').errors.required">
+                  this field is required
+                </div>
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('productEnglishName').errors.pattern">
+                  this field must't start with Number and must be in English
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-12 mt-3 mb-3">
+            <div class="ShortNameFieldContainer" formArrayName="shortName">
+              <div class="row">
+                <div class="col-12 d-flex align-items-center flex-column flex-sm-row">
+                  <app-title [title]="'Short Name Field'" [smallTitle]="true"></app-title>
+                  <button type="button" class="btn btn-primary btn-sm mb-3 ml-sm-auto mt-3 mt-sm-0 addBtn"
+                          [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
+                          (click)="addShortName()">
+                    Add Short Name
+                  </button>
+                </div>
+                <div *ngIf="removeShortNameFieldStatus" class="alert alert-danger RelativeAlert">
+                  you must have at least one field
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12" *ngFor="let shortNameList of ShortName.controls; let i=index">
+                  <mat-form-field class="example-full-width">
+                    <div *ngIf="productComments && productComments.shortName"
+                         class="InfoIconContainer">
+                      <span class="infoIcon" tooltip="{{productComments['shortName']}}"
+                            placement="top">
+                        <i class="fas fa-info-circle"></i>
+                      </span>
+                    </div>
+                    <mat-label>Short Name</mat-label>
+                    <input type="text" class="form-control" matInput [formControlName]="i"
+                           placeholder="Short Name"
+                           [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shortName') : true : legacyStatus? true : isDraft ? false : productFlags && !productFlags.shortName ? true : false">
+                    <button type="button"
+                            [disabled]="(selectedRequestedType !== 7 && selectedRequestedType !== 8 && selectedRequestedType !== 9) || legacyStatus  || (productFlags && !productFlags.shortName)"
+                            (click)="removeShortName(i)"
+                            class="close">Remove
+                    </button>
+                    <div *ngIf="ShortName.controls[i].errors?.pattern" class="alert alert-danger">
+                      this field must be in English
+                    </div>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Product Color</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Product Color"
+                     aria-label="Product Color"
+                     matInput
+                     formControlName="productColor"
+                     (blur)="checkValue('productColor', formData.productColorList, regColourKitForAllRequestedType)"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productColor') : true : legacyStatus? productFlags && !productFlags.productColor ? true : false : isDraft ? false : productFlags && !productFlags.productColor ? true : false"
+                     [matAutocomplete]="productColorList" required>
+              <mat-autocomplete #productColorList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForProductColor | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Manufacturing Company</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Manufacturing Company"
+                     aria-label="Manufacturing Company"
+                     matInput
+                     (blur)="checkValue('manufacturingCompany', formData.manufacturingCompanyList, regColourKitForAllRequestedType)"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCompany') : true : legacyStatus? productFlags && !productFlags.manufacturingCompany ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCompany ? true : false"
+                     formControlName="manufacturingCompany"
+                     [matAutocomplete]="manufacturingCompanyList" required>
+              <mat-autocomplete #manufacturingCompanyList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForManufacturingCompany | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('manufacturingCompany').invalid && (regColourKitForAllRequestedType.get('manufacturingCompany').dirty || regColourKitForAllRequestedType.get('manufacturingCompany').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('manufacturingCompany').errors.required">
+                  this field is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Manufacturing Country</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Manufacturing Country"
+                     aria-label="Manufacturing Country"
+                     matInput
+                     formControlName="manufacturingCountry"
+                     (blur)="checkValue('manufacturingCountry', formData.manufacturingCountryList, regColourKitForAllRequestedType)"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('manufacturingCountry') : true : legacyStatus? productFlags && !productFlags.manufacturingCountry ? true : false : isDraft ? false : productFlags && !productFlags.manufacturingCountry ? true : false"
+                     [matAutocomplete]="manufacturingCountryList" required>
+              <mat-autocomplete #manufacturingCountryList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForManufacturingCountry | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('manufacturingCountry').invalid && (regColourKitForAllRequestedType.get('manufacturingCountry').dirty || regColourKitForAllRequestedType.get('manufacturingCountry').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('manufacturingCountry').errors.required">
+                  this field is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Applicant</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Applicant"
+                     aria-label="Applicant"
+                     matInput
+                     formControlName="applicant"
+                     [readonly]="true"
+                     [matAutocomplete]="applicantList" required>
+              <mat-autocomplete #applicantList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForApplicant | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('applicant').invalid && (regColourKitForAllRequestedType.get('applicant').dirty || regColourKitForAllRequestedType.get('applicant').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('applicant').errors.required">
+                  this field is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field appearance="fill">
+              <mat-label>License Holder</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="License Holder"
+                     aria-label="License Holder"
+                     matInput
+                     formControlName="licenseHolder"
+                     (blur)="checkValue('licenseHolder', formData.licenseHolderList, regColourKitForAllRequestedType)"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolder') : true : legacyStatus? productFlags && !productFlags.licenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.licenseHolder ? true : false"
+                     [matAutocomplete]="licenseHolderList" required>
+              <mat-autocomplete #licenseHolderList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForLicenseHolder | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('licenseHolder').invalid && (regColourKitForAllRequestedType.get('licenseHolder').dirty || regColourKitForAllRequestedType.get('licenseHolder').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('licenseHolder').errors.required">
+                  this field is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12"
+               *ngIf="regColourKitForAllRequestedType.get('licenseHolder').value === formData.licenseHolderList.length">
+            <mat-form-field class="example-full-width inputBesideSelect">
+              <mat-label>Other License Holder</mat-label>
+              <input type="text" class="form-control" matInput formControlName="licenseHolderTxt"
+                     placeholder="Other License Holder" required
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('licenseHolderTxt') : true : legacyStatus? productFlags && !productFlags.licenseHolderTxt ? true : false : isDraft ? false : productFlags && !productFlags.licenseHolderTxt ? true : false">
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('licenseHolderTxt').invalid && (regColourKitForAllRequestedType.get('licenseHolderTxt').dirty || regColourKitForAllRequestedType.get('licenseHolderTxt').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('licenseHolderTxt').errors.required">
+                  this field is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Country of License Holder</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Country of License Holder"
+                     aria-label="Country of License Holder"
+                     matInput
+                     formControlName="countryOfLicenseHolder"
+                     (blur)="checkValue('countryOfLicenseHolder', formData.licenseHolderCountryList, regColourKitForAllRequestedType)"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('countryOfLicenseHolder') : true : legacyStatus? productFlags && !productFlags.countryOfLicenseHolder ? true : false : isDraft ? false : productFlags && !productFlags.countryOfLicenseHolder ? true : false"
+                     [matAutocomplete]="licenseHolderCountryList" required>
+              <mat-autocomplete #licenseHolderCountryList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForLicenseHolderCountry | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('countryOfLicenseHolder').invalid && (regColourKitForAllRequestedType.get('countryOfLicenseHolder').dirty || regColourKitForAllRequestedType.get('countryOfLicenseHolder').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('countryOfLicenseHolder').errors.required">
+                  this field is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field class="example-full-width inputBesideSelect">
+              <mat-label>Trade Mark</mat-label>
+              <input type="text" class="form-control" matInput formControlName="tradeMark"
+                     placeholder="Trade Mark"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('tradeMark') : true : legacyStatus? productFlags && !productFlags.tradeMark ? true : false : isDraft ? false : productFlags && !productFlags.tradeMark ? true : false">
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field class="example-full-width">
+              <mat-label>Storage Place</mat-label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Storage Place"
+                     aria-label="Storage Place"
+                     matInput
+                     formControlName="storagePlace"
+                     (blur)="checkValue('storagePlace', formData.storagePlaceList, regColourKitForAllRequestedType)"
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('storagePlace') : true : legacyStatus? productFlags && !productFlags.storagePlace ? true : false : isDraft ? false : productFlags && !productFlags.storagePlace ? true : false"
+                     [matAutocomplete]="storagePlaceList"
+                     [required]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? true : false">
+              <mat-autocomplete #storagePlaceList="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsForStoragePlace | async"
+                            [value]="option.NAME">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-autocomplete>
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('storagePlace').invalid && (regColourKitForAllRequestedType.get('storagePlace').dirty || regColourKitForAllRequestedType.get('storagePlace').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('storagePlace').errors.required">
+                  this field is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-12 col-sm-9">
+                <div class="form-group">
+                  <label>
+                    Shelf Life
+                    <span class="requiredStar">*</span>
+                  </label>
+                  <mat-slider
+                    class="example-margin mt-3"
+                    [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : legacyStatus? productFlags && !productFlags.shelfLife ? true : false : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
+                    [max]="60"
+                    [min]="0"
+                    [step]="1"
+                    required
+                    formControlName="shelfLife">
+                  </mat-slider>
+                </div>
+              </div>
+              <div class="col-12 col-sm-3">
+                <mat-form-field class="example-full-width inputBesideSelect">
+                  <div *ngIf="productComments && productComments.shelfLife" class="InfoIconContainer">
+                    <span class="infoIcon" tooltip="{{productComments.shelfLife}}"
+                          placement="top">
+                      <i class="fas fa-info-circle"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" matInput
+                         [value]="regColourKitForAllRequestedType.get('shelfLife').value"
+                         formControlName="shelfLife"
+                         [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('shelfLife') : true : legacyStatus? productFlags && !productFlags.shelfLife ? true : false : isDraft ? false : productFlags && !productFlags.shelfLife ? true : false"
+                         (change)="setShelfValue($event)" required>
+                  <span class="labelForRange">Months</span>
+                  <div
+                    *ngIf="regColourKitForAllRequestedType.get('shelfLife').invalid && attachmentRequiredStatus"
+                    class="alert alert-danger">
+                    <div
+                      *ngIf="regColourKitForAllRequestedType.get('shelfLife').errors.required">
+                      this field is required
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field class="example-full-width inputBesideSelect">
+              <mat-label>Receipt Number</mat-label>
+              <input type="text" class="form-control" matInput formControlName="receiptNumber"
+                     placeholder="Receipt Number" required
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptNumber') : true : legacyStatus? productFlags && !productFlags.receiptNumber ? true : false : isDraft ? false : productFlags && !productFlags.receiptNumber ? true : false">
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('receiptNumber').invalid && (regColourKitForAllRequestedType.get('receiptNumber').dirty || regColourKitForAllRequestedType.get('receiptNumber').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('receiptNumber').errors.required">
+                  this field is required
+                </div>
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('receiptNumber').errors.pattern">
+                  this field must not start with number
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field class="example-full-width inputBesideSelect">
+              <mat-label>Receipt Value</mat-label>
+              <input type="text" class="form-control" matInput
+                     (change)="getDecimalValue(regColourKitForAllRequestedType.get('receiptValue').value)"
+                     formControlName="receiptValue"
+                     placeholder="Receipt Value" required
+                     [readonly]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('receiptValue') : true : legacyStatus? productFlags && !productFlags.receiptValue ? true : false : isDraft ? false : productFlags && !productFlags.receiptValue ? true : false">
+              <div
+                *ngIf="regColourKitForAllRequestedType.get('receiptValue').invalid && (regColourKitForAllRequestedType.get('receiptValue').dirty || regColourKitForAllRequestedType.get('receiptValue').touched)"
+                class="alert alert-danger">
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('receiptValue').errors.required">
+                  this field is required
+                </div>
+                <div
+                  *ngIf="regColourKitForAllRequestedType.get('receiptValue').errors.pattern">
+                  this field must be <strong>Decimal number</strong> as 00.0
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Product Group fields">
+      <div class="mt-5">
+        <div class="row">
+          <div class="col-12">
+            <app-title [smallTitle]="true" [title]="'Product Group Form'"></app-title>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div formArrayName="ProductsForKit" class="detailsTable">
+                  <div class="col-12">
+                    <div *ngFor="let row of ProductGroupsRows().controls; let i=index" [formGroupName]="i">
+                      <div class="getProductArea" *ngIf="ProductGroupsRows().controls.length -1 === i">
+                        <div class="row p-0 mt-4">
+                          <div class="col-6 col-sm-6">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Product Status</mat-label>
+                              <mat-select formControlName="productStatus" *ngIf="formData"
+                                          [disabled]="reRegistrationStatus ? true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes('productStatus') : true : legacyStatus? productFlags && !productFlags.productStatus ? true : false : isDraft ? false : productFlags && !productFlags.productStatus ? true : false">
+                                <mat-option *ngFor='let type of formData.productStatusList' [value]="type">
+                                  {{type}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-12 col-sm-6"
+                               *ngIf="row.get('productStatus').value === 'Registered'">
+                            <div class="row">
+                              <div class="col-6">
+                                <mat-form-field class="example-full-width">
+                                  <mat-label>Product Notification Number</mat-label>
+                                  <input type="text" class="form-control" matInput
+                                         formControlName="NotificationNo"
+                                         [readonly]="reRegistrationStatus ? true: false"
+                                         placeholder="">
+                                </mat-form-field>
+                              </div>
+                              <div class="col-6 d-flex">
+                                <button type="button"
+                                        class="btn btn-primary ml-auto mt-sm-3"
+                                        [disabled]="!row.get('NotificationNo').value"
+                                        (click)="applyProduct(row, 'registered', i)">
+                                  Apply Product
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-sm-6"
+                               *ngIf="row.get('productStatus').value === 'New'">
+                            <div class="row">
+                              <div class="col-6">
+                                <mat-form-field appearance="fill">
+                                  <mat-label>Products List</mat-label>
+                                  <mat-select formControlName="productID" required>
+                                    <mat-option *ngFor="let option of lookupForProductIds" [value]="option.ID">
+                                      {{option.NAME}}
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                              <div class="col-6 d-flex">
+                                <button type="button"
+                                        class="btn btn-primary ml-auto mt-sm-3"
+                                        [disabled]="!row.get('productID').value"
+                                        (click)="applyProduct(row, 'new', i)">
+                                  Apply Product
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-4" *ngIf="allProductsInKit.tableBody.length > 0">
+                    <div class="col-12">
+                      <app-title [title]="'Kit Products Table'" [smallTitle]="true"></app-title>
+                    </div>
+                    <div class="col-12 mt-5">
+                      <div class="RequestingTable">
+                        <app-table-list [data]="allProductsInKit"
+                                        [whichTable]="'productsKitList'"
+                                        (removeProductFromKit)="deletedProductsIdsList($event); removeProductsGroupRows($event);"
+                        ></app-table-list>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Attachments" class="Attachments">
+      <div class="mt-5">
+        <app-title [smallTitle]="true" [title]="'Attachement'"></app-title>
+        <div class="row mt-3">
+          <div class="col-lg-4 col-sm-6 col-12" *ngFor="let field of attachmentFieldsForKits">
+            <div class="form-group" *ngIf="field.enable">
+              <div *ngIf="productComments && productComments[field.id]" class="InfoIconContainer">
+                <span class="infoIcon" tooltip="{{productComments[field.id]}}"
+                      placement="top">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </div>
+              <label>
+                {{field.name}}
+                <span class="requiredStar" *ngIf="field.required">*</span>
+              </label>
+              <div class="custom-file fileUpload mr-3" id="customFile"
+                   [ngClass]="{'required': ((regColourKitForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No')}">
+                <input type="file" class="custom-file-input" [id]="field.id"
+                       aria-describedby="fileHelp"
+                       (change)="onFileSelect($event, field.id)"
+                       [disabled]="reRegistrationStatus ? field.id === 'receipt'? false : true : variationFieldsStatus ? this.variationFields.length > 0 ? !enableEditableFields.includes(field.id) : true : legacyStatus? productFlags && !productFlags[field.id] ? true : false : isDraft ? false : productFlags && !productFlags[field.id] ? true : false"
+                       [required]="field.required ? 'required' : ''">
+                <div class="d-flex alert alert-danger"
+                     *ngIf="(regColourKitForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus) || field.attachmentTypeStatus === 'No'">
+                  <div *ngIf="field.attachmentTypeStatus === 'No'">
+                    this file must be as PDF
+                  </div>
+                  <div class="ml-auto"
+                       *ngIf="regColourKitForAllRequestedType.get(field.id).invalid && attachmentRequiredStatus">
+                    <div *ngIf="regColourKitForAllRequestedType.get(field.id).errors.required">
+                      this field is required
+                    </div>
+                  </div>
+                </div>
+                <label class="custom-file-label" [for]="field.id">
+                  {{field.fileName ? field.fileName : 'Choose file'}}
+                </label>
+                <button type="button" class="custom-file-download-Button" (click)="downloadFile(field.id)"
+                        [disabled]="!regColourKitForAllRequestedType.value.id">Download
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab>
+  </tabset>
+  <div class="row buttonContainer">
+    <div class="col-12 d-flex flex-column flex-md-row mt-3">
+      <button *ngIf="!formTabs.tabs[0].active"
+              type="button"
+              class="btn btn-primary btn-sm mr-3 bottomButtons"
+              (click)="backToNextTab('FormTabs')">
+        Back
+      </button>
+      <div class="ml-md-auto">
+        <button *ngIf="!formTabs.tabs[2].active"
+                type="button"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
+                (click)="nextToNextTab('FormTabs')">
+          Next Forward
+        </button>
+        <button type="button"
+                class="btn btn-primary btn-sm mr-3 bottomButtons"
+                *ngIf="!reRegistrationStatus"
+                [disabled]="!disabledSaveButton"
+                (click)="saveData()">
+          Save
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary btn-sm">
+          <span *ngIf="!reRegistrationStatus">Submit</span>
+          <span *ngIf="reRegistrationStatus">Re-Notification Product</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

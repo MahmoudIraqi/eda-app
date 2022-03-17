@@ -1,0 +1,146 @@
+<div class="headerContainer">
+  <div class="row d-flex align-items-center justify-content-center">
+    <div class="col-lg-3 col-md-4 col-sm-12">
+      <div class="logo">
+        <img src="assets/img/logo.png">
+      </div>
+    </div>
+    <div class="col-lg-9 col-md-8 col-sm-12 paddingLeftRight">
+      <div class="row h-100">
+        <div class="col-12 p-0 pt-3 pb-3 border-bottom h-100">
+          <div
+            [ngClass]="{'text-right': screenWidth > 960, 'd-flex flex-column flex-sm-row': screenWidth <= 960, 'mt-5': screenWidth <= 960 && screenWidth > 640}">
+            <div class="TitleContainer"
+                 [ngClass]="{'w-100 w-sm-85': screenWidth <= 960 }">
+              <div class="d-flex align-items-center">
+                <h2>EgyCosm</h2>
+                <a class="ml-auto notification" routerLink="/notification-list">
+                  <div class="bellContainer">
+                    <i class="fas fa-bell"></i>
+
+                    <span class="notificationCountClass">{{notificationCount}}</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="btn-group mx-auto ml-sm-auto dropdown forResponsiveMenu" dropdown>
+              <button class="dropbtn btn btn-primary" type="button" dropdownToggle aria-controls="dropdown-basic">
+                <span>
+                <i class="fas fa-bars"></i>
+              </span>
+              </button>
+              <div class="dropdown-content">
+                <ul *dropdownMenu class="dropdown-menu"
+                    role="menu" aria-labelledby="button-basic">
+                  <li *ngFor="let item of menuObject;let i =index" role="menuitem">
+                    <a class="dropdown-item" routerLink="{{item.link}}" routerLinkActive="active">
+                      {{item.name}}
+                    </a>
+                  </li>
+                  <li class="profile-menu">
+                    <div class="profile d-inline-flex justify-content-center align-items-center ml-auto">
+                      <div class="profileIcon">
+                      <span>
+                        <i class="fas fa-user"></i>
+                      </span>
+                      </div>
+                      <div class="profileMenu">
+                        <div class="btn-group text-right" dropdown>
+                          <button id="button-basic"
+                                  dropdownToggle
+                                  type="button"
+                                  class="btn btn-primary dropdown-toggle"
+                                  aria-controls="dropdown-basic">
+                            <span class="menu-title">Specturm</span>
+                            <span>
+                            <i class="fas fa-chevron-down"></i>
+                          </span>
+                          </button>
+                          <ul *dropdownMenu
+                              class="dropdown-menu dropdown-menu-right"
+                              role="menu" aria-labelledby="button-basic">
+                            <li role="menuitem">
+                              <a class="dropdown-item" (click)="logoutFunction()">Logout</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 p-0 pt-3 pb-3">
+          <div class="d-flex align-items-center">
+            <div class="menu">
+              <ul>
+                <li *ngFor="let item of menuObject">
+                  <a *ngIf="!item.dropDownStatus" routerLink="{{item.link}}" routerLinkActive="active">
+                    {{item.name}}
+                  </a>
+                  <div *ngIf="item.dropDownStatus" class="btn-group dropdown" dropdown triggers="hover">
+                    <a dropdownToggle
+                       aria-controls="dropdown-basic"
+                       [ngClass]="{'active': isActive(item.link)}">
+                      {{item.name}}
+                      <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                      <ul *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="button-basic">
+                        <li *ngFor="let element of item.dropdownLinks" role="menuitem">
+                          <a class="dropdown-item" routerLink="{{element.link}}" routerLinkActive="active">
+                            {{element.name}}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="profile d-inline-flex justify-content-center align-items-center ml-auto none">
+              <div class="profileIcon">
+                <span>
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+              <div class="profileMenu">
+                <div class="btn-group text-right" dropdown>
+                  <button dropdownToggle
+                          type="button"
+                          class="btn dropdown-toggle"
+                          aria-controls="dropdown-basic">
+                    <span class="ellipsisSpan" tooltip="{{Username}}" placement="right">{{Username}}</span>
+                    <span>
+                    <i class="fas fa-chevron-down"></i>
+                  </span>
+                  </button>
+                  <ul *dropdownMenu
+                      class="dropdown-menu dropdown-menu-right"
+                      role="menu" aria-labelledby="button-basic">
+                    <li role="menuitem">
+                      <a class="dropdown-item" (click)="logoutFunction()">Logout</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="success" *ngIf="alertNotificationStatus">
+  <strong>Welcome</strong> <br> in the Portal
+</alert>
+
+<alert type="danger" class="AlertForAllRequests" dismissible="true" *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> Failed Login
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

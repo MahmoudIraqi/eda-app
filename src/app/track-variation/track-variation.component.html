@@ -1,0 +1,21 @@
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title
+        [title]="'Track requests for '+ (whichVariation === 'tell_do_variation'? 'Tell & Do variation' : 'Do & Tell Variation')"
+        [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="tableContainer TrackTable">
+        <app-table-list [data]="trackVariationListRequests" [whichTable]="'track'"></app-table-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

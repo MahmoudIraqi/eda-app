@@ -1,0 +1,215 @@
+<div class="whiteContainer">
+  <div class="row">
+    <div class="col-12">
+      <app-title
+        [title]="productId ? typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject' ? 'Preview Request for Notification': 'Edit Request for Notification':'Create request for Notification'"
+        [bigTitle]="true"></app-title>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="formTable">
+        <div class="row">
+          <div class="col-lg-4 col-sm-6 col-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Type Of Notification</mat-label>
+              <mat-select (selectionChange)="getFormType($event);"
+                          [(ngModel)]="this.selectedFormType" required
+                          [disabled]="productId || isDraftRequestStatus || typeOfProcess === 'CanBeAppealed' || typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment'">
+                <mat-option *ngFor="let option of formData.formType" [value]="option.ID">
+                  {{option.NAME}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-12 col-sm-9">
+                <mat-form-field appearance="fill">
+                  <mat-label>Type Of License</mat-label>
+                  <mat-select (selectionChange)="getRequestType($event);"
+                              [(ngModel)]="selectedRequestedType" required
+                              [disabled]="productId || isDraftRequestStatus || typeOfProcess === 'CanBeAppealed' || typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment'">
+                    <mat-option *ngFor="let option of formData.requestType" [value]="option.ID">
+                      {{option.NAME}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-sm-3">
+                <section class="example-section mt-4">
+                  <mat-checkbox class="example-margin"
+                                [(ngModel)]="selectedIsExport"
+                                (change)="getIsExportingType($event)"
+                                [disabled]="selectedRequestedType === 3 || selectedRequestedType === 4 || selectedRequestedType === 7 || selectedRequestedType === 8 || selectedRequestedType === 9 ? false : true">
+                    Export only
+                  </mat-checkbox>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <mat-form-field appearance="fill">
+                  <mat-label>Track Type</mat-label>
+                  <mat-select
+                    (selectionChange)="getTrackType($event);"
+                    [(ngModel)]="this.selectedTrackType" required
+                    [disabled]="(productId && updatingProductData && updatingProductData.isDraft === 0) || typeOfProcess === 'CanBeAppealed'  || typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment'">
+                    <mat-option *ngFor="let option of formData.trackType" [value]="option.ID">
+                      {{option.NAME}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-sm-6 ">
+                <mat-form-field class="example-full-width mainRequest">
+                  <mat-label>Estimated Value</mat-label>
+                  <input type="text" class="form-control" matInput [(ngModel)]="estimatedValue"
+                         placeholder="Estimated Value"
+                         [readonly]="true">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-5"
+               *ngIf="(selectedFormType === 1 || selectedFormType === 3)&& selectedRequestedType && selectedTrackType">
+            <app-product-request-form
+              [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
+              [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
+              [successSubmission]="successSubmission"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
+              [enableManufacturingInTrackOfVariationStatus]="enableManufacturingInTrackOfVariation"
+              [trackProductStatus]="typeOfProcess === 'Track'"
+              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
+              [finalRejectedStatus]="typeOfProcess === 'FinalReject' || (updatingProductData && updatingProductData.trackCode === 'REJECT_APPEAL2')"
+              [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || typeOfProcess === 'approvedHoldProductWithVariationComments' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM' || updatingProductData.trackCode === 'VAR_HOLD_REG'))"
+              [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment' || typeOfProcess === 'approvedProductWithVariationComment' || (updatingProductData && (updatingProductData.trackCode === 'APPROVE_REG_COMM' || updatingProductData.trackCode === 'APPROVE_LAB_COMM' || updatingProductData.trackCode ==='VAR_APPROVE_REG_COMM'))"
+              [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
+              [editData]="updatingProductData"
+              [editFromWhere]="editFormIPStatus"
+              [lookupsData]="formData"
+              [manufacturingCompanyList]="manufacturingCompanyList"
+              [getAllLookupsStatus]="getAllLookupsStatus"
+              [companyProfile]="companyProfileId"
+              (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
+              (saveDataOutputForAttachment)="getRequestId($event)"
+              (submitDataOutput)="onSubmit($event)"
+              (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
+              (companyProfileSearchText)="filterInBigSizeLookups('licenseHolder', $event)"
+              (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
+              (requestIsDraft)="isDraftRequest($event)"
+              (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
+            ></app-product-request-form>
+          </div>
+          <div class="col-12 mt-5"
+               *ngIf="(selectedFormType === 2 ||selectedFormType === 4 ) && selectedRequestedType && selectedTrackType">
+            <app-products-kit-request-form
+              [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
+              [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
+              [successSubmission]="successSubmission"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
+              [enableManufacturingInTrackOfVariationStatus]="enableManufacturingInTrackOfVariation"
+              [trackProductStatus]="typeOfProcess === 'Track'"
+              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
+              [finalRejectedStatus]="typeOfProcess === 'FinalReject' || (updatingProductData && updatingProductData.trackCode === 'REJECT_APPEAL2')"
+              [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"
+              [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment' || (updatingProductData && (updatingProductData.trackCode === 'APPROVE_REG_COMM' || updatingProductData.trackCode === 'APPROVE_LAB_COMM' ))"
+              [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
+              [editData]="updatingProductData"
+              [editFromWhere]="editFormIPStatus"
+              [lookupsData]="formData"
+              [manufacturingCompanyList]="manufacturingCompanyList"
+              [getAllLookupsStatus]="getAllLookupsStatus"
+              [companyProfile]="companyProfileId"
+              (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
+              (saveDataOutputForAttachment)="getRequestId($event)"
+              (submitDataOutput)="onSubmit($event)"
+              (requestIsDraft)="isDraftRequest($event)"
+              (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
+            ></app-products-kit-request-form>
+          </div>
+          <div class="col-12 mt-5"
+               *ngIf="(selectedFormType === 5 || selectedFormType === 6) && selectedRequestedType && selectedTrackType">
+            <app-product-request-form
+              [selectedRequestedType]="selectedRequestedType"
+              [selectedFormType]="selectedFormType"
+              [selectedTrackType]="selectedTrackType"
+              [selectedIsExport]="selectedIsExport"
+              [successSubmission]="successSubmission"
+              [approvedStatus]="typeOfProcess === 'approvedProduct' || typeOfProcess === 'FinalReject'"
+              [trackProductStatus]="typeOfProcess === 'Track'"
+              [canBeAppealedStatus]="typeOfProcess === 'CanBeAppealed' || (updatingProductData && ( updatingProductData.trackCode === 'REJECT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_TIMEOUT' || updatingProductData.trackCode === 'REJECT_COMP_REPLY_WRONG' || updatingProductData.trackCode ==='REJECT_APPEAL1'))"
+              [canEditForHoldApprovedProduct]="typeOfProcess === 'approvedHoldProductWithLabsComments' || typeOfProcess === 'approvedHoldProductWithRegComment' || (updatingProductData && ( updatingProductData.trackCode === 'HOLD_REG_COMM' || updatingProductData.trackCode === 'HOLD_LAB_COMM'))"
+              [canEditForApprovedProduct]="typeOfProcess === 'approvedProductWithLabsComments' || typeOfProcess === 'approvedProductWithRegComment' || (updatingProductData && (updatingProductData.trackCode === 'APPROVE_REG_COMM' || updatingProductData.trackCode === 'APPROVE_LAB_COMM' ))"
+              [saveResponseDataForRegisterProductID]="saveResponseDataForRegisterProduct"
+              [editData]="updatingProductData"
+              [editFromWhere]="editFormIPStatus"
+              [kitProductStatus]="true"
+              [lookupsData]="formData"
+              [manufacturingCompanyList]="manufacturingCompanyList"
+              [getAllLookupsStatus]="getAllLookupsStatus"
+              [companyProfile]="companyProfileId"
+              (saveDataOutput)="saveData($event)"
+              (saveTrackDataOutput)="onSubmit($event)"
+              (saveDataOutputForAttachment)="getRequestId($event)"
+              (submitDataOutput)="onSubmit($event)"
+              (requestIsDraft)="isDraftRequest($event)"
+              (manufacturingSearchText)="filterInBigSizeLookups('manufacturingCompany', $event)"
+              (companyProfileSearchText)="filterInBigSizeLookups('licenseHolder', $event)"
+              (ingrediantSearchText)="filterInBigSizeLookups('ingrediant', $event)"
+              (errorMessage)="showAlertMessager($event)"
+              (isLoadingStatus)="enableLoadingForAttachment($event)"
+              (errorForAttachemntRequest)="handleError($event)"
+            ></app-product-request-form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<alert type="success" (onClosed)="onClosed()" *ngIf="alertNotificationStatus">
+  <strong>Thank You</strong> <br> {{alertNotification.msg}}
+</alert>
+
+<alert type="danger" class="AlertForAllRequests" dismissible="true" (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<ng-template #successSubmissionModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Successful Submission</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeSuccessSubmissionModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="modalContainer">
+      <h2>
+        <span>
+          <i class="fas fa-check-circle"></i>
+        </span>
+      </h2>
+      <h3>
+        Thank you for submission
+      </h3>
+      <h3>
+        Your request {{dataInAnyError.NotificationNo ? 'Notification Number' : 'id'}} is
+        <b>{{ dataInAnyError.NotificationNo ? dataInAnyError.NotificationNo : dataInAnyError.id}}</b>
+      </h3>
+    </div>
+  </div>
+</ng-template>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>

@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-12">
+    <div class="amountOfAllRequests">
+      <ul>
+        <li *ngFor="let request of numberOFAllRequestObject; let i = index"
+            (click)="selectCharts(request.id, i)"
+            [ngClass]="{'active': request.active}">
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="icon">
+              <i class="{{request.icon}}"></i>
+            </div>
+            <div class="title">
+              <h4>{{request.title}}</h4>
+              <p>
+                <span class="NumberValue" #count>{{request.numberOfRequest}}</span>
+                <span class="numberTitle">{{request.numberOfRequest > 1 ? 'requests' : 'request' }}</span>
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-12">
+    <app-charts-component [data]="dataForBarChart" [pieData]="dataForPieCharts"></app-charts-component>
+  </div>
+</div>
+
+
+<alert type="danger" dismissible="true" class="AlertForAllRequests" (onClosed)="onClosedErrorAlert()" *ngIf="alertErrorNotificationStatus">
+  <strong>Error Message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
+
+
+

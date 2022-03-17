@@ -1,0 +1,18 @@
+<div class="appContainer">
+  <app-header [Username]="username" [notificationCount]="unseenCount"></app-header>
+
+  <div class="sectionContainer">
+    <div [@routerTransitionSlide]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+<alert type="danger" class="AlertForAllRequests" dismissible="true"  (onClosed)="onClosedErrorAlert()"
+       *ngIf="alertErrorNotificationStatus">
+  <strong>Error message</strong> <br> {{alertErrorNotification.msg}}
+</alert>
+
+<app-loader-component [loadingStatus]="isLoading"></app-loader-component>
