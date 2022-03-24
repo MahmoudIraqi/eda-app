@@ -108,12 +108,16 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
-  getFormAsStarting() {
-    this.manufacturingCompanyForm = this.fb.group({
-      manufacturingCompany: this.fb.control('', Validators.required),
-      manufacturingCountry: this.fb.control('', Validators.required),
-      attachment: this.fb.control('', Validators.required),
-    });
+  getFormAsStarting(data?: any) {
+    if (data) {
+
+    } else {
+      this.manufacturingCompanyForm = this.fb.group({
+        manufacturingCompany: this.fb.control('', Validators.required),
+        manufacturingCountry: this.fb.control('', Validators.required),
+        attachment: this.fb.control('', Validators.required),
+      });
+    }
   }
 
   filterLookupsFunction(formControlValue, list) {
@@ -140,16 +144,23 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
     const data = this.convertAllNamingToId(this.manufacturingCompanyForm.value);
 
     this.isLoading = true;
-    this.getService.setManufacturingCompany(data).subscribe((res: any) => {
-      this.dataInAnyError = res;
-      this.isLoading = false;
-      this.alertNotificationStatus = true;
-      this.alertNotification = this.alertForSubmitRequest();
-      this.resetForms();
-      this.onClosed();
-      this.successSubmission = true;
-      this.openModal(this.modalDetailedTemplate);
-    }, error => this.handleError(error));
+
+    console.log('123', this.manufacturingCompanyForm.valid);
+    if (this.manufacturingCompanyForm.valid) {
+      this.getService.setManufacturingCompany(data).subscribe((res: any) => {
+        this.dataInAnyError = res;
+        this.isLoading = false;
+        this.alertNotificationStatus = true;
+        this.alertNotification = this.alertForSubmitRequest();
+        this.resetForms();
+        this.onClosed();
+        this.successSubmission = true;
+        this.openModal(this.modalDetailedTemplate);
+      }, error => this.handleError(error));
+    } else {
+      this.handleError('please complete the required values which marked with *');
+      this.getFormAsStarting(data);
+    }
   }
 
   alertForSubmitRequest() {
@@ -157,9 +168,22 @@ export class ManufacturingCompanyComponent implements OnInit, AfterViewInit, OnD
   }
 
   convertAllNamingToId(data) {
-    this.formData.manufacturingCountryList.filter(option => option.NAME === data.manufacturingCountry).map(x => data.manufacturingCountry = x.ID);
+    data.manufacturingCountry = this.checkControllerValueWithList(this.formData.manufacturingCountryList, 'manufacturingCountry', data.manufacturingCountry);
 
     return data;
+  }
+
+  checkControllerValueWithList(list, formControlKey, formControlValue) {
+    let value;
+    if (list.filter(option => option.NAME === formControlValue).length > 0) {
+      list.filter(option => option.NAME === formControlValue).map(x => {
+        value = x.ID;
+      });
+    } else {
+      this.manufacturingCompanyForm.get(formControlKey).patchValue('');
+      value = '';
+    }
+    return value;
   }
 
   private _subscribeToClosingActions(field, list): void {
