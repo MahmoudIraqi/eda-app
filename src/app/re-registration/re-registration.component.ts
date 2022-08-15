@@ -166,6 +166,17 @@ export class ReRegistrationComponent implements OnInit {
     }, error => this.handleError(error));
   }
 
+  getTrackType(event) {
+    this.selectedTrackType ? this.selectedTrackType = '' : null;
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.selectedTrackType = event.value;
+      this.isLoading = false;
+      this.getPricing();
+    }, 500);
+  }
+
   onSave(event) {
     this.isLoading = true;
 
