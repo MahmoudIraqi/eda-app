@@ -106,7 +106,7 @@ export class NewRequestComponent implements OnInit {
       filter(x => x.type === 'variablesPrices'),
       distinctUntilChanged()
     ).subscribe(res => {
-      const variableGroup = pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
+      const variableGroup = this.typeOfProcess === 'approvedHoldProductWithRegComment' || this.typeOfProcess === 'approvedHoldProductWithVariationComments' ? 'unhold' : pathInEditMode ? pathInEditMode : this.route.snapshot.routeConfig.path;
       res.payload.filter(x => x.groupName.toLowerCase() === variableGroup).map(variableList => {
         this.variablesPricingList = variableList;
       });
@@ -365,12 +365,12 @@ export class NewRequestComponent implements OnInit {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
     } else if (fromWhere === 'typeOfNotification') {
       this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
-    } else if (fromWhere === 'draftRequest') {
-      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
-      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
     } else if (fromWhere === 'Appeal') {
       this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
       this.typeOfNotificationVariable = 'APPEAL';
+    } else{
+      this.trackTypeVariable = this.formData.trackType[this.selectedTrackType - 1].CODE;
+      this.typeOfNotificationVariable = this.formData.requestType[this.selectedRequestedType - 1].CODE;
     }
 
     if (this.trackTypeVariable && this.typeOfNotificationVariable) {
